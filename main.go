@@ -9,7 +9,6 @@ import (
 
 const (
 	rootURL string = "https://api-2445582011268.apicast.io/games/"
-	APIkey = "placeholder"
 )
 
 // ID is an unsigned 64-bit integer
