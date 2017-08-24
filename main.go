@@ -9,6 +9,7 @@ import (
 
 const (
 	rootURL string = "https://api-2445582011268.apicast.io/games/"
+	APIkey = "placeholder"
 )
 
 // ID is an unsigned 64-bit integer
@@ -47,7 +48,7 @@ func getGames() ([]Game, error) {
 		return nil, err
 	}
 
-	req.Header.Add("user-key", "647a93fd28620b1d5e9865f3c8d42e55")
+	req.Header.Add("user-key", APIkey)
 	req.Header.Add("Accept", "application/json")
 
 	resp, err := client.Do(req)
