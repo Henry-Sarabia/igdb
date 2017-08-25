@@ -7,7 +7,7 @@ type Pulse struct {
 	Title       string `json:"title"`
 	Summary     string `json:"summary"`
 	URL         URL    `json:"url"`
-	UID         string `json:"uid"`          //perhaps switch to ID"`
+	UID         string `json:"uid"`          //perhaps switch to ID
 	CreatedAt   int    `json:"created_at"`   //unix epoch
 	UpdatedAt   int    `json:"updated_at"`   //unix epoch
 	PublishedAt int    `json:"published_at"` //unix epoch
