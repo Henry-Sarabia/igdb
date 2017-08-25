@@ -6,16 +6,6 @@ type ID int
 // URL is
 type URL string
 
-// Metadata stores
-type Metadata struct {
-	ID        ID     `json:"id"`
-	Name      string `json:"name"`
-	Slug      string `json:"slug"`
-	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"` //unix epoch
-	UpdatedAt int    `json:"updated_at"` //unix epoch
-}
-
 // Image is a struct that holds the ID to reach the image along with its dimensions
 type Image struct {
 	URL    URL    `json:"url"`
