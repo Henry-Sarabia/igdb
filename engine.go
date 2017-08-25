@@ -1,7 +1,8 @@
-package main
+package igdb
 
 // Engine is
 type Engine struct {
+	Metadata
 	ID        ID     `json:"id"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`

@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // Franchise is
 type Franchise struct {

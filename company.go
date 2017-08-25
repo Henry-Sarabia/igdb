@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // CountryCode code ISO-3316-1
 type CountryCode int

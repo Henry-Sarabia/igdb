@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // FeedCategory codes
 type FeedCategory int

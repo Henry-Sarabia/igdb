@@ -5,31 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/Henry-Sarabia/igdb"
 )
 
 const (
 	rootURL string = "https://api-2445582011268.apicast.io/games/"
 )
-
-// ID is an unsigned 64-bit integer
-type ID int
-
-// URL is
-type URL string
-
-// Image is a struct that holds the ID to reach the image along with its dimensions
-type Image struct {
-	URL    URL    `json:"url"`
-	ID     string `json:"cloudinary_id"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-}
-
-// Video is a struct that holds the name of a video along with its ID.
-type Video struct {
-	Name string `json:"name"`
-	ID   string `json:"video_id"` // Youtube slug
-}
 
 func main() {
 	g, err := getGames()
@@ -40,14 +22,14 @@ func main() {
 	fmt.Println(g)
 }
 
-func getGames() ([]Game, error) {
+func getGames() ([]igdb.Game, error) {
 	client := http.DefaultClient
 	req, err := http.NewRequest("GET", rootURL, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Add("user-key", APIkey)
+	req.Header.Add("user-key", igdb.APIkey)
 	req.Header.Add("Accept", "application/json")
 
 	resp, err := client.Do(req)
@@ -60,7 +42,7 @@ func getGames() ([]Game, error) {
 		return nil, err
 	}
 
-	var g []Game
+	var g []igdb.Game
 
 	err = json.Unmarshal(b, &g)
 	if err != nil {

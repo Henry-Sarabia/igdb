@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // Page is
 type Page struct {

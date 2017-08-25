@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // GenderCode codes
 type GenderCode int

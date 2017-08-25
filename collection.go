@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // Collection is
 type Collection struct {

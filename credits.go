@@ -1,4 +1,4 @@
-package main
+package igdb
 
 // CreditCategory codes
 type CreditCategory int
