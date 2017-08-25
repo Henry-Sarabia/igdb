@@ -24,3 +24,8 @@ type Company struct {
 	Published          []ID         `json:"published"`
 	Developed          []ID         `json:"developed"`
 }
+
+// BlahTemp is
+type BlahTemp struct {
+	Name string `json:"name"`
+}

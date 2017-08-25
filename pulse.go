@@ -11,7 +11,7 @@ type Pulse struct {
 	CreatedAt   int    `json:"created_at"`   //unix epoch
 	UpdatedAt   int    `json:"updated_at"`   //unix epoch
 	PublishedAt int    `json:"published_at"` //unix epoch
-	ImageURL    url    `json:"image"`
+	ImageURL    URL    `json:"image"`
 	Author      string `json:"author"`
 	Tags        []Tag  `json:"tags"`
 }
