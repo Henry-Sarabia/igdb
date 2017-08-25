@@ -3,17 +3,8 @@ package igdb
 // StatusCode codes
 type StatusCode int
 
-// DateCategory code
-type DateCategory int
-
 // GameCategory code
 type GameCategory int
-
-// Year is
-type Year int
-
-// Month is
-type Month int
 
 // Tag codes??
 type Tag int //uint32
@@ -23,21 +14,6 @@ type BeatTime struct {
 	Hastly     int `json:"hastly"`
 	Normally   int `json:"normally"`
 	Completely int `json:"completely"`
-}
-
-// ReleaseDate hold information about date of release, platforms, and versions
-type ReleaseDate struct {
-	ID        ID           `json:"id"`
-	Game      ID           `json:"game"`
-	Category  DateCategory `json:"category"`
-	Platform  ID           `json:"platform"`
-	Human     string       `json:"human"`
-	UpdatedAt int          `json:"updated_at"` //unix epoch??
-	CreatedAt int          `json:"created_at"` //unix epoch??
-	Date      int          `json:"date"`       //unix epoch
-	Region    ID           `json:"region"`
-	Year      Year         `json:"y"`
-	Month     Month        `json:"m"`
 }
 
 // AltName is
