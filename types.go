@@ -6,6 +6,18 @@ type ID int
 // URL is
 type URL string
 
+// StatusCode codes
+type StatusCode int
+
+// Tag codes??
+type Tag int //uint32
+
+// AltName is
+type AltName struct {
+	Name    string `json:"name"`
+	Comment string `json:"comment"`
+}
+
 // Image is a struct that holds the ID to reach the image along with its dimensions
 type Image struct {
 	URL    URL    `json:"url"`

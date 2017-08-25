@@ -1,25 +1,13 @@
 package igdb
 
-// StatusCode codes
-type StatusCode int
-
 // GameCategory code
 type GameCategory int
-
-// Tag codes??
-type Tag int //uint32
 
 // BeatTime is the time to beat a given game measured in seconds.
 type BeatTime struct {
 	Hastly     int `json:"hastly"`
 	Normally   int `json:"normally"`
 	Completely int `json:"completely"`
-}
-
-// AltName is
-type AltName struct {
-	Name    string `json:"name"`
-	Comment string `json:"comment"`
 }
 
 // ESRB is
