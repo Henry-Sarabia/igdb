@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
 )
 
@@ -96,15 +97,67 @@ type Game struct {
 	SimilarGames         []ID          `json:"games"`
 }
 
+// Request type
+type Request url.URL
+
+// Options contains optional parameters for
+// the various functions. Nil values are ignored.
+type Options struct {
+	Limit  *int
+	Offset *int
+}
+
+// OptionFunc is
+type OptionFunc func(*Options)
+
+// SetLimit is a functional option used to set
+// the limit of results in an API call. The
+// correct way to use this function is to pass
+// it as a parameter to the API call.
+func SetLimit(lim int) OptionFunc {
+	return func(o *Options) {
+		o.Limit = &lim
+	}
+}
+
+// SetOffset is a function option used to set
+// the offset of results in an API call. The
+// correct way to use this function is to pass
+// it as a parameter to the API call.
+func SetOffset(off int) OptionFunc {
+	return func(o *Options) {
+		o.Offset = &off
+	}
+}
+
 // GetGame gets IGDB information for a game identified
 // by their unique IGDB ID.
-func (c *Client) GetGame(id ID) (*Game, error) {
-	url := rootURL + "games/" + strconv.Itoa(int(id))
-	fmt.Println(url)
+func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
+	var opt Options
+	for _, o := range opts {
+		o(&opt)
+	}
+
+	req := rootURL + "games/" + strconv.Itoa(int(id))
+
+	if len(opts) != 0 {
+		v := url.Values{}
+		if opt.Limit != nil {
+			v.Set("limit", strconv.Itoa(*opt.Limit))
+		}
+		if opt.Offset != nil {
+			v.Set("offset", strconv.Itoa(*opt.Offset))
+		}
+		if values := v.Encode(); values != "" {
+			req += "?" + values
+		}
+	}
+
+	fmt.Println(req)
 
 	var g []Game
 
-	err := c.get(url, &g)
+	err := c.get(req, &g)
 	if err != nil {
 		return nil, err
 	}
