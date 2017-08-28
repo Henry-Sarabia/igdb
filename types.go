@@ -1,5 +1,7 @@
 package igdb
 
+import "strconv"
+
 // ID is an unsigned 64-bit integer
 type ID int
 
@@ -30,4 +32,9 @@ type Image struct {
 type Video struct {
 	Name string `json:"name"`
 	ID   string `json:"video_id"` // Youtube slug
+}
+
+// toString simply returns the string equivalent of a given ID.
+func (id ID) toString() string {
+	return strconv.Itoa(int(id))
 }

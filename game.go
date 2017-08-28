@@ -138,7 +138,7 @@ func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 		optFunc(&opt)
 	}
 
-	url := rootURL + "games/" + strconv.Itoa(int(id))
+	url := rootURL + "games/" + id.toString()
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "?" + values
