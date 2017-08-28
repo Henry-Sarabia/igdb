@@ -1,7 +1,6 @@
 package igdb
 
 import (
-	"fmt"
 	"net/url"
 	"strconv"
 )
@@ -97,67 +96,58 @@ type Game struct {
 	SimilarGames         []ID          `json:"games"`
 }
 
-// Request type
-type Request url.URL
-
-// Options contains optional parameters for
-// the various functions. Nil values are ignored.
+// Options contains a value map to store
+// optional parameters for the various
+// API calls.
 type Options struct {
-	Limit  *int
-	Offset *int
+	Values url.Values
 }
 
-// OptionFunc is
+// OptionFunc is a first-order function
+// that is returned by functional options
+// and is later used in API calls to set
+// individual options.
 type OptionFunc func(*Options)
 
 // SetLimit is a functional option used to set
 // the limit of results in an API call. The
 // correct way to use this function is to pass
-// it as a parameter to the API call.
+// it as a parameter to an API call.
 func SetLimit(lim int) OptionFunc {
-	return func(o *Options) {
-		o.Limit = &lim
+	return func(r *Options) {
+		r.Values.Set("limit", strconv.Itoa(lim))
 	}
 }
 
 // SetOffset is a function option used to set
 // the offset of results in an API call. The
 // correct way to use this function is to pass
-// it as a parameter to the API call.
+// it as a parameter to an API call.
 func SetOffset(off int) OptionFunc {
-	return func(o *Options) {
-		o.Offset = &off
+	return func(r *Options) {
+		r.Values.Set("offset", strconv.Itoa(off))
 	}
 }
 
 // GetGame gets IGDB information for a game identified
 // by their unique IGDB ID.
 func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
-	var opt Options
-	for _, o := range opts {
-		o(&opt)
+	opt := Options{Values: url.Values{}}
+
+	for _, optFunc := range opts {
+		optFunc(&opt)
 	}
 
-	req := rootURL + "games/" + strconv.Itoa(int(id))
-
-	if len(opts) != 0 {
-		v := url.Values{}
-		if opt.Limit != nil {
-			v.Set("limit", strconv.Itoa(*opt.Limit))
-		}
-		if opt.Offset != nil {
-			v.Set("offset", strconv.Itoa(*opt.Offset))
-		}
-		if values := v.Encode(); values != "" {
-			req += "?" + values
+	url := rootURL + "games/" + strconv.Itoa(int(id))
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
 		}
 	}
-
-	fmt.Println(req)
 
 	var g []Game
 
-	err := c.get(req, &g)
+	err := c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
