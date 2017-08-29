@@ -127,7 +127,7 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 		optFunc(&opt)
 	}
 
-	url := rootURL + "games/?search=" + qry + "&fields=*"
+	url := rootURL + "games/?search=" + qry
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "&" + values

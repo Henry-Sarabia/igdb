@@ -3,6 +3,7 @@ package igdb
 import (
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 // Options contains a value map to store optional
@@ -38,10 +39,22 @@ func OptOrder(param string, ord order) OptionFunc {
 	}
 }
 
+// OptFields is a functional option used to specify
+// which struct fields from the requested type you
+// want the API response to respond with. The default
+// is all available fields.
+func OptFields(params ...string) OptionFunc {
+	return func(o *Options) {
+		param := strings.Join(params, ",")
+		o.Values.Set("fields", param)
+	}
+}
+
 // OptLimit is a functional option used to set
 // the limit of results from an API call. The
 // correct way to use this function is to pass
-// it as a parameter to an API call.
+// it as a parameter to an API call. The default
+// limit is 10.
 func OptLimit(lim int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("limit", strconv.Itoa(lim))
@@ -51,7 +64,8 @@ func OptLimit(lim int) OptionFunc {
 // OptOffset is a functional option used to set
 // the offset of results from an API call. The
 // correct way to use this function is to pass
-// it as a parameter to an API call.
+// it as a parameter to an API call. The default
+// offset is 0.
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("offset", strconv.Itoa(off))
