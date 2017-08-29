@@ -42,7 +42,8 @@ func OptOrder(param string, ord order) OptionFunc {
 // OptFields is a functional option used to specify
 // which struct fields from the requested type you
 // want the API response to respond with. The default
-// is set to all available fields.
+// is set to all available fields. Subfields are
+// accessed with a dot operator.
 func OptFields(params ...string) OptionFunc {
 	return func(o *Options) {
 		param := strings.Join(params, ",")
