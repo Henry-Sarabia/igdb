@@ -109,28 +109,50 @@ type Options struct {
 // individual options.
 type OptionFunc func(*Options)
 
-// SetLimit is a functional option used to set
-// the limit of results in an API call. The
-// correct way to use this function is to pass
-// it as a parameter to an API call.
-func SetLimit(lim int) OptionFunc {
-	return func(r *Options) {
-		r.Values.Set("limit", strconv.Itoa(lim))
+// Type order specifies in which order to
+// place results from an API call. The two
+// available constants of this type are
+// Asc and Desc.
+type order string
+
+const (
+	// Asc is used as an argument in the SetOrder optional function
+	// to set the results from an API call in ascending order.
+	Asc order = ":asc"
+	// Desc is used as an argument in the SetOrder optional function
+	// to set the results from an API call in descending order.
+	Desc order = ":desc"
+)
+
+// OptOrder is a functional option used to set
+// the order of results from an API call.
+func OptOrder(param string, ord order) OptionFunc {
+	return func(o *Options) {
+		o.Values.Set("order", param+string(ord))
 	}
 }
 
-// SetOffset is a function option used to set
-// the offset of results in an API call. The
+// OptLimit is a functional option used to set
+// the limit of results from an API call. The
 // correct way to use this function is to pass
 // it as a parameter to an API call.
-func SetOffset(off int) OptionFunc {
-	return func(r *Options) {
-		r.Values.Set("offset", strconv.Itoa(off))
+func OptLimit(lim int) OptionFunc {
+	return func(o *Options) {
+		o.Values.Set("limit", strconv.Itoa(lim))
 	}
 }
 
-// GetGame gets IGDB information for a game identified
-// by their unique IGDB ID.
+// OptOffset is a functional option used to set
+// the offset of results from an API call. The
+// correct way to use this function is to pass
+// it as a parameter to an API call.
+func OptOffset(off int) OptionFunc {
+	return func(o *Options) {
+		o.Values.Set("offset", strconv.Itoa(off))
+	}
+}
+
+// GetGame gets IGDB information for a game identified by their unique IGDB ID.
 func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 	opt := Options{Values: url.Values{}}
 
@@ -153,4 +175,30 @@ func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 	}
 
 	return &g[0], nil
+}
+
+// SearchGames searches the IGDB using the given query and returns IGDB information
+// for the results. Use functional options for pagination and to sort results by parameter.
+func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
+	opt := Options{Values: url.Values{}}
+
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := rootURL + "games/?search=" + qry + "&fields=*"
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "&" + values
+		}
+	}
+
+	var g []*Game
+
+	err := c.get(url, &g)
+	if err != nil {
+		return nil, err
+	}
+
+	return g, nil
 }
