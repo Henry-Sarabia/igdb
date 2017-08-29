@@ -35,6 +35,16 @@ type Video struct {
 }
 
 // toString simply returns the string equivalent of a given ID.
-func (id ID) toString() string {
+func (id ID) string() string {
 	return strconv.Itoa(int(id))
+}
+
+// idsString returns the slice of string equivalents of a given
+// list of IDs.
+func idsString(ids []ID) []string {
+	var str []string
+	for _, id := range ids {
+		str = append(str, id.string())
+	}
+	return str
 }
