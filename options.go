@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"fmt"
 	"net/url"
 	"strconv"
 	"strings"
@@ -32,7 +33,8 @@ const (
 )
 
 // OptOrder is a functional option used to set
-// the order of results from an API call.
+// the order of results from an API call. The default
+// ordering is based on relevance.
 func OptOrder(param string, ord order) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("order", param+string(ord))
@@ -70,5 +72,47 @@ func OptLimit(lim int) OptionFunc {
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("offset", strconv.Itoa(off))
+	}
+}
+
+type postfix string
+
+const (
+	// EQ stands for equal. Must match exactly.
+	EQ postfix = "eq"
+	// NotEQ stands for not equal. Any non-exact match.
+	NotEQ postfix = "not_eq"
+	// GT stands for greater than. Only works on numbers.
+	GT postfix = "gt"
+	// GTE stands for greater than or equal. Only works on numbers.
+	GTE postfix = "gte"
+	// LT stands for less than. Only works on numbers.
+	LT postfix = "lt"
+	// LTE stands for less than or equal. Only works on numbers.
+	LTE postfix = "lte"
+	// Prefix only works on strings.
+	Prefix postfix = "prefix"
+	// Exists checks for a non-null value.
+	Exists postfix = "exists"
+	// NotExists checks for a null value.
+	NotExists postfix = "not_exists"
+	// In checks if the value exists within an array and between values.
+	In postfix = "in"
+	// NotIn checks if the values do not not exist within an array and between values.
+	NotIn postfix = "not_in"
+	// Any checks if the value has any within the array or between values.
+	Any postfix = "any"
+)
+
+// OptFilter is a functional option used to filter the results from
+// an API call. Provide a field name to specify what property you
+// want to filter with. Provide a postfix to specify how you want
+// to filter the results using the given field name. Provide a concrete
+// value as a string to specify the value of the configured filter.
+// For more information visit https://igdb.github.io/api/references/filters/.
+func OptFilter(field string, post postfix, val string) OptionFunc {
+	return func(o *Options) {
+		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
+		o.Values.Set(s, val)
 	}
 }
