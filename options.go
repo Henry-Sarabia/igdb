@@ -35,9 +35,9 @@ const (
 // OptOrder is a functional option used to set
 // the order of results from an API call. The default
 // ordering is based on relevance.
-func OptOrder(param string, ord order) OptionFunc {
+func OptOrder(field string, ord order) OptionFunc {
 	return func(o *Options) {
-		o.Values.Set("order", param+string(ord))
+		o.Values.Set("order", field+string(ord))
 	}
 }
 
@@ -46,9 +46,9 @@ func OptOrder(param string, ord order) OptionFunc {
 // want the API response to respond with. The default
 // is set to all available fields. Subfields are
 // accessed with a dot operator.
-func OptFields(params ...string) OptionFunc {
+func OptFields(fields ...string) OptionFunc {
 	return func(o *Options) {
-		param := strings.Join(params, ",")
+		param := strings.Join(fields, ",")
 		o.Values.Set("fields", param)
 	}
 }
