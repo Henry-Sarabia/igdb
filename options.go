@@ -41,18 +41,6 @@ func OptOrder(field string, ord order) OptionFunc {
 	}
 }
 
-// OptFields is a functional option used to specify
-// which struct fields from the requested type you
-// want the API response to respond with. The default
-// is set to all available fields. Subfields are
-// accessed with a dot operator.
-func OptFields(fields ...string) OptionFunc {
-	return func(o *Options) {
-		param := strings.Join(fields, ",")
-		o.Values.Set("fields", param)
-	}
-}
-
 // OptLimit is a functional option used to set
 // the limit of results from an API call. The
 // correct way to use this function is to pass
@@ -72,6 +60,18 @@ func OptLimit(lim int) OptionFunc {
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("offset", strconv.Itoa(off))
+	}
+}
+
+// OptFields is a functional option used to specify
+// which struct fields from the requested type you
+// want the API response to contain. The default
+// is set to all available fields. Subfields are
+// accessed with a dot operator.
+func OptFields(fields ...string) OptionFunc {
+	return func(o *Options) {
+		fs := strings.Join(fields, ",")
+		o.Values.Set("fields", fs)
 	}
 }
 
@@ -114,5 +114,31 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 	return func(o *Options) {
 		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
 		o.Values.Set(s, val)
+	}
+}
+
+// OptExpand is a functional option used to expand a single
+// field that normally contain IDs into its respective objects.
+// Provide the field name to specify which field you want
+// expanded. This will retrieve the full object for the
+// field. If you want to restrict the API call to only
+// retrieve a specific set of fields from the expanded object,
+// provide those field names using the dot operator. Multiple
+// fields can be expanded using multiple calls to OptExpand.
+// See examples for a clear demonstration of the optional function.
+// For more information and a complete list of expandable fields,
+// visit https://igdb.github.io/api/references/expander/.
+func OptExpand(exp string, fields ...string) OptionFunc {
+	return func(o *Options) {
+		if prevx, ok := o.Values["expand"]; ok {
+			exp = strings.Join(prevx, ",") + "," + exp
+		}
+		o.Values.Set("expand", exp)
+
+		fs := strings.Join(fields, ",")
+		if prevf, ok := o.Values["fields"]; ok {
+			fs = strings.Join(prevf, ",") + "," + fs
+		}
+		o.Values.Set("fields", fs)
 	}
 }
