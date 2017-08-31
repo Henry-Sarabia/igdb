@@ -65,14 +65,17 @@ func OptOffset(off int) OptionFunc {
 
 // OptFields is a functional option used to specify
 // which struct fields from the requested type you
-// want the API response to contain. The default
-// is set to all available fields. Subfields are
-// accessed with a dot operator.
+// want the API response to contain. Subfields are
+// accessed with a dot operator. The default
+// is set to all available fields.
 func OptFields(fields ...string) OptionFunc {
 	return func(o *Options) {
+		if len(fields) == 0 {
+			return
+		}
 		fs := strings.Join(fields, ",")
 		if prev, ok := o.Values["fields"]; ok {
-			fs = strings.Join(prev, ",") + "," + fs
+			fs = prev[0] + "," + fs
 		}
 		o.Values.Set("fields", fs)
 	}
