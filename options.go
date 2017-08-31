@@ -71,6 +71,9 @@ func OptOffset(off int) OptionFunc {
 func OptFields(fields ...string) OptionFunc {
 	return func(o *Options) {
 		fs := strings.Join(fields, ",")
+		if prev, ok := o.Values["fields"]; ok {
+			fs = strings.Join(prev, ",") + "," + fs
+		}
 		o.Values.Set("fields", fs)
 	}
 }
