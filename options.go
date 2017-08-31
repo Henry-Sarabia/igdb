@@ -119,29 +119,3 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 		o.Values.Set(s, val)
 	}
 }
-
-// OptExpand is a functional option used to expand a single
-// field that normally contain IDs into its respective objects.
-// Provide the field name to specify which field you want
-// expanded. This will retrieve the full object for the
-// field. If you want to restrict the API call to only
-// retrieve a specific set of fields from the expanded object,
-// provide those field names using the dot operator. Multiple
-// fields can be expanded using multiple calls to OptExpand.
-// See examples for a clear demonstration of the optional function.
-// For more information and a complete list of expandable fields,
-// visit https://igdb.github.io/api/references/expander/.
-func OptExpand(exp string, fields ...string) OptionFunc {
-	return func(o *Options) {
-		if prevx, ok := o.Values["expand"]; ok {
-			exp = strings.Join(prevx, ",") + "," + exp
-		}
-		o.Values.Set("expand", exp)
-
-		fs := strings.Join(fields, ",")
-		if prevf, ok := o.Values["fields"]; ok {
-			fs = strings.Join(prevf, ",") + "," + fs
-		}
-		o.Values.Set("fields", fs)
-	}
-}
