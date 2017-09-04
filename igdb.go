@@ -31,6 +31,13 @@ func (c *Client) get(url string, result interface{}) error {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		err = c.checkError(resp)
+		if err != nil {
+			return err
+		}
+	}
+
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
