@@ -15,6 +15,8 @@ type Error struct {
 	Message string `json:"message"`
 }
 
+// checkError checks an http.Response for an error response
+// from the IGDB servers.
 func (c *Client) checkError(resp *http.Response) error {
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
