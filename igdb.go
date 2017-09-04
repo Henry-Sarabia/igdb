@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// Client type
+// Client wraps a typical http.Client.
 type Client struct {
 	http *http.Client
 }
@@ -16,6 +16,8 @@ func NewClient() Client {
 	return Client{http: http.DefaultClient}
 }
 
+// get sends a GET request to the url and stores the response
+// in the result interface{} if no errors are encountered.
 func (c *Client) get(url string, result interface{}) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
