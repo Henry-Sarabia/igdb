@@ -1,5 +1,10 @@
 package igdb
 
+import (
+	"net/url"
+	"strconv"
+)
+
 // GenderCode codes
 type GenderCode int
 
@@ -20,4 +25,29 @@ type Character struct {
 	Species   SpeciesCode `json:"species"`
 	Games     []ID        `json:"games"`
 	People    []ID        `json:"people"`
+}
+
+// GetCharacter gets IGDB information for a character identified by its unique IGDB ID.
+func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
+	opt := Options{Values: url.Values{}}
+
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := rootURL + "characters/" + strconv.Itoa(id)
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
+		}
+	}
+
+	var ch []Character
+
+	err := c.get(url, &ch)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ch[0], nil
 }
