@@ -98,7 +98,7 @@ type Game struct {
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
 func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
-	opt := Options{Values: url.Values{}}
+	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
