@@ -1,9 +1,6 @@
 package igdb
 
-import (
-	"net/url"
-	"strconv"
-)
+import "strconv"
 
 // GenderCode codes
 type GenderCode int
@@ -29,7 +26,7 @@ type Character struct {
 
 // GetCharacter gets IGDB information for a character identified by its unique IGDB ID.
 func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
-	opt := Options{Values: url.Values{}}
+	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)

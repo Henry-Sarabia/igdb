@@ -18,6 +18,11 @@ type Options struct {
 // used in API calls to set individual options.
 type OptionFunc func(*Options)
 
+// newOpt returns a basic Options object
+func newOpt() Options {
+	return Options{Values: url.Values{}}
+}
+
 // Type order specifies in which order to place
 // results from an API call. The two available
 // constants of this type are Asc and Desc.
