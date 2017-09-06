@@ -5,7 +5,7 @@ type CountryCode int
 
 // Company is
 type Company struct {
-	ID                 ID           `json:"ID"`
+	ID                 int          `json:"ID"`
 	Name               string       `json:"name"`
 	Slug               string       `json:"slug"`
 	URL                URL          `json:"url"`
@@ -17,10 +17,10 @@ type Company struct {
 	Website            string       `json:"website"`
 	StartDate          int          `json:"start_date"` //unix epoch
 	StartDateCategory  DateCategory `json:"start_date_category"`
-	ChangedID          ID           `json:"changed_company_id"`
+	ChangedID          int          `json:"changed_company_id"`
 	ChangeDate         int          `json:"changed_date"` //unix epoch
 	ChangeDateCategory DateCategory `json:"change_date_category"`
 	Twitter            string       `json:"twitter"`
-	Published          []ID         `json:"published"`
-	Developed          []ID         `json:"developed"`
+	Published          []int        `json:"published"`
+	Developed          []int        `json:"developed"`
 }

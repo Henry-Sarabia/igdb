@@ -2,8 +2,8 @@ package igdb
 
 // Pulse type
 type Pulse struct {
-	ID          ID     `json:"id"`
-	PulseSource ID     `json:"pulse_source"` //not uint
+	ID          int    `json:"id"`
+	PulseSource int    `json:"pulse_source"` //not uint
 	Title       string `json:"title"`
 	Summary     string `json:"summary"`
 	URL         URL    `json:"url"`
@@ -18,21 +18,21 @@ type Pulse struct {
 
 // PulseGroup type
 type PulseGroup struct {
-	ID        ID     `json:"id"`
+	ID        int    `json:"id"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
 	URL       URL    `json:"url"`
 	CreatedAt int    `json:"created_at"` //unix epoch
 	UpdatedAt int    `json:"updated_at"` //unix epoch
 	Tags      []Tag  `json:"tags"`
-	Pulses    []ID   `json:"pulses"`
-	Game      []ID   `json:"game"`
+	Pulses    []int  `json:"pulses"`
+	Game      []int  `json:"game"`
 }
 
 // PulseSource type
 type PulseSource struct {
-	ID   ID     `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
-	Game ID     `json:"game"`
-	Page ID     `json:"page"`
+	Game int    `json:"game"`
+	Page int    `json:"page"`
 }

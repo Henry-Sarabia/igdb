@@ -17,7 +17,7 @@ type PlatformCompany struct {
 
 // PlatformVersion type
 type PlatformVersion struct {
-	ID            ID                `json:"id"`
+	ID            int               `json:"id"`
 	Name          string            `json:"name"`
 	Slug          string            `json:"slug"`
 	OS            string            `json:"os"`
@@ -38,7 +38,7 @@ type PlatformVersion struct {
 
 // Platform type
 type Platform struct {
-	ID         ID                `json:"id"`
+	ID         int               `json:"id"`
 	Name       string            `json:"name"`
 	Slug       string            `json:"slug"`
 	URL        URL               `json:"url"`
@@ -49,6 +49,6 @@ type Platform struct {
 	Summary    string            `json:"summary"`
 	AltName    string            `json:"alternative_name"`
 	Generation int               `json:"generation"`
-	Games      []ID              `json:"games"`
+	Games      []int             `json:"games"`
 	Version    []PlatformVersion `json:"version"`
 }

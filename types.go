@@ -2,9 +2,6 @@ package igdb
 
 import "strconv"
 
-// ID is an unsigned 64-bit integer
-type ID int
-
 // URL is
 type URL string
 
@@ -32,21 +29,6 @@ type Image struct {
 type Video struct {
 	Name string `json:"name"`
 	ID   string `json:"video_id"` // Youtube slug
-}
-
-// toString simply returns the string equivalent of a given ID.
-func (id ID) string() string {
-	return strconv.Itoa(int(id))
-}
-
-// idsString returns the slice of strings equivalents of a given
-// list of IDs.
-func idsString(ids []ID) []string {
-	var str []string
-	for _, id := range ids {
-		str = append(str, id.string())
-	}
-	return str
 }
 
 // intsToString returns the slice of strings

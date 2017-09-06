@@ -1,6 +1,9 @@
 package igdb
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 // GameCategory is a code associated with a game
 // denoting its category. The codes are as follows:
@@ -45,7 +48,7 @@ type Website struct {
 // Game contains information about a game stored in the IGDB.
 // See https://igdb.github.io/api/endpoints/game/ for more information.
 type Game struct {
-	ID                   ID            `json:"id"`
+	ID                   int           `json:"id"`
 	Name                 string        `json:"name"`
 	Slug                 string        `json:"slug"`
 	URL                  URL           `json:"url"`
@@ -53,8 +56,8 @@ type Game struct {
 	UpdatedAt            int           `json:"updated_at"` //unix epoch
 	Summary              string        `json:"summary"`
 	Storyline            string        `json:"storyline"`
-	Collection           ID            `json:"collection"`
-	Franchise            ID            `json:"franchise"`
+	Collection           int           `json:"collection"`
+	Franchise            int           `json:"franchise"`
 	Hypes                int           `json:"hypes"`
 	Popularity           float64       `json:"popularity"`
 	Rating               float64       `json:"rating"`
@@ -64,17 +67,17 @@ type Game struct {
 	TotalRating          float64       `json:"total_rating"`
 	TotalRatingCount     int           `json:"total_rating_count"`
 	WeightedRating       float64       `json:"weighted_rating"`
-	Game                 ID            `json:"game"`
-	Developers           []ID          `json:"developers"`
-	Publishers           []ID          `json:"publishers"`
-	Engines              []ID          `json:"game_engines"`
+	Game                 int           `json:"game"`
+	Developers           []int         `json:"developers"`
+	Publishers           []int         `json:"publishers"`
+	Engines              []int         `json:"game_engines"`
 	Category             GameCategory  `json:"category"`
 	TimeToBeat           BeatTime      `json:"time_to_beat"`
-	PlayerPerspectives   []ID          `json:"player_perspectives"`
-	GameModes            []ID          `json:"game_modes"`
-	Keywords             []ID          `json:"keywords"`
-	Themes               []ID          `json:"themes"`
-	Genres               []ID          `json:"genres"`
+	PlayerPerspectives   []int         `json:"player_perspectives"`
+	GameModes            []int         `json:"game_modes"`
+	Keywords             []int         `json:"keywords"`
+	Themes               []int         `json:"themes"`
+	Genres               []int         `json:"genres"`
 	FirstReleaseDate     int           `json:"first_release_date"` //unix epoch
 	Status               StatusCode    `json:"status"`
 	ReleaseDates         []ReleaseDate `json:"release_dates"`
@@ -86,22 +89,22 @@ type Game struct {
 	PEGI                 PEGI          `json:"pegi"`
 	Websites             []Website     `json:"websites"`
 	Tags                 []Tag         `json:"tags"`
-	DLCs                 []ID          `json:"dlcs"`
-	Expansions           []ID          `json:"expansions"`
-	Standalone           []ID          `json:"standalone_expansions"`
-	Bundles              []ID          `json:"bundles"`
-	SimilarGames         []ID          `json:"games"`
+	DLCs                 []int         `json:"dlcs"`
+	Expansions           []int         `json:"expansions"`
+	Standalone           []int         `json:"standalone_expansions"`
+	Bundles              []int         `json:"bundles"`
+	SimilarGames         []int         `json:"games"`
 }
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
-func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
+func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
 	}
 
-	url := c.rootURL + "games/" + id.string()
+	url := c.rootURL + "games/" + strconv.Itoa(id)
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "?" + values
@@ -119,14 +122,14 @@ func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 }
 
 // GetGames gets IGDB information for a list of games identified by a list of their unique IGDB IDs.
-func (c *Client) GetGames(ids []ID, opts ...OptionFunc) ([]*Game, error) {
+func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
 	}
 
-	str := idsString(ids)
+	str := intsToString(ids)
 	url := c.rootURL + "games/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

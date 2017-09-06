@@ -11,15 +11,15 @@ type Month int
 
 // ReleaseDate hold information about date of release, platforms, and versions
 type ReleaseDate struct {
-	ID        ID           `json:"id"`
-	Game      ID           `json:"game"`
+	ID        int          `json:"id"`
+	Game      int          `json:"game"`
 	Category  DateCategory `json:"category"`
-	Platform  ID           `json:"platform"`
+	Platform  int          `json:"platform"`
 	Human     string       `json:"human"`
 	UpdatedAt int          `json:"updated_at"` //unix epoch unspecified
 	CreatedAt int          `json:"created_at"` //unix epoch unspecified
 	Date      int          `json:"date"`       //unix epoch
-	Region    ID           `json:"region"`
+	Region    int          `json:"region"`
 	Year      Year         `json:"y"`
 	Month     Month        `json:"m"`
 }

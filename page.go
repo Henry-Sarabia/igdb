@@ -2,7 +2,7 @@ package igdb
 
 // Page is
 type Page struct {
-	ID              ID          `json:"id"`
+	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`
 	CreatedAt       int         `json:"created_at"` //unix epoch
 	UpdatedAt       int         `json:"updated_at"` //unix epoch
@@ -13,8 +13,8 @@ type Page struct {
 	Country         CountryCode `json:"country"`
 	Color           int         `json:"color"`
 	User            int         `json:"user"`
-	Game            ID          `json:"game"`
-	Company         ID          `json:"company"`
+	Game            int         `json:"game"`
+	Company         int         `json:"company"`
 	Description     string      `json:"description"`
 	PageFollowCount int         `json:"page_follows_count"`
 	Logo            []Image     `json:"logo"`       // Might not be a slice

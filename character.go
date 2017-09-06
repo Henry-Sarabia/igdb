@@ -13,7 +13,7 @@ type SpeciesCode int
 
 // Character is
 type Character struct {
-	ID        ID          `json:"id"`
+	ID        int         `json:"id"`
 	Name      string      `json:"name"`
 	Slug      string      `json:"slug"`
 	URL       URL         `json:"url"`
@@ -23,8 +23,8 @@ type Character struct {
 	Gender    GenderCode  `json:"gender"`
 	AKAs      []string    `json:"akas"`
 	Species   SpeciesCode `json:"species"`
-	Games     []ID        `json:"games"`
-	People    []ID        `json:"people"`
+	Games     []int       `json:"games"`
+	People    []int       `json:"people"`
 }
 
 // GetCharacter gets IGDB information for a character identified by its unique IGDB ID.
