@@ -39,12 +39,22 @@ func (id ID) string() string {
 	return strconv.Itoa(int(id))
 }
 
-// idsString returns the slice of string equivalents of a given
+// idsString returns the slice of strings equivalents of a given
 // list of IDs.
 func idsString(ids []ID) []string {
 	var str []string
 	for _, id := range ids {
 		str = append(str, id.string())
+	}
+	return str
+}
+
+// intsToString returns the slice of strings
+// equivalent to the list of ints.
+func intsToString(ints []int) []string {
+	var str []string
+	for _, i := range ints {
+		str = append(str, strconv.Itoa(i))
 	}
 	return str
 }

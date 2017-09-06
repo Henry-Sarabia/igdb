@@ -101,7 +101,7 @@ func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 		optFunc(&opt)
 	}
 
-	url := rootURL + "games/" + id.string()
+	url := c.rootURL + "games/" + id.string()
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "?" + values
@@ -127,7 +127,7 @@ func (c *Client) GetGames(ids []ID, opts ...OptionFunc) ([]*Game, error) {
 	}
 
 	str := idsString(ids)
-	url := rootURL + "games/" + strings.Join(str, ",")
+	url := c.rootURL + "games/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "?" + values
@@ -153,7 +153,7 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 		optFunc(&opt)
 	}
 
-	url := rootURL + "games/?search=" + qry
+	url := c.rootURL + "games/?search=" + qry
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "&" + values

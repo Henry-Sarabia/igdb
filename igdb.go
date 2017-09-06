@@ -8,12 +8,13 @@ import (
 
 // Client wraps a typical http.Client.
 type Client struct {
-	http *http.Client
+	http    *http.Client
+	rootURL string
 }
 
 // NewClient returns a new client.
 func NewClient() Client {
-	return Client{http: http.DefaultClient}
+	return Client{http: http.DefaultClient, rootURL: igdbURL}
 }
 
 // get sends a GET request to the url and stores the response
