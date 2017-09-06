@@ -11,7 +11,7 @@ type PlatformDate struct {
 
 // PlatformCompany type
 type PlatformCompany struct {
-	Company ID     `json:"company"`
+	Company int    `json:"company"`
 	Comment string `json:"comment"`
 }
 

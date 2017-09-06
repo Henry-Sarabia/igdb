@@ -153,7 +153,7 @@ func TestGetCharacter(t *testing.T) {
 
 	eID := 10617
 	aID := ch.ID
-	if aID != ID(eID) {
+	if aID != eID {
 		t.Errorf("Expected ID %d, got %d", eID, aID)
 	}
 
@@ -200,7 +200,7 @@ func TestGetCharacters(t *testing.T) {
 
 	eID := 9580
 	aID := ch[1].ID
-	if aID != ID(eID) {
+	if aID != eID {
 		t.Errorf("Expected ID %d, got %d", eID, aID)
 	}
 
@@ -241,7 +241,7 @@ func TestSearchCharacters(t *testing.T) {
 
 	eID := 5378
 	aID := ch[2].ID
-	if aID != ID(eID) {
+	if aID != eID {
 		t.Errorf("Expected ID %d, got %d\n", eID, aID)
 	}
 }
