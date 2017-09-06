@@ -1,9 +1,6 @@
 package igdb
 
-import (
-	"net/url"
-	"strings"
-)
+import "strings"
 
 // GameCategory is a code associated with a game
 // denoting its category. The codes are as follows:
@@ -123,7 +120,7 @@ func (c *Client) GetGame(id ID, opts ...OptionFunc) (*Game, error) {
 
 // GetGames gets IGDB information for a list of games identified by a list of their unique IGDB IDs.
 func (c *Client) GetGames(ids []ID, opts ...OptionFunc) ([]*Game, error) {
-	opt := Options{Values: url.Values{}}
+	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
@@ -150,7 +147,7 @@ func (c *Client) GetGames(ids []ID, opts ...OptionFunc) ([]*Game, error) {
 // SearchGames searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
-	opt := Options{Values: url.Values{}}
+	opt := newOpt()
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
