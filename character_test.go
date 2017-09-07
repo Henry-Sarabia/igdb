@@ -204,9 +204,9 @@ func TestGetCharacters(t *testing.T) {
 		t.Errorf("Expected ID %d, got %d", eID, aID)
 	}
 
-	eURL := "https://www.igdb.com/characters/samus-aran"
+	eURL := URL("https://www.igdb.com/characters/samus-aran")
 	aURL := ch[1].URL
-	if aURL != URL(eURL) {
+	if aURL != eURL {
 		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 	}
 
@@ -227,9 +227,9 @@ func TestSearchCharacters(t *testing.T) {
 		t.Errorf("Expected length of %d, got %d\n", el, al)
 	}
 
-	eURL := "https://www.igdb.com/characters/snake"
+	eURL := URL("https://www.igdb.com/characters/snake")
 	aURL := ch[0].URL
-	if aURL != URL(eURL) {
+	if aURL != eURL {
 		t.Errorf("Expected URL '%s', got '%s'\n", eURL, aURL)
 	}
 
