@@ -60,7 +60,7 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 	}
 
 	str := intsToString(ids)
-	url := c.rootURL + "games/" + strings.Join(str, ",")
+	url := c.rootURL + "characters/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
 			url += "?" + values
