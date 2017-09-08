@@ -201,10 +201,10 @@ func TestGetCompanies(t *testing.T) {
 		t.Errorf("Expected name '%s', got '%s'", en, an)
 	}
 
-	ec := 1504811027097
-	ac := com[0].UpdatedAt
-	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+	eu := 1504811027097
+	au := com[0].UpdatedAt
+	if au != eu {
+		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/companies/night-school-studio")
