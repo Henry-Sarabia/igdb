@@ -1,5 +1,10 @@
 package igdb
 
+import (
+	"strconv"
+	"strings"
+)
+
 // CountryCode code ISO-3316-1
 type CountryCode int
 
@@ -23,4 +28,79 @@ type Company struct {
 	Twitter            string       `json:"twitter"`
 	Published          []int        `json:"published"`
 	Developed          []int        `json:"developed"`
+}
+
+// GetCompany gets IGDB information for a company identified by its unique IGDB ID.
+func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := c.rootURL + "companies/" + strconv.Itoa(id)
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
+		}
+	}
+
+	var com []Company
+
+	err := c.get(url, &com)
+	if err != nil {
+		return nil, err
+	}
+
+	return &com[0], nil
+}
+
+// GetCompanies gets IGDB information for a list of companies identified by their
+// unique IGDB IDs.
+func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	str := intsToString(ids)
+	url := c.rootURL + "companies/" + strings.Join(str, ",")
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
+		}
+	}
+
+	var com []*Company
+
+	err := c.get(url, &com)
+	if err != nil {
+		return nil, err
+	}
+
+	return com, nil
+}
+
+// SearchCompanies searches the IGDB using the given query and returns IGDB information
+// for the results. Use functional options for pagination and to sort results by parameter.
+func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := c.rootURL + "companies/?search=" + qry
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "&" + values
+		}
+	}
+
+	var com []*Company
+
+	err := c.get(url, &com)
+	if err != nil {
+		return nil, err
+	}
+
+	return com, nil
 }
