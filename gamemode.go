@@ -40,7 +40,7 @@ func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 	return &g[0], nil
 }
 
-// GetGameModes gets IGDB information for a list of game mode identified by their
+// GetGameModes gets IGDB information for a list of game modes identified by their
 // unique IGDB IDs.
 func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
 	opt := newOpt()
