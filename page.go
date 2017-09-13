@@ -1,5 +1,10 @@
 package igdb
 
+import (
+	"strconv"
+	"strings"
+)
+
 // Page is
 type Page struct {
 	ID              int         `json:"id"`
@@ -34,4 +39,79 @@ type Page struct {
 	Origin          string      `json:"origin"`
 	Uplay           string      `json:"uplay"`
 	Discord         string      `json:"discord"`
+}
+
+// GetPage gets IGDB information for a page identified by its unique IGDB ID.
+func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := c.rootURL + "pages/" + strconv.Itoa(id)
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
+		}
+	}
+
+	var p []Page
+
+	err := c.get(url, &p)
+	if err != nil {
+		return nil, err
+	}
+
+	return &p[0], nil
+}
+
+// GetPages gets IGDB information for a list of pages identified by their
+// unique IGDB IDs.
+func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	str := intsToString(ids)
+	url := c.rootURL + "pages/" + strings.Join(str, ",")
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "?" + values
+		}
+	}
+
+	var p []*Page
+
+	err := c.get(url, &p)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
+}
+
+// SearchPages searches the IGDB using the given query and returns IGDB information
+// for the results. Use functional options for pagination and to sort results by parameter.
+func (c *Client) SearchPages(qry string, opts ...OptionFunc) ([]*Page, error) {
+	opt := newOpt()
+	for _, optFunc := range opts {
+		optFunc(&opt)
+	}
+
+	url := c.rootURL + "pages/?search=" + qry
+	if opts != nil {
+		if values := opt.Values.Encode(); values != "" {
+			url += "&" + values
+		}
+	}
+
+	var p []*Page
+
+	err := c.get(url, &p)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
 }
