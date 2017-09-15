@@ -23,8 +23,8 @@ type Page struct {
 	Company         int         `json:"company"`
 	Description     string      `json:"description"`
 	PageFollowCount int         `json:"page_follows_count"`
-	Logo            []Image     `json:"logo"`       // Might not be a slice
-	Background      []Image     `json:"background"` // Might not be a slice
+	Logo            Image       `json:"logo"`
+	Background      Image       `json:"background"`
 	Facebook        string      `json:"facebook"`
 	Twitter         string      `json:"twitter"`
 	Twitch          string      `json:"twitch"`
