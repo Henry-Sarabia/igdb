@@ -104,31 +104,31 @@ func TestGetKeyword(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getKeywordResp)
 	defer ts.Close()
 
-	g, err := c.GetKeyword(2107)
+	kw, err := c.GetKeyword(2107)
 	if err != nil {
 		t.Error(err)
 	}
 
 	en := "space adventure"
-	an := g.Name
+	an := kw.Name
 	if an != en {
 		t.Errorf("Expected name '%s', got '%s'", en, an)
 	}
 
 	eID := 2107
-	aID := g.ID
+	aID := kw.ID
 	if aID != eID {
 		t.Errorf("Expected ID %d, got %d", eID, aID)
 	}
 
 	eURL := URL("https://www.igdb.com/categories/space-adventure")
-	aURL := g.URL
+	aURL := kw.URL
 	if eURL != aURL {
 		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 	}
 
 	egID := []int{8506, 26187, 25919, 23905, 23908, 27903, 52205}
-	agID := g.Games
+	agID := kw.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
 			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
@@ -141,37 +141,37 @@ func TestGetKeywords(t *testing.T) {
 	defer ts.Close()
 
 	ids := []int{2096, 1108}
-	g, err := c.GetKeywords(ids)
+	kw, err := c.GetKeywords(ids)
 	if err != nil {
 		t.Error(err)
 	}
 
 	el := 2
-	al := len(g)
+	al := len(kw)
 	if al != el {
 		t.Errorf("Expected length of %d, got %d", el, al)
 	}
 
 	en := "humor"
-	an := g[0].Name
+	an := kw[0].Name
 	if an != en {
 		t.Errorf("Expected name '%s', got '%s'", en, an)
 	}
 
 	eURL := URL("https://www.igdb.com/categories/humor")
-	aURL := g[0].URL
+	aURL := kw[0].URL
 	if eURL != aURL {
 		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 	}
 
 	eu := 1403518560769
-	au := g[1].UpdatedAt
+	au := kw[1].UpdatedAt
 	if au != eu {
 		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
 	}
 
 	egID := []int{6749, 7591, 10666, 14952, 36899}
-	agID := g[1].Games
+	agID := kw[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
 			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
@@ -183,49 +183,49 @@ func TestSearchKeywords(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchKeywordsResp)
 	defer ts.Close()
 
-	g, err := c.SearchKeywords("tool")
+	kw, err := c.SearchKeywords("tool")
 	if err != nil {
 		t.Error(err)
 	}
 
 	el := 3
-	al := len(g)
+	al := len(kw)
 	if al != el {
 		t.Errorf("Expected length of %d, got %d", el, al)
 	}
 
 	eID := 3782
-	aID := g[0].ID
+	aID := kw[0].ID
 	if aID != eID {
 		t.Errorf("Expected ID %d, got %d", eID, aID)
 	}
 
 	en := "strategy"
-	an := g[0].Name
+	an := kw[0].Name
 	if an != en {
 		t.Errorf("Expected name '%s', got '%s'", en, an)
 	}
 
 	ec := 1499532005267
-	ac := g[1].CreatedAt
+	ac := kw[1].CreatedAt
 	if ac != ec {
 		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/categories/historical-strategy")
-	aURL := g[1].URL
+	aURL := kw[1].URL
 	if eURL != aURL {
 		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 	}
 
 	es := "real-time-strategy--1"
-	as := g[2].Slug
+	as := kw[2].Slug
 	if as != es {
 		t.Errorf("Expected slug '%s', got '%s'", es, as)
 	}
 
 	egID := []int{21620, 27254, 21221, 24273, 27448, 54723}
-	agID := g[2].Games
+	agID := kw[2].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
 			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
