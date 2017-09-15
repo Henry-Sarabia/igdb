@@ -9,6 +9,7 @@ import (
 type Page struct {
 	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`
+	URL             URL         `json:"URL"`
 	CreatedAt       int         `json:"created_at"` //unix epoch
 	UpdatedAt       int         `json:"updated_at"` //unix epoch
 	Name            string      `json:"name"`
