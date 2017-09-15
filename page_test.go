@@ -219,7 +219,7 @@ func TestSearchPages(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchPagesResp)
 	defer ts.Close()
 
-	pg, err := c.SearchPages("tool")
+	pg, err := c.SearchPages("PC")
 	if err != nil {
 		t.Error(err)
 	}

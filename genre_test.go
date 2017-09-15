@@ -208,7 +208,7 @@ func TestSearchGenres(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchGenresResp)
 	defer ts.Close()
 
-	g, err := c.SearchGenres("tool")
+	g, err := c.SearchGenres("strategy")
 	if err != nil {
 		t.Error(err)
 	}

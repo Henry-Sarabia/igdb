@@ -191,7 +191,7 @@ func TestSearchGameModes(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchGameModesResp)
 	defer ts.Close()
 
-	g, err := c.SearchGameModes("tool")
+	g, err := c.SearchGameModes("multiplayer")
 	if err != nil {
 		t.Error(err)
 	}

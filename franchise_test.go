@@ -176,7 +176,7 @@ func TestSearchFranchises(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchFranchisesResp)
 	defer ts.Close()
 
-	f, err := c.SearchFranchises("tool")
+	f, err := c.SearchFranchises("super")
 	if err != nil {
 		t.Error(err)
 	}

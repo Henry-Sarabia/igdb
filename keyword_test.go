@@ -183,7 +183,7 @@ func TestSearchKeywords(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchKeywordsResp)
 	defer ts.Close()
 
-	kw, err := c.SearchKeywords("tool")
+	kw, err := c.SearchKeywords("strategy")
 	if err != nil {
 		t.Error(err)
 	}
