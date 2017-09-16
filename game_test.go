@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 )
@@ -165,6 +166,15 @@ const searchGamesResp = `
 	}
 }]
 `
+
+func TestGameTypeIntegrity(t *testing.T) {
+	c := NewClient()
+	g, err := c.GetGame(7346)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(g)
+}
 
 func TestGetGame(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGameResp)
