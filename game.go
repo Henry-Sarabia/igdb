@@ -104,12 +104,8 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 		optFunc(&opt)
 	}
 
-	url := c.rootURL + "games/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	base := c.rootURL + "games/" + strconv.Itoa(id)
+	url := encodeURL(opt.Values, base)
 
 	var g []Game
 
@@ -130,12 +126,8 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	}
 
 	str := intsToString(ids)
-	url := c.rootURL + "games/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	base := c.rootURL + "games/" + strings.Join(str, ",")
+	url := encodeURL(opt.Values, base)
 
 	var g []*Game
 
@@ -151,17 +143,14 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	opt := newOpt()
+	opts = append(opts, optSearch(qry))
 
 	for _, optFunc := range opts {
 		optFunc(&opt)
 	}
 
-	url := c.rootURL + "games/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	base := c.rootURL + "games/"
+	url := encodeURL(opt.Values, base)
 
 	var g []*Game
 

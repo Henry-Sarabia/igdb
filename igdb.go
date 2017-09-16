@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // Client wraps a typical http.Client.
@@ -51,4 +52,26 @@ func (c *Client) get(url string, result interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// Encoder is implemented by any values that has
+// an encode method, which returns the "encoded"
+// format for that value. The Encode method is
+// used to print a case-sensitive key value map
+// used for query parameters or form values as a
+// string.
+type Encoder interface {
+	Encode() string
+}
+
+// encodeURL encodes the base URL with the query
+// parameters provided by the encoder.
+func encodeURL(enc Encoder, base string) string {
+	url := strings.Replace(base, " ", "", -1)
+
+	if values := enc.Encode(); values != "" {
+		url += "?" + values
+	}
+
+	return url
 }

@@ -7,6 +7,28 @@ import (
 	"strings"
 )
 
+// Encoder is implemented by any values that has
+// an encode method, which returns the "encoded"
+// format for that value. The Encode method is
+// used to print a case-sensitive key value map
+// used for query parameters or form values as a
+// string.
+type Encoder interface {
+	Encode() string
+}
+
+// encodeURL encodes the base URL with the query
+// parameters provided by the encoder.
+func encodeURL(enc Encoder, base string) string {
+	url := strings.Replace(base, " ", "", -1)
+
+	if values := enc.Encode(); values != "" {
+		url += "?" + values
+	}
+
+	return url
+}
+
 // Options contains a value map to store optional
 // parameters for the various API calls.
 type Options struct {
@@ -125,5 +147,15 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 	return func(o *Options) {
 		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
 		o.Values.Set(s, val)
+	}
+}
+
+// optSearch is an unexported functional
+// option used to search the IGDB for
+// the given query. Used in every search
+// function for all available types.
+func optSearch(qry string) OptionFunc {
+	return func(o *Options) {
+		o.Values.Set("search", qry)
 	}
 }
