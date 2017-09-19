@@ -1,8 +1,8 @@
 package igdb
 
 import (
-	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -167,13 +167,19 @@ const searchGamesResp = `
 }]
 `
 
+// Use meta endpoint to fetch list of fields. Ignore fields with periods.
+// Use reflect package to gather existing struct field names.
+// Iterate through meta field names, checking to see if they exist in reflect struct fields.
 func TestGameTypeIntegrity(t *testing.T) {
 	c := NewClient()
-	g, err := c.GetGame(7346)
+
+	g := Game{}
+	typ := reflect.ValueOf(g).Type()
+
+	err := c.validateStruct(typ, GameEndpoint)
 	if err != nil {
 		t.Error(err)
 	}
-	fmt.Println(g)
 }
 
 func TestGetGame(t *testing.T) {
