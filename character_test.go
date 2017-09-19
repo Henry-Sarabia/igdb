@@ -1,9 +1,7 @@
 package igdb
 
 import (
-	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
@@ -128,19 +126,6 @@ const searchCharacterResp = `
 	]
 }]
 `
-
-func startTestServer(status int, resp string) (*httptest.Server, Client) {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(status)
-		fmt.Fprint(w, resp)
-	}))
-	c := Client{
-		http:    http.DefaultClient, // Change to ts.Client on Go version 1.9
-		rootURL: ts.URL + "/",
-	}
-
-	return ts, c
-}
 
 func TestGetCharacter(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getCharacterResp)

@@ -2,9 +2,28 @@ package igdb
 
 import (
 	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"reflect"
 	"strings"
 )
+
+// startTestServer initializes a test server that will respond with the
+// given status and response. A Client configured especially for this
+// test server is also returned.
+func startTestServer(status int, resp string) (*httptest.Server, Client) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(status)
+		fmt.Fprint(w, resp)
+	}))
+	c := Client{
+		http:    http.DefaultClient, // Change to ts.Client on Go version 1.9
+		rootURL: ts.URL + "/",
+	}
+
+	return ts, c
+}
 
 // validateStruct checks if the given struct contains all of the fields
 // it should according to the appropriate IGDB endpoint.
