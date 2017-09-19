@@ -167,9 +167,6 @@ const searchGamesResp = `
 }]
 `
 
-// Use meta endpoint to fetch list of fields. Ignore fields with periods.
-// Use reflect package to gather existing struct field names.
-// Iterate through meta field names, checking to see if they exist in reflect struct fields.
 func TestGameTypeIntegrity(t *testing.T) {
 	c := NewClient()
 
