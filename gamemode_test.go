@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -113,6 +114,18 @@ const searchGameModesResp = `
 	]
 }]
 `
+
+func TestGameModeTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	g := GameMode{}
+	typ := reflect.ValueOf(g).Type()
+
+	err := c.validateStruct(typ, GameModeEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetGameMode(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGameModeResp)
