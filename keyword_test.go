@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -99,6 +100,18 @@ const searchKeywordsResp = `
 	]
 }]
 `
+
+func TestKeywordTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	k := Keyword{}
+	typ := reflect.ValueOf(k).Type()
+
+	err := c.validateStruct(typ, KeywordEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetKeyword(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getKeywordResp)
