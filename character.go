@@ -13,18 +13,19 @@ type SpeciesCode int
 
 // Character is
 type Character struct {
-	ID        int         `json:"id"`
-	Name      string      `json:"name"`
-	Slug      string      `json:"slug"`
-	URL       URL         `json:"url"`
-	CreatedAt int         `json:"created_at"`
-	UpdatedAt int         `json:"updated_at"`
-	Mugshot   Image       `json:"mug_shot"`
-	Gender    GenderCode  `json:"gender"`
-	AKAs      []string    `json:"akas"`
-	Species   SpeciesCode `json:"species"`
-	Games     []int       `json:"games"`
-	People    []int       `json:"people"`
+	ID          int         `json:"id"`
+	Name        string      `json:"name"`
+	Slug        string      `json:"slug"`
+	URL         URL         `json:"url"`
+	CreatedAt   int         `json:"created_at"`
+	UpdatedAt   int         `json:"updated_at"`
+	Mugshot     Image       `json:"mug_shot"`
+	Gender      GenderCode  `json:"gender"`
+	CountryName string      `json:"country_name"`
+	AKAs        []string    `json:"akas"`
+	Species     SpeciesCode `json:"species"`
+	Games       []int       `json:"games"`
+	People      []int       `json:"people"`
 }
 
 // GetCharacter gets IGDB information for a character identified by its unique IGDB ID.
