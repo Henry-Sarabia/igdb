@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -44,6 +45,18 @@ const getFeedsResp = `
 	"pulse": 261098
 }]
 `
+
+func TestFeedTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	f := Feed{}
+	typ := reflect.ValueOf(f).Type()
+
+	err := c.validateStruct(typ, FeedEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetFeed(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getFeedResp)
