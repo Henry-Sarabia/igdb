@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -142,6 +143,18 @@ const searchEnginesResp = `
 	]
 }]
 `
+
+func TestEngineTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	e := Engine{}
+	typ := reflect.ValueOf(e).Type()
+
+	err := c.validateStruct(typ, EngineEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetEngine(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getEngineResp)
