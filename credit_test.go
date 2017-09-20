@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -61,6 +62,18 @@ const searchCreditsResp = `
 	"position": 365
 }]
 `
+
+func TestCreditTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	cr := Credit{}
+	typ := reflect.ValueOf(cr).Type()
+
+	err := c.validateStruct(typ, CreditEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetCredit(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getCreditResp)

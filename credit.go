@@ -26,6 +26,7 @@ type Credit struct {
 	Country               CountryCode    `json:"country"`
 	CreditedName          string         `json:"credited_name"`
 	CharacterCreditedName string         `json:"character_credited_name"`
+	PersonTitle           interface{}    `json:"person_title"`
 }
 
 // GetCredit gets IGDB information for a credit identified by its unique IGDB ID.
