@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -124,6 +125,18 @@ const searchGenresResp = `
 	]
 }]
 `
+
+func TestGenreTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	g := Genre{}
+	typ := reflect.ValueOf(g).Type()
+
+	err := c.validateStruct(typ, GenreEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetGenre(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGenreResp)
