@@ -18,7 +18,7 @@ func startTestServer(status int, resp string) (*httptest.Server, Client) {
 		fmt.Fprint(w, resp)
 	}))
 	c := Client{
-		http:    ts.Client(), // Change to ts.Client on Go version 1.9
+		http:    ts.Client(),
 		rootURL: ts.URL + "/",
 	}
 
