@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -117,6 +118,18 @@ const searchCollectionsResp = `
 	]
 }]
 `
+
+func TestCollectionTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	col := Collection{}
+	typ := reflect.ValueOf(col).Type()
+
+	err := c.validateStruct(typ, CollectionEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetCollection(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getCollectionResp)
