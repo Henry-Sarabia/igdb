@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -98,6 +99,18 @@ const searchFranchisesResp = `
 	]
 }]
 `
+
+func TestFranchiseTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	f := Franchise{}
+	typ := reflect.ValueOf(f).Type()
+
+	err := c.validateStruct(typ, FranchiseEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetFranchise(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getFranchiseResp)
