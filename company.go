@@ -23,11 +23,13 @@ type Company struct {
 	StartDate          int          `json:"start_date"` //unix epoch
 	StartDateCategory  DateCategory `json:"start_date_category"`
 	ChangedID          int          `json:"changed_company_id"`
-	ChangeDate         int          `json:"changed_date"` //unix epoch
+	ChangeDate         int          `json:"change_date"` //unix epoch
 	ChangeDateCategory DateCategory `json:"change_date_category"`
 	Twitter            string       `json:"twitter"`
 	Published          []int        `json:"published"`
 	Developed          []int        `json:"developed"`
+	Parent             int          `json:"parent"`
+	Facebook           string       `json:"facebook"`
 }
 
 // GetCompany gets IGDB information for a company identified by its unique IGDB ID.
