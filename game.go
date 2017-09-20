@@ -45,6 +45,12 @@ type Website struct {
 	URL      URL `json:"url"`
 }
 
+// External contains information from
+// an external service IDs.
+type External struct {
+	Steam string `json:"steam"`
+}
+
 // Game contains information about a game stored in the IGDB.
 // See https://igdb.github.io/api/endpoints/game/ for more information.
 type Game struct {
@@ -61,7 +67,7 @@ type Game struct {
 	Hypes                int           `json:"hypes"`
 	Popularity           float64       `json:"popularity"`
 	Rating               float64       `json:"rating"`
-	RatingCount          int           `json:"raing_count"`
+	RatingCount          int           `json:"rating_count"`
 	AggregateRating      float64       `json:"aggregated_rating"`
 	AggregateRatingCount int           `json:"aggregated_rating_count"`
 	TotalRating          float64       `json:"total_rating"`
@@ -94,6 +100,11 @@ type Game struct {
 	Standalone           []int         `json:"standalone_expansions"`
 	Bundles              []int         `json:"bundles"`
 	SimilarGames         []int         `json:"games"`
+	Follows              interface{}   `json:"follows"`
+	PulseCount           interface{}   `json:"pulse_count"`
+	External             External      `json:"external"`
+	MultiplayerModes     interface{}   `json:"multiplayer_modes"`
+	Franchises           []int         `json:"franchises"`
 }
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
