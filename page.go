@@ -9,7 +9,7 @@ import (
 type Page struct {
 	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`
-	URL             URL         `json:"URL"`
+	URL             URL         `json:"url"`
 	CreatedAt       int         `json:"created_at"` //unix epoch
 	UpdatedAt       int         `json:"updated_at"` //unix epoch
 	Name            string      `json:"name"`
@@ -18,6 +18,7 @@ type Page struct {
 	Subcategory     int         `json:"sub_category"`
 	Country         CountryCode `json:"country"`
 	Color           int         `json:"color"`
+	Feed            int         `json:"feed"`
 	User            int         `json:"user"`
 	Game            int         `json:"game"`
 	Company         int         `json:"company"`
