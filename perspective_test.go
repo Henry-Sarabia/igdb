@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -110,6 +111,18 @@ const searchPerspectivesResp = `
 	]
 }]
 `
+
+func TestPerspectiveTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	p := Perspective{}
+	typ := reflect.ValueOf(p).Type()
+
+	err := c.validateStruct(typ, PerspectiveEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetPerspective(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getPerspectiveResp)
