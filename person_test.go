@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -129,6 +130,18 @@ const searchPersonsResp = `
 	]
 }]
 `
+
+func TestPersonTypeIntegrity(t *testing.T) {
+	c := NewClient()
+
+	p := Person{}
+	typ := reflect.ValueOf(p).Type()
+
+	err := c.validateStruct(typ, PersonEndpoint)
+	if err != nil {
+		t.Error(err)
+	}
+}
 
 func TestGetPerson(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getPersonResp)

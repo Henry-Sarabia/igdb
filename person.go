@@ -19,6 +19,19 @@ type Person struct {
 	Mugshot     Image       `json:"mug_shot"`
 	Bio         string      `json:"bio"`
 	Description string      `json:"description"`
+	Parent      int         `json:"parent"`
+	Homepage    string      `json:"homepage"`
+	Twitter     string      `json:"twitter"`
+	LinkedIn    string      `json:"linkedin"`
+	GooglePlus  string      `json:"google_plus"`
+	Facebook    string      `json:"facebook"`
+	Instagram   string      `json:"instagram"`
+	Tumblr      string      `json:"tumblr"`
+	Soundcloud  string      `json:"soundcloud"`
+	Pinterest   string      `json:"pinterest"`
+	Youtube     string      `json:"youtube"`
+	Nicknames   []string    `json:"nicknames"`
+	LovesCount  int         `json:"loves_count"`
 	Games       []int       `json:"games"`
 	Characters  []int       `json:"characters"`
 	VoiceActed  []int       `json:"voice_acted"`
