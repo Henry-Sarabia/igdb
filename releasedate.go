@@ -8,12 +8,6 @@ import (
 // DateCategory code
 type DateCategory int
 
-// Year is
-type Year int
-
-// Month is
-type Month int
-
 // ReleaseDate hold information about date of release, platforms, and versions
 type ReleaseDate struct {
 	ID          int          `json:"id"`
@@ -26,8 +20,8 @@ type ReleaseDate struct {
 	CreatedAt   int          `json:"created_at"` //unix epoch unspecified
 	Date        int          `json:"date"`       //unix epoch
 	Region      int          `json:"region"`
-	Year        Year         `json:"y"`
-	Month       Month        `json:"m"`
+	Year        int          `json:"y"`
+	Month       int          `json:"m"`
 }
 
 // GetReleaseDate gets IGDB information for a release date identified by their unique IGDB ID.
