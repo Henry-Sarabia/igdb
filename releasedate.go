@@ -17,6 +17,7 @@ type Month int
 // ReleaseDate hold information about date of release, platforms, and versions
 type ReleaseDate struct {
 	ID          int          `json:"id"`
+	Game        int          `json:"game"`
 	ReleaseDate int          `json:"ReleaseDate"`
 	Category    DateCategory `json:"category"`
 	Platform    int          `json:"platform"`
