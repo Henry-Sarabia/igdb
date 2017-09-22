@@ -25,7 +25,10 @@ type PlatformVersion struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`
 	Slug          string            `json:"slug"`
+	URL           URL               `json:"url"`
+	Manufacturer  string            `json:"manufacturer"`
 	OS            string            `json:"os"`
+	CPU           string            `json:"cpu"`
 	Media         string            `json:"media"`
 	Memory        string            `json:"memory"`
 	Online        string            `json:"online"`
@@ -34,6 +37,7 @@ type PlatformVersion struct {
 	Graphics      string            `json:"graphics"`
 	Resolutions   string            `json:"resolutions"`
 	Connectivity  string            `json:"connectivity"`
+	Sound         string            `json:"sound"`
 	Logo          Image             `json:"logo"`
 	Summary       string            `json:"summary"`
 	ReleaseDates  []PlatformDate    `json:"release_dates"`
@@ -43,19 +47,22 @@ type PlatformVersion struct {
 
 // Platform type
 type Platform struct {
-	ID         int               `json:"id"`
-	Name       string            `json:"name"`
-	Slug       string            `json:"slug"`
-	URL        URL               `json:"url"`
-	CreatedAt  int               `json:"created_at"` //unix epoch
-	UpdatedAt  int               `json:"updated_at"` //unix epoch
-	Logo       Image             `json:"logo"`
-	Website    string            `json:"website"`
-	Summary    string            `json:"summary"`
-	AltName    string            `json:"alternative_name"`
-	Generation int               `json:"generation"`
-	Games      []int             `json:"games"`
-	Version    []PlatformVersion `json:"version"`
+	ID            int               `json:"id"`
+	Name          string            `json:"name"`
+	Slug          string            `json:"slug"`
+	URL           URL               `json:"url"`
+	CreatedAt     int               `json:"created_at"` //unix epoch
+	UpdatedAt     int               `json:"updated_at"` //unix epoch
+	Shortcut      string            `json:"shortcut"`
+	Logo          Image             `json:"logo"`
+	Website       string            `json:"website"`
+	Summary       string            `json:"summary"`
+	AltName       string            `json:"alternative_name"`
+	Generation    int               `json:"generation"`
+	Category      int               `json:"category"`
+	ProductFamily int               `json:"product_family"`
+	Games         []int             `json:"games"`
+	Versions      []PlatformVersion `json:"versions"`
 }
 
 // GetPlatform gets IGDB information for a platform identified by its unique IGDB ID.
