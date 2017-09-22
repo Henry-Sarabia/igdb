@@ -21,7 +21,7 @@ const (
 	PerspectiveEndpoint endpoint = "player_perspectives/"
 	PulseEndpoint       endpoint = "pulses/"
 	PulseGroupEndpoint  endpoint = "pulse_groups/"
-	PulseSourceEndpoint endpoint = "pulse_sources"
+	PulseSourceEndpoint endpoint = "pulse_sources/"
 	ReleaseDateEndpoint endpoint = "release_dates/"
 	ReviewEndpoint      endpoint = "reviews/"
 	ThemeEndpoint       endpoint = "themes/"
