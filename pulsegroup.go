@@ -7,15 +7,17 @@ import (
 
 // PulseGroup type
 type PulseGroup struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name"`
-	Slug      string `json:"slug"`
-	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"` //unix epoch
-	UpdatedAt int    `json:"updated_at"` //unix epoch
-	Tags      []Tag  `json:"tags"`
-	Pulses    []int  `json:"pulses"`
-	Game      []int  `json:"game"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Slug        string `json:"slug"`
+	URL         URL    `json:"url"`
+	CreatedAt   int    `json:"created_at"` //unix epoch
+	UpdatedAt   int    `json:"updated_at"` //unix epoch
+	PublishedAt int    `json:"published_at"`
+	Category    int    `json:"category"`
+	Tags        []Tag  `json:"tags"`
+	Pulses      []int  `json:"pulses"`
+	Game        int    `json:"game"`
 }
 
 // GetPulseGroup gets IGDB information for a pulse group identified by its unique IGDB ID.
