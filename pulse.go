@@ -5,20 +5,31 @@ import (
 	"strings"
 )
 
+// PulseVideo contains information for
+// a video specifically for a pulse.
+type PulseVideo struct {
+	Category int    `json:"category"`
+	ID       string `json:"video_id"`
+}
+
 // Pulse type
 type Pulse struct {
-	ID          int    `json:"id"`
-	PulseSource int    `json:"pulse_source"` //not uint
-	Title       string `json:"title"`
-	Summary     string `json:"summary"`
-	URL         URL    `json:"url"`
-	UID         string `json:"uid"`          //perhaps switch to ID
-	CreatedAt   int    `json:"created_at"`   //unix epoch
-	UpdatedAt   int    `json:"updated_at"`   //unix epoch
-	PublishedAt int    `json:"published_at"` //unix epoch
-	ImageURL    URL    `json:"image"`
-	Author      string `json:"author"`
-	Tags        []Tag  `json:"tags"`
+	ID          int          `json:"id"`
+	PulseSource int          `json:"pulse_source"`
+	Category    int          `json:"category"`
+	Title       string       `json:"title"`
+	Summary     string       `json:"summary"`
+	URL         URL          `json:"url"`
+	UID         string       `json:"uid"`          //perhaps switch to ID
+	CreatedAt   int          `json:"created_at"`   //unix epoch
+	UpdatedAt   int          `json:"updated_at"`   //unix epoch
+	PublishedAt int          `json:"published_at"` //unix epoch
+	ImageURL    URL          `json:"image"`
+	PulseImage  Image        `json:"pulse_image"`
+	Videos      []PulseVideo `json:"videos"`
+	Author      string       `json:"author"`
+	Tags        []Tag        `json:"tags"`
+	Ignored     interface{}  `json:"ignored"`
 }
 
 // GetPulse gets IGDB information for a pulse identified by its unique IGDB ID.
