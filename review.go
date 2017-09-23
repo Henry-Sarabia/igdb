@@ -10,6 +10,7 @@ type Review struct {
 	ID             int    `json:"id"`
 	Username       string `json:"username"`
 	Name           string `json:"name"`
+	Title string `json:"title"`
 	Slug           string `json:"slug"`
 	URL            URL    `json:"url"`
 	CreatedAt      int    `json:"created_at"` //unix epoch
