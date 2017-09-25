@@ -2,7 +2,6 @@ package igdb
 
 import (
 	"strconv"
-	"strings"
 )
 
 // GenderCode codes
@@ -30,17 +29,10 @@ type Character struct {
 
 // GetCharacter gets IGDB information for a character identified by its unique IGDB ID.
 func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
-	url := c.rootURL + "characters/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.rootURL + string(CharacterEndpoint) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
 
 	var ch []Character
 
@@ -55,18 +47,10 @@ func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
 // GetCharacters gets IGDB information for a list of characters identified by their
 // unique IGDB IDs.
 func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
-	str := intsToStrings(ids)
-	url := c.rootURL + "characters/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.rootURL + string(CharacterEndpoint) + intsToCommaString(ids)
+	url = encodeURL(opt.Values, url)
 
 	var ch []*Character
 
@@ -81,17 +65,11 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 // SearchCharacters searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opts = append(opts, optSearch(qry))
+	opt := newOpt(opts...)
 
-	url := c.rootURL + "characters/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.rootURL + string(CharacterEndpoint)
+	url = encodeURL(opt.Values, url)
 
 	var ch []*Character
 
