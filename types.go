@@ -1,6 +1,9 @@
 package igdb
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 // URL is
 type URL string
@@ -39,4 +42,11 @@ func intsToStrings(ints []int) []string {
 		str = append(str, strconv.Itoa(i))
 	}
 	return str
+}
+
+// intsToCommaString returns a comma separated
+// list of ints as a single string.
+func intsToCommaString(ints []int) string {
+	s := intsToStrings(ints)
+	return strings.Join(s, ",")
 }
