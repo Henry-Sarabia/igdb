@@ -28,7 +28,7 @@ func newOpt() Options {
 // newOpt returns a new Options object
 // mutated by the OptionFunc arguments.
 func newOpt(ofs ...OptionFunc) Options {
-	opt := Options{}
+	opt := Options{Values: url.Values{}}
 
 	for _, of := range ofs {
 		of(&opt)
