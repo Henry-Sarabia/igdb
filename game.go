@@ -2,7 +2,6 @@ package igdb
 
 import (
 	"strconv"
-	"strings"
 )
 
 // GameCategory is a code associated with a game
@@ -136,8 +135,7 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToStrings(ids)
-	base := c.rootURL + string(GameEndpoint) + strings.Join(str, ",")
+	base := c.rootURL + string(GameEndpoint) + intsToCommaString(ids)
 	url := encodeURL(opt.Values, base)
 
 	var g []*Game
