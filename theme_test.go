@@ -87,6 +87,10 @@ const searchThemesResp = `
 `
 
 func TestThemeTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	r := Theme{}

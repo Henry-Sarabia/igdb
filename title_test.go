@@ -86,6 +86,10 @@ const searchTitlesResp = `
 `
 
 func TestTitleTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	r := Title{}

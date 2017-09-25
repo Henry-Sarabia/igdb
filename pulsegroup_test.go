@@ -169,6 +169,10 @@ const searchPulseGroupsResp = `
 `
 
 func TestPulseGroupTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	pg := PulseGroup{}

@@ -145,6 +145,10 @@ const searchEnginesResp = `
 `
 
 func TestEngineTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	e := Engine{}

@@ -64,6 +64,10 @@ const searchCreditsResp = `
 `
 
 func TestCreditTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	cr := Credit{}

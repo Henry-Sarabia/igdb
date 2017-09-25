@@ -194,6 +194,10 @@ const searchPulsesResp = `
 `
 
 func TestPulseTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	p := Pulse{}

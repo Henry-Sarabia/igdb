@@ -101,6 +101,10 @@ const searchFranchisesResp = `
 `
 
 func TestFranchiseTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	f := Franchise{}

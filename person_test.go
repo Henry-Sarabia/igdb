@@ -132,6 +132,11 @@ const searchPersonsResp = `
 `
 
 func TestPersonTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
+
 	c := NewClient()
 
 	p := Person{}

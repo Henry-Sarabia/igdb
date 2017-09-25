@@ -129,6 +129,10 @@ const searchCharacterResp = `
 `
 
 func TestCharacterTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	ch := Character{}

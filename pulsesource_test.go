@@ -46,6 +46,10 @@ const searchPulseSourcesResp = `
 `
 
 func TestPulseSourceTypeIntegrity(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
 	c := NewClient()
 
 	ps := PulseSource{}
