@@ -18,9 +18,23 @@ type Options struct {
 // used in API calls to set individual options.
 type OptionFunc func(*Options)
 
+/*
 // newOpt returns a basic Options object
 func newOpt() Options {
 	return Options{Values: url.Values{}}
+}
+*/
+
+// newOpt returns a new Options object
+// mutated by the OptionFunc arguments.
+func newOpt(ofs ...OptionFunc) Options {
+	opt := Options{}
+
+	for _, of := range ofs {
+		of(&opt)
+	}
+
+	return opt
 }
 
 // Type order specifies in which order to place
