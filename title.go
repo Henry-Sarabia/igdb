@@ -50,7 +50,7 @@ func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "titles/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

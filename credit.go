@@ -61,7 +61,7 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "credits/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

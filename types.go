@@ -31,9 +31,9 @@ type Video struct {
 	ID   string `json:"video_id"` // Youtube slug
 }
 
-// intsToString returns the slice of strings
+// intsToStrings returns the slice of strings
 // equivalent to the list of ints.
-func intsToString(ints []int) []string {
+func intsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
 		str = append(str, strconv.Itoa(i))

@@ -115,7 +115,7 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 		optFunc(&opt)
 	}
 
-	base := c.rootURL + "games/" + strconv.Itoa(id)
+	base := c.rootURL + string(GameEndpoint) + strconv.Itoa(id)
 	url := encodeURL(opt.Values, base)
 
 	var g []Game
@@ -136,8 +136,8 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
-	base := c.rootURL + "games/" + strings.Join(str, ",")
+	str := intsToStrings(ids)
+	base := c.rootURL + string(GameEndpoint) + strings.Join(str, ",")
 	url := encodeURL(opt.Values, base)
 
 	var g []*Game
@@ -160,7 +160,7 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 		optFunc(&opt)
 	}
 
-	base := c.rootURL + "games/"
+	base := c.rootURL + string(GameEndpoint)
 	url := encodeURL(opt.Values, base)
 
 	var g []*Game

@@ -49,7 +49,7 @@ func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "themes/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

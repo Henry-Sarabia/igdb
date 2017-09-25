@@ -48,7 +48,7 @@ func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "game_modes/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

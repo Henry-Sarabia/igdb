@@ -48,7 +48,7 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "franchises/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

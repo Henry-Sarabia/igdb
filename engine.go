@@ -51,7 +51,7 @@ func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "game_engines/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

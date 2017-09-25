@@ -62,7 +62,7 @@ func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "reviews/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

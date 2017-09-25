@@ -48,7 +48,7 @@ func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) 
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "keywords/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

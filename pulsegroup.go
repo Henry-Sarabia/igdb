@@ -52,7 +52,7 @@ func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, e
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "pulse_groups/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

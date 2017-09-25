@@ -64,7 +64,7 @@ func (c *Client) GetPulses(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "pulses/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {

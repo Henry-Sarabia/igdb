@@ -48,7 +48,7 @@ func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, e
 		optFunc(&opt)
 	}
 
-	str := intsToString(ids)
+	str := intsToStrings(ids)
 	url := c.rootURL + "collections/" + strings.Join(str, ",")
 	if opts != nil {
 		if values := opt.Values.Encode(); values != "" {
