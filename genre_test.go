@@ -130,6 +130,7 @@ func TestGenreTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
 	}
+
 	c := NewClient()
 
 	g := Genre{}
