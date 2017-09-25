@@ -64,10 +64,10 @@ type Encoder interface {
 	Encode() string
 }
 
-// encodeURL encodes the base URL with the query
+// encodeURL encodes the url with the query
 // parameters provided by the encoder.
-func encodeURL(enc Encoder, base string) string {
-	url := strings.Replace(base, " ", "", -1)
+func encodeURL(enc Encoder, url string) string {
+	url = strings.Replace(url, " ", "", -1)
 
 	if values := enc.Encode(); values != "" {
 		url += "?" + values
