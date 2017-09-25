@@ -2,7 +2,6 @@ package igdb
 
 import (
 	"strconv"
-	"strings"
 )
 
 // CountryCode code ISO-3316-1
@@ -34,17 +33,10 @@ type Company struct {
 
 // GetCompany gets IGDB information for a company identified by its unique IGDB ID.
 func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
-	url := c.rootURL + "companies/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.rootURL + string(CompanyEndpoint) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
 
 	var com []Company
 
@@ -59,18 +51,10 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 // GetCompanies gets IGDB information for a list of companies identified by their
 // unique IGDB IDs.
 func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
-	str := intsToStrings(ids)
-	url := c.rootURL + "companies/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.rootURL + string(CompanyEndpoint) + intsToCommaString(ids)
+	url = encodeURL(opt.Values, url)
 
 	var com []*Company
 
@@ -85,17 +69,11 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 // SearchCompanies searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opts = append(opts, optSearch(qry))
+	opt := newOpt(opts...)
 
-	url := c.rootURL + "companies/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.rootURL + string(CompanyEndpoint)
+	url = encodeURL(opt.Values, url)
 
 	var com []*Company
 
