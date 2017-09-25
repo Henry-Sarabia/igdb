@@ -108,11 +108,7 @@ type Game struct {
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
 func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
 	base := c.rootURL + string(GameEndpoint) + strconv.Itoa(id)
 	url := encodeURL(opt.Values, base)
@@ -129,11 +125,7 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 
 // GetGames gets IGDB information for a list of games identified by a list of their unique IGDB IDs.
 func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
 	base := c.rootURL + string(GameEndpoint) + intsToCommaString(ids)
 	url := encodeURL(opt.Values, base)
@@ -151,12 +143,8 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 // SearchGames searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
-	opt := newOpt()
 	opts = append(opts, optSearch(qry))
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
+	opt := newOpt(opts...)
 
 	base := c.rootURL + string(GameEndpoint)
 	url := encodeURL(opt.Values, base)
