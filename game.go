@@ -110,8 +110,8 @@ type Game struct {
 func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 	opt := newOpt(opts...)
 
-	base := c.rootURL + string(GameEndpoint) + strconv.Itoa(id)
-	url := encodeURL(opt.Values, base)
+	url := c.rootURL + string(GameEndpoint) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
 
 	var g []Game
 
@@ -127,8 +127,8 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	opt := newOpt(opts...)
 
-	base := c.rootURL + string(GameEndpoint) + intsToCommaString(ids)
-	url := encodeURL(opt.Values, base)
+	url := c.rootURL + string(GameEndpoint) + intsToCommaString(ids)
+	url = encodeURL(opt.Values, url)
 
 	var g []*Game
 
@@ -146,8 +146,8 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	opts = append(opts, optSearch(qry))
 	opt := newOpt(opts...)
 
-	base := c.rootURL + string(GameEndpoint)
-	url := encodeURL(opt.Values, base)
+	url := c.rootURL + string(GameEndpoint)
+	url = encodeURL(opt.Values, url)
 
 	var g []*Game
 
