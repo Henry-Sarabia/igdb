@@ -1,9 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-)
-
 // GameCategory is a code associated with a game
 // denoting its category. The codes are as follows:
 // 0 - Main Game
@@ -108,10 +104,7 @@ type Game struct {
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
 func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(GameEndpoint) + strconv.Itoa(id)
-	url = encodeURL(opt.Values, url)
+	url := c.singleURL(GameEndpoint, id, opts...)
 
 	var g []Game
 
