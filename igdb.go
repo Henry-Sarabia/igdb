@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -81,6 +82,22 @@ func (c *Client) getRaw(url string) (json.RawMessage, error) {
 	var raw json.RawMessage
 
 	raw, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return raw, nil
+}
+
+// singleGet returns a raw encoded JSON value describing the IGDB information for a single
+// entity identified by its unique IGDB ID.
+func (c *Client) singleGet(id int, end endpoint, opts ...OptionFunc) (json.RawMessage, error) {
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
+
+	raw, err := c.getRaw(url)
 	if err != nil {
 		return nil, err
 	}
