@@ -133,11 +133,7 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 // SearchGames searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
-	opts = append(opts, optSearch(qry))
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(GameEndpoint)
-	url = encodeURL(opt.Values, url)
+	url := c.searchURL(GameEndpoint, qry, opts...)
 
 	var g []*Game
 
