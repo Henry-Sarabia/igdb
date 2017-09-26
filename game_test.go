@@ -208,6 +208,38 @@ func TestLiveGetGame(t *testing.T) {
 	}
 }
 
+func TestLiveGetGames(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
+	c := NewClient()
+
+	ids := []int{1721, 2777}
+	g, err := c.GetGames(ids)
+	if err != nil {
+		t.Error(err)
+	}
+
+	el := 2
+	al := len(g)
+	if al != el {
+		t.Errorf("Expected length of %d, got %d", el, al)
+	}
+
+	eID := 1721
+	aID := g[0].ID
+	if aID != eID {
+		t.Errorf("Expected ID %d, got %d", eID, aID)
+	}
+
+	en := "Kirby Air Ride"
+	an := g[1].Name
+	if an != en {
+		t.Errorf("Expected name '%s', got '%s'", en, an)
+	}
+}
+
 func TestLocalGetGame(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGameResp)
 	defer ts.Close()
