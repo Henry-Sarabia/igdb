@@ -121,6 +121,23 @@ func (c *Client) multiGet(ids []int, end endpoint, opts ...OptionFunc) (json.Raw
 	return raw, nil
 }
 
+// search searches the IGDB using the given query and returns a raw encoded JSON value describing
+// the results of the search. Use functional options for pagination and result sorting by parameter.
+func (c *Client) search(qry string, end endpoint, opts ...OptionFunc) (json.RawMessage, error) {
+	opts = append(opts, optSearch(qry))
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end)
+	url = encodeURL(opt.Values, url)
+
+	raw, err := c.getRaw(url)
+	if err != nil {
+		return nil, err
+	}
+
+	return raw, nil
+}
+
 // Encoder is implemented by any values that has
 // an encode method, which returns the "encoded"
 // format for that value. The Encode method is
