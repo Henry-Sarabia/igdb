@@ -11,6 +11,6 @@ func TestOptOrder(t *testing.T) {
 	eOrd := "popularity:asc"
 	aOrd := opt.Values.Get("order")
 	if aOrd != eOrd {
-		t.Errorf("Expected '%s', got '%s'", eOrd, aOrd)
+		t.Errorf("Expected order '%s', got '%s'", eOrd, aOrd)
 	}
 }
