@@ -54,6 +54,40 @@ func (c *Client) get(url string, result interface{}) error {
 	return nil
 }
 
+// getRaw sends a GET request to the url and returns a raw
+// encoded JSON value.
+func (c *Client) getRaw(url string) (json.RawMessage, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("user-key", APIkey)
+	req.Header.Add("Accept", "application/json")
+
+	resp, err := c.http.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		err = c.checkError(resp)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var raw json.RawMessage
+
+	raw, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return raw, nil
+}
+
 // Encoder is implemented by any values that has
 // an encode method, which returns the "encoded"
 // format for that value. The Encode method is
