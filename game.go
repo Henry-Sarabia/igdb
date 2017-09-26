@@ -118,10 +118,7 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 
 // GetGames gets IGDB information for a list of games identified by a list of their unique IGDB IDs.
 func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(GameEndpoint) + intsToCommaString(ids)
-	url = encodeURL(opt.Values, url)
+	url := c.multiURL(GameEndpoint, ids, opts...)
 
 	var g []*Game
 
