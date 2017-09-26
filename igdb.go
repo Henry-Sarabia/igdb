@@ -90,11 +90,22 @@ func (c *Client) getRaw(url string) (json.RawMessage, error) {
 }
 
 // singleURL creates a URL configured to request a single IGDB entity
-// identified by its unique IGDB ID from the given endpoint.
+// identified by its unique IGDB ID using the given endpoint.
 func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) string {
 	opt := newOpt(opts...)
 
 	url := c.rootURL + string(end) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
+
+	return url
+}
+
+// multiURL creates a URL configured to request multiple IGDB entities identified
+// by their unique IGDB IDs using the given endpoint.
+func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) string {
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end) + intsToCommaString(ids)
 	url = encodeURL(opt.Values, url)
 
 	return url
