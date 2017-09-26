@@ -183,64 +183,7 @@ func TestGameTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestLiveGetGame(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	g, err := c.GetGame(7346)
-	if err != nil {
-		t.Error(err)
-	}
-
-	eID := 7346
-	aID := g.ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
-
-	en := "The Legend of Zelda: Breath of the Wild"
-	an := g.Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'\n", en, an)
-	}
-}
-
-func TestLiveGetGames(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	ids := []int{1721, 2777}
-	g, err := c.GetGames(ids)
-	if err != nil {
-		t.Error(err)
-	}
-
-	el := 2
-	al := len(g)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
-
-	eID := 1721
-	aID := g[0].ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
-
-	en := "Kirby Air Ride"
-	an := g[1].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
-}
-
-func TestLocalGetGame(t *testing.T) {
+func TestGetGame(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGameResp)
 	defer ts.Close()
 
@@ -286,7 +229,7 @@ func TestLocalGetGame(t *testing.T) {
 	}
 }
 
-func TestLocalGetGames(t *testing.T) {
+func TestGetGames(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGamesResp)
 	defer ts.Close()
 
@@ -327,7 +270,7 @@ func TestLocalGetGames(t *testing.T) {
 	}
 }
 
-func TestLocalSearchGames(t *testing.T) {
+func TestSearchGames(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchGamesResp)
 	defer ts.Close()
 
