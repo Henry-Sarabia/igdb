@@ -111,6 +111,18 @@ func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) string {
 	return url
 }
 
+// searchURL creates a URL configured to search the IGDB based on the given query
+// using the given endpoint.
+func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) string {
+	opts = append(opts, optSearch(qry))
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end)
+	url = encodeURL(opt.Values, url)
+
+	return url
+}
+
 // singleGet returns a raw encoded JSON value describing the IGDB information for a single
 // entity identified by its unique IGDB ID.
 func (c *Client) singleGet(id int, end endpoint, opts ...OptionFunc) (json.RawMessage, error) {
