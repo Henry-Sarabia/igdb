@@ -105,6 +105,22 @@ func (c *Client) singleGet(id int, end endpoint, opts ...OptionFunc) (json.RawMe
 	return raw, nil
 }
 
+// multiGet returns a raw encoded JSON value describing the IGDB information for a list of
+// entities identified by their unique IGDB IDs.
+func (c *Client) multiGet(ids []int, end endpoint, opts ...OptionFunc) (json.RawMessage, error) {
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end) + intsToCommaString(ids)
+	url = encodeURL(opt.Values, url)
+
+	raw, err := c.getRaw(url)
+	if err != nil {
+		return nil, err
+	}
+
+	return raw, nil
+}
+
 // Encoder is implemented by any values that has
 // an encode method, which returns the "encoded"
 // format for that value. The Encode method is
