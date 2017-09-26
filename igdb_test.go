@@ -1,14 +1,22 @@
 package igdb
 
-import "testing"
+import (
+	"strconv"
+	"testing"
+)
 
 const testEndpoint endpoint = "tests/"
 
 func TestSingleURL(t *testing.T) {
 	c := NewClient()
 
-	eURL := "https://api-2445582011268.apicast.io/tests/1234?fields=id%2Cname%2Cpopularity&limit=5"
-	aURL := c.singleURL(testEndpoint, 1234, OptLimit(5), OptFields("id", "name", "popularity"))
+	eURL := "https://api-2445582011268.apicast.io/tests/1234?fields=id%2Cname%2Cpopularity&filter%5Bpopularity%5D%5Bgte%5D=50&limit=10&offset=5&order=popularity%3Adesc"
+	aURL := c.singleURL(testEndpoint, 1234,
+		OptFields("id", "name", "popularity"),
+		OptFilter("popularity", GTE, strconv.Itoa(50)),
+		OptLimit(10),
+		OptOffset(5),
+		OptOrder("popularity", Desc))
 	if aURL != eURL {
 		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 	}
