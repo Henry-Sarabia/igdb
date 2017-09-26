@@ -183,7 +183,32 @@ func TestGameTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetGame(t *testing.T) {
+func TestLiveGetGame(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping test requiring communication with external server")
+	}
+
+	c := NewClient()
+
+	g, err := c.GetGame(7346)
+	if err != nil {
+		t.Error(err)
+	}
+
+	eID := 7346
+	aID := g.ID
+	if aID != eID {
+		t.Errorf("Expected ID %d, got %d", eID, aID)
+	}
+
+	en := "The Legend of Zelda: Breath of the Wild"
+	an := g.Name
+	if an != en {
+		t.Errorf("Expected name '%s', got '%s'\n", en, an)
+	}
+}
+
+func TestLocalGetGame(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGameResp)
 	defer ts.Close()
 
@@ -229,7 +254,7 @@ func TestGetGame(t *testing.T) {
 	}
 }
 
-func TestGetGames(t *testing.T) {
+func TestLocalGetGames(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, getGamesResp)
 	defer ts.Close()
 
@@ -270,7 +295,7 @@ func TestGetGames(t *testing.T) {
 	}
 }
 
-func TestSearchGames(t *testing.T) {
+func TestLocalSearchGames(t *testing.T) {
 	ts, c := startTestServer(http.StatusOK, searchGamesResp)
 	defer ts.Close()
 
