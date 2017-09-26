@@ -89,6 +89,17 @@ func (c *Client) getRaw(url string) (json.RawMessage, error) {
 	return raw, nil
 }
 
+// singleURL creates a URL configured to request a single IGDB entity
+// identified by its unique IGDB ID from the given endpoint.
+func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) string {
+	opt := newOpt(opts...)
+
+	url := c.rootURL + string(end) + strconv.Itoa(id)
+	url = encodeURL(opt.Values, url)
+
+	return url
+}
+
 // singleGet returns a raw encoded JSON value describing the IGDB information for a single
 // entity identified by its unique IGDB ID.
 func (c *Client) singleGet(id int, end endpoint, opts ...OptionFunc) (json.RawMessage, error) {
