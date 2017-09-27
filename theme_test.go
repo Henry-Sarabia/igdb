@@ -133,7 +133,7 @@ func TestGetTheme(t *testing.T) {
 	agID := th.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -176,7 +176,7 @@ func TestGetThemes(t *testing.T) {
 	agID := th[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }

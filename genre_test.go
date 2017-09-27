@@ -173,7 +173,7 @@ func TestGetGenre(t *testing.T) {
 	agID := g.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -216,7 +216,7 @@ func TestGetGenres(t *testing.T) {
 	agID := g[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -270,7 +270,7 @@ func TestSearchGenres(t *testing.T) {
 	agID := g[2].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }

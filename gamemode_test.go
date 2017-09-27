@@ -156,7 +156,7 @@ func TestGetGameMode(t *testing.T) {
 	agID := g.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -199,7 +199,7 @@ func TestGetGameModes(t *testing.T) {
 	agID := g[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -253,7 +253,7 @@ func TestSearchGameModes(t *testing.T) {
 	agID := g[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }

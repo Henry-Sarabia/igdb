@@ -185,7 +185,7 @@ func TestGetEngine(t *testing.T) {
 	agID := eng.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -228,7 +228,7 @@ func TestGetEngines(t *testing.T) {
 	agID := eng[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -270,7 +270,7 @@ func TestSearchEngines(t *testing.T) {
 	agID := eng[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }

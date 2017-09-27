@@ -132,7 +132,7 @@ func TestGetTitle(t *testing.T) {
 	agID := ti.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -175,7 +175,7 @@ func TestGetTitles(t *testing.T) {
 	agID := ti[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }

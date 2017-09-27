@@ -136,7 +136,6 @@ func TestPersonTypeIntegrity(t *testing.T) {
 		t.Skip("Skipping test requiring communication with external server")
 	}
 
-
 	c := NewClient()
 
 	p := Person{}
@@ -179,7 +178,7 @@ func TestGetPerson(t *testing.T) {
 	agID := p.Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -222,7 +221,7 @@ func TestGetPersons(t *testing.T) {
 	agID := p[1].Games
 	for i := range agID {
 		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID, agID)
+			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 		}
 	}
 }
@@ -258,7 +257,7 @@ func TestSearchPersons(t *testing.T) {
 	av := p[0].VoiceActed
 	for i := range av {
 		if av[i] != ev[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", ev, av)
+			t.Errorf("Expected Game ID %d, got %d\n", ev[i], av[i])
 		}
 	}
 
