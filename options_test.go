@@ -62,3 +62,16 @@ func TestOptFields(t *testing.T) {
 		t.Errorf("Expected fields '%s', got '%s'", eFld, aFld)
 	}
 }
+
+func TestOptFilter(t *testing.T) {
+	opt := newOpt()
+	optFunc := OptFilter("popularity", LTE, "50")
+
+	optFunc(&opt)
+
+	eFil := "50"
+	aFil := opt.Values.Get("filter[popularity][lte]")
+	if aFil != eFil {
+		t.Errorf("Expected filter '%s', got '%s'", eFil, aFil)
+	}
+}
