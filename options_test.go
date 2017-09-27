@@ -49,3 +49,16 @@ func TestOptOffset(t *testing.T) {
 		t.Errorf("Expected offset %d, got %d", eOff, aOff)
 	}
 }
+
+func TestOptFields(t *testing.T) {
+	opt := newOpt()
+	optFunc := OptFields("name", "rating", "popularity")
+
+	optFunc(&opt)
+
+	eFld := "name,rating,popularity"
+	aFld := opt.Values.Get("fields")
+	if aFld != eFld {
+		t.Errorf("Expected fields '%s', got '%s'", eFld, aFld)
+	}
+}
