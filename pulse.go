@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // PulseVideo contains information for
 // a video specifically for a pulse.
 type PulseVideo struct {
@@ -34,17 +29,7 @@ type Pulse struct {
 
 // GetPulse gets IGDB information for a pulse identified by its unique IGDB ID.
 func (c *Client) GetPulse(id int, opts ...OptionFunc) (*Pulse, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "pulses/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(PulseEndpoint, id, opts...)
 
 	var p []Pulse
 
@@ -59,18 +44,7 @@ func (c *Client) GetPulse(id int, opts ...OptionFunc) (*Pulse, error) {
 // GetPulses gets IGDB information for a list of pulses identified by their
 // unique IGDB IDs.
 func (c *Client) GetPulses(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "pulses/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(PulseEndpoint, ids, opts...)
 
 	var p []*Pulse
 
@@ -85,17 +59,7 @@ func (c *Client) GetPulses(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
 // SearchPulses searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchPulses(qry string, opts ...OptionFunc) ([]*Pulse, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "pulses/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(PulseEndpoint, qry, opts...)
 
 	var p []*Pulse
 

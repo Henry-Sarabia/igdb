@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Keyword type
 type Keyword struct {
 	ID        int    `json:"id"`
@@ -18,17 +13,7 @@ type Keyword struct {
 
 // GetKeyword gets IGDB information for a keyword identified by its unique IGDB ID.
 func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "keywords/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(KeywordEndpoint, id, opts...)
 
 	var k []Keyword
 
@@ -43,18 +28,7 @@ func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
 // GetKeywords gets IGDB information for a list of keywords identified by their
 // unique IGDB IDs.
 func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "keywords/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(KeywordEndpoint, ids, opts...)
 
 	var k []*Keyword
 
@@ -69,17 +43,7 @@ func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) 
 // SearchKeywords searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchKeywords(qry string, opts ...OptionFunc) ([]*Keyword, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "keywords/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(KeywordEndpoint, qry, opts...)
 
 	var k []*Keyword
 

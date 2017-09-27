@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Theme type
 type Theme struct {
 	ID        int    `json:"id"`
@@ -18,18 +13,7 @@ type Theme struct {
 
 // GetTheme gets IGDB information for a theme identified by their unique IGDB ID.
 func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "themes/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(ThemeEndpoint, id, opts...)
 
 	var t []Theme
 
@@ -43,19 +27,7 @@ func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 
 // GetThemes gets IGDB information for a list of themes identified by a list of their unique IGDB IDs.
 func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "themes/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(ThemeEndpoint, ids, opts...)
 
 	var t []*Theme
 
@@ -70,18 +42,7 @@ func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 // SearchThemes searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchThemes(qry string, opts ...OptionFunc) ([]*Theme, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "themes/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(ThemeEndpoint, qry, opts...)
 
 	var t []*Theme
 

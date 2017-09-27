@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // RegionCode codes
 type RegionCode int
 
@@ -67,17 +62,7 @@ type Platform struct {
 
 // GetPlatform gets IGDB information for a platform identified by its unique IGDB ID.
 func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "platforms/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(PlatformEndpoint, id, opts...)
 
 	var p []Platform
 
@@ -92,18 +77,7 @@ func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
 // GetPlatforms gets IGDB information for a list of platforms identified by their
 // unique IGDB IDs.
 func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "platforms/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(PlatformEndpoint, ids, opts...)
 
 	var p []*Platform
 
@@ -118,17 +92,7 @@ func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error
 // SearchPlatforms searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchPlatforms(qry string, opts ...OptionFunc) ([]*Platform, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "platforms/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(PlatformEndpoint, qry, opts...)
 
 	var p []*Platform
 

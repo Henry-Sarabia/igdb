@@ -1,9 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-)
-
 // CountryCode code ISO-3316-1
 type CountryCode int
 
@@ -33,10 +29,7 @@ type Company struct {
 
 // GetCompany gets IGDB information for a company identified by its unique IGDB ID.
 func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(CompanyEndpoint) + strconv.Itoa(id)
-	url = encodeURL(opt.Values, url)
+	url := c.singleURL(CompanyEndpoint, id, opts...)
 
 	var com []Company
 
@@ -51,10 +44,7 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 // GetCompanies gets IGDB information for a list of companies identified by their
 // unique IGDB IDs.
 func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(CompanyEndpoint) + intsToCommaString(ids)
-	url = encodeURL(opt.Values, url)
+	url := c.multiURL(CompanyEndpoint, ids, opts...)
 
 	var com []*Company
 
@@ -69,11 +59,7 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 // SearchCompanies searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
-	opts = append(opts, optSearch(qry))
-	opt := newOpt(opts...)
-
-	url := c.rootURL + string(CompanyEndpoint)
-	url = encodeURL(opt.Values, url)
+	url := c.searchURL(CompanyEndpoint, qry, opts...)
 
 	var com []*Company
 

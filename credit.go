@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // CreditCategory codes
 type CreditCategory int
 
@@ -31,17 +26,7 @@ type Credit struct {
 
 // GetCredit gets IGDB information for a credit identified by its unique IGDB ID.
 func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "credits/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(CreditEndpoint, id, opts...)
 
 	var cr []Credit
 
@@ -56,18 +41,7 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 // GetCredits gets IGDB information for a list of credits identified by their
 // unique IGDB IDs.
 func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "credits/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(CreditEndpoint, ids, opts...)
 
 	var cr []*Credit
 
@@ -82,17 +56,7 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 // SearchCredits searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "credits/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(CreditEndpoint, qry, opts...)
 
 	var cr []*Credit
 

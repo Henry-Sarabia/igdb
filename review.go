@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Review type
 type Review struct {
 	ID             int    `json:"id"`
@@ -31,18 +26,7 @@ type Review struct {
 
 // GetReview gets IGDB information for a review identified by their unique IGDB ID.
 func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "reviews/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(ReviewEndpoint, id, opts...)
 
 	var r []Review
 
@@ -56,19 +40,7 @@ func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
 
 // GetReviews gets IGDB information for a list of reviews identified by a list of their unique IGDB IDs.
 func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "reviews/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(ReviewEndpoint, ids, opts...)
 
 	var r []*Review
 
@@ -83,18 +55,7 @@ func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 // SearchReviews searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchReviews(qry string, opts ...OptionFunc) ([]*Review, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "reviews/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(ReviewEndpoint, qry, opts...)
 
 	var r []*Review
 

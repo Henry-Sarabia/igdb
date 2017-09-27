@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Franchise is
 type Franchise struct {
 	ID        int    `json:"id"`
@@ -18,17 +13,7 @@ type Franchise struct {
 
 // GetFranchise gets IGDB information for a franchise identified by its unique IGDB ID.
 func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "franchises/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(FranchiseEndpoint, id, opts...)
 
 	var f []Franchise
 
@@ -43,18 +28,7 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 // GetFranchises gets IGDB information for a list of franchises identified by their
 // unique IGDB IDs.
 func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "franchises/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(FeedEndpoint, ids, opts...)
 
 	var f []*Franchise
 
@@ -69,17 +43,7 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 // SearchFranchises searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "franchises/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(FeedEndpoint, qry, opts...)
 
 	var f []*Franchise
 

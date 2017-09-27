@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // PulseSource type
 type PulseSource struct {
 	ID   int    `json:"id"`
@@ -15,17 +10,7 @@ type PulseSource struct {
 
 // GetPulseSource gets IGDB information for a pulse source identified by its unique IGDB ID.
 func (c *Client) GetPulseSource(id int, opts ...OptionFunc) (*PulseSource, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "pulse_sources/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(PulseSourceEndpoint, id, opts...)
 
 	var p []PulseSource
 
@@ -40,18 +25,7 @@ func (c *Client) GetPulseSource(id int, opts ...OptionFunc) (*PulseSource, error
 // GetPulseSources gets IGDB information for a list of pulse sources identified by their
 // unique IGDB IDs.
 func (c *Client) GetPulseSources(ids []int, opts ...OptionFunc) ([]*PulseSource, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "pulse_sources/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(PulseSourceEndpoint, ids, opts...)
 
 	var p []*PulseSource
 
@@ -66,17 +40,7 @@ func (c *Client) GetPulseSources(ids []int, opts ...OptionFunc) ([]*PulseSource,
 // SearchPulseSources searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchPulseSources(qry string, opts ...OptionFunc) ([]*PulseSource, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "pulse_sources/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(PulseSourceEndpoint, qry, opts...)
 
 	var p []*PulseSource
 

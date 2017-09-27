@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Genre type
 type Genre struct {
 	ID        int    `json:"id"`
@@ -18,17 +13,7 @@ type Genre struct {
 
 // GetGenre gets IGDB information for a genre identified by its unique IGDB ID.
 func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "genres/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(GenreEndpoint, id, opts...)
 
 	var g []Genre
 
@@ -43,18 +28,7 @@ func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 // GetGenres gets IGDB information for a list of genres identified by their
 // unique IGDB IDs.
 func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "genres/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(GenreEndpoint, ids, opts...)
 
 	var g []*Genre
 
@@ -69,17 +43,7 @@ func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 // SearchGenres searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGenres(qry string, opts ...OptionFunc) ([]*Genre, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "genres/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(GenreEndpoint, qry, opts...)
 
 	var g []*Genre
 

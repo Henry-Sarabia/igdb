@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // FeedCategory codes
 type FeedCategory int
 
@@ -31,17 +26,7 @@ type Feed struct {
 
 // GetFeed gets IGDB information for a feed identified by its unique IGDB ID.
 func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "feeds/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(FeedEndpoint, id, opts...)
 
 	var f []Feed
 
@@ -56,18 +41,7 @@ func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 // GetFeeds gets IGDB information for a list of game engines identified by their
 // unique IGDB IDs.
 func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "feeds/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(FeedEndpoint, ids, opts...)
 
 	var f []*Feed
 

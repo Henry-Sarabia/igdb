@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // Person type
 type Person struct {
 	ID          int         `json:"id"`
@@ -39,17 +34,7 @@ type Person struct {
 
 // GetPerson gets IGDB information for a person identified by its unique IGDB ID.
 func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "people/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(PersonEndpoint, id, opts...)
 
 	var p []Person
 
@@ -64,18 +49,7 @@ func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 // GetPersons gets IGDB information for a list of people identified by their
 // unique IGDB IDs.
 func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "people/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(PersonEndpoint, ids, opts...)
 
 	var p []*Person
 
@@ -90,17 +64,7 @@ func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 // SearchPersons searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchPersons(qry string, opts ...OptionFunc) ([]*Person, error) {
-	opt := newOpt()
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "people/?search=" + qry
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "&" + values
-		}
-	}
+	url := c.searchURL(PersonEndpoint, qry, opts...)
 
 	var p []*Person
 

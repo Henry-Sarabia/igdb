@@ -1,10 +1,5 @@
 package igdb
 
-import (
-	"strconv"
-	"strings"
-)
-
 // DateCategory code
 type DateCategory int
 
@@ -26,18 +21,7 @@ type ReleaseDate struct {
 
 // GetReleaseDate gets IGDB information for a release date identified by their unique IGDB ID.
 func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	url := c.rootURL + "release_dates/" + strconv.Itoa(id)
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.singleURL(ReleaseDateEndpoint, id, opts...)
 
 	var r []ReleaseDate
 
@@ -51,19 +35,7 @@ func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error
 
 // GetReleaseDates gets IGDB information for a list of release dates identified by a list of their unique IGDB IDs.
 func (c *Client) GetReleaseDates(ids []int, opts ...OptionFunc) ([]*ReleaseDate, error) {
-	opt := newOpt()
-
-	for _, optFunc := range opts {
-		optFunc(&opt)
-	}
-
-	str := intsToStrings(ids)
-	url := c.rootURL + "release_dates/" + strings.Join(str, ",")
-	if opts != nil {
-		if values := opt.Values.Encode(); values != "" {
-			url += "?" + values
-		}
-	}
+	url := c.multiURL(ReleaseDateEndpoint, ids, opts...)
 
 	var r []*ReleaseDate
 
