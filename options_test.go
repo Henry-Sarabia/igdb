@@ -75,3 +75,16 @@ func TestOptFilter(t *testing.T) {
 		t.Errorf("Expected filter '%s', got '%s'", eFil, aFil)
 	}
 }
+
+func TestOptSearch(t *testing.T) {
+	opt := newOpt()
+	optFunc := optSearch("mario party")
+
+	optFunc(&opt)
+
+	eQry := "mario party"
+	aQry := opt.Values.Get("search")
+	if aQry != eQry {
+		t.Errorf("Expected query '%s', got '%s'", eQry, aQry)
+	}
+}
