@@ -46,7 +46,7 @@ func TestNewOptOverlap(t *testing.T) {
 		OptOffset(10),
 		OptOrder("rating", Desc),
 		OptFields("id", "popularity"),
-		OptFilter("id", EQ, "1234"),
+		OptFilter("id", NotIn, "1234"),
 		OptLimit(25),
 		OptOffset(50),
 		OptOrder("popularity", Asc))
