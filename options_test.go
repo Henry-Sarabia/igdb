@@ -33,3 +33,19 @@ func TestOptLimit(t *testing.T) {
 		t.Errorf("Expected limit %d, got %d", eLim, aLim)
 	}
 }
+
+func TestOptOffset(t *testing.T) {
+	opt := newOpt()
+	optFunc := OptOffset(5)
+
+	optFunc(&opt)
+
+	eOff := 5
+	aOff, err := strconv.Atoi(opt.Values.Get("offset"))
+	if err != nil {
+		t.Error(err)
+	}
+	if aOff != eOff {
+		t.Errorf("Expected offset %d, got %d", eOff, aOff)
+	}
+}
