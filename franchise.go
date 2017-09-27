@@ -28,7 +28,7 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 // GetFranchises gets IGDB information for a list of franchises identified by their
 // unique IGDB IDs.
 func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
-	url := c.multiURL(FeedEndpoint, ids, opts...)
+	url := c.multiURL(FranchiseEndpoint, ids, opts...)
 
 	var f []*Franchise
 
@@ -43,7 +43,7 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 // SearchFranchises searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
-	url := c.searchURL(FeedEndpoint, qry, opts...)
+	url := c.searchURL(FranchiseEndpoint, qry, opts...)
 
 	var f []*Franchise
 
