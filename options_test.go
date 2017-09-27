@@ -39,6 +39,25 @@ func TestNewOptMulti(t *testing.T) {
 	}
 }
 
+func TestNewOptOverlap(t *testing.T) {
+	opt := newOpt(OptFields("name", "rating"),
+		OptFilter("name", EQ, "zelda"),
+		OptLimit(5),
+		OptOffset(10),
+		OptOrder("rating", Desc),
+		OptFields("id", "popularity"),
+		OptFilter("id", EQ, "1234"),
+		OptLimit(25),
+		OptOffset(50),
+		OptOrder("popularity", Asc))
+
+	evl := 6
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
+	}
+}
+
 func TestOptOrder(t *testing.T) {
 	opt := newOpt()
 	optFunc := OptOrder("popularity", Asc)
