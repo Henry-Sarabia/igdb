@@ -5,6 +5,40 @@ import (
 	"testing"
 )
 
+func TestNewOptEmpty(t *testing.T) {
+	opt := newOpt()
+
+	evl := 0
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestNewOptSingle(t *testing.T) {
+	opt := newOpt(OptLimit(20))
+
+	evl := 1
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestNewOptMulti(t *testing.T) {
+	opt := newOpt(OptFields("name", "rating"),
+		OptFilter("name", EQ, "zelda"),
+		OptLimit(5),
+		OptOffset(10),
+		OptOrder("rating", Desc))
+
+	evl := 5
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
 func TestOptOrder(t *testing.T) {
 	opt := newOpt()
 	optFunc := OptOrder("popularity", Asc)
