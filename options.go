@@ -20,6 +20,10 @@ type OptionFunc func(*Options)
 
 // newOpt returns a new Options object
 // mutated by the OptionFunc arguments.
+// If multiple of any type of OptionFunc
+// are passed in, one will be overwrite
+// the other. OptFilter is the only
+// exception to this rule.
 func newOpt(ofs ...OptionFunc) Options {
 	opt := Options{Values: url.Values{}}
 
@@ -126,7 +130,8 @@ const (
 // an API call. Provide a field name to specify what property you
 // want to filter with. Provide a postfix to specify how you want
 // to filter the results using the given field name. Provide a concrete
-// value as a string to specify the value of the configured filter.
+// value as a string to specify the value of the configured filter. This
+// is the only option allowed to have more than one of in a single API call.
 // For more information visit https://igdb.github.io/api/references/filters/.
 func OptFilter(field string, post postfix, val string) OptionFunc {
 	return func(o *Options) {
