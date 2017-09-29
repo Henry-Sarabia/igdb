@@ -21,8 +21,9 @@ func TestCheckError(t *testing.T) {
 		Body string
 		Exp  string
 	}{
-		{"empty response", 404, "", "unexpected end of JSON input"},
-		{"404 response", 404, testErrNotFound, "Status 404 - status not found"},
+		{"empty response", http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"404 response", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
+		{"200 response", http.StatusOK, "", ""},
 	}
 
 	for _, et := range errTests {
@@ -34,8 +35,14 @@ func TestCheckError(t *testing.T) {
 			}
 
 			err := c.checkError(resp)
+			if resp.StatusCode == http.StatusOK {
+				if err != nil {
+					t.Fatalf("Expected nil err, got '%v'", err)
+				}
+				return
+			}
 			if err.Error() != et.Exp {
-				t.Errorf("Expected '%v', got '%v'", et.Exp, err.Error())
+				t.Fatalf("Expected '%v', got '%v'", et.Exp, err.Error())
 			}
 		})
 	}
