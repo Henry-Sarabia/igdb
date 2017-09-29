@@ -18,6 +18,10 @@ type Error struct {
 // checkError checks an http.Response for an error response
 // from the IGDB servers.
 func (c *Client) checkError(resp *http.Response) error {
+	if resp.StatusCode == http.StatusOK {
+		return nil
+	}
+
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
