@@ -93,13 +93,10 @@ func TestOptOffset(t *testing.T) {
 
 	optFunc(&opt)
 
-	eOff := 5
-	aOff, err := strconv.Atoi(opt.Values.Get("offset"))
-	if err != nil {
-		t.Error(err)
-	}
+	eOff := strconv.Itoa(5)
+	aOff := opt.Values.Get("offset")
 	if aOff != eOff {
-		t.Errorf("Expected offset %d, got %d", eOff, aOff)
+		t.Errorf("Expected offset %s, got %s", eOff, aOff)
 	}
 }
 
