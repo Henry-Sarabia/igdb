@@ -111,6 +111,19 @@ func TestOptFields(t *testing.T) {
 	}
 }
 
+func TestOptFieldsEmpty(t *testing.T) {
+	opt := newOpt()
+	optFunc := OptFields()
+
+	optFunc(&opt)
+
+	eFld := ""
+	aFld := opt.Values.Get("fields")
+	if aFld != eFld {
+		t.Errorf("Expected empty fields, got '%s'", aFld)
+	}
+}
+
 func TestOptFilter(t *testing.T) {
 	opt := newOpt()
 	optFunc := OptFilter("popularity", LTE, "50")
