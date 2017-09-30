@@ -61,7 +61,7 @@ func OptOrder(field string, ord order) OptionFunc {
 // the limit of results from an API call. The
 // correct way to use this function is to pass
 // it as a parameter to an API call. The default
-// limit is 10.
+// limit is 10. The maximum limit is 50.
 func OptLimit(lim int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("limit", strconv.Itoa(lim))
@@ -72,7 +72,9 @@ func OptLimit(lim int) OptionFunc {
 // the offset of results from an API call. The
 // correct way to use this function is to pass
 // it as a parameter to an API call. The default
-// offset is 0.
+// offset is 0. The maximum offset is 10,000.
+// For results larger than 10,000 elements, use
+// the Scroll option.
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) {
 		o.Values.Set("offset", strconv.Itoa(off))
