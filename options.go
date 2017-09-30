@@ -140,6 +140,19 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 	}
 }
 
+// OptScroll is a functional option used
+// to paginate the results of an API call
+// using IGDB's Scroll API. The given
+// integer denotes which page of results
+// to retrieve from the API call. When not
+// included in an API call, this option has
+// no default value.
+func OptScroll(page int) OptionFunc {
+	return func(o *Options) {
+		o.Values.Set("scroll", strconv.Itoa(page))
+	}
+}
+
 // optSearch is an unexported functional
 // option used to search the IGDB for
 // the given query. Used in every search
