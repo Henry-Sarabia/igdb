@@ -77,13 +77,11 @@ func TestOptLimit(t *testing.T) {
 
 	optFunc(&opt)
 
-	eLim := 20
-	aLim, err := strconv.Atoi(opt.Values.Get("limit"))
-	if err != nil {
-		t.Error(err)
-	}
+	eLim := strconv.Itoa(20)
+	aLim := opt.Values.Get("limit")
+
 	if aLim != eLim {
-		t.Errorf("Expected limit %d, got %d", eLim, aLim)
+		t.Errorf("Expected limit %s, got %s", eLim, aLim)
 	}
 }
 
