@@ -141,3 +141,16 @@ func TestOptSearch(t *testing.T) {
 		t.Errorf("Expected query '%s', got '%s'", eQry, aQry)
 	}
 }
+
+func TestOptScroll(t *testing.T) {
+	opt := newOpt()
+	optFunc := OptScroll(3)
+
+	optFunc(&opt)
+
+	ePage := strconv.Itoa(3)
+	aPage := opt.Values.Get("scroll")
+	if aPage != ePage {
+		t.Errorf("Expected page %s, got %s", ePage, aPage)
+	}
+}
