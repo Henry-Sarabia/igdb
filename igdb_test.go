@@ -1,11 +1,51 @@
 package igdb
 
 import (
+	"net/http"
 	"strconv"
 	"testing"
 )
 
 const testEndpoint endpoint = "tests/"
+const testGetResp = `[{"example": "value"}]`
+
+type testStruct struct {
+	Example string `json:"example"`
+}
+
+func TestGet(t *testing.T) {
+	testVar := testStruct{}
+	var errTests = []struct {
+		Name   string
+		URL    string
+		Result interface{}
+		Code   int
+		Resp   string
+		ExpErr string
+	}{
+		{"bad request with bad response", "fakeurl", testVar, http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"OK request with OK response", string(testEndpoint), testVar, http.StatusOK, testGetResp, ""},
+		{"OK request with bad response", string(testEndpoint), testVar, http.StatusOK, "", "unexpected end of JSON input"},
+	}
+
+	for _, et := range errTests {
+		t.Run(et.Name, func(t *testing.T) {
+			ts, c := startTestServer(et.Code, et.Resp)
+			defer ts.Close()
+
+			err := c.get(c.rootURL+et.URL, &et.Result)
+			if err == nil {
+				if et.ExpErr != "" {
+					t.Fatalf("Expected error '%v', got nil error'", et.ExpErr)
+				}
+				return
+			}
+			if err.Error() != et.ExpErr {
+				t.Fatalf("Expected error '%v', got error '%v'", et.ExpErr, err.Error())
+			}
+		})
+	}
+}
 
 func TestSingleURL(t *testing.T) {
 	c := NewClient()
