@@ -42,3 +42,20 @@ func (c *Client) GetEndpointFields(end endpoint) ([]string, error) {
 
 	return f, nil
 }
+
+// GetEndpointCount returns the count of entities available for
+// the given IGDB endpoint.
+func (c *Client) GetEndpointCount(end endpoint) (int, error) {
+	url := c.rootURL + string(end) + "count"
+
+	var ct struct {
+		Count int `json:"count"`
+	}
+
+	err := c.get(url, &ct)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct.Count, nil
+}
