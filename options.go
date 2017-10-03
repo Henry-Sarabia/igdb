@@ -40,12 +40,12 @@ func newOpt(ofs ...OptionFunc) Options {
 type order string
 
 const (
-	// Asc is used as an argument in the SetOrder optional function
+	// Ascend is used as an argument in the SetOrder optional function
 	// to set the results from an API call in ascending order.
-	Asc order = ":asc"
-	// Desc is used as an argument in the SetOrder optional function
+	Ascend order = ":asc"
+	// Descend is used as an argument in the SetOrder optional function
 	// to set the results from an API call in descending order.
-	Desc order = ":desc"
+	Descend order = ":desc"
 )
 
 // OptOrder is a functional option used to set
@@ -102,18 +102,18 @@ func OptFields(fields ...string) OptionFunc {
 type postfix string
 
 const (
-	// EQ stands for equal. Must match exactly.
-	EQ postfix = "eq"
-	// NotEQ stands for not equal. Any non-exact match.
-	NotEQ postfix = "not_eq"
-	// GT stands for greater than. Only works on numbers.
-	GT postfix = "gt"
-	// GTE stands for greater than or equal. Only works on numbers.
-	GTE postfix = "gte"
-	// LT stands for less than. Only works on numbers.
-	LT postfix = "lt"
-	// LTE stands for less than or equal. Only works on numbers.
-	LTE postfix = "lte"
+	// Equals checks for equality. Must match exactly.
+	Equals postfix = "eq"
+	// NotEquals checks for inequality. Any non-exact match.
+	NotEquals postfix = "not_eq"
+	// GreaterThan checks if value is greater than another value. Only works on numbers.
+	GreaterThan postfix = "gt"
+	// GreaterThanEqual checks if value is greater than or equal to another value. Only works on numbers.
+	GreaterThanEqual postfix = "gte"
+	// LessThan checks if value is less than another value. Only works on numbers.
+	LessThan postfix = "lt"
+	// LessThanEqual checks if value is less than or equal to another value. Only works on numbers.
+	LessThanEqual postfix = "lte"
 	// Prefix only works on strings.
 	Prefix postfix = "prefix"
 	// Exists checks for a non-null value.

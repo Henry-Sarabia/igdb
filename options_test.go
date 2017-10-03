@@ -27,10 +27,10 @@ func TestNewOptSingle(t *testing.T) {
 
 func TestNewOptMulti(t *testing.T) {
 	opt := newOpt(OptFields("name", "rating"),
-		OptFilter("name", EQ, "zelda"),
+		OptFilter("name", Equals, "zelda"),
 		OptLimit(5),
 		OptOffset(10),
-		OptOrder("rating", Desc))
+		OptOrder("rating", Descend))
 
 	evl := 5
 	avl := len(opt.Values)
@@ -41,15 +41,15 @@ func TestNewOptMulti(t *testing.T) {
 
 func TestNewOptOverlap(t *testing.T) {
 	opt := newOpt(OptFields("name", "rating"),
-		OptFilter("name", EQ, "zelda"),
+		OptFilter("name", Equals, "zelda"),
 		OptLimit(5),
 		OptOffset(10),
-		OptOrder("rating", Desc),
+		OptOrder("rating", Descend),
 		OptFields("id", "popularity"),
 		OptFilter("id", NotIn, "1234"),
 		OptLimit(25),
 		OptOffset(50),
-		OptOrder("popularity", Asc))
+		OptOrder("popularity", Ascend))
 
 	evl := 6
 	avl := len(opt.Values)
@@ -60,7 +60,7 @@ func TestNewOptOverlap(t *testing.T) {
 
 func TestOptOrder(t *testing.T) {
 	opt := newOpt()
-	optFunc := OptOrder("popularity", Asc)
+	optFunc := OptOrder("popularity", Ascend)
 
 	optFunc(&opt)
 
@@ -126,7 +126,7 @@ func TestOptFieldsEmpty(t *testing.T) {
 
 func TestOptFilter(t *testing.T) {
 	opt := newOpt()
-	optFunc := OptFilter("popularity", LTE, "50")
+	optFunc := OptFilter("popularity", LessThanEqual, "50")
 
 	optFunc(&opt)
 
