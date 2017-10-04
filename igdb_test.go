@@ -15,7 +15,7 @@ type testStruct struct {
 
 func TestGet(t *testing.T) {
 	testVar := testStruct{}
-	var errTests = []struct {
+	var getTests = []struct {
 		Name   string
 		URL    string
 		Result interface{}
@@ -28,20 +28,20 @@ func TestGet(t *testing.T) {
 		{"OK request with bad response", string(testEndpoint), testVar, http.StatusOK, "", "unexpected end of JSON input"},
 	}
 
-	for _, et := range errTests {
-		t.Run(et.Name, func(t *testing.T) {
-			ts, c := startTestServer(et.Code, et.Resp)
+	for _, gt := range getTests {
+		t.Run(gt.Name, func(t *testing.T) {
+			ts, c := startTestServer(gt.Code, gt.Resp)
 			defer ts.Close()
 
-			err := c.get(c.rootURL+et.URL, &et.Result)
+			err := c.get(c.rootURL+gt.URL, &gt.Result)
 			if err == nil {
-				if et.ExpErr != "" {
-					t.Fatalf("Expected error '%v', got nil error'", et.ExpErr)
+				if gt.ExpErr != "" {
+					t.Fatalf("Expected error '%v', got nil error'", gt.ExpErr)
 				}
 				return
 			}
-			if err.Error() != et.ExpErr {
-				t.Fatalf("Expected error '%v', got error '%v'", et.ExpErr, err.Error())
+			if err.Error() != gt.ExpErr {
+				t.Fatalf("Expected error '%v', got error '%v'", gt.ExpErr, err.Error())
 			}
 		})
 	}

@@ -32,7 +32,7 @@ func TestSizedImageURL(t *testing.T) {
 			url, err := img.SizedURL(it.Size, it.Ratio)
 			if err != nil {
 				if err.Error() != it.ExpErr.Error() {
-					t.Fatalf("Expected error '%v', got '%v'", it.ExpErr, err.Error())
+					t.Fatalf("Expected error '%v', got '%v'", it.ExpErr.Error(), err.Error())
 				}
 			}
 
