@@ -20,14 +20,6 @@ type AltName struct {
 	Comment string `json:"comment"`
 }
 
-// Image is a struct that holds the ID to reach the image along with its dimensions
-type Image struct {
-	URL    URL    `json:"url"`
-	ID     string `json:"cloudinary_id"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-}
-
 // Video is a struct that holds the name of a video along with its ID.
 type Video struct {
 	Name string `json:"name"`
