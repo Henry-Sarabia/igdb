@@ -64,6 +64,9 @@ func OptOrder(field string, ord order) OptionFunc {
 // limit is 10. The maximum limit is 50.
 func OptLimit(lim int) OptionFunc {
 	return func(o *Options) {
+		if lim <= 0 || lim > 50 {
+			return
+		}
 		o.Values.Set("limit", strconv.Itoa(lim))
 	}
 }
@@ -77,6 +80,9 @@ func OptLimit(lim int) OptionFunc {
 // the Scroll option.
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) {
+		if off < 0 || off > 50 {
+			return
+		}
 		o.Values.Set("offset", strconv.Itoa(off))
 	}
 }
