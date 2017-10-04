@@ -5,59 +5,6 @@ import (
 	"testing"
 )
 
-func TestNewOptEmpty(t *testing.T) {
-	opt := newOpt()
-
-	evl := 0
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expected Values map length %d, got %d", evl, avl)
-	}
-}
-
-func TestNewOptSingle(t *testing.T) {
-	opt := newOpt(OptLimit(20))
-
-	evl := 1
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expected Values map length %d, got %d", evl, avl)
-	}
-}
-
-func TestNewOptMulti(t *testing.T) {
-	opt := newOpt(OptFields("name", "rating"),
-		OptFilter("name", Equals, "zelda"),
-		OptLimit(5),
-		OptOffset(10),
-		OptOrder("rating", Descend))
-
-	evl := 5
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expected Values map length %d, got %d", evl, avl)
-	}
-}
-
-func TestNewOptOverlap(t *testing.T) {
-	opt := newOpt(OptFields("name", "rating"),
-		OptFilter("name", Equals, "zelda"),
-		OptLimit(5),
-		OptOffset(10),
-		OptOrder("rating", Descend),
-		OptFields("id", "popularity"),
-		OptFilter("id", NotIn, "1234"),
-		OptLimit(25),
-		OptOffset(50),
-		OptOrder("popularity", Ascend))
-
-	evl := 6
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
-	}
-}
-
 func TestOptOrder(t *testing.T) {
 	opt := newOpt()
 	optFunc := OptOrder("popularity", Ascend)
@@ -160,5 +107,87 @@ func TestOptScroll(t *testing.T) {
 	aPage := opt.Values.Get("scroll")
 	if aPage != ePage {
 		t.Errorf("Expected page %s, got %s", ePage, aPage)
+	}
+}
+
+func TestNewOptEmpty(t *testing.T) {
+	opt := newOpt()
+
+	evl := 0
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestNewOptSingle(t *testing.T) {
+	opt := newOpt(OptLimit(20))
+
+	evl := 1
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestNewOptMulti(t *testing.T) {
+	opt := newOpt(OptFields("name", "rating"),
+		OptFilter("name", Equals, "zelda"),
+		OptLimit(5),
+		OptOffset(10),
+		OptOrder("rating", Descend))
+
+	evl := 5
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expected Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestOptOverwrite(t *testing.T) {
+	// Fields, Limit, and Order overwrite themselves.
+	// Offset and Scroll are mutually exclusive, preferring Scroll over Offset.
+	// Filter is additive with itself.
+	opt := newOpt(OptFields("name", "rating"),
+		OptFilter("name", Equals, "zelda"),
+		OptLimit(5),
+		OptOffset(10),
+		OptOrder("rating", Descend),
+		OptScroll(5),
+		OptFields("id", "popularity"),
+		OptFilter("id", NotIn, "1234"),
+		OptLimit(25),
+		OptOffset(50),
+		OptOrder("popularity", Ascend),
+		OptScroll(6))
+
+	evl := 6
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
+	}
+}
+
+func TestOptScrollOverwrite(t *testing.T) {
+	opt := newOpt(OptOffset(15),
+		OptScroll(2),
+		OptOffset(25))
+
+	evl := 1
+	avl := len(opt.Values)
+	if avl != evl {
+		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
+	}
+
+	evs := "2"
+	avs := opt.Values.Get("scroll")
+	if avs != evs {
+		t.Errorf("Expecting scroll value '%s', got '%s'", evs, avs)
+	}
+
+	evo := ""
+	avo := opt.Values.Get("offset")
+	if avo != evo {
+		t.Errorf("Expecing offset value '%s', got '%s'", evo, avo)
 	}
 }
