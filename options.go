@@ -83,6 +83,9 @@ func OptOffset(off int) OptionFunc {
 		if off < 0 || off > 50 {
 			return
 		}
+		if scr := o.Values.Get("scroll"); scr != "" {
+			return
+		}
 		o.Values.Set("offset", strconv.Itoa(off))
 	}
 }
@@ -157,6 +160,9 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 // no default value.
 func OptScroll(page int) OptionFunc {
 	return func(o *Options) {
+		if off := o.Values.Get("offset"); off != "" {
+			o.Values.Del("offset")
+		}
 		o.Values.Set("scroll", strconv.Itoa(page))
 	}
 }
