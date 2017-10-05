@@ -29,11 +29,13 @@ type Pulse struct {
 
 // GetPulse gets IGDB information for a pulse identified by its unique IGDB ID.
 func (c *Client) GetPulse(id int, opts ...OptionFunc) (*Pulse, error) {
-	url := c.singleURL(PulseEndpoint, id, opts...)
-
+	url, err := c.singleURL(PulseEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var p []Pulse
 
-	err := c.get(url, &p)
+	err = c.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +46,13 @@ func (c *Client) GetPulse(id int, opts ...OptionFunc) (*Pulse, error) {
 // GetPulses gets IGDB information for a list of pulses identified by their
 // unique IGDB IDs.
 func (c *Client) GetPulses(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
-	url := c.multiURL(PulseEndpoint, ids, opts...)
-
+	url, err := c.multiURL(PulseEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var p []*Pulse
 
-	err := c.get(url, &p)
+	err = c.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -59,11 +63,13 @@ func (c *Client) GetPulses(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
 // SearchPulses searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchPulses(qry string, opts ...OptionFunc) ([]*Pulse, error) {
-	url := c.searchURL(PulseEndpoint, qry, opts...)
-
+	url, err := c.searchURL(PulseEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var p []*Pulse
 
-	err := c.get(url, &p)
+	err = c.get(url, &p)
 	if err != nil {
 		return nil, err
 	}

@@ -13,11 +13,13 @@ type Theme struct {
 
 // GetTheme gets IGDB information for a theme identified by their unique IGDB ID.
 func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
-	url := c.singleURL(ThemeEndpoint, id, opts...)
-
+	url, err := c.singleURL(ThemeEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var t []Theme
 
-	err := c.get(url, &t)
+	err = c.get(url, &t)
 	if err != nil {
 		return nil, err
 	}
@@ -27,11 +29,13 @@ func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 
 // GetThemes gets IGDB information for a list of themes identified by a list of their unique IGDB IDs.
 func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
-	url := c.multiURL(ThemeEndpoint, ids, opts...)
-
+	url, err := c.multiURL(ThemeEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var t []*Theme
 
-	err := c.get(url, &t)
+	err = c.get(url, &t)
 	if err != nil {
 		return nil, err
 	}
@@ -42,11 +46,13 @@ func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 // SearchThemes searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchThemes(qry string, opts ...OptionFunc) ([]*Theme, error) {
-	url := c.searchURL(ThemeEndpoint, qry, opts...)
-
+	url, err := c.searchURL(ThemeEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var t []*Theme
 
-	err := c.get(url, &t)
+	err = c.get(url, &t)
 	if err != nil {
 		return nil, err
 	}

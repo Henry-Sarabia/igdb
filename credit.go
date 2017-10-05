@@ -26,11 +26,14 @@ type Credit struct {
 
 // GetCredit gets IGDB information for a credit identified by its unique IGDB ID.
 func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
-	url := c.singleURL(CreditEndpoint, id, opts...)
-
+	url, err := c.singleURL(CreditEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
+	
 	var cr []Credit
 
-	err := c.get(url, &cr)
+	err = c.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}
@@ -41,11 +44,14 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 // GetCredits gets IGDB information for a list of credits identified by their
 // unique IGDB IDs.
 func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
-	url := c.multiURL(CreditEndpoint, ids, opts...)
+	url, err := c.multiURL(CreditEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var cr []*Credit
 
-	err := c.get(url, &cr)
+	err = c.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}
@@ -56,11 +62,14 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 // SearchCredits searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
-	url := c.searchURL(CreditEndpoint, qry, opts...)
+	url, err := c.searchURL(CreditEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var cr []*Credit
 
-	err := c.get(url, &cr)
+	err = c.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}

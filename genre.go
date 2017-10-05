@@ -13,11 +13,13 @@ type Genre struct {
 
 // GetGenre gets IGDB information for a genre identified by its unique IGDB ID.
 func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
-	url := c.singleURL(GenreEndpoint, id, opts...)
-
+	url, err := c.singleURL(GenreEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []Genre
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -28,11 +30,13 @@ func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 // GetGenres gets IGDB information for a list of genres identified by their
 // unique IGDB IDs.
 func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
-	url := c.multiURL(GenreEndpoint, ids, opts...)
-
+	url, err := c.multiURL(GenreEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*Genre
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +47,13 @@ func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 // SearchGenres searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGenres(qry string, opts ...OptionFunc) ([]*Genre, error) {
-	url := c.searchURL(GenreEndpoint, qry, opts...)
-
+	url, err := c.searchURL(GenreEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*Genre
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}

@@ -13,11 +13,14 @@ type Franchise struct {
 
 // GetFranchise gets IGDB information for a franchise identified by its unique IGDB ID.
 func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
-	url := c.singleURL(FranchiseEndpoint, id, opts...)
+	url, err := c.singleURL(FranchiseEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var f []Franchise
 
-	err := c.get(url, &f)
+	err = c.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -28,11 +31,14 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 // GetFranchises gets IGDB information for a list of franchises identified by their
 // unique IGDB IDs.
 func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
-	url := c.multiURL(FranchiseEndpoint, ids, opts...)
+	url, err := c.multiURL(FranchiseEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var f []*Franchise
 
-	err := c.get(url, &f)
+	err = c.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +49,14 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 // SearchFranchises searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
-	url := c.searchURL(FranchiseEndpoint, qry, opts...)
+	url, err := c.searchURL(FranchiseEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var f []*Franchise
 
-	err := c.get(url, &f)
+	err = c.get(url, &f)
 	if err != nil {
 		return nil, err
 	}

@@ -55,36 +55,45 @@ func (c *Client) get(url string, result interface{}) error {
 
 // singleURL creates a URL configured to request a single IGDB entity
 // identified by its unique IGDB ID using the given endpoint.
-func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) string {
-	opt := newOpt(opts...)
+func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
+	opt, err := newOpt(opts...)
+	if err != nil {
+		return "", err
+	}
 
 	url := c.rootURL + string(end) + strconv.Itoa(id)
-	url = encodeURL(opt.Values, url)
+	url = encodeURL(&opt.Values, url)
 
-	return url
+	return url, nil
 }
 
 // multiURL creates a URL configured to request multiple IGDB entities identified
 // by their unique IGDB IDs using the given endpoint.
-func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) string {
-	opt := newOpt(opts...)
+func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
+	opt, err := newOpt(opts...)
+	if err != nil {
+		return "", err
+	}
 
 	url := c.rootURL + string(end) + intsToCommaString(ids)
-	url = encodeURL(opt.Values, url)
+	url = encodeURL(&opt.Values, url)
 
-	return url
+	return url, nil
 }
 
 // searchURL creates a URL configured to search the IGDB based on the given query
 // using the given endpoint.
-func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) string {
+func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
 	opts = append(opts, optSearch(qry))
-	opt := newOpt(opts...)
+	opt, err := newOpt(opts...)
+	if err != nil {
+		return "", err
+	}
 
 	url := c.rootURL + string(end)
-	url = encodeURL(opt.Values, url)
+	url = encodeURL(&opt.Values, url)
 
-	return url
+	return url, nil
 }
 
 // Encoder is implemented by any values that has

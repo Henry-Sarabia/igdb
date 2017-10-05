@@ -13,11 +13,13 @@ type GameMode struct {
 
 // GetGameMode gets IGDB information for a game mode identified by its unique IGDB ID.
 func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
-	url := c.singleURL(GameModeEndpoint, id, opts...)
-
+	url, err := c.singleURL(GameModeEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []GameMode
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -28,11 +30,13 @@ func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 // GetGameModes gets IGDB information for a list of game modes identified by their
 // unique IGDB IDs.
 func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
-	url := c.multiURL(GameModeEndpoint, ids, opts...)
-
+	url, err := c.multiURL(GameModeEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*GameMode
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +47,13 @@ func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error
 // SearchGameModes searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGameModes(qry string, opts ...OptionFunc) ([]*GameMode, error) {
-	url := c.searchURL(GameModeEndpoint, qry, opts...)
-
+	url, err := c.searchURL(GameModeEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*GameMode
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}

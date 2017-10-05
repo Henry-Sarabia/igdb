@@ -13,11 +13,14 @@ type Collection struct {
 
 // GetCollection gets IGDB information for a collection identified by its unique IGDB ID.
 func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) {
-	url := c.singleURL(CollectionEndpoint, id, opts...)
+	url, err := c.singleURL(CollectionEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var col []Collection
 
-	err := c.get(url, &col)
+	err = c.get(url, &col)
 	if err != nil {
 		return nil, err
 	}
@@ -28,11 +31,14 @@ func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) 
 // GetCollections gets IGDB information for a list of collections identified by their
 // unique IGDB IDs.
 func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, error) {
-	url := c.multiURL(CollectionEndpoint, ids, opts...)
+	url, err := c.multiURL(CollectionEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var col []*Collection
 
-	err := c.get(url, &col)
+	err = c.get(url, &col)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +49,14 @@ func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, e
 // SearchCollections searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchCollections(qry string, opts ...OptionFunc) ([]*Collection, error) {
-	url := c.searchURL(CollectionEndpoint, qry, opts...)
+	url, err := c.searchURL(CollectionEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var col []*Collection
 
-	err := c.get(url, &col)
+	err = c.get(url, &col)
 	if err != nil {
 		return nil, err
 	}

@@ -26,11 +26,14 @@ type Feed struct {
 
 // GetFeed gets IGDB information for a feed identified by its unique IGDB ID.
 func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
-	url := c.singleURL(FeedEndpoint, id, opts...)
+	url, err := c.singleURL(FeedEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var f []Feed
 
-	err := c.get(url, &f)
+	err = c.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -41,11 +44,14 @@ func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 // GetFeeds gets IGDB information for a list of game engines identified by their
 // unique IGDB IDs.
 func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
-	url := c.multiURL(FeedEndpoint, ids, opts...)
+	url, err := c.multiURL(FeedEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 
 	var f []*Feed
 
-	err := c.get(url, &f)
+	err = c.get(url, &f)
 	if err != nil {
 		return nil, err
 	}

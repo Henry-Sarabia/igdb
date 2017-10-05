@@ -21,11 +21,13 @@ type ReleaseDate struct {
 
 // GetReleaseDate gets IGDB information for a release date identified by their unique IGDB ID.
 func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error) {
-	url := c.singleURL(ReleaseDateEndpoint, id, opts...)
-
+	url, err := c.singleURL(ReleaseDateEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var r []ReleaseDate
 
-	err := c.get(url, &r)
+	err = c.get(url, &r)
 	if err != nil {
 		return nil, err
 	}
@@ -35,11 +37,13 @@ func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error
 
 // GetReleaseDates gets IGDB information for a list of release dates identified by a list of their unique IGDB IDs.
 func (c *Client) GetReleaseDates(ids []int, opts ...OptionFunc) ([]*ReleaseDate, error) {
-	url := c.multiURL(ReleaseDateEndpoint, ids, opts...)
-
+	url, err := c.multiURL(ReleaseDateEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var r []*ReleaseDate
 
-	err := c.get(url, &r)
+	err = c.get(url, &r)
 	if err != nil {
 		return nil, err
 	}

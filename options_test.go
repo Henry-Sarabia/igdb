@@ -6,10 +6,13 @@ import (
 )
 
 func TestOptOrder(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptOrder("popularity", Ascend)
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eOrd := "popularity:asc"
 	aOrd := opt.Values.Get("order")
@@ -19,10 +22,20 @@ func TestOptOrder(t *testing.T) {
 }
 
 func TestOptLimit(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptLimit(20)
+	// var limitTests = []struct {
+	// 	Name string
+	// 	Limit int
+	// } {
+	// 	{"Happy path", 20},
+	// 	{"invalid negative limit", }
+	// }
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eLim := strconv.Itoa(20)
 	aLim := opt.Values.Get("limit")
@@ -33,10 +46,13 @@ func TestOptLimit(t *testing.T) {
 }
 
 func TestOptOffset(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptOffset(5)
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eOff := strconv.Itoa(5)
 	aOff := opt.Values.Get("offset")
@@ -46,10 +62,13 @@ func TestOptOffset(t *testing.T) {
 }
 
 func TestOptFields(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptFields("name", "rating", "popularity")
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eFld := "name,rating,popularity"
 	aFld := opt.Values.Get("fields")
@@ -59,10 +78,13 @@ func TestOptFields(t *testing.T) {
 }
 
 func TestOptFieldsEmpty(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptFields()
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eFld := ""
 	aFld := opt.Values.Get("fields")
@@ -72,10 +94,13 @@ func TestOptFieldsEmpty(t *testing.T) {
 }
 
 func TestOptFilter(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptFilter("popularity", LessThanEqual, "50")
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eFil := "50"
 	aFil := opt.Values.Get("filter[popularity][lte]")
@@ -85,10 +110,13 @@ func TestOptFilter(t *testing.T) {
 }
 
 func TestOptSearch(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := optSearch("mario party")
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	eQry := "mario party"
 	aQry := opt.Values.Get("search")
@@ -98,10 +126,13 @@ func TestOptSearch(t *testing.T) {
 }
 
 func TestOptScroll(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 	optFunc := OptScroll(3)
 
-	optFunc(&opt)
+	optFunc(opt)
 
 	ePage := strconv.Itoa(3)
 	aPage := opt.Values.Get("scroll")
@@ -111,7 +142,10 @@ func TestOptScroll(t *testing.T) {
 }
 
 func TestNewOptEmpty(t *testing.T) {
-	opt := newOpt()
+	opt, err := newOpt()
+	if err != nil {
+		t.Error(err)
+	}
 
 	evl := 0
 	avl := len(opt.Values)
@@ -121,7 +155,10 @@ func TestNewOptEmpty(t *testing.T) {
 }
 
 func TestNewOptSingle(t *testing.T) {
-	opt := newOpt(OptLimit(20))
+	opt, err := newOpt(OptLimit(20))
+	if err != nil {
+		t.Error(err)
+	}
 
 	evl := 1
 	avl := len(opt.Values)
@@ -131,63 +168,18 @@ func TestNewOptSingle(t *testing.T) {
 }
 
 func TestNewOptMulti(t *testing.T) {
-	opt := newOpt(OptFields("name", "rating"),
+	opt, err := newOpt(OptFields("name", "rating"),
 		OptFilter("name", Equals, "zelda"),
 		OptLimit(5),
 		OptOffset(10),
 		OptOrder("rating", Descend))
+	if err != nil {
+		t.Error(err)
+	}
 
 	evl := 5
 	avl := len(opt.Values)
 	if avl != evl {
 		t.Errorf("Expected Values map length %d, got %d", evl, avl)
-	}
-}
-
-func TestOptOverwrite(t *testing.T) {
-	// Fields, Limit, and Order overwrite themselves.
-	// Offset and Scroll are mutually exclusive, preferring Scroll over Offset.
-	// Filter is additive with itself.
-	opt := newOpt(OptFields("name", "rating"),
-		OptFilter("name", Equals, "zelda"),
-		OptLimit(5),
-		OptOffset(10),
-		OptOrder("rating", Descend),
-		OptScroll(5),
-		OptFields("id", "popularity"),
-		OptFilter("id", NotIn, "1234"),
-		OptLimit(25),
-		OptOffset(50),
-		OptOrder("popularity", Ascend),
-		OptScroll(6))
-
-	evl := 6
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
-	}
-}
-
-func TestOptScrollOverwrite(t *testing.T) {
-	opt := newOpt(OptOffset(15),
-		OptScroll(2),
-		OptOffset(25))
-
-	evl := 1
-	avl := len(opt.Values)
-	if avl != evl {
-		t.Errorf("Expecting Values map length %d, got %d", evl, avl)
-	}
-
-	evs := "2"
-	avs := opt.Values.Get("scroll")
-	if avs != evs {
-		t.Errorf("Expecting scroll value '%s', got '%s'", evs, avs)
-	}
-
-	evo := ""
-	avo := opt.Values.Get("offset")
-	if avo != evo {
-		t.Errorf("Expecing offset value '%s', got '%s'", evo, avo)
 	}
 }

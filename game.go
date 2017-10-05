@@ -104,11 +104,13 @@ type Game struct {
 
 // GetGame gets IGDB information for a game identified by their unique IGDB ID.
 func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
-	url := c.singleURL(GameEndpoint, id, opts...)
-
+	url, err := c.singleURL(GameEndpoint, id, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []Game
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +120,13 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 
 // GetGames gets IGDB information for a list of games identified by a list of their unique IGDB IDs.
 func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
-	url := c.multiURL(GameEndpoint, ids, opts...)
-
+	url, err := c.multiURL(GameEndpoint, ids, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*Game
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +137,13 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 // SearchGames searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
-	url := c.searchURL(GameEndpoint, qry, opts...)
-
+	url, err := c.searchURL(GameEndpoint, qry, opts...)
+	if err != nil {
+		return nil, err
+	}
 	var g []*Game
 
-	err := c.get(url, &g)
+	err = c.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
