@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -56,6 +57,9 @@ func (c *Client) get(url string, result interface{}) error {
 // singleURL creates a URL configured to request a single IGDB entity
 // identified by its unique IGDB ID using the given endpoint.
 func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
+	if id < 0 {
+		return "", errors.New("id cannot be a negative value")
+	}
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err
@@ -70,6 +74,11 @@ func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, er
 // multiURL creates a URL configured to request multiple IGDB entities identified
 // by their unique IGDB IDs using the given endpoint.
 func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
+	for _, id := range ids {
+		if id < 0 {
+			return "", errors.New("id cannot be a negative value")
+		}
+	}
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err
