@@ -227,6 +227,9 @@ func optSearch(qry string) OptionFunc {
 		if qry == "" {
 			return ErrEmptyQuery
 		}
+		if o.Values.Get("search") != "" {
+			return ErrOptionSet
+		}
 		o.Values.Set("search", qry)
 		return nil
 	}
