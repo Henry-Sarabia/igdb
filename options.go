@@ -183,12 +183,12 @@ const (
 // value as a string to specify the value of the configured filter. This
 // is the only option allowed to have more than one of in a single API call.
 // For more information visit https://igdb.github.io/api/references/filters/.
-func OptFilter(field string, post operator, val string) OptionFunc {
+func OptFilter(field string, op operator, val string) OptionFunc {
 	return func(o *Options) error {
 		if field == "" || val == "" {
 			return ErrEmptyField
 		}
-		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
+		s := fmt.Sprintf("filter[%s][%s]", field, string(op))
 		o.Values.Set(s, val)
 		return nil
 	}
