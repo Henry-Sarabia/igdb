@@ -185,7 +185,7 @@ const (
 // For more information visit https://igdb.github.io/api/references/filters/.
 func OptFilter(field string, post postfix, val string) OptionFunc {
 	return func(o *Options) error {
-		if field == "" {
+		if field == "" || val == "" {
 			return ErrEmptyField
 		}
 		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
