@@ -56,6 +56,9 @@ const (
 // ordering is based on relevance.
 func OptOrder(field string, ord order) OptionFunc {
 	return func(o *Options) error {
+		if len(field) == 0 {
+			return errors.New("field value is empty")
+		}
 		if o.Values.Get("order") != "" {
 			return errors.New("order option already set")
 		}
