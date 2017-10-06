@@ -56,7 +56,7 @@ func TestSingleURL(t *testing.T) {
 		OptFilter("popularity", GreaterThanEqual, strconv.Itoa(50)),
 		OptLimit(10),
 		OptOffset(5),
-		OptOrder("popularity", Descend))
+		OptOrder("popularity", DescendingOrder))
 	if err != nil {
 		t.Error(err)
 	}
@@ -74,7 +74,7 @@ func TestMultiURL(t *testing.T) {
 		OptFilter("popularity", GreaterThanEqual, strconv.Itoa(50)),
 		OptLimit(10),
 		OptOffset(5),
-		OptOrder("popularity", Descend))
+		OptOrder("popularity", DescendingOrder))
 	if err != nil {
 		t.Error(err)
 	}
@@ -92,7 +92,7 @@ func TestSearchURL(t *testing.T) {
 		OptFilter("popularity", GreaterThanEqual, strconv.Itoa(50)),
 		OptLimit(10),
 		OptOffset(5),
-		OptOrder("popularity", Descend))
+		OptOrder("popularity", DescendingOrder))
 	if err != nil {
 		t.Error(err)
 	}
