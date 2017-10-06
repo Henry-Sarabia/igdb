@@ -205,6 +205,9 @@ func OptFilter(field string, op operator, val string) OptionFunc {
 // be used per API call.
 func OptScroll(page int) OptionFunc {
 	return func(o *Options) error {
+		if page < 1 {
+			return ErrOutOfRange
+		}
 		if o.Values.Get("offset") != "" {
 			return ErrExclusiveOption
 		}
