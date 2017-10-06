@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+// ErrNegativeID is returned by a client when a negative
+// ID is used as an argument in an API call.
+var ErrNegativeID = errors.New("igdb.Client: negative ID")
+
 // Client wraps a typical http.Client.
 type Client struct {
 	http    *http.Client
@@ -58,7 +62,7 @@ func (c *Client) get(url string, result interface{}) error {
 // identified by its unique IGDB ID using the given endpoint.
 func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
 	if id < 0 {
-		return "", errors.New("id cannot be a negative value")
+		return "", ErrNegativeID
 	}
 	opt, err := newOpt(opts...)
 	if err != nil {
@@ -76,7 +80,7 @@ func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, er
 func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
 	for _, id := range ids {
 		if id < 0 {
-			return "", errors.New("id cannot be a negative value")
+			return "", ErrNegativeID
 		}
 	}
 	opt, err := newOpt(opts...)
