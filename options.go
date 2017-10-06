@@ -139,9 +139,6 @@ func OptFields(fields ...string) OptionFunc {
 			return ErrOptionSet
 		}
 		fs := strings.Join(fields, ",")
-		if prev, ok := o.Values["fields"]; ok {
-			fs = prev[0] + "," + fs
-		}
 		o.Values.Set("fields", fs)
 		return nil
 	}
