@@ -7,41 +7,43 @@ import (
 )
 
 const testEndpoint endpoint = "tests/"
-const testGetResp = `[{"example": "value"}]`
+const testGetResp = `{"example": "value"}`
 
 type testStruct struct {
 	Example string `json:"example"`
 }
 
 func TestGet(t *testing.T) {
-	testVar := testStruct{}
 	var getTests = []struct {
-		Name   string
-		URL    string
-		Result interface{}
-		Code   int
-		Resp   string
-		ExpErr string
+		Name    string
+		URL     string
+		Code    int
+		ExpResp string
+		ExpErr  string
 	}{
-		{"bad request with bad response", "fakeurl", testVar, http.StatusBadRequest, "", "unexpected end of JSON input"},
-		{"OK request with OK response", string(testEndpoint), testVar, http.StatusOK, testGetResp, ""},
-		{"OK request with bad response", string(testEndpoint), testVar, http.StatusOK, "", "unexpected end of JSON input"},
+		{"Bad request with bad response", "fakeurl", http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"OK request with OK response", string(testEndpoint), http.StatusOK, testGetResp, ""},
+		{"OK request with bad response", string(testEndpoint), http.StatusOK, "", "unexpected end of JSON input"},
 	}
 
 	for _, gt := range getTests {
+		testResp := testStruct{}
 		t.Run(gt.Name, func(t *testing.T) {
-			ts, c := startTestServer(gt.Code, gt.Resp)
+			ts, c := startTestServer(gt.Code, gt.ExpResp)
 			defer ts.Close()
 
-			err := c.get(c.rootURL+gt.URL, &gt.Result)
+			err := c.get(c.rootURL+gt.URL, &testResp)
 			if err == nil {
 				if gt.ExpErr != "" {
 					t.Fatalf("Expected error '%v', got nil error'", gt.ExpErr)
 				}
 				return
-			}
-			if err.Error() != gt.ExpErr {
+			} else if err.Error() != gt.ExpErr {
 				t.Fatalf("Expected error '%v', got error '%v'", gt.ExpErr, err.Error())
+			}
+
+			if testResp.Example != gt.ExpResp {
+				t.Fatalf("Expected response '%v', got '%v'", gt.ExpResp, testResp.Example)
 			}
 		})
 	}
