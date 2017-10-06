@@ -8,6 +8,16 @@ import (
 	"strings"
 )
 
+// Errors returned by an OptionFunc.
+var (
+	ErrOptionSet       = errors.New("igdb.OptionFunc: option already set")
+	ErrEmptyField      = errors.New("igdb.OptionFunc: field value empty")
+	ErrEmptySlice      = errors.New("igdb.OptionFunc: slice empty")
+	ErrOutOfRange      = errors.New("igdb.OptionFunc: value out of range")
+	ErrExclusiveOption = errors.New("igdb.OptionFunc: multiple set options are mutually exclusive")
+	ErrEmptyQuery      = errors.New("igdb.OptionFunc: query value empty")
+)
+
 // Options contains a value map to store optional
 // parameters for the various API calls.
 type Options struct {
@@ -57,10 +67,10 @@ const (
 func OptOrder(field string, ord order) OptionFunc {
 	return func(o *Options) error {
 		if len(field) == 0 {
-			return errors.New("field value is empty")
+			return ErrEmptyField
 		}
 		if o.Values.Get("order") != "" {
-			return errors.New("order option already set")
+			return ErrOptionSet
 		}
 		o.Values.Set("order", field+string(ord))
 		return nil
@@ -75,10 +85,10 @@ func OptOrder(field string, ord order) OptionFunc {
 func OptLimit(lim int) OptionFunc {
 	return func(o *Options) error {
 		if lim <= 0 || lim > 50 {
-			return errors.New("limit value not from 1 through 50")
+			return ErrOutOfRange
 		}
 		if o.Values.Get("limit") != "" {
-			return errors.New("limit option already set")
+			return ErrOptionSet
 		}
 		o.Values.Set("limit", strconv.Itoa(lim))
 		return nil
@@ -97,13 +107,13 @@ func OptLimit(lim int) OptionFunc {
 func OptOffset(off int) OptionFunc {
 	return func(o *Options) error {
 		if off < 0 || off > 50 {
-			return errors.New("offset value not from 0 through 50")
+			return ErrOutOfRange
 		}
 		if o.Values.Get("scroll") != "" {
-			return errors.New("offset option is mutually exclusive with scroll option")
+			return ErrExclusiveOption
 		}
 		if o.Values.Get("offset") != "" {
-			return errors.New("offset option already set")
+			return ErrOptionSet
 		}
 		o.Values.Set("offset", strconv.Itoa(off))
 		return nil
@@ -118,10 +128,15 @@ func OptOffset(off int) OptionFunc {
 func OptFields(fields ...string) OptionFunc {
 	return func(o *Options) error {
 		if len(fields) == 0 {
-			return errors.New("fields value is empty")
+			return ErrEmptySlice
+		}
+		for _, f := range fields {
+			if f == "" {
+				return ErrEmptyField
+			}
 		}
 		if o.Values.Get("fields") != "" {
-			return errors.New("fields option already set")
+			return ErrOptionSet
 		}
 		fs := strings.Join(fields, ",")
 		if prev, ok := o.Values["fields"]; ok {
@@ -171,7 +186,7 @@ const (
 func OptFilter(field string, post postfix, val string) OptionFunc {
 	return func(o *Options) error {
 		if field == "" {
-			return errors.New("field value is empty")
+			return ErrEmptyField
 		}
 		s := fmt.Sprintf("filter[%s][%s]", field, string(post))
 		o.Values.Set(s, val)
@@ -191,10 +206,10 @@ func OptFilter(field string, post postfix, val string) OptionFunc {
 func OptScroll(page int) OptionFunc {
 	return func(o *Options) error {
 		if o.Values.Get("offset") != "" {
-			return errors.New("scroll option is mutually exclusive with offset option")
+			return ErrExclusiveOption
 		}
 		if o.Values.Get("scroll") != "" {
-			return errors.New("scroll option already set")
+			return ErrOptionSet
 		}
 		o.Values.Set("scroll", strconv.Itoa(page))
 		return nil
@@ -207,7 +222,7 @@ func OptScroll(page int) OptionFunc {
 func optSearch(qry string) OptionFunc {
 	return func(o *Options) error {
 		if qry == "" {
-			return errors.New("qry value is empty")
+			return ErrEmptyQuery
 		}
 		o.Values.Set("search", qry)
 		return nil
