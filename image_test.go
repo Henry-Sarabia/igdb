@@ -1,7 +1,7 @@
 package igdb
 
 import (
-	"errors"
+	"reflect"
 	"testing"
 )
 
@@ -20,20 +20,18 @@ func TestSizedImageURL(t *testing.T) {
 	}{
 		{"happy path", testImageID, SizeScreenshotMed, 1, testImageURL, nil},
 		{"happy path 2x", testImageID, SizeScreenshotMed, 2, testImageURL2x, nil},
-		{"invalid image ID", "", Size1080p, 1, "", errors.New("invalid empty image ID")},
-		{"invalid negative ratio", testImageID, SizeScreenshotHuge, -1, "", errors.New("invalid pixel display ratio")},
-		{"invalid positive ratio", testImageID, SizeScreenshotBig, 3, "", errors.New("invalid pixel display ratio")},
-		{"invalid image ID and ratio", "", SizeMicro, 0, "", errors.New("invalid empty image ID")},
+		{"invalid image ID", "", Size1080p, 1, "", ErrEmptyID},
+		{"invalid negative ratio", testImageID, SizeScreenshotHuge, -1, "", ErrPixelRatio},
+		{"invalid positive ratio", testImageID, SizeScreenshotBig, 3, "", ErrPixelRatio},
+		{"invalid image ID and ratio", "", SizeMicro, 0, "", ErrEmptyID},
 	}
 
 	for _, it := range imageTests {
 		t.Run(it.Name, func(t *testing.T) {
 			img := Image{ID: it.ID}
 			url, err := img.SizedURL(it.Size, it.Ratio)
-			if err != nil {
-				if err.Error() != it.ExpErr.Error() {
-					t.Fatalf("Expected error '%v', got '%v'", it.ExpErr.Error(), err.Error())
-				}
+			if !reflect.DeepEqual(err, it.ExpErr) {
+				t.Fatalf("Expected error '%v', got '%v'", it.ExpErr, err)
 			}
 
 			if url != it.ExpURL {

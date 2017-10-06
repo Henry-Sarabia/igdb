@@ -5,6 +5,13 @@ import (
 	"fmt"
 )
 
+var (
+	// ErrEmptyID signals an invalid empty ID string.
+	ErrEmptyID    = errors.New("igdb: id value empty")
+	// ErrPixelRatio signals an unsupported display pixel ratio.
+	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
+)
+
 // Image holds an image's URL, dimensions,
 // and its Cloudinary ID.
 type Image struct {
@@ -49,10 +56,10 @@ const (
 // passing in an integer. The available ratios are 1 and 2.
 func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
 	if ImageID == "" {
-		return "", errors.New("invalid empty image ID")
+		return "", ErrEmptyID
 	}
 	if ratio < 1 || ratio > 2 {
-		return "", errors.New("invalid pixel display ratio")
+		return "", ErrPixelRatio
 	}
 
 	var dpr string
