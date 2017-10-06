@@ -43,12 +43,12 @@ func newOpt(ofs ...OptionFunc) (*Options, error) {
 type order string
 
 const (
-	// Ascend is used as an argument in the SetOrder optional function
+	// AscendingOrder is used as an argument in the SetOrder optional function
 	// to set the results from an API call in ascending order.
-	Ascend order = ":asc"
-	// Descend is used as an argument in the SetOrder optional function
+	AscendingOrder order = ":asc"
+	// DescendingOrder is used as an argument in the SetOrder optional function
 	// to set the results from an API call in descending order.
-	Descend order = ":desc"
+	DescendingOrder order = ":desc"
 )
 
 // OptOrder is a functional option used to set
