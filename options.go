@@ -147,43 +147,43 @@ func OptFields(fields ...string) OptionFunc {
 	}
 }
 
-type postfix string
+type operator string
 
 const (
-	// Equals checks for equality. Must match exactly.
-	Equals postfix = "eq"
-	// NotEquals checks for inequality. Any non-exact match.
-	NotEquals postfix = "not_eq"
-	// GreaterThan checks if value is greater than another value. Only works on numbers.
-	GreaterThan postfix = "gt"
-	// GreaterThanEqual checks if value is greater than or equal to another value. Only works on numbers.
-	GreaterThanEqual postfix = "gte"
-	// LessThan checks if value is less than another value. Only works on numbers.
-	LessThan postfix = "lt"
-	// LessThanEqual checks if value is less than or equal to another value. Only works on numbers.
-	LessThanEqual postfix = "lte"
-	// Prefix only works on strings.
-	Prefix postfix = "prefix"
-	// Exists checks for a non-null value.
-	Exists postfix = "exists"
-	// NotExists checks for a null value.
-	NotExists postfix = "not_exists"
-	// In checks if the value exists within an array and between values.
-	In postfix = "in"
-	// NotIn checks if the values do not not exist within an array and between values.
-	NotIn postfix = "not_in"
-	// Any checks if the value has any within the array or between values.
-	Any postfix = "any"
+	// OpEquals checks for equality. Must match exactly.
+	OpEquals operator = "eq"
+	// OpNotEquals checks for inequality. Any non-exact match.
+	OpNotEquals operator = "not_eq"
+	// OpGreaterThan checks if value is greater than another value. Only works on numbers.
+	OpGreaterThan operator = "gt"
+	// OpGreaterThanEqual checks if value is greater than or equal to another value. Only works on numbers.
+	OpGreaterThanEqual operator = "gte"
+	// OpLessThan checks if value is less than another value. Only works on numbers.
+	OpLessThan operator = "lt"
+	// OpLessThanEqual checks if value is less than or equal to another value. Only works on numbers.
+	OpLessThanEqual operator = "lte"
+	// OpPrefix only works on strings.
+	OpPrefix operator = "prefix"
+	// OpExists checks for a non-null value.
+	OpExists operator = "exists"
+	// OpNotExists checks for a null value.
+	OpNotExists operator = "not_exists"
+	// OpIn checks if the value exists within an array and between values.
+	OpIn operator = "in"
+	// OpNotIn checks if the values do not not exist within an array and between values.
+	OpNotIn operator = "not_in"
+	// OpAny checks if the value has any within the array or between values.
+	OpAny operator = "any"
 )
 
 // OptFilter is a functional option used to filter the results from
 // an API call. Provide a field name to specify what property you
-// want to filter with. Provide a postfix to specify how you want
+// want to filter with. Provide an operator to specify how you want
 // to filter the results using the given field name. Provide a concrete
 // value as a string to specify the value of the configured filter. This
 // is the only option allowed to have more than one of in a single API call.
 // For more information visit https://igdb.github.io/api/references/filters/.
-func OptFilter(field string, post postfix, val string) OptionFunc {
+func OptFilter(field string, post operator, val string) OptionFunc {
 	return func(o *Options) error {
 		if field == "" || val == "" {
 			return ErrEmptyField
