@@ -18,12 +18,12 @@ func TestSizedImageURL(t *testing.T) {
 		ExpURL string
 		ExpErr error
 	}{
-		{"happy path", testImageID, SizeScreenshotMed, 1, testImageURL, nil},
-		{"happy path 2x", testImageID, SizeScreenshotMed, 2, testImageURL2x, nil},
-		{"invalid image ID", "", Size1080p, 1, "", ErrEmptyID},
-		{"invalid negative ratio", testImageID, SizeScreenshotHuge, -1, "", ErrPixelRatio},
-		{"invalid positive ratio", testImageID, SizeScreenshotBig, 3, "", ErrPixelRatio},
-		{"invalid image ID and ratio", "", SizeMicro, 0, "", ErrEmptyID},
+		{"Non-empty ID and valid single ratio", testImageID, SizeScreenshotMed, 1, testImageURL, nil},
+		{"Non-empty ID and valid double ratio", testImageID, SizeScreenshotMed, 2, testImageURL2x, nil},
+		{"Empty ID and valid ratio", "", Size1080p, 1, "", ErrEmptyID},
+		{"Non-empty ID and invalid negative ratio", testImageID, SizeScreenshotHuge, -1, "", ErrPixelRatio},
+		{"Non-empty ID and invalid triple ratio", testImageID, SizeScreenshotBig, 3, "", ErrPixelRatio},
+		{"Empty ID and invalid 0 ratio", "", SizeMicro, 0, "", ErrEmptyID},
 	}
 
 	for _, it := range imageTests {
