@@ -21,9 +21,9 @@ func TestGet(t *testing.T) {
 		ExpResp string
 		ExpErr  string
 	}{
-		{"Bad request with bad response", "fakeurl", http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"Bad request with bad response", "fakeurl", http.StatusBadRequest, "", errEndOfJSON.Error()},
 		{"OK request with OK response", string(testEndpoint), http.StatusOK, testGetResp, ""},
-		{"OK request with bad response", string(testEndpoint), http.StatusOK, "", "unexpected end of JSON input"},
+		{"OK request with bad response", string(testEndpoint), http.StatusOK, "", errEndOfJSON.Error()},
 	}
 
 	for _, gt := range getTests {

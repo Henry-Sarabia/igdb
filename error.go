@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+var errEndOfJSON = errors.New("unexpected end of JSON input")
+
 // Error contains information from the IGDB
 // when an API call receives an error in response.
 type Error struct {
@@ -34,6 +36,9 @@ func (c *Client) checkError(resp *http.Response) error {
 		return err
 	}
 
-	msg := fmt.Sprintf("Status %d - %s", e.Status, e.Message)
+	msg := fmt.Sprintf("Status %d", e.Status)
+	if e.Message != "" {
+		msg += fmt.Sprintf(" - %v", e.Message)
+	}
 	return errors.New(msg)
 }

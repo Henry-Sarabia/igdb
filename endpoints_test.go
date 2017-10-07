@@ -14,9 +14,8 @@ func TestGetEndpointFields(t *testing.T) {
 		ExpErr    string
 	}{
 		{"OK request with non-empty response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"OK request with empty response", http.StatusOK, "", nil, "unexpected end of JSON input"},
-		{"Bad request with empty response", http.StatusBadRequest, "", nil, "unexpected end of JSON input"},
-		{"Bad request with non-empty response", http.StatusBadRequest, `["name", "slug", "url"]`, nil, "json: cannot unmarshal array into Go value of type igdb.Error"},
+		{"OK request with empty response", http.StatusOK, "", nil, errEndOfJSON.Error()},
+		{"Bad request with empty response", http.StatusBadRequest, "", nil, errEndOfJSON.Error()},
 	}
 
 	for _, ft := range fieldsTests {
@@ -54,8 +53,8 @@ func TestGetEndpointCount(t *testing.T) {
 		ExpErr   string
 	}{
 		{"OK request with non-empty response", http.StatusOK, `{"count": 1234}`, 1234, ""},
-		{"OK request with empty response", http.StatusOK, "", 0, "unexpected end of JSON input"},
-		{"Bad request with empty response", http.StatusBadRequest, "", 0, "unexpected end of JSON input"},
+		{"OK request with empty response", http.StatusOK, "", 0, errEndOfJSON.Error()},
+		{"Bad request with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
 	}
 
 	for _, ct := range countTests {
