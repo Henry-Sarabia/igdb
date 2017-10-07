@@ -103,3 +103,51 @@ func removeSubfields(f []string) []string {
 	}
 	return out
 }
+
+// equalSlice returns true if two slices contain
+// the same elements, otherwise it returns false.
+// adapted from github.com/emou/testify/assert/assertions.go
+func equalSlice(x, y interface{}) (bool, error) {
+	if x == nil || y == nil {
+		return x == y, nil
+	}
+
+	if reflect.TypeOf(x).Kind() != reflect.Slice {
+		return false, errors.New("not a slice")
+	}
+
+	if reflect.TypeOf(y).Kind() != reflect.Slice {
+		return false, errors.New("not a slice")
+	}
+
+	vx := reflect.ValueOf(x)
+	vy := reflect.ValueOf(y)
+
+	if vx.Len() != vy.Len() {
+		return false, nil
+	}
+
+	visited := make([]bool, vy.Len())
+
+	for i := 0; i < vx.Len(); i++ {
+		element := vx.Index(i).Interface()
+
+		found := false
+		for j := 0; j < vy.Len(); j++ {
+			if visited[j] {
+				continue
+			}
+
+			if reflect.DeepEqual(vy.Index(j).Interface(), element) {
+				visited[j] = true
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
