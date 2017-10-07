@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 )
@@ -19,11 +20,42 @@ type testStructManyTags struct {
 	Rating float64 `json:"rating"`
 }
 
+func TestValidateStructTags(t *testing.T) {
+	noTags := reflect.ValueOf(testStructNoTags{}).Type()
+	oneTag := reflect.ValueOf(testStructOneTag{}).Type()
+	manyTags := reflect.ValueOf(testStructManyTags{}).Type()
+	notStruct := reflect.ValueOf("im not a struct").Type()
+
+	validateTests := []struct {
+		Name   string
+		Struct reflect.Type
+		Tags   []string
+		ExpErr error
+	}{
+		{"No tag struct with corresponding tag strings", noTags, nil, nil},
+		{"No tag struct without corresponding tag strings", noTags, []string{"id"}, errors.New("missing struct tags: id")},
+		{"One tag struct with corresponding tag strings", oneTag, []string{"id"}, nil},
+		{"One tag struct without corresponding tag strings", oneTag, []string{"id", "url"}, errors.New("missing struct tags: url")},
+		{"Many tag struct with corresponding tag strings", manyTags, []string{"id", "name", "rating"}, nil},
+		{"Many tag struct without corresponding tag strings", manyTags, []string{"id", "name", "rating", "url"}, errors.New("missing struct tags: url")},
+		{"Non-struct type", notStruct, nil, ErrNotStruct},
+	}
+
+	for _, vt := range validateTests {
+		t.Run(vt.Name, func(t *testing.T) {
+			err := validateStructTags(vt.Struct, vt.Tags)
+			if !reflect.DeepEqual(err, vt.ExpErr) {
+				t.Fatalf("Expected error '%v', got '%v'", vt.ExpErr, err)
+			}
+		})
+	}
+}
+
 func TestGetStructTags(t *testing.T) {
-	noTags := testStructNoTags{}
-	oneTag := testStructOneTag{}
-	manyTags := testStructManyTags{}
-	notStruct := "im not a struct"
+	noTags := reflect.ValueOf(testStructNoTags{}).Type()
+	oneTag := reflect.ValueOf(testStructOneTag{}).Type()
+	manyTags := reflect.ValueOf(testStructManyTags{}).Type()
+	notStruct := reflect.ValueOf("im not a struct").Type()
 
 	tagTests := []struct {
 		Name    string
@@ -31,16 +63,16 @@ func TestGetStructTags(t *testing.T) {
 		ExpTags []string
 		ExpErr  error
 	}{
-		{"Struct type with no tags", reflect.ValueOf(noTags).Type(), nil, nil},
-		{"Struct type with one tag", reflect.ValueOf(oneTag).Type(), []string{"id"}, nil},
-		{"Struct type with many tags", reflect.ValueOf(manyTags).Type(), []string{"id", "name", "rating"}, nil},
-		{"Non-struct type", reflect.ValueOf(notStruct).Type(), nil, ErrNotStruct},
+		{"Struct type with no tags", noTags, nil, nil},
+		{"Struct type with one tag", oneTag, []string{"id"}, nil},
+		{"Struct type with many tags", manyTags, []string{"id", "name", "rating"}, nil},
+		{"Non-struct type", notStruct, nil, ErrNotStruct},
 	}
 	for _, tt := range tagTests {
 		t.Run(tt.Name, func(t *testing.T) {
 			tags, err := getStructTags(tt.Struct)
 			if !reflect.DeepEqual(err, tt.ExpErr) {
-				t.Fatalf("Expecter error '%v', got '%v'", tt.ExpErr, err)
+				t.Fatalf("Expected error '%v', got '%v'", tt.ExpErr, err)
 			}
 
 			ok, err := equalSlice(tags, tt.ExpTags)
