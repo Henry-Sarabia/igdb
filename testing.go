@@ -91,12 +91,17 @@ func getStructTags(str reflect.Type) ([]string, error) {
 }
 
 // removeSubfields returns a slice of strings
-// representing the collection of fields
-// without any fields containing a period
-// character.
+// containing all fields from f except for any
+// subfields, identified by their inclusion of
+// the period character. Additionally, excess
+// space characters and empty strings are removed.
 func removeSubfields(f []string) []string {
 	var out []string
 	for _, val := range f {
+		val = strings.TrimSpace(val)
+		if val == "" {
+			continue
+		}
 		if !strings.Contains(val, ".") {
 			out = append(out, val)
 		}
