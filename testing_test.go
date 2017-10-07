@@ -1,8 +1,59 @@
 package igdb
 
 import (
+	"reflect"
 	"testing"
 )
+
+type testStructNoTags struct {
+	ID int
+}
+
+type testStructOneTag struct {
+	ID int `json:"id"`
+}
+
+type testStructManyTags struct {
+	ID     int     `json:"id"`
+	Name   string  `json:"name"`
+	Rating float64 `json:"rating"`
+}
+
+func TestGetStructTags(t *testing.T) {
+	noTags := testStructNoTags{}
+	oneTag := testStructOneTag{}
+	manyTags := testStructManyTags{}
+	notStruct := "im not a struct"
+
+	tagTests := []struct {
+		Name    string
+		Struct  reflect.Type
+		ExpTags []string
+		ExpErr  error
+	}{
+		{"Struct type with no tags", reflect.ValueOf(noTags).Type(), nil, nil},
+		{"Struct type with one tag", reflect.ValueOf(oneTag).Type(), []string{"id"}, nil},
+		{"Struct type with many tags", reflect.ValueOf(manyTags).Type(), []string{"id", "name", "rating"}, nil},
+		{"Non-struct type", reflect.ValueOf(notStruct).Type(), nil, ErrNotStruct},
+	}
+	for _, tt := range tagTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			tags, err := getStructTags(tt.Struct)
+			if !reflect.DeepEqual(err, tt.ExpErr) {
+				t.Fatalf("Expecter error '%v', got '%v'", tt.ExpErr, err)
+			}
+
+			ok, err := equalSlice(tags, tt.ExpTags)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !ok {
+				t.Fatalf("Expected tags '%v', got '%v'", tt.ExpTags, tags)
+			}
+		})
+	}
+}
 
 func TestRemoveSubFields(t *testing.T) {
 	removeTests := []struct {

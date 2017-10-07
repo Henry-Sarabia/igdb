@@ -9,7 +9,7 @@ import (
 const testEndpoint endpoint = "tests/"
 const testGetResp = `{"example": "value"}`
 
-type testStruct struct {
+type testResultPlaceholder struct {
 	Example string `json:"example"`
 }
 
@@ -27,7 +27,7 @@ func TestGet(t *testing.T) {
 	}
 
 	for _, gt := range getTests {
-		testResp := testStruct{}
+		testResp := testResultPlaceholder{}
 		t.Run(gt.Name, func(t *testing.T) {
 			ts, c := startTestServer(gt.Code, gt.ExpResp)
 			defer ts.Close()

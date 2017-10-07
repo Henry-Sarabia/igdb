@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+var ErrNotStruct = errors.New("not a struct")
+var ErrNotSlice = errors.New("not a slice")
+
 // startTestServer initializes a test server that will respond with the
 // given status and response. A Client configured especially for this
 // test server is also returned.
@@ -80,12 +83,15 @@ func validateStructTags(str reflect.Type, new []string) error {
 // field in the given struct.
 func getStructTags(str reflect.Type) ([]string, error) {
 	if str.Kind() != reflect.Struct {
-		return nil, errors.New("input type's kind not a struct")
+		return nil, ErrNotStruct
 	}
 
 	var f []string
 	for i := 0; i < str.NumField(); i++ {
-		f = append(f, str.Field(i).Tag.Get("json"))
+		tag := str.Field(i).Tag.Get("json")
+		if tag != "" {
+			f = append(f, tag)
+		}
 	}
 	return f, nil
 }
@@ -118,11 +124,11 @@ func equalSlice(x, y interface{}) (bool, error) {
 	}
 
 	if reflect.TypeOf(x).Kind() != reflect.Slice {
-		return false, errors.New("not a slice")
+		return false, ErrNotSlice
 	}
 
 	if reflect.TypeOf(y).Kind() != reflect.Slice {
-		return false, errors.New("not a slice")
+		return false, ErrNotSlice
 	}
 
 	vx := reflect.ValueOf(x)
