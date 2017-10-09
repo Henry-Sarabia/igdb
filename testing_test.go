@@ -60,9 +60,9 @@ func TestValidateStruct(t *testing.T) {
 		Resp   string
 		ExpErr string
 	}{
-		{"Bad request with empty response", http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"Bad request with empty response", http.StatusBadRequest, "", errEndOfJSON.Error()},
 		{"Bad request with Error type response", http.StatusBadRequest, `{"status": 400,"message": "status bad request"}`, "Status 400 - status bad request"},
-		{"OK request with empty response", http.StatusOK, "", "unexpected end of JSON input"},
+		{"OK request with empty response", http.StatusOK, "", errEndOfJSON.Error()},
 	}
 
 	for _, nt := range networkTests {
