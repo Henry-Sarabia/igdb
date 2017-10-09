@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"errors"
+	"net/http"
 	"reflect"
 	"testing"
 )
@@ -18,6 +19,68 @@ type testStructManyTags struct {
 	ID     int     `json:"id"`
 	Name   string  `json:"name"`
 	Rating float64 `json:"rating"`
+}
+
+func TestValidateStruct(t *testing.T) {
+	noTags := reflect.ValueOf(testStructNoTags{}).Type()
+	oneTag := reflect.ValueOf(testStructOneTag{}).Type()
+	manyTags := reflect.ValueOf(testStructManyTags{}).Type()
+	notStruct := reflect.ValueOf("im not a struct").Type()
+
+	validateTests := []struct {
+		Name   string
+		Struct reflect.Type
+		Resp   string
+		ExpErr error
+	}{
+		{"No tag struct with corresponding tag response", noTags, `[]`, nil},
+		{"No tag struct without corresponding tag response", noTags, `["id"]`, errors.New("missing struct tags: id")},
+		{"One tag struct with corresponding tag strings", oneTag, `["id"]`, nil},
+		{"One tag struct without corresponding tag strings", oneTag, `["id", "url"]`, errors.New("missing struct tags: url")},
+		{"Many tag struct with corresponding tag strings", manyTags, `["id", "name", "rating"]`, nil},
+		{"Many tag struct without corresponding tag strings", manyTags, `["id", "name", "rating", "url"]`, errors.New("missing struct tags: url")},
+		{"Non-struct type", notStruct, `[]`, ErrNotStruct},
+	}
+
+	for _, vt := range validateTests {
+		t.Run(vt.Name, func(t *testing.T) {
+			ts, c := startTestServer(http.StatusOK, vt.Resp)
+			defer ts.Close()
+
+			err := c.validateStruct(vt.Struct, testEndpoint)
+			if !reflect.DeepEqual(err, vt.ExpErr) {
+				t.Fatalf("Expected error '%v', got '%v'", vt.ExpErr, err)
+			}
+		})
+	}
+
+	networkTests := []struct {
+		Name   string
+		Status int
+		Resp   string
+		ExpErr string
+	}{
+		{"Bad request with empty response", http.StatusBadRequest, "", "unexpected end of JSON input"},
+		{"Bad request with Error type response", http.StatusBadRequest, `{"status": 400,"message": "status bad request"}`, "Status 400 - status bad request"},
+		{"OK request with empty response", http.StatusOK, "", "unexpected end of JSON input"},
+	}
+
+	for _, nt := range networkTests {
+		t.Run(nt.Name, func(t *testing.T) {
+			ts, c := startTestServer(nt.Status, nt.Resp)
+			defer ts.Close()
+
+			err := c.validateStruct(manyTags, testEndpoint)
+			if err == nil {
+				if nt.ExpErr != "" {
+					t.Fatalf("Expected error '%v', got nil error", nt.ExpErr)
+				}
+				return
+			} else if err.Error() != nt.ExpErr {
+				t.Fatalf("Expected error '%v', got error '%v'", nt.ExpErr, err.Error())
+			}
+		})
+	}
 }
 
 func TestValidateStructTags(t *testing.T) {
