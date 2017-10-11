@@ -2,7 +2,7 @@ package igdb
 
 // GenderCode corresponds to the IGDB
 // enumerated gender type which describes
-// an character's gender. GenderCode
+// a character's gender. GenderCode
 // implements the Stringer interface.
 type GenderCode int
 
@@ -82,9 +82,12 @@ func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character,
 	return ch, nil
 }
 
-// String will return the enumerated type as a string
-// corresponding to its IGDB code. For more information
-// visit: https://igdb.github.io/api/enum-fields/gender/
+// GenderCode implements the Stringer interface
+// by matching its code with the IGDBs enumerated
+// type Gender and returns the value as a string.
+// Codes with no match will return "Undefined".
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/gender/
 func (g GenderCode) String() string {
 	switch g {
 	case 0:
@@ -99,8 +102,12 @@ func (g GenderCode) String() string {
 }
 
 // String will return the enumerated type as a string
-// corresponding to its IGDB code. For more information
-// visit: https://igdb.github.io/api/enum-fields/species/
+// corresponding to its IGDB code. For more information,
+// SpeciesCode implements the Stringer interface
+// by matching its code with the IGDBs enumerated
+// type Species and returns the value as a string.
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/species/
 func (s SpeciesCode) String() string {
 	switch s {
 	case 1:

@@ -63,16 +63,12 @@ func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 	return f, nil
 }
 
-// FeedCategory's string method matches the code with
-//  IGDB's Feed Item Category enumerated type
-// and return the category as a string. Codes with
-// no match will returned "Undefined".
-
 // FeedCategory implements the Stringer interface
 // by matching its code with the IGDBs enumerated
 // type Feed Item Category and returns the category
 // as a string. Codes with no match will return
-// "Undefined".
+// "Undefined". For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/feed-item-category/
 func (f FeedCategory) String() string {
 	switch f {
 	case 1:

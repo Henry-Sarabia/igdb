@@ -81,9 +81,11 @@ func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error
 	return cr, nil
 }
 
-// String will return the enumerated type
-// as a string corresponding to its IGDB
-// code. For more information, visit:
+// CreditCategory implements the Stringer interface
+// by matching its code with the IGDBs enumerated type
+// Credit Category and returns the category as a string.
+// Codes with no match will return "Undefined".
+// For the list of codes, visit:
 // https://igdb.github.io/api/enum-fields/credit-category/
 func (c CreditCategory) String() string {
 	switch c {
