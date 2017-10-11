@@ -1,12 +1,10 @@
 package igdb
 
-// GameCategory is a code associated with a game
-// denoting its category. The codes are as follows:
-// 0 - Main Game
-// 1 - DLC / Addon
-// 2 - Expansion
-// 3 - Bundle
-// 4 - Standalone Expansion
+// GameCategory corresponds to the IGDB
+// enumerated type Game Category which
+// describes the type of game content.
+// GameCategory implements the Stringer
+// interface.
 type GameCategory int
 
 // BeatTime is the time to beat a game
@@ -149,4 +147,27 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	}
 
 	return g, nil
+}
+
+// GameCategory implements the stringer interface
+// by matching its code with the IGDBs enumerated type
+// Game Category and returns the category as a string.
+// Codes with no match will return "Undefined".
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/game-category/
+func (g GameCategory) String() string {
+	switch g {
+	case 0:
+		return "Main Game"
+	case 1:
+		return "DLC / Addon"
+	case 2:
+		return "Expansion"
+	case 3:
+		return "Bundle"
+	case 4:
+		return "Standalone Expansion"
+	default:
+		return "Undefined"
+	}
 }
