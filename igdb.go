@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+// igdbURL is the base URL for the IGDB API.
+const igdbURL string = "https://api-2445582011268.apicast.io/"
+
 // ErrNegativeID is returned by a client when a negative
 // ID is used as an argument in an API call.
 var ErrNegativeID = errors.New("igdb.Client: negative ID")
