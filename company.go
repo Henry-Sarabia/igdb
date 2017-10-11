@@ -1,6 +1,9 @@
 package igdb
 
-// CountryCode code ISO-3316-1
+// CountryCode is a code representing
+// a country according to the ISO-3316-1
+// standard. For a full list of codes,
+// visit: https://en.wikipedia.org/wiki/ISO_3166-1_numeric
 type CountryCode int
 
 // Company is
