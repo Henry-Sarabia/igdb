@@ -1,6 +1,10 @@
 package igdb
 
-// CreditCategory codes
+// CreditCategory corresponds to the IGDB
+// enumerated credit type which describes
+// the type of entry in an end credits list.
+// CreditCategory implements the Stringer
+// interface.
 type CreditCategory int
 
 // Credit is
@@ -30,7 +34,7 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var cr []Credit
 
 	err = c.get(url, &cr)
@@ -75,4 +79,27 @@ func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error
 	}
 
 	return cr, nil
+}
+
+// String will return the enumerated type
+// as a string corresponding to its IGDB
+// code. For more information, visit:
+// https://igdb.github.io/api/enum-fields/credit-category/
+func (c CreditCategory) String() string {
+	switch c {
+	case 1:
+		return "voice_actor"
+	case 2:
+		return "language"
+	case 3:
+		return "company_credit"
+	case 4:
+		return "employee"
+	case 5:
+		return "misc"
+	case 6:
+		return "support_company"
+	default:
+		return "Undefined"
+	}
 }
