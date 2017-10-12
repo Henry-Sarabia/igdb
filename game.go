@@ -1,12 +1,5 @@
 package igdb
 
-// GameCategory corresponds to the IGDB
-// enumerated type Game Category which
-// describes the type of game content.
-// GameCategory implements the Stringer
-// interface.
-type GameCategory int
-
 // BeatTime is the time to beat a game
 // measured in seconds.
 type BeatTime struct {
@@ -19,16 +12,16 @@ type BeatTime struct {
 // of a game from the Entertainment Software
 // Rating Board.
 type ESRB struct {
-	Rating   int    `json:"rating"`
-	Synopsis string `json:"synopsis"`
+	Rating   ESRBCode `json:"rating"`
+	Synopsis string   `json:"synopsis"`
 }
 
 // PEGI contains the rating and synopsis
 // of a game from the Pan European Game
 // Information system.
 type PEGI struct {
-	Rating   int    `json:"rating"`
-	Synopsis string `json:"synopsis"`
+	Rating   PEGICode `json:"rating"`
+	Synopsis string   `json:"synopsis"`
 }
 
 // Website contains information about
@@ -147,27 +140,4 @@ func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	}
 
 	return g, nil
-}
-
-// GameCategory implements the stringer interface
-// by matching its code with the IGDBs enumerated type
-// Game Category and returns the category as a string.
-// Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/game-category/
-func (g GameCategory) String() string {
-	switch g {
-	case 0:
-		return "Main Game"
-	case 1:
-		return "DLC / Addon"
-	case 2:
-		return "Expansion"
-	case 3:
-		return "Bundle"
-	case 4:
-		return "Standalone Expansion"
-	default:
-		return "Undefined"
-	}
 }

@@ -1,8 +1,5 @@
 package igdb
 
-// DateCategory code
-type DateCategory int
-
 // ReleaseDate hold information about date of release, platforms, and versions
 type ReleaseDate struct {
 	ID          int          `json:"id"`

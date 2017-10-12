@@ -1,12 +1,5 @@
 package igdb
 
-// FeedCategory corresponds to the IGDB
-// enumerated feed item category which
-// describes the type of feed item in
-// a particular feed. FeedCategory
-// implements the Stringer interface.
-type FeedCategory int
-
 // Feed is
 type Feed struct {
 	ID          int          `json:"id"`
@@ -61,29 +54,4 @@ func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 	}
 
 	return f, nil
-}
-
-// FeedCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type Feed Item Category and returns the category
-// as a string. Codes with no match will return
-// "Undefined". For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/feed-item-category/
-func (f FeedCategory) String() string {
-	switch f {
-	case 1:
-		return "Pulse Article"
-	case 2:
-		return "Coming Soon"
-	case 3:
-		return "New Trailer"
-	case 5:
-		return "User Contributed Item"
-	case 6:
-		return "User Contributions Item"
-	case 7:
-		return "Page Contributed Item"
-	default:
-		return "Undefined"
-	}
 }

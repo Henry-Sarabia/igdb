@@ -1,12 +1,5 @@
 package igdb
 
-// CreditCategory corresponds to the IGDB
-// enumerated credit type which describes
-// the type of entry in an end credits list.
-// CreditCategory implements the Stringer
-// interface.
-type CreditCategory int
-
 // Credit is
 type Credit struct {
 	ID                    int            `json:"id"`
@@ -79,29 +72,4 @@ func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error
 	}
 
 	return cr, nil
-}
-
-// CreditCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated type
-// Credit Category and returns the category as a string.
-// Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/credit-category/
-func (c CreditCategory) String() string {
-	switch c {
-	case 1:
-		return "voice_actor"
-	case 2:
-		return "language"
-	case 3:
-		return "company_credit"
-	case 4:
-		return "employee"
-	case 5:
-		return "misc"
-	case 6:
-		return "support_company"
-	default:
-		return "Undefined"
-	}
 }
