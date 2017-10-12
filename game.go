@@ -27,8 +27,8 @@ type PEGI struct {
 // Website contains information about
 // a website referenced in the IGDB.
 type Website struct {
-	Category int `json:"category"` //codes
-	URL      URL `json:"url"`
+	Category WebsiteCategory `json:"category"` //codes
+	URL      URL             `json:"url"`
 }
 
 // External contains information from
@@ -71,7 +71,7 @@ type Game struct {
 	Themes               []int         `json:"themes"`
 	Genres               []int         `json:"genres"`
 	FirstReleaseDate     int           `json:"first_release_date"` //unix epoch
-	Status               StatusCode    `json:"status"`
+	Status               GameStatus    `json:"status"`
 	ReleaseDates         []ReleaseDate `json:"release_dates"`
 	AlternativeNames     []AltName     `json:"alternative_names"`
 	Screenshots          []Image       `json:"screenshots"`

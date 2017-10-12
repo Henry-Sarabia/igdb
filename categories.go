@@ -86,6 +86,14 @@ type RegionCode int
 // corresponding species values as strings.
 type SpeciesCode int
 
+// WebsiteCategory represents the IGDB
+// enumerated type Website Category which
+// simply describes the category in which
+// a website or URL falls under. Use the
+// Stringer interface to access the
+// corresponding category values as strings.
+type WebsiteCategory int
+
 // CreditCategory implements the Stringer interface
 // by matching its code with the IGDBs enumerated type
 // Credit Category and returns the category as a string.
@@ -284,10 +292,10 @@ func (p PEGICode) String() string {
 
 // RegionCode implements the Stringer interface
 // by matching its code with the IGDBs enumerated
-// Website Category and returns the value as a
-// string. Codes with no match return "Undefined".
+// type Region and returns the value as a string.
+// Codes with no match return "Undefined".
 // For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/website-category/
+// https://igdb.github.io/api/enum-fields/region/
 func (r RegionCode) String() string {
 	switch r {
 	case 1:
@@ -330,6 +338,43 @@ func (s SpeciesCode) String() string {
 		return "Android"
 	case 5:
 		return "Unknown"
+	default:
+		return "Undefined"
+	}
+}
+
+// WebsiteCategory implements the Stringer interface
+// by matching its code with the IGDBs enumerated
+// Website Category and returns the value as a
+// string. Codes with no match return "Undefined".
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/website-category/
+func (w WebsiteCategory) String() string {
+	switch w {
+	case 1:
+		return "official"
+	case 2:
+		return "wikia"
+	case 3:
+		return "wikipedia"
+	case 4:
+		return "facebook"
+	case 5:
+		return "twitter"
+	case 6:
+		return "twitch"
+	case 8:
+		return "instagram"
+	case 9:
+		return "youtube"
+	case 10:
+		return "iphone"
+	case 11:
+		return "ipad"
+	case 12:
+		return "android"
+	case 13:
+		return "steam"
 	default:
 		return "Undefined"
 	}
