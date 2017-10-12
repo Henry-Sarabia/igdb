@@ -2,75 +2,88 @@ package igdb
 
 // CountryCode is a code representing
 // a country according to the ISO-3316-1
-// standard. For a full list of codes,
+// standard. For the full list of codes,
 // visit: https://en.wikipedia.org/wiki/ISO_3166-1_numeric
 type CountryCode int
 
-// CreditCategory corresponds to the IGDB
-// enumerated credit type which describes
-// the type of entry in an end credits list.
-// CreditCategory implements the Stringer
-// interface.
+// CreditCategory represents the IGDB
+// enumerated type Credit Category which
+// describes the type of an entry in an
+// end credits list. Use the Stringer
+// interface to access the corresponding
+// Credit Category values as strings.
 type CreditCategory int
 
-// DateCategory corresponds to the IGDB
-// enumerated Date Category type which
-// describes the format of the value in
-// the release date. DateCategory
-// implements the Stringer interface.
+// DateCategory represents the IGDB
+// enumerated type Date Category which
+// describes the format of a release
+// date. Use the Stringer interface to
+// access the corresponding Date Category
+// values as strings.
 type DateCategory int
 
-// ESRBCode corresponds to the IGDB
-// enumerated ESRB rating which
-// describes the recommended age
-// for consumers. ESRBCode implements
-// the Stringer interface.
+// ESRBCode represents the IGDB
+// enumerated type ESRB Rating which
+// describes the recommended age group
+// for consumers of a specific game.
+// Use the Stringer interface to
+// access the corresponding ESRB Rating
+// values as strings.
 type ESRBCode int
 
-// FeedCategory corresponds to the IGDB
-// enumerated feed item category which
-// describes the type of feed item in
-// a particular feed. FeedCategory
-// implements the Stringer interface.
+// FeedCategory represents the IGDB
+// enumerated type Feed Item Category
+// which describes the type of a feed
+// item in a specific feed. Use the
+// Stringer interface to access the
+// corresponding Feed Item Category
+// values as strings.
 type FeedCategory int
 
-// GameCategory corresponds to the IGDB
+// GameCategory represents the IGDB
 // enumerated type Game Category which
-// describes the type of game content.
-// GameCategory implements the Stringer
-// interface.
+// describes a type of game content.
+// Use the Stringer interface to access
+// the corresponding Game Category
+// values as strings.
 type GameCategory int
 
-// GameStatus corresponds to the IGDB
-// enumerated Game Status type which
+// GameStatus represents the IGDB
+// enumerated type Game Status which
 // describes the release status of
-// a game. GameStatus implements the
-// Stringer interface.
+// a specific game. Use the Stringer
+// interface to access the corresponding
+// Game Status values as strings.
 type GameStatus int
 
-// GenderCode corresponds to the IGDB
-// enumerated gender type which describes
-// an entity's gender. GenderCode
-// implements the Stringer interface.
+// GenderCode represents the IGDB
+// enumerated type Gender which describes
+// the gender of a specific entity. Use
+// the Stringer interface to access the
+// corresponding Gender values as strings.
 type GenderCode int
 
-// PEGICode corresponds to the IGDB
-// enumerated PEGI rating which
+// PEGICode represents the IGDB
+// enumerated type PEGI Rating which
 // describes the recommended minimum
-// age for consumers. EPGICode implements
-// the Stringer interface.
+// age for consumers of a specific
+// game. Use the Stringer interface to
+// access the corresponding PEGI Rating
+// values as strings.
 type PEGICode int
 
-// RegionCode corresponds to the IGDB
-// enumerated Region type which describes
-// a geographic region. RegionCode
-// immplements the Stringer interface.
+// RegionCode represents the IGDB
+// enumerated type Region which describes
+// a geographic region. Use the Stringer
+// interface to access the corresponding
+// Region values as strings.
 type RegionCode int
 
-// SpeciesCode corresponds to the IGDB
-// enumerated species type which describes
-// an entity's species. SpeciesCode
-// implements the Stringer interface.
+// SpeciesCode represents the IGDB
+// enumerated type Species which describes
+// the species of a specific entity. Use
+// the Stringer interface to access the
+// corresponding species values as strings.
 type SpeciesCode int
 
 // CreditCategory implements the Stringer interface
