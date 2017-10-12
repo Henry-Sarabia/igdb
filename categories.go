@@ -41,6 +41,13 @@ type FeedCategory int
 // interface.
 type GameCategory int
 
+// GameStatus corresponds to the IGDB
+// enumerated Game Status type which
+// describes the release status of
+// a game. GameStatus implements the
+// Stringer interface.
+type GameStatus int
+
 // GenderCode corresponds to the IGDB
 // enumerated gender type which describes
 // an entity's gender. GenderCode
@@ -190,6 +197,31 @@ func (g GameCategory) String() string {
 		return "Bundle"
 	case 4:
 		return "Standalone Expansion"
+	default:
+		return "Undefined"
+	}
+}
+
+// GameStatus implements the Stringer interface
+// by matching its code with the IGDBs enumerated
+// Game Status type and returns the status as a
+// string. Codes with no match return "Undefined".
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/game-status/
+func (g GameStatus) String() string {
+	switch g {
+	case 0:
+		return "Released"
+	case 2:
+		return "Alpha"
+	case 3:
+		return "Beta"
+	case 4:
+		return "Early Access"
+	case 5:
+		return "Offline"
+	case 6:
+		return "Cancelled"
 	default:
 		return "Undefined"
 	}
