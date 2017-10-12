@@ -1,5 +1,11 @@
 package igdb
 
+// AltName is
+type AltName struct {
+	Name    string `json:"name"`
+	Comment string `json:"comment"`
+}
+
 // BeatTime is the time to beat a game
 // measured in seconds.
 type BeatTime struct {
@@ -8,12 +14,18 @@ type BeatTime struct {
 	Completely int `json:"completely"`
 }
 
-// ESRB containts the rating and synopsis
+// ESRB contains the rating and synopsis
 // of a game from the Entertainment Software
 // Rating Board.
 type ESRB struct {
 	Rating   ESRBCode `json:"rating"`
 	Synopsis string   `json:"synopsis"`
+}
+
+// External contains information from
+// an external service IDs.
+type External struct {
+	Steam string `json:"steam"`
 }
 
 // PEGI contains the rating and synopsis
@@ -24,17 +36,17 @@ type PEGI struct {
 	Synopsis string   `json:"synopsis"`
 }
 
+// Video is a struct that holds the name of a video along with its ID.
+type Video struct {
+	Name string `json:"name"`
+	ID   string `json:"video_id"` // Youtube slug
+}
+
 // Website contains information about
 // a website referenced in the IGDB.
 type Website struct {
 	Category WebsiteCategory `json:"category"` //codes
 	URL      URL             `json:"url"`
-}
-
-// External contains information from
-// an external service IDs.
-type External struct {
-	Steam string `json:"steam"`
 }
 
 // Game contains information about a game stored in the IGDB.

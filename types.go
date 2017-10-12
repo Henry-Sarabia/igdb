@@ -8,23 +8,8 @@ import (
 // URL is
 type URL string
 
-// StatusCode codes
-type StatusCode int
-
 // Tag codes??
 type Tag int //uint32
-
-// AltName is
-type AltName struct {
-	Name    string `json:"name"`
-	Comment string `json:"comment"`
-}
-
-// Video is a struct that holds the name of a video along with its ID.
-type Video struct {
-	Name string `json:"name"`
-	ID   string `json:"video_id"` // Youtube slug
-}
 
 // intsToStrings returns the slice of strings
 // equivalent to the list of ints.
