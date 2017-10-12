@@ -1,8 +1,5 @@
 package igdb
 
-// RegionCode codes
-type RegionCode int
-
 // PlatformDate type
 type PlatformDate struct {
 	Date   int        `json:"date"` //unix epoch

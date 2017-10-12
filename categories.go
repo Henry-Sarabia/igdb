@@ -54,6 +54,12 @@ type GenderCode int
 // the Stringer interface.
 type PEGICode int
 
+// RegionCode corresponds to the IGDB
+// enumerated Region type which describes
+// a geographic region. RegionCode
+// immplements the Stringer interface.
+type RegionCode int
+
 // SpeciesCode corresponds to the IGDB
 // enumerated species type which describes
 // an entity's species. SpeciesCode
@@ -226,6 +232,35 @@ func (p PEGICode) String() string {
 		return "16"
 	case 5:
 		return "18"
+	default:
+		return "Undefined"
+	}
+}
+
+// RegionCode implements the Stringer interface
+// by matching its code with the IGDBs enumerated
+// Website Category and returns the value as a
+// string. Codes with no match return "Undefined".
+// For the list of codes, visit:
+// https://igdb.github.io/api/enum-fields/website-category/
+func (r RegionCode) String() string {
+	switch r {
+	case 1:
+		return "Europe (EU)"
+	case 2:
+		return "North America (NA)"
+	case 3:
+		return "Australia (AU)"
+	case 4:
+		return "New Zealand (NZ)"
+	case 5:
+		return "Japan (JP)"
+	case 6:
+		return "China (CH)"
+	case 7:
+		return "Asia (AS)"
+	case 8:
+		return "Worldwide"
 	default:
 		return "Undefined"
 	}
