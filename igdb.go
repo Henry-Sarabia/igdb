@@ -16,6 +16,9 @@ const igdbURL string = "https://api-2445582011268.apicast.io/"
 // ID is used as an argument in an API call.
 var ErrNegativeID = errors.New("igdb.Client: negative ID")
 
+// URL represents a URL as a string.
+type URL string
+
 // Client wraps a typical http.Client.
 type Client struct {
 	http    *http.Client
@@ -110,6 +113,23 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string
 	url = encodeURL(&opt.Values, url)
 
 	return url, nil
+}
+
+// intsToStrings returns the slice of strings
+// equivalent to the list of ints.
+func intsToStrings(ints []int) []string {
+	var str []string
+	for _, i := range ints {
+		str = append(str, strconv.Itoa(i))
+	}
+	return str
+}
+
+// intsToCommaString returns a comma separated
+// list of ints as a single string.
+func intsToCommaString(ints []int) string {
+	s := intsToStrings(ints)
+	return strings.Join(s, ",")
 }
 
 // Encoder is implemented by any values that has
