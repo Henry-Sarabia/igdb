@@ -8,9 +8,6 @@ import (
 // URL is
 type URL string
 
-// Tag codes??
-type Tag int //uint32
-
 // intsToStrings returns the slice of strings
 // equivalent to the list of ints.
 func intsToStrings(ints []int) []string {
