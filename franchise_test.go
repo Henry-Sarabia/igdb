@@ -177,7 +177,7 @@ func TestGetFranchises(t *testing.T) {
 	eu := 1479418914178
 	au := f[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	egID := []int{25639, 26546, 26180, 28368, 44157}
@@ -213,7 +213,7 @@ func TestSearchFranchises(t *testing.T) {
 	ec := 1381669592350
 	ac := f[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eID := 860

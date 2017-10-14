@@ -6,8 +6,8 @@ type PulseGroup struct {
 	Name        string `json:"name"`
 	Slug        string `json:"slug"`
 	URL         URL    `json:"url"`
-	CreatedAt   int    `json:"created_at"` //unix epoch
-	UpdatedAt   int    `json:"updated_at"` //unix epoch
+	CreatedAt   int    `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt   int    `json:"updated_at"` // Unix time in milliseconds
 	PublishedAt int    `json:"published_at"`
 	Category    int    `json:"category"`
 	Tags        []Tag  `json:"tags"`

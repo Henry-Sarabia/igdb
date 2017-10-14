@@ -8,8 +8,8 @@ type Review struct {
 	Title          string `json:"title"`
 	Slug           string `json:"slug"`
 	URL            URL    `json:"url"`
-	CreatedAt      int    `json:"created_at"` //unix epoch
-	UpdatedAt      int    `json:"updated_at"` //unix epoch
+	CreatedAt      int    `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt      int    `json:"updated_at"` // Unix time in milliseconds
 	Game           int    `json:"game"`
 	Category       int    `json:"category"` // Documentation is missing
 	Likes          int    `json:"likes"`

@@ -6,8 +6,8 @@ type Feed struct {
 	Name        string       `json:"name"`
 	URL         URL          `json:"url"`
 	Slug        string       `json:"slug"`
-	CreatedAt   int          `json:"created_at"` //unix epoch
-	UpdatedAt   int          `json:"updated_at"` //unix epoch
+	CreatedAt   int          `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt   int          `json:"updated_at"` // Unix time in milliseconds
 	PublishedAt int          `json:"published_at"`
 	Content     string       `json:"content"`
 	Category    FeedCategory `json:"category"`

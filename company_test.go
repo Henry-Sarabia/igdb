@@ -221,7 +221,7 @@ func TestGetCompanies(t *testing.T) {
 	eu := 1504811027097
 	au := com[0].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/companies/night-school-studio")
@@ -263,7 +263,7 @@ func TestSearchCompanies(t *testing.T) {
 	eu := 1500415107616
 	au := com[0].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	es := "terrible-toybox"

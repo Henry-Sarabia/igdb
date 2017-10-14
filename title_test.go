@@ -168,7 +168,7 @@ func TestGetTitles(t *testing.T) {
 	eu := 1472328870944
 	au := ti[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	egID := []int{556, 15894, 105, 11582}
@@ -198,7 +198,7 @@ func TestSearchTitles(t *testing.T) {
 	ec := 1437825411943
 	ac := ti[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/titles/senior-graphic-and-interface-designer")
@@ -228,6 +228,6 @@ func TestSearchTitles(t *testing.T) {
 	eu := 1433023454932
 	au := ti[2].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 }

@@ -422,7 +422,7 @@ func TestGetPlatform(t *testing.T) {
 	ed := 810604800000
 	ad := p.Versions[0].ReleaseDates[1].Date
 	if ad != ed {
-		t.Errorf("Expected unix epoch of %d, got %d", ed, ad)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ed, ad)
 	}
 }
 
@@ -505,7 +505,7 @@ func TestSearchPlatforms(t *testing.T) {
 	ec := 1297639288000
 	ac := p[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eg := 6

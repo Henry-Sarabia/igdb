@@ -20,18 +20,20 @@ var ErrNegativeID = errors.New("igdb.Client: negative ID")
 type URL string
 
 // Client wraps a typical http.Client.
+// Client is used for all IGDB API calls.
 type Client struct {
 	http    *http.Client
 	rootURL string
 }
 
-// NewClient returns a new client.
+// NewClient returns a new Client with a default HTTP client
+// and the default IGDB root URL.
 func NewClient() Client {
 	return Client{http: http.DefaultClient, rootURL: igdbURL}
 }
 
 // get sends a GET request to the url and stores the response
-// in the result interface{} if no errors are encountered.
+// in the result interface{}.
 func (c *Client) get(url string, result interface{}) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

@@ -222,7 +222,7 @@ func TestGetPages(t *testing.T) {
 	eu := 1488287514804
 	au := pg[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eh := 240

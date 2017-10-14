@@ -6,8 +6,8 @@ type Collection struct {
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
 	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"`
-	UpdatedAt int    `json:"updated_at"`
+	CreatedAt int    `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt int    `json:"updated_at"` // Unix time in milliseconds
 	Games     []int  `json:"games"`
 }
 

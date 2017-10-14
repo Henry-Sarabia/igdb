@@ -6,16 +6,16 @@ type Company struct {
 	Name               string       `json:"name"`
 	Slug               string       `json:"slug"`
 	URL                URL          `json:"url"`
-	CreatedAt          int          `json:"created_at"`
-	UpdatedAt          int          `json:"updated_at"`
+	CreatedAt          int          `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt          int          `json:"updated_at"` // Unix time in milliseconds
 	Logo               Image        `json:"logo"`
 	Description        string       `json:"description"`
 	Country            CountryCode  `json:"country"`
 	Website            string       `json:"website"`
-	StartDate          int          `json:"start_date"` //unix epoch
+	StartDate          int          `json:"start_date"` // Unix time in milliseconds
 	StartDateCategory  DateCategory `json:"start_date_category"`
 	ChangedID          int          `json:"changed_company_id"`
-	ChangeDate         int          `json:"change_date"` //unix epoch
+	ChangeDate         int          `json:"change_date"` // Unix time in milliseconds
 	ChangeDateCategory DateCategory `json:"change_date_category"`
 	Twitter            string       `json:"twitter"`
 	Published          []int        `json:"published"`

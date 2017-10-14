@@ -45,7 +45,7 @@ type Video struct {
 // Website contains information about
 // a website referenced in the IGDB.
 type Website struct {
-	Category WebsiteCategory `json:"category"` //codes
+	Category WebsiteCategory `json:"category"`
 	URL      URL             `json:"url"`
 }
 
@@ -56,8 +56,8 @@ type Game struct {
 	Name                 string        `json:"name"`
 	Slug                 string        `json:"slug"`
 	URL                  URL           `json:"url"`
-	CreatedAt            int           `json:"created_at"` //unix epoch
-	UpdatedAt            int           `json:"updated_at"` //unix epoch
+	CreatedAt            int           `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt            int           `json:"updated_at"` // Unix time in milliseconds
 	Summary              string        `json:"summary"`
 	Storyline            string        `json:"storyline"`
 	Collection           int           `json:"collection"`
@@ -82,7 +82,7 @@ type Game struct {
 	Keywords             []int         `json:"keywords"`
 	Themes               []int         `json:"themes"`
 	Genres               []int         `json:"genres"`
-	FirstReleaseDate     int           `json:"first_release_date"` //unix epoch
+	FirstReleaseDate     int           `json:"first_release_date"` // Unix time in milliseconds
 	Status               GameStatus    `json:"status"`
 	ReleaseDates         []ReleaseDate `json:"release_dates"`
 	AlternativeNames     []AltName     `json:"alternative_names"`

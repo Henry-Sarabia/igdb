@@ -146,7 +146,7 @@ func TestGetPerspective(t *testing.T) {
 	eu := 1462288484243
 	au := p.UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/player_perspectives/virtual-reality")
@@ -231,7 +231,7 @@ func TestSearchPerspectives(t *testing.T) {
 	ec := 1298968658000
 	ac := p[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/player_perspectives/third-person")

@@ -184,13 +184,13 @@ func TestSearchCredits(t *testing.T) {
 	ec := 1463521290038
 	ac := cr[1].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eu := 1463521290038
 	au := cr[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eCat := CreditCategory(5)

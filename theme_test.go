@@ -169,7 +169,7 @@ func TestGetThemes(t *testing.T) {
 	eu := 1323289216000
 	au := th[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	egID := []int{4, 820, 43, 500, 501, 433, 250, 377, 375}
@@ -199,7 +199,7 @@ func TestSearchThemes(t *testing.T) {
 	ec := 1322605338000
 	ac := th[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/themes/horror")

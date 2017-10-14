@@ -165,7 +165,7 @@ func TestGetPerson(t *testing.T) {
 	eDOB := -540432000000
 	aDOB := p.DOB
 	if aDOB != eDOB {
-		t.Errorf("Expected unix epoch of %d, got %d", eDOB, aDOB)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eDOB, aDOB)
 	}
 
 	eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/wuyjvwyascmcquyf4qh9.jpg")

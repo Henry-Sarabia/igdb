@@ -254,7 +254,7 @@ func TestGetGames(t *testing.T) {
 	ec := 1352059102919
 	ac := g[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	ed := 762

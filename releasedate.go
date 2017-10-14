@@ -8,9 +8,9 @@ type ReleaseDate struct {
 	Category    DateCategory `json:"category"`
 	Platform    int          `json:"platform"`
 	Human       string       `json:"human"`
-	UpdatedAt   int          `json:"updated_at"` //unix epoch unspecified
-	CreatedAt   int          `json:"created_at"` //unix epoch unspecified
-	Date        int          `json:"date"`       //unix epoch
+	UpdatedAt   int          `json:"updated_at"` // Unix time in milliseconds unspecified
+	CreatedAt   int          `json:"created_at"` // Unix time in milliseconds unspecified
+	Date        int          `json:"date"`       // Unix time in milliseconds
 	Region      int          `json:"region"`
 	Year        int          `json:"y"`
 	Month       int          `json:"m"`

@@ -257,7 +257,7 @@ func TestGetPulseGroups(t *testing.T) {
 	eu := 1501184656575
 	au := pg[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 }
 
@@ -291,13 +291,13 @@ func TestSearchPulseGroups(t *testing.T) {
 	ec := 1500792572855
 	ac := pg[1].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eu := 1500792572855
 	au := pg[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, %d", eu, au)
 	}
 
 	eg := 115

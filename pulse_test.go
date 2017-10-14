@@ -324,7 +324,7 @@ func TestSearchPulses(t *testing.T) {
 	ec := 1502176226691
 	ac := p[0].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	et := "Retroid talks Mega Man tonight"
@@ -342,7 +342,7 @@ func TestSearchPulses(t *testing.T) {
 	ep := 1479339000000
 	ap := p[2].PublishedAt
 	if ap != ep {
-		t.Errorf("Expected unix epoch of %d, got %d", ep, ap)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ep, ap)
 	}
 
 	eID := "y4wwcqqbkuyeteoq4l2n"

@@ -5,8 +5,8 @@ type Page struct {
 	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`
 	URL             URL         `json:"url"`
-	CreatedAt       int         `json:"created_at"` //unix epoch
-	UpdatedAt       int         `json:"updated_at"` //unix epoch
+	CreatedAt       int         `json:"created_at"` // Unix time in milliseconds
+	UpdatedAt       int         `json:"updated_at"` // Unix time in milliseconds
 	Name            string      `json:"name"`
 	Content         string      `json:"content"`
 	Category        int         `json:"category"`

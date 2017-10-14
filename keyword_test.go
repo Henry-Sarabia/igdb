@@ -184,7 +184,7 @@ func TestGetKeywords(t *testing.T) {
 	eu := 1403518560769
 	au := kw[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	egID := []int{6749, 7591, 10666, 14952, 36899}
@@ -226,7 +226,7 @@ func TestSearchKeywords(t *testing.T) {
 	ec := 1499532005267
 	ac := kw[1].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/categories/historical-strategy")

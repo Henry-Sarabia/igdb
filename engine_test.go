@@ -257,7 +257,7 @@ func TestSearchEngines(t *testing.T) {
 	eu := 1492514717250
 	au := eng[0].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/game_engines/crystal-tools")

@@ -209,7 +209,7 @@ func TestGetGenres(t *testing.T) {
 	eu := 1323289215000
 	au := g[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	egID := []int{143, 154, 177, 390, 422, 90, 91, 92, 99}
@@ -251,7 +251,7 @@ func TestSearchGenres(t *testing.T) {
 	ec := 1297678340000
 	ac := g[1].CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 
 	eURL := URL("https://www.igdb.com/genres/turn-based-strategy-tbs")

@@ -101,7 +101,7 @@ func TestGetReleaseDate(t *testing.T) {
 	ec := 1303935024000
 	ac := rd.CreatedAt
 	if ac != ec {
-		t.Errorf("Expected unix epoch of %d, got %d", ec, ac)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
 	}
 }
 
@@ -136,7 +136,7 @@ func TestGetReleaseDates(t *testing.T) {
 	ed := 978220800000
 	ad := rd[1].Date
 	if ad != ed {
-		t.Errorf("Expected unix epoch %d, got %d", ed, ad)
+		t.Errorf("Expected Unix time in milliseconds %d, got %d", ed, ad)
 	}
 
 	ey := 2000

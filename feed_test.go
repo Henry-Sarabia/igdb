@@ -80,7 +80,7 @@ func TestGetFeed(t *testing.T) {
 	eu := 1500917216678
 	au := f.UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/feed/2qsh")
@@ -133,7 +133,7 @@ func TestGetFeeds(t *testing.T) {
 	eu := 1501156914070
 	au := f[1].UpdatedAt
 	if au != eu {
-		t.Errorf("Expected unix epoch of %d, got %d", eu, au)
+		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
 	}
 
 	eURL := URL("https://www.igdb.com/feed/2u84")
