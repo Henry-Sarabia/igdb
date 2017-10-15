@@ -1,6 +1,8 @@
 package igdb
 
-// Credit is
+// Credit contains information on an IGDB entry
+// for an employee responsible for working on
+// a particular game.
 type Credit struct {
 	ID                    int            `json:"id"`
 	Name                  string         `json:"name"`
@@ -21,7 +23,10 @@ type Credit struct {
 	PersonTitle           interface{}    `json:"person_title"`
 }
 
-// GetCredit gets IGDB information for a credit identified by its unique IGDB ID.
+// GetCredit returns a single Credit identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetCredit only returning a single Credit object and
+// not a list of Credits.
 func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 	url, err := c.singleURL(CreditEndpoint, id, opts...)
 	if err != nil {
@@ -38,8 +43,10 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 	return &cr[0], nil
 }
 
-// GetCredits gets IGDB information for a list of credits identified by their
-// unique IGDB IDs.
+// GetCredits returns a list of Credits identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Credits based
+// solely on the provided options.
 func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.multiURL(CreditEndpoint, ids, opts...)
 	if err != nil {
@@ -56,8 +63,8 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 	return cr, nil
 }
 
-// SearchCredits searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchCredits returns a list of Credits found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.searchURL(CreditEndpoint, qry, opts...)
 	if err != nil {
