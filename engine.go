@@ -1,6 +1,8 @@
 package igdb
 
-// Engine is
+// Engine contains information on an
+// IGDB entry for a particular video
+// game engine.
 type Engine struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -14,7 +16,11 @@ type Engine struct {
 	Platforms []int  `json:"platforms"`
 }
 
-// GetEngine gets IGDB information for a game engine identified by its unique IGDB ID.
+// GetEngine gets IGDB information for a Engine identified by its unique IGDB ID.
+// GetEngine returns a single Engine identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetEngines only returning a single Engine object and
+// not a list of Engines.
 func (c *Client) GetEngine(id int, opts ...OptionFunc) (*Engine, error) {
 	url, err := c.singleURL(EngineEndpoint, id, opts...)
 	if err != nil {
@@ -31,8 +37,10 @@ func (c *Client) GetEngine(id int, opts ...OptionFunc) (*Engine, error) {
 	return &eng[0], nil
 }
 
-// GetEngines gets IGDB information for a list of game engines identified by their
-// unique IGDB IDs.
+// GetEngines returns a list of Engines identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Engines based
+// solely on the provided options.
 func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 	url, err := c.multiURL(EngineEndpoint, ids, opts...)
 	if err != nil {
@@ -49,8 +57,8 @@ func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 	return eng, nil
 }
 
-// SearchEngines searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchEngines returns a list of Engines found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchEngines(qry string, opts ...OptionFunc) ([]*Engine, error) {
 	url, err := c.searchURL(EngineEndpoint, qry, opts...)
 	if err != nil {
