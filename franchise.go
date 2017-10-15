@@ -1,6 +1,8 @@
 package igdb
 
-// Franchise is
+// Franchise contains information on an
+// IGDB entry for a particular video game
+// franchise.
 type Franchise struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -11,7 +13,11 @@ type Franchise struct {
 	Games     []int  `json:"games"`
 }
 
-// GetFranchise gets IGDB information for a franchise identified by its unique IGDB ID.
+// GetFranchise gets IGDB information for a Franchise identified by its unique IGDB ID.
+// GetFranchise returns a single Franchise identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetFranchise only returning a single Franchise object and
+// not a list of Franchises.
 func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 	url, err := c.singleURL(FranchiseEndpoint, id, opts...)
 	if err != nil {
@@ -28,8 +34,10 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 	return &f[0], nil
 }
 
-// GetFranchises gets IGDB information for a list of franchises identified by their
-// unique IGDB IDs.
+// GetFranchises returns a list of Franchises identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Franchises based
+// solely on the provided options.
 func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
 	url, err := c.multiURL(FranchiseEndpoint, ids, opts...)
 	if err != nil {
@@ -46,8 +54,8 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 	return f, nil
 }
 
-// SearchFranchises searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchFranchises returns a list of Franchises found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
 	url, err := c.searchURL(FranchiseEndpoint, qry, opts...)
 	if err != nil {
