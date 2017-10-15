@@ -1,6 +1,8 @@
 package igdb
 
-// Company is
+// Company contains information on an IGDB entry
+// for a particular video game company, including
+// both publishers and developers.
 type Company struct {
 	ID                 int          `json:"ID"`
 	Name               string       `json:"name"`
@@ -24,7 +26,10 @@ type Company struct {
 	Facebook           string       `json:"facebook"`
 }
 
-// GetCompany gets IGDB information for a company identified by its unique IGDB ID.
+// GetCompany returns a single Company identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetCompany only returning a single Company object and
+// not a list of Companies.
 func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 	url, err := c.singleURL(CompanyEndpoint, id, opts...)
 	if err != nil {
@@ -41,8 +46,10 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 	return &com[0], nil
 }
 
-// GetCompanies gets IGDB information for a list of companies identified by their
-// unique IGDB IDs.
+// GetCompanies returns a list of Companies identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Companies based
+// solely on the provided options.
 func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
 	url, err := c.multiURL(CompanyEndpoint, ids, opts...)
 	if err != nil {
@@ -59,8 +66,8 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 	return com, nil
 }
 
-// SearchCompanies searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchCompanies returns a list of Companies found by searching the IGDB using the
+// provided query. Provide optional functions to filter, sort, and paginate the results.
 func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
 	url, err := c.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {
