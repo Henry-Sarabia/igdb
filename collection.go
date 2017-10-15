@@ -1,6 +1,8 @@
 package igdb
 
-// Collection is
+// Collection contains information on an
+// IGDB entry for a particular video game
+// series.
 type Collection struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -12,6 +14,10 @@ type Collection struct {
 }
 
 // GetCollection gets IGDB information for a collection identified by its unique IGDB ID.
+// GetCollection returns a single Collection identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetCollections only returning a single Collection object and
+// not a list of Collections.
 func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) {
 	url, err := c.singleURL(CollectionEndpoint, id, opts...)
 	if err != nil {
@@ -30,6 +36,11 @@ func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) 
 
 // GetCollections gets IGDB information for a list of collections identified by their
 // unique IGDB IDs.
+
+// GetCollections returns a list of Collections identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Collections based
+// solely on the provided options.
 func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := c.multiURL(CollectionEndpoint, ids, opts...)
 	if err != nil {
@@ -46,8 +57,8 @@ func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, e
 	return col, nil
 }
 
-// SearchCollections searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchCollections returns a list of Collections found by searching the IGDB using the
+// provided query. Provide optional functions to filter, sort, and paginate the results.
 func (c *Client) SearchCollections(qry string, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := c.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {
