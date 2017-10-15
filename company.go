@@ -67,7 +67,7 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 }
 
 // SearchCompanies returns a list of Companies found by searching the IGDB using the
-// provided query. Provide optional functions to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
 	url, err := c.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {

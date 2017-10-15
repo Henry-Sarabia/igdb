@@ -34,9 +34,6 @@ func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) 
 	return &col[0], nil
 }
 
-// GetCollections gets IGDB information for a list of collections identified by their
-// unique IGDB IDs.
-
 // GetCollections returns a list of Collections identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Collections based
@@ -58,7 +55,7 @@ func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, e
 }
 
 // SearchCollections returns a list of Collections found by searching the IGDB using the
-// provided query. Provide optional functions to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchCollections(qry string, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := c.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {

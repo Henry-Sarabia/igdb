@@ -59,7 +59,7 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 }
 
 // SearchCharacters returns a list of Characters found by searching the IGDB using the
-// provided query. Provide optional functions to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character, error) {
 	url, err := c.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {
