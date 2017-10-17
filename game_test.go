@@ -155,7 +155,7 @@ const searchGamesResp = `
 	"updated_at": 1500314266411,
 	"rating": 80.6722124072401,
 	"popularity": 2.666666666666667,
-	"developers": [
+	"developers": [ 
 		864
 	],
 	"cover": {
@@ -216,7 +216,7 @@ func TestGetGame(t *testing.T) {
 		t.Errorf("Expected width of %d, got %d\n", ew, aw)
 	}
 
-	var ev = []Video{
+	var ev = []YoutubeVideo{
 		{"Trailer", "Z6BeAtdoELY"},
 		{"Trailer", "1rPxiXXxftE"},
 		{"Trailer", "vDFZIUdo764"},
