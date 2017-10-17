@@ -25,7 +25,7 @@ type Review struct {
 }
 
 // GetReview gets IGDB information for a review identified by their unique IGDB ID.
-func (c *Client) GetReview(id int, opts ...optionFunc) (*Review, error) {
+func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
 	url, err := c.singleURL(ReviewEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (c *Client) GetReview(id int, opts ...optionFunc) (*Review, error) {
 }
 
 // GetReviews gets IGDB information for a list of reviews identified by a list of their unique IGDB IDs.
-func (c *Client) GetReviews(ids []int, opts ...optionFunc) ([]*Review, error) {
+func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 	url, err := c.multiURL(ReviewEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (c *Client) GetReviews(ids []int, opts ...optionFunc) ([]*Review, error) {
 
 // SearchReviews searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
-func (c *Client) SearchReviews(qry string, opts ...optionFunc) ([]*Review, error) {
+func (c *Client) SearchReviews(qry string, opts ...OptionFunc) ([]*Review, error) {
 	url, err := c.searchURL(ReviewEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

@@ -27,7 +27,7 @@ type Credit struct {
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetCredit only returning a single Credit object and
 // not a list of Credits.
-func (c *Client) GetCredit(id int, opts ...optionFunc) (*Credit, error) {
+func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 	url, err := c.singleURL(CreditEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (c *Client) GetCredit(id int, opts ...optionFunc) (*Credit, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Credits based
 // solely on the provided options.
-func (c *Client) GetCredits(ids []int, opts ...optionFunc) ([]*Credit, error) {
+func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.multiURL(CreditEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (c *Client) GetCredits(ids []int, opts ...optionFunc) ([]*Credit, error) {
 
 // SearchCredits returns a list of Credits found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchCredits(qry string, opts ...optionFunc) ([]*Credit, error) {
+func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.searchURL(CreditEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

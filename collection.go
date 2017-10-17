@@ -18,7 +18,7 @@ type Collection struct {
 // IGDB ID. Functional options may be provided but sorting and pagination will
 // not have an effect due to GetCollection only returning a single Collection
 // object and not a list of Collections.
-func (c *Client) GetCollection(id int, opts ...optionFunc) (*Collection, error) {
+func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) {
 	url, err := c.singleURL(CollectionEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (c *Client) GetCollection(id int, opts ...optionFunc) (*Collection, error) 
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Collections based
 // solely on the provided options.
-func (c *Client) GetCollections(ids []int, opts ...optionFunc) ([]*Collection, error) {
+func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := c.multiURL(CollectionEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (c *Client) GetCollections(ids []int, opts ...optionFunc) ([]*Collection, e
 
 // SearchCollections returns a list of Collections found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchCollections(qry string, opts ...optionFunc) ([]*Collection, error) {
+func (c *Client) SearchCollections(qry string, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := c.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

@@ -13,7 +13,7 @@ type Title struct {
 }
 
 // GetTitle gets IGDB information for a title identified by their unique IGDB ID.
-func (c *Client) GetTitle(id int, opts ...optionFunc) (*Title, error) {
+func (c *Client) GetTitle(id int, opts ...OptionFunc) (*Title, error) {
 	url, err := c.singleURL(TitleEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (c *Client) GetTitle(id int, opts ...optionFunc) (*Title, error) {
 }
 
 // GetTitles gets IGDB information for a list of titles identified by a list of their unique IGDB IDs.
-func (c *Client) GetTitles(ids []int, opts ...optionFunc) ([]*Title, error) {
+func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.multiURL(TitleEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (c *Client) GetTitles(ids []int, opts ...optionFunc) ([]*Title, error) {
 
 // SearchTitles searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
-func (c *Client) SearchTitles(qry string, opts ...optionFunc) ([]*Title, error) {
+func (c *Client) SearchTitles(qry string, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.searchURL(TitleEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

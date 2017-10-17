@@ -28,7 +28,7 @@ type Feed struct {
 // IGDB ID. Functional options may be provided but sorting and
 // pagination will not have an effect due to GetFeed only returning
 // a single Feed object and not a list of Feeds.
-func (c *Client) GetFeed(id int, opts ...optionFunc) (*Feed, error) {
+func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 	url, err := c.singleURL(FeedEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func (c *Client) GetFeed(id int, opts ...optionFunc) (*Feed, error) {
 // IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Feeds based
 // solely on the provided options.
-func (c *Client) GetFeeds(ids []int, opts ...optionFunc) ([]*Feed, error) {
+func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 	url, err := c.multiURL(FeedEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err

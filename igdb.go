@@ -68,7 +68,7 @@ func (c *Client) get(url string, result interface{}) error {
 
 // singleURL creates a URL configured to request a single IGDB object
 // identified by its unique IGDB ID using the provided endpoint.
-func (c *Client) singleURL(end endpoint, id int, opts ...optionFunc) (string, error) {
+func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
 	if id < 0 {
 		return "", ErrNegativeID
 	}
@@ -85,7 +85,7 @@ func (c *Client) singleURL(end endpoint, id int, opts ...optionFunc) (string, er
 
 // multiURL creates a URL configured to request multiple IGDB object identified
 // by their unique IGDB IDs using the provided endpoint.
-func (c *Client) multiURL(end endpoint, ids []int, opts ...optionFunc) (string, error) {
+func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
 	for _, id := range ids {
 		if id < 0 {
 			return "", ErrNegativeID
@@ -104,7 +104,7 @@ func (c *Client) multiURL(end endpoint, ids []int, opts ...optionFunc) (string, 
 
 // searchURL creates a URL configured to search the IGDB based on the given query
 // using the provided endpoint.
-func (c *Client) searchURL(end endpoint, qry string, opts ...optionFunc) (string, error) {
+func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
 	opts = append(opts, optSearch(qry))
 	opt, err := newOpt(opts...)
 	if err != nil {

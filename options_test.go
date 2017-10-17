@@ -9,14 +9,14 @@ import (
 func TestNewOpt(t *testing.T) {
 	var optTests = []struct {
 		Name     string
-		OptFuncs []optionFunc
+		OptFuncs []OptionFunc
 		ExpCount int
 		ExpErr   error
 	}{
-		{"Empty option", []optionFunc{}, 0, nil},
-		{"Single option", []optionFunc{OptLimit(4)}, 1, nil},
-		{"Multiple options", []optionFunc{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", AscendingOrder)}, 5, nil},
-		{"Multiple filter options", []optionFunc{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
+		{"Empty option", []OptionFunc{}, 0, nil},
+		{"Single option", []OptionFunc{OptLimit(4)}, 1, nil},
+		{"Multiple options", []OptionFunc{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", AscendingOrder)}, 5, nil},
+		{"Multiple filter options", []OptionFunc{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
 	}
 
 	for _, ot := range optTests {
@@ -276,18 +276,18 @@ func TestOptSearch(t *testing.T) {
 func TestOptOverlap(t *testing.T) {
 	var overlapTests = []struct {
 		Name     string
-		OptFuncs []optionFunc
+		OptFuncs []OptionFunc
 		ExpErr   error
 	}{
-		{"OptOrder overlap", []optionFunc{OptOrder("popularity", DescendingOrder), OptOrder("rating", AscendingOrder)}, ErrOptionSet},
-		{"OptLimit overlap", []optionFunc{OptLimit(5), OptLimit(40)}, ErrOptionSet},
-		{"OptOffset overlap", []optionFunc{OptOffset(0), OptOffset(25)}, ErrOptionSet},
-		{"OptFields overlap", []optionFunc{OptFields("id"), OptFields("name")}, ErrOptionSet},
-		{"OptFilter overlap", []optionFunc{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
-		{"OptScroll overlap", []optionFunc{OptScroll(1), OptScroll(10)}, ErrOptionSet},
-		{"OptSearch overlap", []optionFunc{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
-		{"OptOffset and OptScroll overlap", []optionFunc{OptOffset(40), OptScroll(4)}, ErrExclusiveOption},
-		{"OptScroll and OptOffset overlap", []optionFunc{OptScroll(3), OptOffset(30)}, ErrExclusiveOption},
+		{"OptOrder overlap", []OptionFunc{OptOrder("popularity", DescendingOrder), OptOrder("rating", AscendingOrder)}, ErrOptionSet},
+		{"OptLimit overlap", []OptionFunc{OptLimit(5), OptLimit(40)}, ErrOptionSet},
+		{"OptOffset overlap", []OptionFunc{OptOffset(0), OptOffset(25)}, ErrOptionSet},
+		{"OptFields overlap", []OptionFunc{OptFields("id"), OptFields("name")}, ErrOptionSet},
+		{"OptFilter overlap", []OptionFunc{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
+		{"OptScroll overlap", []OptionFunc{OptScroll(1), OptScroll(10)}, ErrOptionSet},
+		{"OptSearch overlap", []OptionFunc{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
+		{"OptOffset and OptScroll overlap", []OptionFunc{OptOffset(40), OptScroll(4)}, ErrExclusiveOption},
+		{"OptScroll and OptOffset overlap", []OptionFunc{OptScroll(3), OptOffset(30)}, ErrExclusiveOption},
 	}
 
 	for _, ot := range overlapTests {

@@ -9,7 +9,7 @@ type PulseSource struct {
 }
 
 // GetPulseSource gets IGDB information for a pulse source identified by its unique IGDB ID.
-func (c *Client) GetPulseSource(id int, opts ...optionFunc) (*PulseSource, error) {
+func (c *Client) GetPulseSource(id int, opts ...OptionFunc) (*PulseSource, error) {
 	url, err := c.singleURL(PulseSourceEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func (c *Client) GetPulseSource(id int, opts ...optionFunc) (*PulseSource, error
 
 // GetPulseSources gets IGDB information for a list of pulse sources identified by their
 // unique IGDB IDs.
-func (c *Client) GetPulseSources(ids []int, opts ...optionFunc) ([]*PulseSource, error) {
+func (c *Client) GetPulseSources(ids []int, opts ...OptionFunc) ([]*PulseSource, error) {
 	url, err := c.multiURL(PulseSourceEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (c *Client) GetPulseSources(ids []int, opts ...optionFunc) ([]*PulseSource,
 
 // SearchPulseSources searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
-func (c *Client) SearchPulseSources(qry string, opts ...optionFunc) ([]*PulseSource, error) {
+func (c *Client) SearchPulseSources(qry string, opts ...OptionFunc) ([]*PulseSource, error) {
 	url, err := c.searchURL(PulseSourceEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

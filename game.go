@@ -114,7 +114,7 @@ type Game struct {
 // IGDB ID. Functional options may be provided but sorting and pagination
 // will not have an effect due to GetGame only returning a single Game
 // object and not a list of Games.
-func (c *Client) GetGame(id int, opts ...optionFunc) (*Game, error) {
+func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 	url, err := c.singleURL(GameEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -133,7 +133,7 @@ func (c *Client) GetGame(id int, opts ...optionFunc) (*Game, error) {
 // IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Games
 // based solely on the provided options.
-func (c *Client) GetGames(ids []int, opts ...optionFunc) ([]*Game, error) {
+func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	url, err := c.multiURL(GameEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -150,7 +150,7 @@ func (c *Client) GetGames(ids []int, opts ...optionFunc) ([]*Game, error) {
 
 // SearchGames returns a list of Games found by searching the IGDB using the provided
 // query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchGames(qry string, opts ...optionFunc) ([]*Game, error) {
+func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	url, err := c.searchURL(GameEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
