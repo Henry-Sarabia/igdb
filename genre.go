@@ -1,6 +1,7 @@
 package igdb
 
-// Genre type
+// Genre contains information on an IGDB
+// entry for a particular video game genre.
 type Genre struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -11,7 +12,11 @@ type Genre struct {
 	Games     []int  `json:"games"`
 }
 
-// GetGenre gets IGDB information for a genre identified by its unique IGDB ID.
+// GetGenre gets IGDB information for a Genre identified by its unique
+// IGDB ID. GetGenre returns a single Genre identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination
+// will not have an effect due to GetGenre only returning a single Genre
+// object and not a list of Genres.
 func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 	url, err := c.singleURL(GenreEndpoint, id, opts...)
 	if err != nil {
@@ -27,8 +32,10 @@ func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 	return &g[0], nil
 }
 
-// GetGenres gets IGDB information for a list of genres identified by their
-// unique IGDB IDs.
+// GetGenres returns a list of Genres identified by the provided list of IGDB
+// IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Genres based
+// solely on the provided options.
 func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 	url, err := c.multiURL(GenreEndpoint, ids, opts...)
 	if err != nil {
@@ -44,8 +51,8 @@ func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 	return g, nil
 }
 
-// SearchGenres searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchGenres returns a list of Genres found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchGenres(qry string, opts ...OptionFunc) ([]*Genre, error) {
 	url, err := c.searchURL(GenreEndpoint, qry, opts...)
 	if err != nil {
