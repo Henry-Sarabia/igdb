@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-// Errors returned by an OptionFunc.
+// Errors returned by an optionFunc.
 var (
-	ErrOptionSet       = errors.New("igdb.OptionFunc: option already set")
-	ErrEmptyField      = errors.New("igdb.OptionFunc: field value empty")
-	ErrEmptySlice      = errors.New("igdb.OptionFunc: slice empty")
-	ErrOutOfRange      = errors.New("igdb.OptionFunc: value out of range")
-	ErrExclusiveOption = errors.New("igdb.OptionFunc: multiple set options are mutually exclusive")
-	ErrEmptyQuery      = errors.New("igdb.OptionFunc: query value empty")
+	ErrOptionSet       = errors.New("igdb.optionFunc: option already set")
+	ErrEmptyField      = errors.New("igdb.optionFunc: field value empty")
+	ErrEmptySlice      = errors.New("igdb.optionFunc: slice empty")
+	ErrOutOfRange      = errors.New("igdb.optionFunc: value out of range")
+	ErrExclusiveOption = errors.New("igdb.optionFunc: multiple set options are mutually exclusive")
+	ErrEmptyQuery      = errors.New("igdb.optionFunc: query value empty")
 )
 
 // Options contains a value map to store optional
@@ -24,17 +24,17 @@ type Options struct {
 	Values url.Values
 }
 
-// OptionFunc is a first-order function that is
+// optionFunc is a first-order function that is
 // returned by functional options and is later
 // used in API calls to set individual options.
-type OptionFunc func(*Options) error
+type optionFunc func(*Options) error
 
 // newOpt returns a new Options object
-// mutated by the OptionFunc arguments.
+// mutated by the optionFunc arguments.
 // Only one of each type can be passed
 // per API call. OptFilter is the only
 // exception to this rule.
-func newOpt(ofs ...OptionFunc) (*Options, error) {
+func newOpt(ofs ...optionFunc) (*Options, error) {
 	opt := &Options{Values: url.Values{}}
 
 	for _, of := range ofs {
@@ -64,7 +64,7 @@ const (
 // OptOrder is a functional option used to set
 // the order of results from an API call. The default
 // ordering is based on relevance.
-func OptOrder(field string, ord order) OptionFunc {
+func OptOrder(field string, ord order) optionFunc {
 	return func(o *Options) error {
 		if len(field) == 0 {
 			return ErrEmptyField
@@ -82,7 +82,7 @@ func OptOrder(field string, ord order) OptionFunc {
 // correct way to use this function is to pass
 // it as a parameter to an API call. The default
 // limit is 10. The maximum limit is 50.
-func OptLimit(lim int) OptionFunc {
+func OptLimit(lim int) optionFunc {
 	return func(o *Options) error {
 		if lim <= 0 || lim > 50 {
 			return ErrOutOfRange
@@ -104,7 +104,7 @@ func OptLimit(lim int) OptionFunc {
 // the Scroll option. This option and OptScroll
 // are mutually exclusive options; only one can
 // be used per API call.
-func OptOffset(off int) OptionFunc {
+func OptOffset(off int) optionFunc {
 	return func(o *Options) error {
 		if off < 0 || off > 50 {
 			return ErrOutOfRange
@@ -125,7 +125,7 @@ func OptOffset(off int) OptionFunc {
 // want the API response to contain. Subfields are
 // accessed with a dot operator. The default
 // is set to all available fields.
-func OptFields(fields ...string) OptionFunc {
+func OptFields(fields ...string) optionFunc {
 	return func(o *Options) error {
 		if len(fields) == 0 {
 			return ErrEmptySlice
@@ -180,7 +180,7 @@ const (
 // value as a string to specify the value of the configured filter. This
 // is the only option allowed to have more than one of in a single API call.
 // For more information visit https://igdb.github.io/api/references/filters/.
-func OptFilter(field string, op operator, val string) OptionFunc {
+func OptFilter(field string, op operator, val string) optionFunc {
 	return func(o *Options) error {
 		if field == "" || val == "" {
 			return ErrEmptyField
@@ -200,7 +200,7 @@ func OptFilter(field string, op operator, val string) OptionFunc {
 // no default value. This option and OptScroll
 // are mutually exclusive options; only one can
 // be used per API call.
-func OptScroll(page int) OptionFunc {
+func OptScroll(page int) optionFunc {
 	return func(o *Options) error {
 		if page < 1 {
 			return ErrOutOfRange
@@ -219,7 +219,7 @@ func OptScroll(page int) OptionFunc {
 // optSearch is an unexported functional
 // option used to search the IGDB for
 // the given query.
-func optSearch(qry string) OptionFunc {
+func optSearch(qry string) optionFunc {
 	return func(o *Options) error {
 		if qry == "" {
 			return ErrEmptyQuery

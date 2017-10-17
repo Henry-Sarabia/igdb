@@ -10,15 +10,15 @@ import (
 
 var errEndOfJSON = errors.New("unexpected end of JSON input")
 
-// Error contains information from the IGDB
-// when an API call receives an error in response.
+// Error contains information on an
+// error returned from an IGDB API call.
 type Error struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
 
-// checkError checks an http.Response for an error response
-// from the IGDB servers.
+// checkError checks the provided HTTP Response for errors
+// returned by the IGDB.
 func (c *Client) checkError(resp *http.Response) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil

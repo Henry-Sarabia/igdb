@@ -7,13 +7,13 @@ import (
 
 var (
 	// ErrEmptyID signals an invalid empty ID string.
-	ErrEmptyID    = errors.New("igdb: id value empty")
+	ErrEmptyID = errors.New("igdb: id value empty")
 	// ErrPixelRatio signals an unsupported display pixel ratio.
 	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
 )
 
-// Image holds an image's URL, dimensions,
-// and its Cloudinary ID.
+// Image contains the URL, dimensions,
+// and Cloudinary ID of a particular image.
 type Image struct {
 	URL    URL    `json:"url"`
 	ID     string `json:"cloudinary_id"`
@@ -25,9 +25,9 @@ type Image struct {
 // being hosted at a given URL.
 type imageSize string
 
-// The precise size of an image is unknown, these
-// imageSizes are simply the maximum size of an
-// image at a given URL.
+// The precise size of an image is unknown. The
+// imageSizes are solely the maximum size of an
+// image hosted at a given URL.
 const (
 	// SizeCoverSmall is sized at 90x128.
 	SizeCoverSmall imageSize = "cover_small"
@@ -51,9 +51,9 @@ const (
 	Size1080p imageSize = "1080p"
 )
 
-// SizedImageURL returns a URL addressed to an image denoted by the given ImageID
-// at the given size. Additional display pixel ratio images are available by
-// passing in an integer. The available ratios are 1 and 2.
+// SizedImageURL returns the URL of an image identified by the provided ImageID,
+// image size, and display pixel ratio. The display pixel ratio only multiplies
+// the resolution of the image. The current available ratios are 1 and 2.
 func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
 	if ImageID == "" {
 		return "", ErrEmptyID
@@ -69,14 +69,17 @@ func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
 		dpr = ""
 	case 2:
 		dpr = "_2x"
+	default:
+		return "", ErrPixelRatio
 	}
 
 	url := fmt.Sprintf("https://images.igdb.com/igdb/image/upload/t_%s%s/%s.jpg", size, dpr, ImageID)
 	return url, nil
 }
 
-// SizedURL returns a URL addressed to this image at the given size
-// in the given display pixel ratio. The available ratios are 1 and 2.
+// SizedURL returns the URL of this image at the provided image size
+// and display pixel ratio. The display pixel ratio only multiplies
+// the resolution of the image. The current available ratios are 1 and 2.
 func (i Image) SizedURL(size imageSize, ratio int) (string, error) {
 	return SizedImageURL(i.ID, size, ratio)
 }

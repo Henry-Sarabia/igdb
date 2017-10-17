@@ -30,7 +30,7 @@ type Company struct {
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetCompany only returning a single Company object and
 // not a list of Companies.
-func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
+func (c *Client) GetCompany(id int, opts ...optionFunc) (*Company, error) {
 	url, err := c.singleURL(CompanyEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Companies based
 // solely on the provided options.
-func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
+func (c *Client) GetCompanies(ids []int, opts ...optionFunc) ([]*Company, error) {
 	url, err := c.multiURL(CompanyEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 
 // SearchCompanies returns a list of Companies found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
+func (c *Client) SearchCompanies(qry string, opts ...optionFunc) ([]*Company, error) {
 	url, err := c.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

@@ -22,7 +22,7 @@ type Character struct {
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetCharacter only returning a single Character object and
 // not a list of Characters.
-func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
+func (c *Client) GetCharacter(id int, opts ...optionFunc) (*Character, error) {
 	url, err := c.singleURL(CharacterEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Characters based
 // solely on the provided options.
-func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, error) {
+func (c *Client) GetCharacters(ids []int, opts ...optionFunc) ([]*Character, error) {
 	url, err := c.multiURL(CharacterEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 
 // SearchCharacters returns a list of Characters found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character, error) {
+func (c *Client) SearchCharacters(qry string, opts ...optionFunc) ([]*Character, error) {
 	url, err := c.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

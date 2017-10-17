@@ -18,7 +18,7 @@ type GameMode struct {
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetGameMode only returning a single GameMode object and
 // not a list of GameModes.
-func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
+func (c *Client) GetGameMode(id int, opts ...optionFunc) (*GameMode, error) {
 	url, err := c.singleURL(GameModeEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of GameModes based
 // solely on the provided options.
-func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
+func (c *Client) GetGameModes(ids []int, opts ...optionFunc) ([]*GameMode, error) {
 	url, err := c.multiURL(GameModeEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error
 
 // SearchGameModes returns a list of GameModes found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchGameModes(qry string, opts ...OptionFunc) ([]*GameMode, error) {
+func (c *Client) SearchGameModes(qry string, opts ...optionFunc) ([]*GameMode, error) {
 	url, err := c.searchURL(GameModeEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

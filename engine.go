@@ -19,9 +19,9 @@ type Engine struct {
 // GetEngine gets IGDB information for a Engine identified by its unique IGDB ID.
 // GetEngine returns a single Engine identified by the provided IGDB ID.
 // Functional options may be provided but sorting and pagination will not have
-// an effect due to GetEngines only returning a single Engine object and
+// an effect due to GetEngine only returning a single Engine object and
 // not a list of Engines.
-func (c *Client) GetEngine(id int, opts ...OptionFunc) (*Engine, error) {
+func (c *Client) GetEngine(id int, opts ...optionFunc) (*Engine, error) {
 	url, err := c.singleURL(EngineEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (c *Client) GetEngine(id int, opts ...OptionFunc) (*Engine, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Engines based
 // solely on the provided options.
-func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
+func (c *Client) GetEngines(ids []int, opts ...optionFunc) ([]*Engine, error) {
 	url, err := c.multiURL(EngineEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 
 // SearchEngines returns a list of Engines found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchEngines(qry string, opts ...OptionFunc) ([]*Engine, error) {
+func (c *Client) SearchEngines(qry string, opts ...optionFunc) ([]*Engine, error) {
 	url, err := c.searchURL(EngineEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

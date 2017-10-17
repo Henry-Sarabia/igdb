@@ -16,7 +16,7 @@ type PulseGroup struct {
 }
 
 // GetPulseGroup gets IGDB information for a pulse group identified by its unique IGDB ID.
-func (c *Client) GetPulseGroup(id int, opts ...OptionFunc) (*PulseGroup, error) {
+func (c *Client) GetPulseGroup(id int, opts ...optionFunc) (*PulseGroup, error) {
 	url, err := c.singleURL(PulseGroupEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (c *Client) GetPulseGroup(id int, opts ...OptionFunc) (*PulseGroup, error) 
 
 // GetPulseGroups gets IGDB information for a list of pulse groups identified by their
 // unique IGDB IDs.
-func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, error) {
+func (c *Client) GetPulseGroups(ids []int, opts ...optionFunc) ([]*PulseGroup, error) {
 	url, err := c.multiURL(PulseGroupEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, e
 
 // SearchPulseGroups searches the IGDB using the given query and returns IGDB information
 // for the results. Use functional options for pagination and to sort results by parameter.
-func (c *Client) SearchPulseGroups(qry string, opts ...OptionFunc) ([]*PulseGroup, error) {
+func (c *Client) SearchPulseGroups(qry string, opts ...optionFunc) ([]*PulseGroup, error) {
 	url, err := c.searchURL(PulseGroupEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

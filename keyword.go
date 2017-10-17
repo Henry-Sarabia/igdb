@@ -19,7 +19,7 @@ type Keyword struct {
 // IGDB ID. Functional options may be provided but sorting and pagination
 // will not have an effect due to GetKeyword only returning a single Keyword
 // object and not a list of Keywords.
-func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
+func (c *Client) GetKeyword(id int, opts ...optionFunc) (*Keyword, error) {
 	url, err := c.singleURL(KeywordEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
 // IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Keywords based
 // solely on the provided options.
-func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
+func (c *Client) GetKeywords(ids []int, opts ...optionFunc) ([]*Keyword, error) {
 	url, err := c.multiURL(KeywordEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) 
 
 // SearchKeywords returns a list of Keywords found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchKeywords(qry string, opts ...OptionFunc) ([]*Keyword, error) {
+func (c *Client) SearchKeywords(qry string, opts ...optionFunc) ([]*Keyword, error) {
 	url, err := c.searchURL(KeywordEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err

@@ -26,14 +26,14 @@ type Client struct {
 	rootURL string
 }
 
-// NewClient returns a new Client with a default HTTP client
-// and the default IGDB root URL.
+// NewClient returns a new Client set with a default HTTP
+// client and the default IGDB root URL.
 func NewClient() Client {
 	return Client{http: http.DefaultClient, rootURL: igdbURL}
 }
 
-// get sends a GET request to the url and stores the response
-// in the result interface{}.
+// get sends a GET request to the provided url and stores
+// the response in the provided result empty interface.
 func (c *Client) get(url string, result interface{}) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -66,9 +66,9 @@ func (c *Client) get(url string, result interface{}) error {
 	return nil
 }
 
-// singleURL creates a URL configured to request a single IGDB entity
-// identified by its unique IGDB ID using the given endpoint.
-func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
+// singleURL creates a URL configured to request a single IGDB object
+// identified by its unique IGDB ID using the provided endpoint.
+func (c *Client) singleURL(end endpoint, id int, opts ...optionFunc) (string, error) {
 	if id < 0 {
 		return "", ErrNegativeID
 	}
@@ -83,9 +83,9 @@ func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, er
 	return url, nil
 }
 
-// multiURL creates a URL configured to request multiple IGDB entities identified
-// by their unique IGDB IDs using the given endpoint.
-func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
+// multiURL creates a URL configured to request multiple IGDB object identified
+// by their unique IGDB IDs using the provided endpoint.
+func (c *Client) multiURL(end endpoint, ids []int, opts ...optionFunc) (string, error) {
 	for _, id := range ids {
 		if id < 0 {
 			return "", ErrNegativeID
@@ -103,8 +103,8 @@ func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, 
 }
 
 // searchURL creates a URL configured to search the IGDB based on the given query
-// using the given endpoint.
-func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
+// using the provided endpoint.
+func (c *Client) searchURL(end endpoint, qry string, opts ...optionFunc) (string, error) {
 	opts = append(opts, optSearch(qry))
 	opt, err := newOpt(opts...)
 	if err != nil {
@@ -117,8 +117,8 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string
 	return url, nil
 }
 
-// intsToStrings returns the slice of strings
-// equivalent to the list of ints.
+// intsToStrings converts a slice of ints
+// to a slice of strings.
 func intsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
@@ -132,26 +132,4 @@ func intsToStrings(ints []int) []string {
 func intsToCommaString(ints []int) string {
 	s := intsToStrings(ints)
 	return strings.Join(s, ",")
-}
-
-// Encoder is implemented by any values that has
-// an encode method, which returns the "encoded"
-// format for that value. The Encode method is
-// used to print a case-sensitive key value map
-// used for query parameters or form values as a
-// string.
-type Encoder interface {
-	Encode() string
-}
-
-// encodeURL encodes the url with the query
-// parameters provided by the encoder.
-func encodeURL(enc Encoder, url string) string {
-	url = strings.Replace(url, " ", "", -1)
-
-	if values := enc.Encode(); values != "" {
-		url += "?" + values
-	}
-
-	return url
 }

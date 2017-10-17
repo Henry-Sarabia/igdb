@@ -18,7 +18,7 @@ type Franchise struct {
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetFranchise only returning a single Franchise object and
 // not a list of Franchises.
-func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
+func (c *Client) GetFranchise(id int, opts ...optionFunc) (*Franchise, error) {
 	url, err := c.singleURL(FranchiseEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty list of IDs will instead retrieve an index of Franchises based
 // solely on the provided options.
-func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
+func (c *Client) GetFranchises(ids []int, opts ...optionFunc) ([]*Franchise, error) {
 	url, err := c.multiURL(FranchiseEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 
 // SearchFranchises returns a list of Franchises found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
+func (c *Client) SearchFranchises(qry string, opts ...optionFunc) ([]*Franchise, error) {
 	url, err := c.searchURL(FranchiseEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
