@@ -1,6 +1,8 @@
 package igdb
 
-// GameMode is
+// GameMode contains information on an
+// IGDB entry for a particular game mode
+// (e.g. single player, multiplayer).
 type GameMode struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -11,7 +13,11 @@ type GameMode struct {
 	Games     []int  `json:"games"`
 }
 
-// GetGameMode gets IGDB information for a game mode identified by its unique IGDB ID.
+// GetGameMode gets IGDB information for a GameMode identified by its unique IGDB ID.
+// GetGameMode returns a single GameMode identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetGameMode only returning a single GameMode object and
+// not a list of GameModes.
 func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 	url, err := c.singleURL(GameModeEndpoint, id, opts...)
 	if err != nil {
@@ -27,8 +33,10 @@ func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 	return &g[0], nil
 }
 
-// GetGameModes gets IGDB information for a list of game modes identified by their
-// unique IGDB IDs.
+// GetGameModes returns a list of GameModes identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of GameModes based
+// solely on the provided options.
 func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
 	url, err := c.multiURL(GameModeEndpoint, ids, opts...)
 	if err != nil {
@@ -44,8 +52,8 @@ func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error
 	return g, nil
 }
 
-// SearchGameModes searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchGameModes returns a list of GameModes found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchGameModes(qry string, opts ...OptionFunc) ([]*GameMode, error) {
 	url, err := c.searchURL(GameModeEndpoint, qry, opts...)
 	if err != nil {
