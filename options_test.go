@@ -15,7 +15,7 @@ func TestNewOpt(t *testing.T) {
 	}{
 		{"Empty option", []OptionFunc{}, 0, nil},
 		{"Single option", []OptionFunc{OptLimit(4)}, 1, nil},
-		{"Multiple options", []OptionFunc{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", AscendingOrder)}, 5, nil},
+		{"Multiple options", []OptionFunc{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", OrderAscending)}, 5, nil},
 		{"Multiple filter options", []OptionFunc{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
 	}
 
@@ -42,8 +42,8 @@ func TestOptOrder(t *testing.T) {
 		ExpOrd string
 		ExpErr error
 	}{
-		{"Non-empty field", "popularity", AscendingOrder, "popularity:asc", nil},
-		{"Empty field", "", DescendingOrder, "", ErrEmptyField},
+		{"Non-empty field", "popularity", OrderAscending, "popularity:asc", nil},
+		{"Empty field", "", OrderDescending, "", ErrEmptyField},
 	}
 
 	for _, ot := range orderTests {
@@ -279,7 +279,7 @@ func TestOptOverlap(t *testing.T) {
 		OptFuncs []OptionFunc
 		ExpErr   error
 	}{
-		{"OptOrder overlap", []OptionFunc{OptOrder("popularity", DescendingOrder), OptOrder("rating", AscendingOrder)}, ErrOptionSet},
+		{"OptOrder overlap", []OptionFunc{OptOrder("popularity", OrderDescending), OptOrder("rating", OrderAscending)}, ErrOptionSet},
 		{"OptLimit overlap", []OptionFunc{OptLimit(5), OptLimit(40)}, ErrOptionSet},
 		{"OptOffset overlap", []OptionFunc{OptOffset(0), OptOffset(25)}, ErrOptionSet},
 		{"OptFields overlap", []OptionFunc{OptFields("id"), OptFields("name")}, ErrOptionSet},
