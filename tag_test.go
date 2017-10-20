@@ -15,7 +15,7 @@ func TestGenerateTag(t *testing.T) {
 	}{
 		{"ObjectID at zero", TagTheme, 0, 0, nil},
 		{"ObjectID within range", TagGenre, 5, 268435461, nil},
-		{"OjectID below range", TagKeyword, -1234, 0, ErrOutOfRange},
+		{"OjectID below range", TagKeyword, -1234, 0, ErrNegativeID},
 	}
 
 	for _, tt := range tagTests {
