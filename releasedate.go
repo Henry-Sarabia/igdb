@@ -1,6 +1,11 @@
 package igdb
 
-// ReleaseDate hold information about date of release, platforms, and versions
+// ReleaseDate contains information on
+// an IGDB entry for a particular release
+// date. ReleaseDate is used primarily as
+// an extension to the Game endpoint.
+// ReleaseDate does not support the search
+// functionality.
 type ReleaseDate struct {
 	ID          int          `json:"id"`
 	Game        int          `json:"game"`
@@ -16,7 +21,11 @@ type ReleaseDate struct {
 	Month       int          `json:"m"`
 }
 
-// GetReleaseDate gets IGDB information for a release date identified by their unique IGDB ID.
+// GetReleaseDate gets IGDB information for a ReleaseDate identified by its unique
+// IGDB ID. GetReleaseDate returns a single ReleaseDate identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination will
+// not have an effect due to GetReleaseDate only returning a single ReleaseDate
+// object and not a list of ReleaseDates.
 func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error) {
 	url, err := c.singleURL(ReleaseDateEndpoint, id, opts...)
 	if err != nil {
@@ -32,7 +41,10 @@ func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error
 	return &r[0], nil
 }
 
-// GetReleaseDates gets IGDB information for a list of release dates identified by a list of their unique IGDB IDs.
+// GetReleaseDates returns a list of ReleaseDates identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of ReleaseDates based
+// solely on the provided options.
 func (c *Client) GetReleaseDates(ids []int, opts ...OptionFunc) ([]*ReleaseDate, error) {
 	url, err := c.multiURL(ReleaseDateEndpoint, ids, opts...)
 	if err != nil {
