@@ -1,6 +1,9 @@
 package igdb
 
-// Perspective type
+// Perspective contains information on
+// an IGDB entry for a particular player
+// perspective (e.g. first-person or
+// virtual reality).
 type Perspective struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -11,7 +14,11 @@ type Perspective struct {
 	Games     []int  `json:"games"`
 }
 
-// GetPerspective gets IGDB information for a player perspective identified by its unique IGDB ID.
+// GetPerspective gets IGDB information for a Perspective identified by its unique
+// IGDB ID. GetPerspective returns a single Perspective identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination will not
+// have an effect due to GetPerspective only returning a single Perspective object
+// and not a list of Perspectives.
 func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error) {
 	url, err := c.singleURL(PerspectiveEndpoint, id, opts...)
 	if err != nil {
@@ -27,8 +34,10 @@ func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error
 	return &p[0], nil
 }
 
-// GetPerspectives gets IGDB information for a list of player perspectives identified by their
-// unique IGDB IDs.
+// GetPerspectives returns a list of Perspectives identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Perspectives based
+// solely on the provided options.
 func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective, error) {
 	url, err := c.multiURL(PerspectiveEndpoint, ids, opts...)
 	if err != nil {
@@ -44,8 +53,8 @@ func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective,
 	return p, nil
 }
 
-// SearchPerspectives searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchPerspectives returns a list of Perspectives found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchPerspectives(qry string, opts ...OptionFunc) ([]*Perspective, error) {
 	url, err := c.searchURL(PerspectiveEndpoint, qry, opts...)
 	if err != nil {
