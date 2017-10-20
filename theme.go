@@ -1,6 +1,8 @@
 package igdb
 
-// Theme type
+// Theme contains information on an IGDB
+// entry for a particular video game theme
+// (e.g. Fantasy or Horror).
 type Theme struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -11,7 +13,11 @@ type Theme struct {
 	Games     []int  `json:"games"`
 }
 
-// GetTheme gets IGDB information for a theme identified by their unique IGDB ID.
+// GetTheme gets IGDB information for a Theme identified by its unique
+// IGDB ID. GetTheme returns a single Theme identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination
+// will not have an effect due to GetTheme only returning a single Theme
+// object and not a list of Themes.
 func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 	url, err := c.singleURL(ThemeEndpoint, id, opts...)
 	if err != nil {
@@ -27,7 +33,10 @@ func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 	return &t[0], nil
 }
 
-// GetThemes gets IGDB information for a list of themes identified by a list of their unique IGDB IDs.
+// GetThemes returns a list of Themes identified by the provided list of IGDB
+// IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Themes based
+// solely on the provided options.
 func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 	url, err := c.multiURL(ThemeEndpoint, ids, opts...)
 	if err != nil {
@@ -43,8 +52,8 @@ func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 	return t, nil
 }
 
-// SearchThemes searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchThemes returns a list of Themes found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchThemes(qry string, opts ...OptionFunc) ([]*Theme, error) {
 	url, err := c.searchURL(ThemeEndpoint, qry, opts...)
 	if err != nil {
