@@ -1,18 +1,24 @@
 package igdb
 
-// PlatformDate type
+// PlatformDate contains information
+// on the release date for a particular
+// PlatformVersion.
 type PlatformDate struct {
 	Date   int        `json:"date"` // Unix time in milliseconds
 	Region RegionCode `json:"region"`
 }
 
-// PlatformCompany type
+// PlatformCompany contains information
+// on an IGDB entry for a company that
+// worked on a particular platform.
 type PlatformCompany struct {
 	Company int    `json:"company"`
 	Comment string `json:"comment"`
 }
 
-// PlatformVersion type
+// PlatformVersion contains information on an
+// IGDB entry for a particular version of a
+// Platform.
 type PlatformVersion struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`
@@ -37,7 +43,9 @@ type PlatformVersion struct {
 	Manufacturers []PlatformCompany `json:"manufacturers"`
 }
 
-// Platform type
+// Platform contains information on an IGDB entry
+// for the particular hardware used to run a game
+// or game delivery network.
 type Platform struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`
@@ -57,7 +65,11 @@ type Platform struct {
 	Versions      []PlatformVersion `json:"versions"`
 }
 
-// GetPlatform gets IGDB information for a platform identified by its unique IGDB ID.
+// GetPlatform gets IGDB information for a Platform identified by its unique
+// IGDB ID. GetPlatform returns a single Platform identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination will
+// not have an effect due to GetPlatform only returning a single Platform
+// object and not a list of Platforms.
 func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
 	url, err := c.singleURL(PlatformEndpoint, id, opts...)
 	if err != nil {
@@ -73,8 +85,10 @@ func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
 	return &p[0], nil
 }
 
-// GetPlatforms gets IGDB information for a list of platforms identified by their
-// unique IGDB IDs.
+// GetPlatforms returns a list of Platforms identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Platforms based
+// solely on the provided options.
 func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error) {
 	url, err := c.multiURL(PlatformEndpoint, ids, opts...)
 	if err != nil {
@@ -90,8 +104,8 @@ func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error
 	return p, nil
 }
 
-// SearchPlatforms searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchPlatforms returns a list of Platforms found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchPlatforms(qry string, opts ...OptionFunc) ([]*Platform, error) {
 	url, err := c.searchURL(PlatformEndpoint, qry, opts...)
 	if err != nil {
