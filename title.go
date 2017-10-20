@@ -1,6 +1,8 @@
 package igdb
 
-// Title type
+// Title contains information on an
+// IGDB entry for a particular job
+// title in the video game industry.
 type Title struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
@@ -12,7 +14,11 @@ type Title struct {
 	Games       []int  `json:"games"`
 }
 
-// GetTitle gets IGDB information for a title identified by their unique IGDB ID.
+// GetTitle gets IGDB information for a Title identified by its unique
+// IGDB ID. GetTitle returns a single Title identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination
+// will not have an effect due to GetTitle only returning a single Title
+// object and not a list of Titles.
 func (c *Client) GetTitle(id int, opts ...OptionFunc) (*Title, error) {
 	url, err := c.singleURL(TitleEndpoint, id, opts...)
 	if err != nil {
@@ -28,7 +34,10 @@ func (c *Client) GetTitle(id int, opts ...OptionFunc) (*Title, error) {
 	return &t[0], nil
 }
 
-// GetTitles gets IGDB information for a list of titles identified by a list of their unique IGDB IDs.
+// GetTitles returns a list of Titles identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty list of IDs will instead retrieve an index
+// of Titles based solely on the provided options.
 func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.multiURL(TitleEndpoint, ids, opts...)
 	if err != nil {
@@ -44,8 +53,8 @@ func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 	return t, nil
 }
 
-// SearchTitles searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchTitles returns a list of Titles found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchTitles(qry string, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.searchURL(TitleEndpoint, qry, opts...)
 	if err != nil {
