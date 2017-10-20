@@ -1,8 +1,9 @@
 package igdb
 
-// Tag numbers are generated numbers which
-// provide a compact and fast way to do
-// complex filtering on the IGDB API.
+// Tag is a generated number that represents
+// a specific IGDB object. Tag provides a
+// quick and compact way to do complex
+// filtering on the IGDB API.
 type Tag int
 
 // tagType represents the IGDB Object ID
@@ -28,7 +29,7 @@ const (
 // invalid.
 func GenerateTag(typeID tagType, objectID int) (Tag, error) {
 	if typeID < 0 || objectID < 0 {
-		return 0, ErrOutOfRange
+		return 0, ErrNegativeID
 	}
 
 	tag := int(typeID) << 28
