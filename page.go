@@ -1,6 +1,8 @@
 package igdb
 
-// Page is
+// Page contains information on an IGDB entry
+// for a multipurpose page used for Youtubers
+// and media corporations.
 type Page struct {
 	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`
@@ -38,7 +40,11 @@ type Page struct {
 	Discord         string      `json:"discord"`
 }
 
-// GetPage gets IGDB information for a page identified by its unique IGDB ID.
+// GetPage gets IGDB information for a Page identified by its unique
+// IGDB ID. GetPage returns a single Page identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination
+// will not have an effect due to GetPage only returning a single Page
+// object and not a list of Pages.
 func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
 	url, err := c.singleURL(PageEndpoint, id, opts...)
 	if err != nil {
@@ -54,8 +60,10 @@ func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
 	return &p[0], nil
 }
 
-// GetPages gets IGDB information for a list of pages identified by their
-// unique IGDB IDs.
+// GetPages returns a list of Pages identified by the provided list of IGDB
+// IDs. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty list of IDs will instead retrieve an index of Pages
+// based solely on the provided options.
 func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
 	url, err := c.multiURL(PageEndpoint, ids, opts...)
 	if err != nil {
@@ -71,8 +79,9 @@ func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
 	return p, nil
 }
 
-// SearchPages searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchPages returns a list of Pages found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate
+// the results.
 func (c *Client) SearchPages(qry string, opts ...OptionFunc) ([]*Page, error) {
 	url, err := c.searchURL(PageEndpoint, qry, opts...)
 	if err != nil {
