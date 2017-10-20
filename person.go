@@ -1,6 +1,8 @@
 package igdb
 
-// Person type
+// Person contains information on an IGDB
+// entry for a particular individual who
+// works in the video game industry.
 type Person struct {
 	ID          int         `json:"id"`
 	Name        string      `json:"name"`
@@ -32,7 +34,11 @@ type Person struct {
 	VoiceActed  []int       `json:"voice_acted"`
 }
 
-// GetPerson gets IGDB information for a person identified by its unique IGDB ID.
+// GetPerson gets IGDB information for a Person identified by its unique
+// IGDB ID. GetPerson returns a single Person identified by the provided
+// IGDB ID. Functional options may be provided but sorting and pagination
+// will not have an effect due to GetPerson only returning a single Person
+// object and not a list of Persons.
 func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 	url, err := c.singleURL(PersonEndpoint, id, opts...)
 	if err != nil {
@@ -48,8 +54,10 @@ func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 	return &p[0], nil
 }
 
-// GetPersons gets IGDB information for a list of people identified by their
-// unique IGDB IDs.
+// GetPersons returns a list of Persons identified by the provided list of
+// IGDB IDs. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty list of IDs will instead retrieve an index of
+// Persons based solely on the provided options.
 func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 	url, err := c.multiURL(PersonEndpoint, ids, opts...)
 	if err != nil {
@@ -65,8 +73,8 @@ func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 	return p, nil
 }
 
-// SearchPersons searches the IGDB using the given query and returns IGDB information
-// for the results. Use functional options for pagination and to sort results by parameter.
+// SearchPersons returns a list of Persons found by searching the IGDB using the
+// provided query. Provide functional options to filter, sort, and paginate the results.
 func (c *Client) SearchPersons(qry string, opts ...OptionFunc) ([]*Person, error) {
 	url, err := c.searchURL(PersonEndpoint, qry, opts...)
 	if err != nil {
