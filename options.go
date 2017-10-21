@@ -225,6 +225,33 @@ func OptScroll(page int) OptionFunc {
 	}
 }
 
+// OptScrollNew is a functional option used to
+// paginate the results of an API call using
+// the Scroll API. If OptScrollNew is set,
+// the API call will return two additional
+// headers that will be stored in the Client.
+// One header contains the number of results
+// found for the API call and the second header
+// contains a special Scroll path that can be
+// queried to get the next page of results.
+// This path can be repeatedly queried to
+// iterate through pages because it does not
+// change. The path will expire after 3 minutes
+// of not being queried.
+func OptScrollNew() OptionFunc {
+	return func(o *options) error {
+		if o.Values.Get("offset") != "" {
+			return ErrExclusiveOption
+		}
+		if o.Values.Get("scroll") != "" {
+			return ErrOptionSet
+		}
+
+		o.Values.Set("scroll", "1")
+		return nil
+	}
+}
+
 // optSearch is an unexported functional
 // option used to search the IGDB for the
 // given query.
