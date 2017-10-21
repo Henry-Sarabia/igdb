@@ -13,10 +13,9 @@ type Theme struct {
 	Games     []int  `json:"games"`
 }
 
-// GetTheme gets IGDB information for a Theme identified by its unique
-// IGDB ID. GetTheme returns a single Theme identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetTheme only returning a single Theme
+// GetTheme returns a single Theme identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetTheme only returning a single Theme
 // object and not a list of Themes.
 func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 	url, err := c.singleURL(ThemeEndpoint, id, opts...)

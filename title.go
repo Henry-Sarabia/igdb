@@ -14,10 +14,9 @@ type Title struct {
 	Games       []int  `json:"games"`
 }
 
-// GetTitle gets IGDB information for a Title identified by its unique
-// IGDB ID. GetTitle returns a single Title identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetTitle only returning a single Title
+// GetTitle returns a single Title identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetTitle only returning a single Title
 // object and not a list of Titles.
 func (c *Client) GetTitle(id int, opts ...OptionFunc) (*Title, error) {
 	url, err := c.singleURL(TitleEndpoint, id, opts...)
