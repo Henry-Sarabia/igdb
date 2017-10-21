@@ -23,11 +23,10 @@ type Feed struct {
 	UID         string       `json:"uid"`
 }
 
-// GetFeed gets IGDB information for a Feed identified by its unique
-// IGDB ID. GetFeed returns a single Feed identified by the provided
-// IGDB ID. Functional options may be provided but sorting and
-// pagination will not have an effect due to GetFeed only returning
-// a single Feed object and not a list of Feeds.
+// GetFeed returns a single Feed identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetFeed only returning a single Feed object
+// and not a list of Feeds.
 func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 	url, err := c.singleURL(FeedEndpoint, id, opts...)
 	if err != nil {

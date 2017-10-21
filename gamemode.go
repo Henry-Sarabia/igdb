@@ -13,7 +13,6 @@ type GameMode struct {
 	Games     []int  `json:"games"`
 }
 
-// GetGameMode gets IGDB information for a GameMode identified by its unique IGDB ID.
 // GetGameMode returns a single GameMode identified by the provided IGDB ID.
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetGameMode only returning a single GameMode object and

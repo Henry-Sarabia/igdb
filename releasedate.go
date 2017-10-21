@@ -21,11 +21,10 @@ type ReleaseDate struct {
 	Month       int          `json:"m"`
 }
 
-// GetReleaseDate gets IGDB information for a ReleaseDate identified by its unique
-// IGDB ID. GetReleaseDate returns a single ReleaseDate identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination will
-// not have an effect due to GetReleaseDate only returning a single ReleaseDate
-// object and not a list of ReleaseDates.
+// GetReleaseDate returns a single ReleaseDate identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have an
+// effect due to GetReleaseDate only returning a single ReleaseDate object and not
+// a list of ReleaseDates.
 func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error) {
 	url, err := c.singleURL(ReleaseDateEndpoint, id, opts...)
 	if err != nil {

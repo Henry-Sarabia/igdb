@@ -13,7 +13,6 @@ type Franchise struct {
 	Games     []int  `json:"games"`
 }
 
-// GetFranchise gets IGDB information for a Franchise identified by its unique IGDB ID.
 // GetFranchise returns a single Franchise identified by the provided IGDB ID.
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetFranchise only returning a single Franchise object and

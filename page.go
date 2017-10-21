@@ -40,10 +40,9 @@ type Page struct {
 	Discord         string      `json:"discord"`
 }
 
-// GetPage gets IGDB information for a Page identified by its unique
-// IGDB ID. GetPage returns a single Page identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetPage only returning a single Page
+// GetPage returns a single Page identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetPage only returning a single Page
 // object and not a list of Pages.
 func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
 	url, err := c.singleURL(PageEndpoint, id, opts...)

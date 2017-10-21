@@ -16,11 +16,10 @@ type PulseGroup struct {
 	Game        int    `json:"game"`
 }
 
-// GetPulseGroup gets IGDB information for a PulseGroup identified by its unique
-// IGDB ID. GetPulseGroup returns a single PulseGroup identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination will
-// not have an effect due to GetPulseGroup only returning a single PulseGroup
-// object and not a list of PulseGroups.
+// GetPulseGroup returns a single PulseGroup identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have
+// an effect due to GetPulseGroup only returning a single PulseGroup object and
+// not a list of PulseGroups.
 func (c *Client) GetPulseGroup(id int, opts ...OptionFunc) (*PulseGroup, error) {
 	url, err := c.singleURL(PulseGroupEndpoint, id, opts...)
 	if err != nil {

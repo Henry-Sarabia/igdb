@@ -16,7 +16,6 @@ type Engine struct {
 	Platforms []int  `json:"platforms"`
 }
 
-// GetEngine gets IGDB information for a Engine identified by its unique IGDB ID.
 // GetEngine returns a single Engine identified by the provided IGDB ID.
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetEngine only returning a single Engine object and

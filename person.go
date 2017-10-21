@@ -34,11 +34,10 @@ type Person struct {
 	VoiceActed  []int       `json:"voice_acted"`
 }
 
-// GetPerson gets IGDB information for a Person identified by its unique
-// IGDB ID. GetPerson returns a single Person identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetPerson only returning a single Person
-// object and not a list of Persons.
+// GetPerson returns a single Person identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not
+// have an effect due to GetPerson only returning a single Person object
+// and not a list of Persons.
 func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 	url, err := c.singleURL(PersonEndpoint, id, opts...)
 	if err != nil {

@@ -107,12 +107,12 @@ type Game struct {
 	External             External       `json:"external"`
 	MultiplayerModes     interface{}    `json:"multiplayer_modes"`
 	Franchises           []int          `json:"franchises"`
+	Platforms            []int          `json:"platforms"`
 }
 
-// GetGame gets IGDB information for a Game identified by its unique
-// IGDB ID. GetGame returns a single Game identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetGame only returning a single Game
+// GetGame returns a single Game identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetGame only returning a single Game
 // object and not a list of Games.
 func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 	url, err := c.singleURL(GameEndpoint, id, opts...)

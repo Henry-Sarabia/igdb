@@ -26,10 +26,9 @@ type Review struct {
 	NegativePoints string `json:"negative_points"`
 }
 
-// GetReview gets IGDB information for a Review identified by its unique
-// IGDB ID. GetReview returns a single Review identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetReview only returning a single Review
+// GetReview returns a single Review identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetReview only returning a single Review
 // object and not a list of Reviews.
 func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
 	url, err := c.singleURL(ReviewEndpoint, id, opts...)

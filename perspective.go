@@ -14,11 +14,10 @@ type Perspective struct {
 	Games     []int  `json:"games"`
 }
 
-// GetPerspective gets IGDB information for a Perspective identified by its unique
-// IGDB ID. GetPerspective returns a single Perspective identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination will not
-// have an effect due to GetPerspective only returning a single Perspective object
-// and not a list of Perspectives.
+// GetPerspective returns a single Perspective identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not have an
+// effect due to GetPerspective only returning a single Perspective object and not
+// a list of Perspectives.
 func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error) {
 	url, err := c.singleURL(PerspectiveEndpoint, id, opts...)
 	if err != nil {

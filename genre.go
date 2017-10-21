@@ -12,10 +12,9 @@ type Genre struct {
 	Games     []int  `json:"games"`
 }
 
-// GetGenre gets IGDB information for a Genre identified by its unique
-// IGDB ID. GetGenre returns a single Genre identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetGenre only returning a single Genre
+// GetGenre returns a single Genre identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will
+// not have an effect due to GetGenre only returning a single Genre
 // object and not a list of Genres.
 func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 	url, err := c.singleURL(GenreEndpoint, id, opts...)

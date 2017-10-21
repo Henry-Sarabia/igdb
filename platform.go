@@ -65,11 +65,10 @@ type Platform struct {
 	Versions      []PlatformVersion `json:"versions"`
 }
 
-// GetPlatform gets IGDB information for a Platform identified by its unique
-// IGDB ID. GetPlatform returns a single Platform identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination will
-// not have an effect due to GetPlatform only returning a single Platform
-// object and not a list of Platforms.
+// GetPlatform returns a single Platform identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not 
+// have an effect due to GetPlatform only returning a single Platform object
+// and not a list of Platforms.
 func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
 	url, err := c.singleURL(PlatformEndpoint, id, opts...)
 	if err != nil {

@@ -14,11 +14,10 @@ type Keyword struct {
 	Games     []int  `json:"games"`
 }
 
-// GetKeyword gets IGDB information for a Keyword identified by its unique
-// IGDB ID. GetKeyword returns a single Keyword identified by the provided
-// IGDB ID. Functional options may be provided but sorting and pagination
-// will not have an effect due to GetKeyword only returning a single Keyword
-// object and not a list of Keywords.
+// GetKeyword returns a single Keyword identified by the provided IGDB ID.
+// Functional options may be provided but sorting and pagination will not
+// have an effect due to GetKeyword only returning a single Keyword object
+// and not a list of Keywords.
 func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
 	url, err := c.singleURL(KeywordEndpoint, id, opts...)
 	if err != nil {
