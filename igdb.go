@@ -14,7 +14,7 @@ const igdbURL string = "https://api-2445582011268.apicast.io/"
 
 // ErrNegativeID is returned by a client when a negative
 // ID is used as an argument in an API call.
-var ErrNegativeID = errors.New("igdb.Client: negative ID")
+var ErrNegativeID = errors.New("igdb: negative ID")
 
 // URL represents a URL as a string.
 type URL string
@@ -22,8 +22,10 @@ type URL string
 // Client wraps a typical http.Client.
 // Client is used for all IGDB API calls.
 type Client struct {
-	http    *http.Client
-	rootURL string
+	http        *http.Client
+	rootURL     string
+	ScrollNext  string
+	ScrollCount int
 }
 
 // NewClient returns a new Client set with a default HTTP
@@ -63,6 +65,34 @@ func (c *Client) get(url string, result interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	err = c.setScrollHeaders(resp.Header)
+	if err != nil {
+		return nil
+	}
+	return nil
+}
+
+// setScrollHeaders checks the provided HTTP header for
+// the two additional Scroll API headers. If found, they
+// will be stored in the Client. If not found, the Client
+// fields will simply be set to zero values.
+func (c *Client) setScrollHeaders(h http.Header) error {
+	c.ScrollNext = ""
+	c.ScrollCount = 0
+
+	c.ScrollNext = h.Get("X-Next-Page")
+	xc := h.Get("X-Count")
+	if xc == "" {
+		return nil
+	}
+
+	count, err := strconv.Atoi(xc)
+	if err != nil {
+		return err
+	}
+	c.ScrollCount = count
+
 	return nil
 }
 
