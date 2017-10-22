@@ -2,6 +2,7 @@ package igdb
 
 import (
 	"net/http"
+	"reflect"
 	"strconv"
 	"testing"
 )
@@ -96,20 +97,35 @@ func TestSetScrollHeaders(t *testing.T) {
 }
 
 func TestSingleURL(t *testing.T) {
-	c := NewClient()
-
-	eURL := "https://api-2445582011268.apicast.io/tests/1234?fields=id%2Cname%2Cpopularity&filter%5Bpopularity%5D%5Bgte%5D=50&limit=10&offset=5&order=popularity%3Adesc"
-	aURL, err := c.singleURL(testEndpoint, 1234,
-		OptFields("id", "name", "popularity"),
-		OptFilter("popularity", OpGreaterThanEqual, strconv.Itoa(50)),
-		OptLimit(10),
-		OptOffset(5),
-		OptOrder("popularity", OrderDescending))
-	if err != nil {
-		t.Error(err)
+	var singleTests = []struct {
+		Name   string
+		ID     int
+		Opts   []OptionFunc
+		ExpURL string
+		ExpErr error
+	}{
+		{"Positive ID with no options", 1234, nil, igdbURL + string(testEndpoint) + "1234", nil},
+		{"Positive ID with limit and offset", 55, []OptionFunc{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "55?limit=20&offset=15", nil},
+		{"Positive ID with fields and order", 100, []OptionFunc{OptFields("name", "rating"), OptOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
+		{"Positive ID with filters", 55555, []OptionFunc{OptFilter("rating", OpGreaterThan, "80"), OptFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
+		{"Negative ID with no options", -1234, nil, "", ErrNegativeID},
+		{"Negative ID with options", -55555, []OptionFunc{OptLimit(20), OptOffset(15)}, "", ErrNegativeID},
+		{"Positive ID with invalid option", 100, []OptionFunc{OptLimit(999)}, "", ErrOutOfRange},
+		{"Negative ID with invalid option", -100, []OptionFunc{OptLimit(999)}, "", ErrNegativeID},
 	}
-	if aURL != eURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+	for _, st := range singleTests {
+		t.Run(st.Name, func(t *testing.T) {
+			c := NewClient()
+
+			url, err := c.singleURL(testEndpoint, st.ID, st.Opts...)
+			if !reflect.DeepEqual(err, st.ExpErr) {
+				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
+			}
+
+			if url != st.ExpURL {
+				t.Fatalf("Expected URL '%s', got '%s'", st.ExpURL, url)
+			}
+		})
 	}
 }
 
