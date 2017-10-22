@@ -12,12 +12,21 @@ import (
 var ErrNotStruct = errors.New("not a struct")
 var ErrNotSlice = errors.New("not a slice")
 
+// testHeader is
+type testHeader struct {
+	Key   string
+	Value string
+}
+
 // startTestServer initializes a test server that will respond with the
 // given status and response. A Client configured especially for this
 // test server is also returned.
-func startTestServer(status int, resp string) (*httptest.Server, Client) {
+func startTestServer(status int, resp string, headers ...testHeader) (*httptest.Server, Client) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
+		for _, h := range headers {
+			w.Header().Add(h.Key, h.Value)
+		}
 		fmt.Fprint(w, resp)
 	}))
 	c := Client{
