@@ -40,8 +40,6 @@ func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
 
 // GetCharacters returns a list of Characters identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Characters based
-// solely on the provided options.
 func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, error) {
 	url, err := c.multiURL(CharacterEndpoint, ids, opts...)
 	if err != nil {
@@ -60,6 +58,8 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 
 // SearchCharacters returns a list of Characters found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Characters based solely on
+// the provided options.
 func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character, error) {
 	url, err := c.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {

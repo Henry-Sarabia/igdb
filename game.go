@@ -131,8 +131,6 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 
 // GetGames returns a list of Games identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Games
-// based solely on the provided options.
 func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	url, err := c.multiURL(GameEndpoint, ids, opts...)
 	if err != nil {
@@ -150,6 +148,8 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 
 // SearchGames returns a list of Games found by searching the IGDB using the provided
 // query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Collections based
+// solely on the provided options.
 func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
 	url, err := c.searchURL(GameEndpoint, qry, opts...)
 	if err != nil {

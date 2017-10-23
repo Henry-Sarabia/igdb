@@ -45,8 +45,6 @@ func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 
 // GetFeeds returns a list of Feeds identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Feeds based
-// solely on the provided options.
 func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 	url, err := c.multiURL(FeedEndpoint, ids, opts...)
 	if err != nil {

@@ -33,8 +33,6 @@ func (c *Client) GetGenre(id int, opts ...OptionFunc) (*Genre, error) {
 
 // GetGenres returns a list of Genres identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Genres based
-// solely on the provided options.
 func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 	url, err := c.multiURL(GenreEndpoint, ids, opts...)
 	if err != nil {
@@ -51,7 +49,9 @@ func (c *Client) GetGenres(ids []int, opts ...OptionFunc) ([]*Genre, error) {
 }
 
 // SearchGenres returns a list of Genres found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty query will instead retrieve an index of Genres
+// based solely on the provided options.
 func (c *Client) SearchGenres(qry string, opts ...OptionFunc) ([]*Genre, error) {
 	url, err := c.searchURL(GenreEndpoint, qry, opts...)
 	if err != nil {

@@ -61,8 +61,6 @@ func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
 
 // GetPages returns a list of Pages identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Pages
-// based solely on the provided options.
 func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
 	url, err := c.multiURL(PageEndpoint, ids, opts...)
 	if err != nil {
@@ -80,7 +78,8 @@ func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
 
 // SearchPages returns a list of Pages found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate
-// the results.
+// the results. Providing an empty query will instead retrieve an index of 
+// Pages based solely on the provided options.
 func (c *Client) SearchPages(qry string, opts ...OptionFunc) ([]*Page, error) {
 	url, err := c.searchURL(PageEndpoint, qry, opts...)
 	if err != nil {

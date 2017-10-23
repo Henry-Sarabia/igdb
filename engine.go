@@ -38,8 +38,6 @@ func (c *Client) GetEngine(id int, opts ...OptionFunc) (*Engine, error) {
 
 // GetEngines returns a list of Engines identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Engines based
-// solely on the provided options.
 func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 	url, err := c.multiURL(EngineEndpoint, ids, opts...)
 	if err != nil {
@@ -58,6 +56,8 @@ func (c *Client) GetEngines(ids []int, opts ...OptionFunc) ([]*Engine, error) {
 
 // SearchEngines returns a list of Engines found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Engines based solely
+// on the provided options.
 func (c *Client) SearchEngines(qry string, opts ...OptionFunc) ([]*Engine, error) {
 	url, err := c.searchURL(EngineEndpoint, qry, opts...)
 	if err != nil {

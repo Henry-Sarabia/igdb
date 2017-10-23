@@ -47,8 +47,6 @@ func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
 
 // GetReviews returns a list of Reviews identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Reviews
-// based solely on the provided options.
 func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 	url, err := c.multiURL(ReviewEndpoint, ids, opts...)
 	if err != nil {
@@ -66,6 +64,8 @@ func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 
 // SearchReviews returns a list of Reviews found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Reviews based solely on
+// the provided options.
 func (c *Client) SearchReviews(qry string, opts ...OptionFunc) ([]*Review, error) {
 	url, err := c.searchURL(ReviewEndpoint, qry, opts...)
 	if err != nil {

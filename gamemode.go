@@ -34,8 +34,6 @@ func (c *Client) GetGameMode(id int, opts ...OptionFunc) (*GameMode, error) {
 
 // GetGameModes returns a list of GameModes identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of GameModes based
-// solely on the provided options.
 func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
 	url, err := c.multiURL(GameModeEndpoint, ids, opts...)
 	if err != nil {
@@ -53,6 +51,8 @@ func (c *Client) GetGameModes(ids []int, opts ...OptionFunc) ([]*GameMode, error
 
 // SearchGameModes returns a list of GameModes found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of GameModes based solely on
+// the provided options.
 func (c *Client) SearchGameModes(qry string, opts ...OptionFunc) ([]*GameMode, error) {
 	url, err := c.searchURL(GameModeEndpoint, qry, opts...)
 	if err != nil {

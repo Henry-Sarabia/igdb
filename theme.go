@@ -34,8 +34,6 @@ func (c *Client) GetTheme(id int, opts ...OptionFunc) (*Theme, error) {
 
 // GetThemes returns a list of Themes identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Themes based
-// solely on the provided options.
 func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 	url, err := c.multiURL(ThemeEndpoint, ids, opts...)
 	if err != nil {
@@ -52,7 +50,9 @@ func (c *Client) GetThemes(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 }
 
 // SearchThemes returns a list of Themes found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty query will instead retrieve an index of Themes
+// based solely on the provided options.
 func (c *Client) SearchThemes(qry string, opts ...OptionFunc) ([]*Theme, error) {
 	url, err := c.searchURL(ThemeEndpoint, qry, opts...)
 	if err != nil {

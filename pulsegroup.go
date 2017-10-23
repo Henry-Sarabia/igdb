@@ -37,8 +37,6 @@ func (c *Client) GetPulseGroup(id int, opts ...OptionFunc) (*PulseGroup, error) 
 
 // GetPulseGroups returns a list of PulseGroups identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of PulseGroups based
-// solely on the provided options.
 func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, error) {
 	url, err := c.multiURL(PulseGroupEndpoint, ids, opts...)
 	if err != nil {
@@ -56,6 +54,8 @@ func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, e
 
 // SearchPulseGroups returns a list of PulseGroups found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of PulseGroups based solely on
+// the provided options.
 func (c *Client) SearchPulseGroups(qry string, opts ...OptionFunc) ([]*PulseGroup, error) {
 	url, err := c.searchURL(PulseGroupEndpoint, qry, opts...)
 	if err != nil {

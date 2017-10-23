@@ -35,8 +35,7 @@ func (c *Client) GetTitle(id int, opts ...OptionFunc) (*Title, error) {
 
 // GetTitles returns a list of Titles identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the
-// results. Providing an empty list of IDs will instead retrieve an index
-// of Titles based solely on the provided options.
+// results.
 func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.multiURL(TitleEndpoint, ids, opts...)
 	if err != nil {
@@ -53,7 +52,9 @@ func (c *Client) GetTitles(ids []int, opts ...OptionFunc) ([]*Title, error) {
 }
 
 // SearchTitles returns a list of Titles found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty query will instead retrieve an index of Titles
+// based solely on the provided options.
 func (c *Client) SearchTitles(qry string, opts ...OptionFunc) ([]*Title, error) {
 	url, err := c.searchURL(TitleEndpoint, qry, opts...)
 	if err != nil {

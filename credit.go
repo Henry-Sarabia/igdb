@@ -45,8 +45,6 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 
 // GetCredits returns a list of Credits identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Credits based
-// solely on the provided options.
 func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.multiURL(CreditEndpoint, ids, opts...)
 	if err != nil {
@@ -65,6 +63,8 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 
 // SearchCredits returns a list of Credits found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Credits based solely
+// on the provided options.
 func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := c.searchURL(CreditEndpoint, qry, opts...)
 	if err != nil {

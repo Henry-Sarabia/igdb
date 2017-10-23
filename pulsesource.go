@@ -31,8 +31,6 @@ func (c *Client) GetPulseSource(id int, opts ...OptionFunc) (*PulseSource, error
 
 // GetPulseSources returns a list of PulseSources identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of PulseSources based
-// solely on the provided options.
 func (c *Client) GetPulseSources(ids []int, opts ...OptionFunc) ([]*PulseSource, error) {
 	url, err := c.multiURL(PulseSourceEndpoint, ids, opts...)
 	if err != nil {
@@ -50,6 +48,8 @@ func (c *Client) GetPulseSources(ids []int, opts ...OptionFunc) ([]*PulseSource,
 
 // SearchPulseSources returns a list of PulseSources found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of PulseSources based solely on
+// the provided options.
 func (c *Client) SearchPulseSources(qry string, opts ...OptionFunc) ([]*PulseSource, error) {
 	url, err := c.searchURL(PulseSourceEndpoint, qry, opts...)
 	if err != nil {

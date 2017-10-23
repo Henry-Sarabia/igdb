@@ -66,7 +66,7 @@ type Platform struct {
 }
 
 // GetPlatform returns a single Platform identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not 
+// Functional options may be provided but sorting and pagination will not
 // have an effect due to GetPlatform only returning a single Platform object
 // and not a list of Platforms.
 func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
@@ -86,8 +86,6 @@ func (c *Client) GetPlatform(id int, opts ...OptionFunc) (*Platform, error) {
 
 // GetPlatforms returns a list of Platforms identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Platforms based
-// solely on the provided options.
 func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error) {
 	url, err := c.multiURL(PlatformEndpoint, ids, opts...)
 	if err != nil {
@@ -105,6 +103,8 @@ func (c *Client) GetPlatforms(ids []int, opts ...OptionFunc) ([]*Platform, error
 
 // SearchPlatforms returns a list of Platforms found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Platforms based solely on
+// the provided options.
 func (c *Client) SearchPlatforms(qry string, opts ...OptionFunc) ([]*Platform, error) {
 	url, err := c.searchURL(PlatformEndpoint, qry, opts...)
 	if err != nil {

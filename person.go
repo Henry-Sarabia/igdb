@@ -55,8 +55,7 @@ func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 
 // GetPersons returns a list of Persons identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the
-// results. Providing an empty list of IDs will instead retrieve an index of
-// Persons based solely on the provided options.
+// results.
 func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 	url, err := c.multiURL(PersonEndpoint, ids, opts...)
 	if err != nil {
@@ -73,7 +72,9 @@ func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 }
 
 // SearchPersons returns a list of Persons found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
+// provided query. Provide functional options to filter, sort, and paginate the
+// results. Providing an empty query will instead retrieve an index of Persons
+// based solely on the provided options.
 func (c *Client) SearchPersons(qry string, opts ...OptionFunc) ([]*Person, error) {
 	url, err := c.searchURL(PersonEndpoint, qry, opts...)
 	if err != nil {

@@ -42,8 +42,6 @@ func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error
 
 // GetReleaseDates returns a list of ReleaseDates identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of ReleaseDates based
-// solely on the provided options.
 func (c *Client) GetReleaseDates(ids []int, opts ...OptionFunc) ([]*ReleaseDate, error) {
 	url, err := c.multiURL(ReleaseDateEndpoint, ids, opts...)
 	if err != nil {

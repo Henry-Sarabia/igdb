@@ -35,8 +35,6 @@ func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error
 
 // GetPerspectives returns a list of Perspectives identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Perspectives based
-// solely on the provided options.
 func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective, error) {
 	url, err := c.multiURL(PerspectiveEndpoint, ids, opts...)
 	if err != nil {
@@ -54,6 +52,8 @@ func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective,
 
 // SearchPerspectives returns a list of Perspectives found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Perspectives based solely on
+// the provided options.
 func (c *Client) SearchPerspectives(qry string, opts ...OptionFunc) ([]*Perspective, error) {
 	url, err := c.searchURL(PerspectiveEndpoint, qry, opts...)
 	if err != nil {

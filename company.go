@@ -48,8 +48,6 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 
 // GetCompanies returns a list of Companies identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Companies based
-// solely on the provided options.
 func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
 	url, err := c.multiURL(CompanyEndpoint, ids, opts...)
 	if err != nil {
@@ -68,6 +66,8 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 
 // SearchCompanies returns a list of Companies found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Companies based solely
+// on the provided options.
 func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
 	url, err := c.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {

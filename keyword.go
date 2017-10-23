@@ -35,8 +35,6 @@ func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
 
 // GetKeywords returns a list of Keywords identified by the provided list of IGDB
 // IDs. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty list of IDs will instead retrieve an index of Keywords based
-// solely on the provided options.
 func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
 	url, err := c.multiURL(KeywordEndpoint, ids, opts...)
 	if err != nil {
@@ -54,6 +52,8 @@ func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) 
 
 // SearchKeywords returns a list of Keywords found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
+// Providing an empty query will instead retrieve an index of Keywords based solely on
+// the provided options.
 func (c *Client) SearchKeywords(qry string, opts ...OptionFunc) ([]*Keyword, error) {
 	url, err := c.searchURL(KeywordEndpoint, qry, opts...)
 	if err != nil {
