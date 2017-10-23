@@ -3,7 +3,6 @@ package igdb
 import (
 	"net/http"
 	"reflect"
-	"strconv"
 	"testing"
 )
 
@@ -147,8 +146,8 @@ func TestMultiURL(t *testing.T) {
 		{"Negative IDs with options", []int{-55555}, []OptionFunc{OptLimit(20), OptOffset(15)}, "", ErrNegativeID},
 		{"Mixed IDs with options", []int{100, -200, 300, -400}, []OptionFunc{OptLimit(5), OptOffset(20)}, "", ErrNegativeID},
 		{"Mixed IDs with no options", []int{-1, 2, -3, 4}, nil, "", ErrNegativeID},
-		{"No IDs with no options", nil, nil, igdbURL + string(testEndpoint), nil},
-		{"No IDs with options", nil, []OptionFunc{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15", nil},
+		{"No IDs with no options", nil, nil, "", ErrEmptyIDs},
+		{"No IDs with options", nil, []OptionFunc{OptLimit(20), OptOffset(15)}, "", ErrEmptyIDs},
 		{"Positive IDs with invalid option", []int{100, 200}, []OptionFunc{OptLimit(999)}, "", ErrOutOfRange},
 		{"Negative IDs with invalid option", []int{-100, -200}, []OptionFunc{OptLimit(999)}, "", ErrNegativeID},
 		{"Mixed IDs with invalid option", []int{100, -200}, []OptionFunc{(OptLimit(999))}, "", ErrNegativeID},
@@ -170,19 +169,38 @@ func TestMultiURL(t *testing.T) {
 }
 
 func TestSearchURL(t *testing.T) {
-	c := NewClient()
-
-	eURL := "https://api-2445582011268.apicast.io/tests/?fields=id%2Cname%2Cpopularity&filter%5Bpopularity%5D%5Bgte%5D=50&limit=10&offset=5&order=popularity%3Adesc&search=mario+party"
-	aURL, err := c.searchURL(testEndpoint, "mario party",
-		OptFields("id", "name", "popularity"),
-		OptFilter("popularity", OpGreaterThanEqual, strconv.Itoa(50)),
-		OptLimit(10),
-		OptOffset(5),
-		OptOrder("popularity", OrderDescending))
-	if err != nil {
-		t.Error(err)
+	var searchTests = []struct {
+		Name   string
+		Query  string
+		Opts   []OptionFunc
+		ExpURL string
+		ExpErr error
+	}{
+		{"Non-empty query with no options", "zelda", nil, igdbURL + string(testEndpoint) + "?search=zelda", nil},
+		{"Non-empty query with limit and offset", "zelda", []OptionFunc{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15&search=zelda", nil},
+		{"Non-empty query with fields and order", "zelda", []OptionFunc{OptFields("name", "rating"), OptOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "?fields=name%2Crating&order=rating%3Adesc&search=zelda", nil},
+		{"Non-empty query with filters", "zelda", []OptionFunc{OptFilter("rating", OpGreaterThan, "80"), OptFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80&search=zelda", nil},
+		{"Empty query with no options", "", nil, igdbURL + string(testEndpoint), nil},
+		{"Empty query with options", "", []OptionFunc{OptLimit(50), OptFilter("platforms", OpAny, "9")}, igdbURL + string(testEndpoint) + "?filter%5Bplatforms%5D%5Bany%5D=9&limit=50", nil},
+		{"Space query with no options", "   ", nil, igdbURL + string(testEndpoint), nil},
+		{"Space query with options", "   ", []OptionFunc{OptLimit(50), OptFilter("platforms", OpAny, "9")}, igdbURL + string(testEndpoint) + "?filter%5Bplatforms%5D%5Bany%5D=9&limit=50", nil},
+		{"Non-empty query with invalid option", "zelda", []OptionFunc{OptOffset(-999)}, "", ErrOutOfRange},
+		{"Empty query with invalid option", "", []OptionFunc{OptOffset(-999)}, "", ErrOutOfRange},
+		{"Space query with invalid option", "   ", []OptionFunc{OptOffset(-999)}, "", ErrOutOfRange},
 	}
-	if aURL != eURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+
+	for _, st := range searchTests {
+		t.Run(st.Name, func(t *testing.T) {
+			c := NewClient()
+
+			url, err := c.searchURL(testEndpoint, st.Query, st.Opts...)
+			if !reflect.DeepEqual(err, st.ExpErr) {
+				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
+			}
+
+			if url != st.ExpURL {
+				t.Fatalf("Expected URL '%s', got '%s'", st.ExpURL, url)
+			}
+		})
 	}
 }
