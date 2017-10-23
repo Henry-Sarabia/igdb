@@ -60,3 +60,23 @@ func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 
 	return f, nil
 }
+
+// SearchFeeds returns a list of Feeds found by retrieving an index
+// of Feeds from the IGDB. Provide functional options to filter, sort,
+// and paginate the result. The index of Feeds returned is based solely
+// on the provided options.
+func (c *Client) SearchFeeds(opts ...OptionFunc) ([]*Feed, error) {
+	url, err := c.searchURL(FeedEndpoint, "", opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var f []*Feed
+
+	err = c.get(url, &f)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
+}
