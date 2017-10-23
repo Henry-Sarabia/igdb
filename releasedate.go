@@ -30,14 +30,14 @@ func (c *Client) GetReleaseDate(id int, opts ...OptionFunc) (*ReleaseDate, error
 	if err != nil {
 		return nil, err
 	}
-	var r []ReleaseDate
+	var rd []ReleaseDate
 
-	err = c.get(url, &r)
+	err = c.get(url, &rd)
 	if err != nil {
 		return nil, err
 	}
 
-	return &r[0], nil
+	return &rd[0], nil
 }
 
 // GetReleaseDates returns a list of ReleaseDates identified by the provided list of
@@ -47,12 +47,32 @@ func (c *Client) GetReleaseDates(ids []int, opts ...OptionFunc) ([]*ReleaseDate,
 	if err != nil {
 		return nil, err
 	}
-	var r []*ReleaseDate
+	var rd []*ReleaseDate
 
-	err = c.get(url, &r)
+	err = c.get(url, &rd)
 	if err != nil {
 		return nil, err
 	}
 
-	return r, nil
+	return rd, nil
+}
+
+// SearchReleaseDates returns a list of ReleaseDates found by retrieving an index
+// of ReleaseDates from the IGDB. Provide functional options to filter, sort, and
+// paginate the result. The index of ReleaseDates returned is based solely on
+// the provided options.
+func (c *Client) SearchReleaseDates(opts ...OptionFunc) ([]*ReleaseDate, error) {
+	url, err := c.searchURL(ReleaseDateEndpoint, "", opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	var rd []*ReleaseDate
+
+	err = c.get(url, &rd)
+	if err != nil {
+		return nil, err
+	}
+
+	return rd, nil
 }
