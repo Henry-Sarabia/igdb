@@ -12,9 +12,13 @@ import (
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-2445582011268.apicast.io/"
 
-// ErrNegativeID is returned by a client when a negative
+// ErrNegativeID is returned by a Client when a negative
 // ID is used as an argument in an API call.
-var ErrNegativeID = errors.New("igdb: negative ID")
+var ErrNegativeID = errors.New("igdb.Client: negative ID")
+
+// ErrEmptyIDs is returned by a Client when a slice of
+// IDs is empty.
+var ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
 
 // URL represents a URL as a string.
 type URL string
@@ -96,8 +100,8 @@ func (c *Client) setScrollHeaders(h http.Header) error {
 	return nil
 }
 
-// singleURL creates a URL configured to request a single IGDB object
-// identified by its unique IGDB ID using the provided endpoint.
+// singleURL creates a URL configured to request a single IGDB object identified by
+// its unique IGDB ID using the provided endpoint and options.
 func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
 	if id < 0 {
 		return "", ErrNegativeID
@@ -113,14 +117,19 @@ func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, er
 	return url, nil
 }
 
-// multiURL creates a URL configured to request multiple IGDB object identified
-// by their unique IGDB IDs using the provided endpoint.
+// multiURL creates a URL configured to request multiple IGDB objects identified
+// by their unique IGDB IDs using the provided endpoint and options.
 func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
+	if len(ids) == 0 {
+		return "", ErrEmptyIDs
+	}
+
 	for _, id := range ids {
 		if id < 0 {
 			return "", ErrNegativeID
 		}
 	}
+
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err
@@ -132,10 +141,14 @@ func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, 
 	return url, nil
 }
 
-// searchURL creates a URL configured to search the IGDB based on the given query
-// using the provided endpoint.
+// searchURL creates a URL configured to search the IGDB based on the given query using
+// the provided endpoint and options. An empty query creates a URL configured to retrieve
+// an index of IGDB objects from the given endpoint based solely on the provided options.
 func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
-	opts = append(opts, optSearch(qry))
+	if strings.TrimSpace(qry) != "" {
+		opts = append(opts, optSearch(qry))
+	}
+
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err
