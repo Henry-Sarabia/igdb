@@ -60,6 +60,7 @@ func newOpt(ofs ...OptionFunc) (*options, error) {
 // available orders are Ascending and Descending.
 type order string
 
+// The available orders for the functional option OptOrder.
 const (
 	// OrderAscending is used as an argument in the SetOrder functional
 	// option to set the results from an API call in ascending order.
@@ -156,6 +157,7 @@ func OptFields(fields ...string) OptionFunc {
 // https://igdb.github.io/api/references/filters/#available-postfixes
 type operator string
 
+// The available operators for the functional option OptFilter.
 const (
 	// OpEquals checks for equality. Must match exactly.
 	OpEquals operator = "eq"

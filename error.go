@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// errEndOfJSON occurs when encountering an unexpected end of JSON input.
 var errEndOfJSON = errors.New("unexpected end of JSON input")
 
 // Error contains information on an
