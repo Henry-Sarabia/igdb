@@ -234,3 +234,29 @@ func TestIntsToStrings(t *testing.T) {
 		})
 	}
 }
+
+func TestIntsToCommaString(t *testing.T) {
+	var tableTests = []struct {
+		Name      string
+		Ints      []int
+		Expstring string
+	}{
+		{"Empty slice", nil, ""},
+		{"Zero int slice", []int{0}, "0"},
+		{"Single positive int slice", []int{100}, "100"},
+		{"Single negative int slice", []int{-100}, "-100"},
+		{"Multiple positive ints slice", []int{100, 5, 999, 123456789}, "100,5,999,123456789"},
+		{"Multiple negative ints slice", []int{-100, -5, -999, -123456789}, "-100,-5,-999,-123456789"},
+		{"Mixed ints slice", []int{100, -200, 300, -400}, "100,-200,300,-400"},
+	}
+
+	for _, tt := range tableTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			s := intsToCommaString(tt.Ints)
+
+			if s != tt.Expstring {
+				t.Fatalf("Expected string '%s', got '%s'", tt.Expstring, s)
+			}
+		})
+	}
+}
