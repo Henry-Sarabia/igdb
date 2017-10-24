@@ -204,3 +204,33 @@ func TestSearchURL(t *testing.T) {
 		})
 	}
 }
+
+func TestIntsToStrings(t *testing.T) {
+	var tableTests = []struct {
+		Name       string
+		Ints       []int
+		ExpStrings []string
+	}{
+		{"Empty slice", nil, nil},
+		{"Zero int slice", []int{0}, []string{"0"}},
+		{"Single positive int slice", []int{100}, []string{"100"}},
+		{"Single negative int slice", []int{-100}, []string{"-100"}},
+		{"Multiple positive ints slice", []int{100, 5, 999, 123456789}, []string{"100", "5", "999", "123456789"}},
+		{"Multiple negative ints slice", []int{-100, -5, -999, -123456789}, []string{"-100", "-5", "-999", "-123456789"}},
+		{"Mixed ints slice", []int{100, -200, 300, -400}, []string{"100", "-200", "300", "-400"}},
+	}
+
+	for _, tt := range tableTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			s := intsToStrings(tt.Ints)
+
+			ok, err := equalSlice(s, tt.ExpStrings)
+			if err != nil {
+				t.Error(err)
+			}
+			if !ok {
+				t.Fatalf("Expected strings %v, got %v", tt.ExpStrings, s)
+			}
+		})
+	}
+}
