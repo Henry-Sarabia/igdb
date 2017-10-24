@@ -28,9 +28,9 @@ const (
 	TitleEndpoint       endpoint = "titles/"
 )
 
-// GetEndpointFields returns a list of fields the represent the model
-// of the data available at the given IGDB endpoint.
-func (c *Client) GetEndpointFields(end endpoint) ([]string, error) {
+// GetEndpointFieldManifest returns a list of fields that represent the
+// model of the data available at the given IGDB endpoint.
+func (c *Client) GetEndpointFieldManifest(end endpoint) ([]string, error) {
 	url := c.rootURL + string(end) + "meta"
 
 	var f []string

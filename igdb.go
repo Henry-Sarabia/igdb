@@ -12,13 +12,13 @@ import (
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-2445582011268.apicast.io/"
 
-// ErrNegativeID is returned by a Client when a negative
-// ID is used as an argument in an API call.
-var ErrNegativeID = errors.New("igdb.Client: negative ID")
-
-// ErrEmptyIDs is returned by a Client when a slice of
-// IDs is empty.
-var ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
+// Errors returned when creating API call URLs.
+var (
+	// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
+	ErrNegativeID = errors.New("igdb.Client: negative ID")
+	// ErrEmptyIDs occurs when an empty slice of IDs is used as an argument in an API call.
+	ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
+)
 
 // URL represents a URL as a string.
 type URL string

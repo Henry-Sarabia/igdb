@@ -8,14 +8,20 @@ import (
 	"strings"
 )
 
-// Errors returned by an OptionFunc.
+// Errors returned by an OptionFunc when setting API call options.
 var (
-	ErrOptionSet       = errors.New("igdb.OptionFunc: option already set")
-	ErrEmptyField      = errors.New("igdb.OptionFunc: field value empty")
-	ErrEmptySlice      = errors.New("igdb.OptionFunc: slice empty")
-	ErrOutOfRange      = errors.New("igdb.OptionFunc: value out of range")
+	// ErrOptionSet occurs when the same option is used multiple times in a single API call.
+	ErrOptionSet = errors.New("igdb.OptionFunc: option already set")
+	// ErrEmptyField occurs when an empty string is used as a field name.
+	ErrEmptyField = errors.New("igdb.OptionFunc: field value empty")
+	// ErrEmptySlice occurs when an empty slice is used as an argument in a variadic function.
+	ErrEmptySlice = errors.New("igdb.OptionFunc: slice empty")
+	// ErrOutOfRange occurs when a provided number value is out of valid range.
+	ErrOutOfRange = errors.New("igdb.OptionFunc: value out of range")
+	// ErrExclusiveOption occurs when mutually exclusive options are used in a single API call.
 	ErrExclusiveOption = errors.New("igdb.OptionFunc: multiple set options are mutually exclusive")
-	ErrEmptyQuery      = errors.New("igdb.OptionFunc: query value empty")
+	// ErrEmptyQuery occurs when an empty string is used as a query value.
+	ErrEmptyQuery = errors.New("igdb.OptionFunc: query value empty")
 )
 
 // options contains a value map to store optional

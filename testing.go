@@ -9,18 +9,24 @@ import (
 	"strings"
 )
 
-var ErrNotStruct = errors.New("not a struct")
-var ErrNotSlice = errors.New("not a slice")
+// Errors returned when performing struct type validation.
+var (
+	// ErrNotStruct occurs when a non-struct type is provided to a function expecting a struct.
+	ErrNotStruct = errors.New("igdb: not a struct")
+	// ErrNotSlice occurs when a non-slice type is provided to a function expecting a slice.
+	ErrNotSlice = errors.New("igdb: not a slice")
+)
 
-// testHeader is
+// testHeader mocks a single HTTP header
+// entry with a key and value field.
 type testHeader struct {
 	Key   string
 	Value string
 }
 
-// startTestServer initializes a test server that will respond with the
-// given status and response. A Client configured especially for this
-// test server is also returned.
+// startTestServer initializes and returns a test server that will respond with the provided
+// status, response, and optional headers. startTestServer also returns a Client configured
+// specifically for this test server.
 func startTestServer(status int, resp string, headers ...testHeader) (*httptest.Server, Client) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
@@ -38,9 +44,9 @@ func startTestServer(status int, resp string, headers ...testHeader) (*httptest.
 }
 
 // validateStruct checks if the given struct contains all of the fields
-// it should according to the appropriate IGDB endpoint.
+// listed by the field manifest provided by the given IGDB endpoint.
 func (c *Client) validateStruct(str reflect.Type, end endpoint) error {
-	f, err := c.GetEndpointFields(end)
+	f, err := c.GetEndpointFieldManifest(end)
 	if err != nil {
 		return err
 	}
@@ -55,16 +61,15 @@ func (c *Client) validateStruct(str reflect.Type, end endpoint) error {
 }
 
 // validateStructTags checks if the given struct contains all of
-// the struct tags according to the slice of strings representing
-// the appropriate struct tags.
-func validateStructTags(str reflect.Type, new []string) error {
+// the struct tags in the provided field manifest.
+func validateStructTags(str reflect.Type, fm []string) error {
 	old, err := getStructTags(str)
 	if err != nil {
 		return err
 	}
 
 	found := make(map[string]bool)
-	for _, v := range new {
+	for _, v := range fm {
 		found[v] = false
 	}
 
@@ -88,8 +93,8 @@ func validateStructTags(str reflect.Type, new []string) error {
 	return nil
 }
 
-// getStructTags collects the struct tags of every available
-// field in the given struct.
+// getStructTags collects the struct tags of every
+// available field in the given struct.
 func getStructTags(str reflect.Type) ([]string, error) {
 	if str.Kind() != reflect.Struct {
 		return nil, ErrNotStruct
@@ -126,7 +131,7 @@ func removeSubfields(f []string) []string {
 
 // equalSlice returns true if two slices contain
 // the same elements, otherwise it returns false.
-// adapted from github.com/emou/testify/assert/assertions.go
+// Adapted from github.com/emou/testify/assert/assertions.go
 func equalSlice(x, y interface{}) (bool, error) {
 	if x == nil || y == nil {
 		return x == y, nil

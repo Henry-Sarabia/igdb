@@ -5,10 +5,11 @@ import (
 	"fmt"
 )
 
+// Errors returned when creating Image URLs.
 var (
-	// ErrEmptyID signals an invalid empty ID string.
+	// ErrEmptyID occurs when an empty string is used as an argument in a function.
 	ErrEmptyID = errors.New("igdb: id value empty")
-	// ErrPixelRatio signals an unsupported display pixel ratio.
+	// ErrPixelRatio occurs when an unsupported display pixel ratio is used as an argument in a function.
 	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
 )
 
