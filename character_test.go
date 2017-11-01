@@ -6,128 +6,6 @@ import (
 	"testing"
 )
 
-const getCharacterResp = `
-[{
-	"id": 10617,
-	"name": "Princess Zelda",
-	"created_at": 1492752468377,
-	"updated_at": 1492754718998,
-	"slug": "princess-zelda",
-	"url": "https://www.igdb.com/characters/princess-zelda",
-	"mug_shot": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/q64bgyomnbk5spyikkex.jpg",
-		"cloudinary_id": "q64bgyomnbk5spyikkex",
-		"width": 204,
-		"height": 479
-	},
-	"gender": 1,
-	"species": 1
-}]
-`
-
-const getCharactersResp = `
-[{
-	"id": 3726,
-	"name": "Mario",
-	"created_at": 1428832054608,
-	"updated_at": 1468601612724,
-	"slug": "mario",
-	"url": "https://www.igdb.com/characters/mario",
-	"mug_shot": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/iurhmhenrrsdnsc4zbva.jpg",
-		"cloudinary_id": "iurhmhenrrsdnsc4zbva",
-		"width": 1840,
-		"height": 3784
-	},
-	"gender": 0,
-	"akas": [
-		"Super Mario"
-	],
-	"species": 1,
-	"people": [
-		28769,
-		132118
-	],
-	"games": [
-		1074
-	]
-},
-{
-	"id": 9580,
-	"name": "Samus Aran",
-	"created_at": 1472328217237,
-	"updated_at": 1492754716428,
-	"slug": "samus-aran",
-	"url": "https://www.igdb.com/characters/samus-aran",
-	"mug_shot": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ilgqsndahl8sjk5navaw.jpg",
-		"cloudinary_id": "ilgqsndahl8sjk5navaw",
-		"width": 352,
-		"height": 480
-	},
-	"gender": 1,
-	"species": 1,
-	"people": [
-		25893
-	],
-	"games": [
-		1113
-	]
-}]
-`
-
-const searchCharacterResp = `
-[{
-	"id": 2168,
-	"name": "Snake",
-	"created_at": 1413724358001,
-	"updated_at": 1472328003683,
-	"slug": "snake",
-	"url": "https://www.igdb.com/characters/snake",
-	"gender": 0,
-	"species": 1,
-	"people": [
-		34569,
-		85790
-	],
-	"games": [
-		5328,
-		376,
-		379,
-		1985,
-		382
-	]
-},
-{
-	"id": 5352,
-	"name": "Solid Snake",
-	"created_at": 1438931494248,
-	"updated_at": 1438931494561,
-	"slug": "solid-snake",
-	"url": "https://www.igdb.com/characters/solid-snake",
-	"people": [
-		85790
-	],
-	"games": [
-		375
-	]
-},
-{
-	"id": 5378,
-	"name": "Old Snake",
-	"created_at": 1440480929228,
-	"updated_at": 1440480929498,
-	"slug": "old-snake",
-	"url": "https://www.igdb.com/characters/old-snake",
-	"people": [
-		85790
-	],
-	"games": [
-		380
-	]
-}]
-`
-
 func TestCharacterTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -145,7 +23,10 @@ func TestCharacterTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCharacter(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getCharacterResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_character.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ch, err := c.GetCharacter(10617)
@@ -173,7 +54,10 @@ func TestGetCharacter(t *testing.T) {
 }
 
 func TestGetCharacters(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getCharactersResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_characters.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{3726, 9580}
@@ -215,7 +99,10 @@ func TestGetCharacters(t *testing.T) {
 }
 
 func TestSearchCharacters(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchCharacterResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_characters.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ch, err := c.SearchCharacters("snake")
