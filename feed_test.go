@@ -6,46 +6,6 @@ import (
 	"testing"
 )
 
-const getFeedResp = `
-[{
-	"id": 128033,
-	"created_at": 1500916658000,
-	"updated_at": 1500917216678,
-	"url": "https://www.igdb.com/feed/2qsh",
-	"content": "amiibo Functionality Revealed for Metroid: Samus Returns + Fusion Difficulty http://www.youtube.com/watch?v=sR1mAv7dcsc",
-	"category": 7,
-	"meta": "{\"aggregator\":\"youtube\",\"external_id\":\"sR1mAv7dcsc\"}"
-}]
-`
-
-const getFeedsResp = `
-[{
-	"id": 62732,
-	"created_at": 1494010804000,
-	"updated_at": 1494013354420,
-	"url": "https://www.igdb.com/feed/1cek",
-	"content": "eSports Ready - Rainbow Six Siege http://www.youtube.com/watch?v=jRYVzfQz9nU",
-	"category": 7,
-	"meta": "{\"aggregator\":\"youtube\",\"external_id\":\"jRYVzfQz9nU\"}"
-},
-{
-	"id": 132484,
-	"created_at": 1501156914070,
-	"updated_at": 1501156914070,
-	"url": "https://www.igdb.com/feed/2u84",
-	"category": 1,
-	"pulse": 252065
-},
-{
-	"id": 143318,
-	"created_at": 1503654296057,
-	"updated_at": 1503654296057,
-	"url": "https://www.igdb.com/feed/32l2",
-	"category": 1,
-	"pulse": 261098
-}]
-`
-
 func TestFeedTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -63,7 +23,10 @@ func TestFeedTypeIntegrity(t *testing.T) {
 }
 
 func TestGetFeed(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getFeedResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_feed.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	f, err := c.GetFeed(132482)
@@ -103,7 +66,10 @@ func TestGetFeed(t *testing.T) {
 }
 
 func TestGetFeeds(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getFeedsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_feeds.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{62732, 132484, 143318}

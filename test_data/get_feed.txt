@@ -1,0 +1,9 @@
+[{
+	"id": 128033,
+	"created_at": 1500916658000,
+	"updated_at": 1500917216678,
+	"url": "https://www.igdb.com/feed/2qsh",
+	"content": "amiibo Functionality Revealed for Metroid: Samus Returns + Fusion Difficulty http://www.youtube.com/watch?v=sR1mAv7dcsc",
+	"category": 7,
+	"meta": "{\"aggregator\":\"youtube\",\"external_id\":\"sR1mAv7dcsc\"}"
+}]
