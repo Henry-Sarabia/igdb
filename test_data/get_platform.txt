@@ -1,0 +1,66 @@
+[{
+	"id": 7,
+	"name": "PlayStation",
+	"logo": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ptlxti6tzdpma71s5tkm.jpg",
+		"cloudinary_id": "ptlxti6tzdpma71s5tkm",
+		"width": 2000,
+		"height": 1522
+	},
+	"slug": "ps",
+	"url": "https://www.igdb.com/platforms/ps",
+	"created_at": 1297639288000,
+	"updated_at": 1392141728537,
+	"generation": 5,
+	"games": [
+		1185,
+		1186,
+		1187,
+		1192,
+		1195,
+		1201,
+		425,
+		675
+	],
+	"versions": [
+		{
+			"name": "Playstation 1",
+			"slug": "playstation-1",
+			"url": "https://www.igdb.com/platforms/ps/version/playstation-1",
+			"cpu": "MIPS R3051 @ 33,8688 MHz",
+			"storage": "Playstation Memory Card",
+			"sound": "Stereo",
+			"media": "CD-ROM Discs, Playstation game disc",
+			"output": "S-Video, Composite",
+			"manufacturers": [
+				{
+					"company": 45
+				}
+			],
+			"logo": {
+				"url": "//images.igdb.com/igdb/image/upload/t_thumb/ptlxti6tzdpma71s5tkm.png",
+				"cloudinary_id": "ptlxti6tzdpma71s5tkm",
+				"width": 2000,
+				"height": 1522
+			},
+			"release_dates": [
+				{
+					"date": 786412800000,
+					"region": 5
+				},
+				{
+					"date": 810604800000,
+					"region": 2
+				},
+				{
+					"date": 812332800000,
+					"region": 1
+				},
+				{
+					"date": 816393600000,
+					"region": 3
+				}
+			]
+		}
+	]
+}]
