@@ -1,0 +1,20 @@
+[{
+	"id": 1462,
+	"created_at": 1426759830353,
+	"updated_at": 1426759830495,
+	"username": "brutus86",
+	"slug": "almost-perfect",
+	"url": "https://www.igdb.com/games/mario-kart-8/reviews/almost-perfect",
+	"title": "Almost perfect!",
+	"game": 2350,
+	"category": 1,
+	"likes": 0,
+	"views": 250,
+	"rating_category": 3,
+	"platform": 41,
+	"introduction": "Nintendo has made the best Mario Kart-game yet! ",
+	"content": "If you want a good looking game with partyfeatures and some of the best racingtracks to this date, then Mario Kart 8 is the game for you. There is almost nothing to negative about the game, except some details Nintendo should take care of. Thanks to the possibillity of downloading ad-ons via eShop we can now enjoy a Mario Kart game longer! \r\n\r\nThere is one BIG downside thou, and thats the battlearenas, there is no one! If you like battle then you should probably hang on to the old games! In Battle on Mario Kart 8 there is just the ordinary tracks and thats a BIG downside for splitscreen-sessions!",
+	"conclusion": "Mario Kart 8 introduces downloadable tracks, something we've missed in all these games! It's gourgeous graphic! And it's a lot of fun to play with your friends in splitscreen-mode (or online).",
+	"positive_points": "Graphic, expandable, controls",
+	"negative_points": "No Battle arenas"
+}]
