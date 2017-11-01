@@ -1,0 +1,17 @@
+[{
+	"id": 19,
+	"name": "Horror",
+	"created_at": 1322605338000,
+	"updated_at": 1323289216000,
+	"slug": "horror",
+	"url": "https://www.igdb.com/themes/horror",
+	"games": [
+		967,
+		973,
+		971,
+		970,
+		861,
+		985,
+		37
+	]
+}]

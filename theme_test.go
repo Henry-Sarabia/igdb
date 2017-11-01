@@ -6,86 +6,6 @@ import (
 	"testing"
 )
 
-const getThemeResp = `
-[{
-	"id": 17,
-	"name": "Fantasy",
-	"created_at": 1322605338000,
-	"updated_at": 1323289216000,
-	"slug": "fantasy",
-	"url": "https://www.igdb.com/themes/fantasy",
-	"games": [
-		799,
-		651,
-		901,
-		929,
-		939,
-		800,
-		931,
-		876
-	]
-}]
-`
-
-const getThemesResp = `
-[{
-	"id": 20,
-	"name": "Thriller",
-	"created_at": 1322605338000,
-	"updated_at": 1323289216000,
-	"slug": "thriller",
-	"url": "https://www.igdb.com/themes/thriller",
-	"games": [
-		18,
-		19,
-		21,
-		493,
-		109,
-		955,
-		844
-	]
-},
-{
-	"id": 23,
-	"name": "Stealth",
-	"created_at": 1322605338000,
-	"updated_at": 1323289216000,
-	"slug": "stealth",
-	"url": "https://www.igdb.com/themes/stealth",
-	"games": [
-		4,
-		820,
-		43,
-		500,
-		501,
-		433,
-		250,
-		377,
-		375
-	]
-}]
-`
-
-const searchThemesResp = `
-[{
-	"id": 19,
-	"name": "Horror",
-	"created_at": 1322605338000,
-	"updated_at": 1323289216000,
-	"slug": "horror",
-	"url": "https://www.igdb.com/themes/horror",
-	"games": [
-		967,
-		973,
-		971,
-		970,
-		861,
-		985,
-		37
-	]
-}]
-`
-
 func TestThemeTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -103,7 +23,10 @@ func TestThemeTypeIntegrity(t *testing.T) {
 }
 
 func TestGetTheme(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getThemeResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_theme.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	th, err := c.GetTheme(17)
@@ -139,7 +62,10 @@ func TestGetTheme(t *testing.T) {
 }
 
 func TestGetThemes(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getThemesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_themes.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{20, 23}
@@ -182,7 +108,10 @@ func TestGetThemes(t *testing.T) {
 }
 
 func TestSearchThemes(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchThemesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_themes.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	th, err := c.SearchThemes("horror")
