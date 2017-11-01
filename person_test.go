@@ -6,131 +6,6 @@ import (
 	"testing"
 )
 
-// Note that some of these test responses have truncated information.
-const getPersonResp = `
-[{
-	"id": 1688,
-	"name": "Shigeru Miyamoto",
-	"created_at": 1384907616370,
-	"updated_at": 1498837418443,
-	"slug": "shigeru-miyamoto",
-	"url": "https://www.igdb.com/people/shigeru-miyamoto",
-	"dob": -540432000000,
-	"gender": 0,
-	"country": 392,
-	"mug_shot": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/wuyjvwyascmcquyf4qh9.jpg",
-		"cloudinary_id": "wuyjvwyascmcquyf4qh9",
-		"width": 2048,
-		"height": 1365
-	},
-	"bio": "Shigeru Miyamoto is a Japanese video game designer and producer. He is best known as the creator of some of the most critically acclaimed and best-selling video games of all time.\n\nMiyamoto originally joined Nintendo in 1977, when the company was beginning its foray into video games, and starting to abandon the playing cards it had made starting in 1889. His games have been seen on every Nintendo video game console, with his earliest work appearing on arcade machines in the late 70s. Franchises Miyamoto has helped create include the Mario, Donkey Kong, The Legend of Zelda, Star Fox, F-Zero, Pikmin, and Wii series. Noteworthy games within these include Super Mario Bros., one of the most well known video games; Super Mario 64, an early example of 3D control schemes; and The Legend of Zelda: Ocarina of Time, one of the most critically acclaimed video games of all time.",
-	"games": [
-		2909,
-		2777,
-		2476,
-		2923,
-		2350,
-		7337,
-		1073,
-		1070,
-		1036,
-		1074,
-		3365
-	]
-}]
-`
-
-const getPersonsResp = `
-[{
-	"id": 52302,
-	"name": "Sean Murray",
-	"created_at": 1419554477079,
-	"updated_at": 1471550782876,
-	"slug": "sean-murray",
-	"url": "https://www.igdb.com/people/sean-murray",
-	"games": [
-		5628,
-		2354,
-		3225
-	]
-},
-{
-	"id": 84908,
-	"name": "Keiji Inafune",
-	"created_at": 1433023287339,
-	"updated_at": 1476440662740,
-	"slug": "keiji-inafune",
-	"url": "https://www.igdb.com/people/keiji-inafune",
-	"gender": 0,
-	"games": [
-		5845,
-		496,
-		1348,
-		1913,
-		1430,
-		1035,
-		11131,
-		1723,
-		6914
-	]
-}]
-`
-
-const searchPersonsResp = `
-[{
-	"id": 34056,
-	"name": "Hideo Kojima",
-	"created_at": 1413724312587,
-	"updated_at": 1472327987812,
-	"slug": "hideo-kojima",
-	"url": "https://www.igdb.com/people/hideo-kojima",
-	"dob": -200620800000,
-	"gender": 0,
-	"country": 392,
-	"mug_shot": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/xp2uefbgrzgro0fecvt6.jpg",
-		"cloudinary_id": "xp2uefbgrzgro0fecvt6",
-		"width": 1280,
-		"height": 720
-	},
-	"bio": "Hideo Kojima was born August 24th 1963 in Tokoy and is mostly known as the mastermind behind the Metal Gear Solid universe.",
-	"twitter": "https://twitter.com/Kojima_Hideo",
-	"voice_acted": [
-		5328,
-		1985
-	],
-	"games": [
-		5328,
-		376,
-		375,
-		380,
-		379,
-		113,
-		1985,
-		9647,
-		6326,
-		378,
-		382
-	],
-	"characters": [
-		2173
-	]
-},
-{
-	"id": 93634,
-	"name": "Hideo Kohima",
-	"created_at": 1441492909741,
-	"updated_at": 1441492909810,
-	"slug": "hideo-kohima",
-	"url": "https://www.igdb.com/people/hideo-kohima",
-	"gender": 0,
-	"games": [
-		379
-	]
-}]
-`
-
 func TestPersonTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -148,7 +23,10 @@ func TestPersonTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPerson(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPersonResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_person.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	p, err := c.GetPerson(2107)
@@ -184,7 +62,10 @@ func TestGetPerson(t *testing.T) {
 }
 
 func TestGetPersons(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPersonsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_persons.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{52302, 84908}
@@ -227,7 +108,10 @@ func TestGetPersons(t *testing.T) {
 }
 
 func TestSearchPersons(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchPersonsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_persons.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	p, err := c.SearchPersons("hideokojima")
