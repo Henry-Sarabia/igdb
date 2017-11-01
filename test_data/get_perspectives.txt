@@ -1,0 +1,37 @@
+[{
+	"id": 6,
+	"name": "Aural",
+	"created_at": 1413209511809,
+	"updated_at": 1413209511809,
+	"slug": "aural",
+	"url": "https://www.igdb.com/player_perspectives/aural",
+	"games": [
+		9076,
+		2629,
+		7698,
+		8597,
+		8662,
+		8612,
+		8661,
+		9520
+	]
+},
+{
+	"id": 3,
+	"name": "Bird view",
+	"created_at": 1298968714000,
+	"updated_at": 1323289214000,
+	"slug": "bird-view",
+	"url": "https://www.igdb.com/player_perspectives/bird-view",
+	"games": [
+		6,
+		5,
+		35,
+		36,
+		13,
+		14,
+		17,
+		12,
+		76
+	]
+}]

@@ -1,0 +1,41 @@
+[{
+	"id": 1,
+	"name": "First person",
+	"created_at": 1298968658000,
+	"updated_at": 1323289214000,
+	"slug": "first-person",
+	"url": "https://www.igdb.com/player_perspectives/first-person",
+	"games": [
+		1,
+		2,
+		54,
+		3,
+		15,
+		16,
+		11,
+		21,
+		41,
+		42,
+		43
+	]
+},
+{
+	"id": 2,
+	"name": "Third person",
+	"created_at": 1298968673000,
+	"updated_at": 1323289214000,
+	"slug": "third-person",
+	"url": "https://www.igdb.com/player_perspectives/third-person",
+	"games": [
+		37,
+		38,
+		3,
+		15,
+		16,
+		12,
+		76,
+		109,
+		112,
+		113
+	]
+}]

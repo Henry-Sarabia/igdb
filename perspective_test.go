@@ -6,112 +6,6 @@ import (
 	"testing"
 )
 
-const getPerspectiveResp = `
-[{
-	"id": 7,
-	"name": "Virtual Reality",
-	"created_at": 1462288484243,
-	"updated_at": 1462288484243,
-	"slug": "virtual-reality",
-	"url": "https://www.igdb.com/player_perspectives/virtual-reality",
-	"games": [
-		8654,
-		10724,
-		6415,
-		5639,
-		9254,
-		17244,
-		18157,
-		17986,
-		12302
-	]
-}]
-`
-
-const getPerspectivesResp = `
-[{
-	"id": 6,
-	"name": "Aural",
-	"created_at": 1413209511809,
-	"updated_at": 1413209511809,
-	"slug": "aural",
-	"url": "https://www.igdb.com/player_perspectives/aural",
-	"games": [
-		9076,
-		2629,
-		7698,
-		8597,
-		8662,
-		8612,
-		8661,
-		9520
-	]
-},
-{
-	"id": 3,
-	"name": "Bird view",
-	"created_at": 1298968714000,
-	"updated_at": 1323289214000,
-	"slug": "bird-view",
-	"url": "https://www.igdb.com/player_perspectives/bird-view",
-	"games": [
-		6,
-		5,
-		35,
-		36,
-		13,
-		14,
-		17,
-		12,
-		76
-	]
-}]
-`
-
-const searchPerspectivesResp = `
-[{
-	"id": 1,
-	"name": "First person",
-	"created_at": 1298968658000,
-	"updated_at": 1323289214000,
-	"slug": "first-person",
-	"url": "https://www.igdb.com/player_perspectives/first-person",
-	"games": [
-		1,
-		2,
-		54,
-		3,
-		15,
-		16,
-		11,
-		21,
-		41,
-		42,
-		43
-	]
-},
-{
-	"id": 2,
-	"name": "Third person",
-	"created_at": 1298968673000,
-	"updated_at": 1323289214000,
-	"slug": "third-person",
-	"url": "https://www.igdb.com/player_perspectives/third-person",
-	"games": [
-		37,
-		38,
-		3,
-		15,
-		16,
-		12,
-		76,
-		109,
-		112,
-		113
-	]
-}]
-`
-
 func TestPerspectiveTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -129,7 +23,10 @@ func TestPerspectiveTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPerspective(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPerspectiveResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_perspective.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	p, err := c.GetPerspective(7)
@@ -165,7 +62,10 @@ func TestGetPerspective(t *testing.T) {
 }
 
 func TestGetPerspectives(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPerspectivesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_perspectives.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{6, 3}
@@ -208,7 +108,10 @@ func TestGetPerspectives(t *testing.T) {
 }
 
 func TestSearchPerspectives(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchPerspectivesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_perspectives.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	p, err := c.SearchPerspectives("person")
