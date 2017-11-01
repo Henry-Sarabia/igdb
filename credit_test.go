@@ -6,63 +6,6 @@ import (
 	"testing"
 )
 
-const getCreditResp = `
-[{
-	"id": 1342182279,
-	"name": "Michael",
-	"created_at": 1424124855090,
-	"updated_at": 1424124855090,
-	"category": 5,
-	"position": 45
-}]
-`
-
-const getCreditsResp = `
-[{
-	"id": 1342180316,
-	"name": "Scott",
-	"created_at": 1414000040656,
-	"updated_at": 1414000040656,
-	"category": 5,
-	"position": 518
-},
-{
-	"id": 1342186852,
-	"name": "Thanks  for the inspiration (Scott W.):",
-	"created_at": 1463521214105,
-	"updated_at": 1463521214105,
-	"category": 5,
-	"position": 140
-}]
-`
-
-const searchCreditsResp = `
-[{
-	"id": 1342181334,
-	"name": "Justin - Mom Cody Mark Josh Jim Kerri",
-	"created_at": 1417362858828,
-	"updated_at": 1417362858828,
-	"category": 5,
-	"position": 267
-},
-{
-	"id": 1342186871,
-	"name": "Jim Gardner for being the MAN!",
-	"created_at": 1463521290038,
-	"updated_at": 1463521290038,
-	"category": 5,
-	"position": 288
-},
-{
-	"id": 1342178993,
-	"name": "Thanks to Becki Sanders, Sofia Sanders, Sara Sanders, and the USMC. - Jim Sanders",
-	"created_at": 1410439937050,
-	"updated_at": 1410439937050,
-	"category": 5,
-	"position": 365
-}]
-`
-
 func TestCreditTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -80,7 +23,10 @@ func TestCreditTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCredit(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getCreditResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_credit.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	cr, err := c.GetCredit(1342182279)
@@ -114,7 +60,10 @@ func TestGetCredit(t *testing.T) {
 }
 
 func TestGetCredits(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getCreditsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_credits.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{1342181334, 1342186852}
@@ -155,7 +104,10 @@ func TestGetCredits(t *testing.T) {
 }
 
 func TestSearchCredits(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchCreditsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_credits.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	cr, err := c.SearchCredits("jim")
