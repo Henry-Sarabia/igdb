@@ -1,0 +1,28 @@
+[{
+	"id": 884,
+	"name": "Red Dead",
+	"created_at": 1476796671177,
+	"updated_at": 1476796671177,
+	"slug": "red-dead",
+	"url": "https://www.igdb.com/franchises/red-dead",
+	"games": [
+		25076,
+		434,
+		1969
+	]
+},
+{
+	"id": 907,
+	"name": "Dynasty Warriors",
+	"created_at": 1479418914178,
+	"updated_at": 1479418914178,
+	"slug": "dynasty-warriors",
+	"url": "https://www.igdb.com/franchises/dynasty-warriors",
+	"games": [
+		25639,
+		26546,
+		26180,
+		28368,
+		44157
+	]
+}]

@@ -6,100 +6,6 @@ import (
 	"testing"
 )
 
-const getFranchiseResp = `
-[{
-	"id": 596,
-	"name": "The Legend of Zelda",
-	"created_at": 1439069965468,
-	"updated_at": 1439069965468,
-	"slug": "the-legend-of-zelda",
-	"url": "https://www.igdb.com/franchises/the-legend-of-zelda",
-	"games": [
-		11607,
-		1036,
-		18017,
-		18066,
-		7346,
-		25840,
-		8534,
-		41829,
-		1628,
-		9602
-	]
-}]
-`
-
-const getFranchisesResp = `
-[{
-	"id": 884,
-	"name": "Red Dead",
-	"created_at": 1476796671177,
-	"updated_at": 1476796671177,
-	"slug": "red-dead",
-	"url": "https://www.igdb.com/franchises/red-dead",
-	"games": [
-		25076,
-		434,
-		1969
-	]
-},
-{
-	"id": 907,
-	"name": "Dynasty Warriors",
-	"created_at": 1479418914178,
-	"updated_at": 1479418914178,
-	"slug": "dynasty-warriors",
-	"url": "https://www.igdb.com/franchises/dynasty-warriors",
-	"games": [
-		25639,
-		26546,
-		26180,
-		28368,
-		44157
-	]
-}]
-`
-
-const searchFranchisesResp = `
-[{
-	"id": 128,
-	"name": "Super Man",
-	"created_at": 1381669592350,
-	"updated_at": 1381669592350,
-	"slug": "super-man",
-	"url": "https://www.igdb.com/franchises/super-man",
-	"games": [
-		3005,
-		4190,
-		6183,
-		6182
-	]
-},
-{
-	"id": 860,
-	"name": "Super Mario",
-	"created_at": 1473419646160,
-	"updated_at": 1473419646160,
-	"slug": "super-mario",
-	"url": "https://www.igdb.com/franchises/super-mario",
-	"games": [
-		41420
-	]
-},
-{
-	"id": 327,
-	"name": "Marvel Super Hero Squad",
-	"created_at": 1391704834814,
-	"updated_at": 1391704834814,
-	"slug": "marvel-super-hero-squad",
-	"url": "https://www.igdb.com/franchises/marvel-super-hero-squad",
-	"games": [
-		4997,
-		5188
-	]
-}]
-`
-
 func TestFranchiseTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -117,7 +23,10 @@ func TestFranchiseTypeIntegrity(t *testing.T) {
 }
 
 func TestGetFranchise(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getFranchiseResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_franchise.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	f, err := c.GetFranchise(596)
@@ -147,7 +56,10 @@ func TestGetFranchise(t *testing.T) {
 }
 
 func TestGetFranchises(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getFranchisesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_franchises.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{9, 22}
@@ -190,7 +102,10 @@ func TestGetFranchises(t *testing.T) {
 }
 
 func TestSearchFranchises(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchFranchisesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_franchises.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	f, err := c.SearchFranchises("super")

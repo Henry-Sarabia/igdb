@@ -1,0 +1,37 @@
+[{
+	"id": 128,
+	"name": "Super Man",
+	"created_at": 1381669592350,
+	"updated_at": 1381669592350,
+	"slug": "super-man",
+	"url": "https://www.igdb.com/franchises/super-man",
+	"games": [
+		3005,
+		4190,
+		6183,
+		6182
+	]
+},
+{
+	"id": 860,
+	"name": "Super Mario",
+	"created_at": 1473419646160,
+	"updated_at": 1473419646160,
+	"slug": "super-mario",
+	"url": "https://www.igdb.com/franchises/super-mario",
+	"games": [
+		41420
+	]
+},
+{
+	"id": 327,
+	"name": "Marvel Super Hero Squad",
+	"created_at": 1391704834814,
+	"updated_at": 1391704834814,
+	"slug": "marvel-super-hero-squad",
+	"url": "https://www.igdb.com/franchises/marvel-super-hero-squad",
+	"games": [
+		4997,
+		5188
+	]
+}]
