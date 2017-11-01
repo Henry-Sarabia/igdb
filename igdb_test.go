@@ -30,7 +30,7 @@ func TestGet(t *testing.T) {
 	for _, gt := range getTests {
 		testResp := testResultPlaceholder{}
 		t.Run(gt.Name, func(t *testing.T) {
-			ts, c := startTestServer(gt.Code, gt.ExpResp)
+			ts, c := testServerString(gt.Code, gt.ExpResp)
 			defer ts.Close()
 
 			err := c.get(c.rootURL+gt.URL, &testResp)

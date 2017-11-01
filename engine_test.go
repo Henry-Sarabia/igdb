@@ -161,7 +161,7 @@ func TestEngineTypeIntegrity(t *testing.T) {
 }
 
 func TestGetEngine(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getEngineResp)
+	ts, c := testServerString(http.StatusOK, getEngineResp)
 	defer ts.Close()
 
 	eng, err := c.GetEngine(26)
@@ -191,7 +191,7 @@ func TestGetEngine(t *testing.T) {
 }
 
 func TestGetEngines(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getEnginesResp)
+	ts, c := testServerString(http.StatusOK, getEnginesResp)
 	defer ts.Close()
 
 	ids := []int{9, 22}
@@ -234,7 +234,7 @@ func TestGetEngines(t *testing.T) {
 }
 
 func TestSearchEngines(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchEnginesResp)
+	ts, c := testServerString(http.StatusOK, searchEnginesResp)
 	defer ts.Close()
 
 	eng, err := c.SearchEngines("tool")

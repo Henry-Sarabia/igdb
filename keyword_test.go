@@ -118,7 +118,7 @@ func TestKeywordTypeIntegrity(t *testing.T) {
 }
 
 func TestGetKeyword(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getKeywordResp)
+	ts, c := testServerString(http.StatusOK, getKeywordResp)
 	defer ts.Close()
 
 	kw, err := c.GetKeyword(2107)
@@ -154,7 +154,7 @@ func TestGetKeyword(t *testing.T) {
 }
 
 func TestGetKeywords(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getKeywordsResp)
+	ts, c := testServerString(http.StatusOK, getKeywordsResp)
 	defer ts.Close()
 
 	ids := []int{2096, 1108}
@@ -197,7 +197,7 @@ func TestGetKeywords(t *testing.T) {
 }
 
 func TestSearchKeywords(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchKeywordsResp)
+	ts, c := testServerString(http.StatusOK, searchKeywordsResp)
 	defer ts.Close()
 
 	kw, err := c.SearchKeywords("strategy")

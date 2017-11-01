@@ -117,7 +117,7 @@ func TestFranchiseTypeIntegrity(t *testing.T) {
 }
 
 func TestGetFranchise(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getFranchiseResp)
+	ts, c := testServerString(http.StatusOK, getFranchiseResp)
 	defer ts.Close()
 
 	f, err := c.GetFranchise(596)
@@ -147,7 +147,7 @@ func TestGetFranchise(t *testing.T) {
 }
 
 func TestGetFranchises(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getFranchisesResp)
+	ts, c := testServerString(http.StatusOK, getFranchisesResp)
 	defer ts.Close()
 
 	ids := []int{9, 22}
@@ -190,7 +190,7 @@ func TestGetFranchises(t *testing.T) {
 }
 
 func TestSearchFranchises(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchFranchisesResp)
+	ts, c := testServerString(http.StatusOK, searchFranchisesResp)
 	defer ts.Close()
 
 	f, err := c.SearchFranchises("super")

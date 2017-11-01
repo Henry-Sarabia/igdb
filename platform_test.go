@@ -385,7 +385,7 @@ func TestPlatformTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPlatform(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPlatformResp)
+	ts, c := testServerString(http.StatusOK, getPlatformResp)
 	defer ts.Close()
 
 	p, err := c.GetPlatform(7)
@@ -427,7 +427,7 @@ func TestGetPlatform(t *testing.T) {
 }
 
 func TestGetPlatforms(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPlatformsResp)
+	ts, c := testServerString(http.StatusOK, getPlatformsResp)
 	defer ts.Close()
 
 	ids := []int{23, 130}
@@ -482,7 +482,7 @@ func TestGetPlatforms(t *testing.T) {
 }
 
 func TestSearchPlatforms(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPlatformsResp)
+	ts, c := testServerString(http.StatusOK, searchPlatformsResp)
 	defer ts.Close()
 
 	p, err := c.SearchPlatforms("xbox")

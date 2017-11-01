@@ -2,9 +2,10 @@ package igdb
 
 import (
 	"errors"
-	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"reflect"
 	"strings"
 )
@@ -24,23 +25,42 @@ type testHeader struct {
 	Value string
 }
 
-// startTestServer initializes and returns a test server that will respond with the provided
-// status, response, and optional headers. startTestServer also returns a Client configured
-// specifically for this test server.
-func startTestServer(status int, resp string, headers ...testHeader) (*httptest.Server, Client) {
+// startTestServer initializes and returns a test server that will respond with the provided status,
+// response, and optional headers. startTestServer also returns a Client configured specifically for
+// the initialized test server.
+func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httptest.Server, *Client) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
 		for _, h := range headers {
 			w.Header().Add(h.Key, h.Value)
 		}
-		fmt.Fprint(w, resp)
+		io.Copy(w, resp)
 	}))
-	c := Client{
-		http:    ts.Client(),
-		rootURL: ts.URL + "/",
-	}
 
-	return ts, c
+	c := NewClient()
+	c.http = ts.Client()
+	c.rootURL = ts.URL + "/"
+
+	return ts, &c
+}
+
+// testServerString initializes and returns a test server that will respond with the provided
+// status, response, and optional headers. testServerString also returns a Client configured
+// specifically for the initialized test server.
+func testServerString(status int, resp string, headers ...testHeader) (*httptest.Server, *Client) {
+	return startTestServer(status, strings.NewReader(resp), headers...)
+}
+
+// testServerFile initializes and returns a test server that will respond with the provided status,
+// response read from the given filename, and optional headers. testServerFile also returns a Client
+// configured specifically for the initialized test server.
+func testServerFile(status int, filename string, headers ...testHeader) (*httptest.Server, *Client, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, nil, err
+	}
+	ts, c := startTestServer(status, f, headers...)
+	return ts, c, nil
 }
 
 // validateStruct checks if the given struct contains all of the fields

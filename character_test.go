@@ -145,7 +145,7 @@ func TestCharacterTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCharacter(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCharacterResp)
+	ts, c := testServerString(http.StatusOK, getCharacterResp)
 	defer ts.Close()
 
 	ch, err := c.GetCharacter(10617)
@@ -173,7 +173,7 @@ func TestGetCharacter(t *testing.T) {
 }
 
 func TestGetCharacters(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCharactersResp)
+	ts, c := testServerString(http.StatusOK, getCharactersResp)
 	defer ts.Close()
 
 	ids := []int{3726, 9580}
@@ -215,7 +215,7 @@ func TestGetCharacters(t *testing.T) {
 }
 
 func TestSearchCharacters(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchCharacterResp)
+	ts, c := testServerString(http.StatusOK, searchCharacterResp)
 	defer ts.Close()
 
 	ch, err := c.SearchCharacters("snake")

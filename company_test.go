@@ -167,7 +167,7 @@ func TestCompanyTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCompany(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, GetCompanyResp)
+	ts, c := testServerString(http.StatusOK, GetCompanyResp)
 	defer ts.Close()
 
 	com, err := c.GetCompany(58)
@@ -197,7 +197,7 @@ func TestGetCompany(t *testing.T) {
 }
 
 func TestGetCompanies(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, GetCompaniesResp)
+	ts, c := testServerString(http.StatusOK, GetCompaniesResp)
 	defer ts.Close()
 
 	ids := []int{854, 7260}
@@ -240,7 +240,7 @@ func TestGetCompanies(t *testing.T) {
 }
 
 func TestSearchCompanies(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, SearchCompaniesResp)
+	ts, c := testServerString(http.StatusOK, SearchCompaniesResp)
 	defer ts.Close()
 
 	com, err := c.SearchCompanies("mario")

@@ -158,7 +158,7 @@ func TestPageTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPage(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPageResp)
+	ts, c := testServerString(http.StatusOK, getPageResp)
 	defer ts.Close()
 
 	pg, err := c.GetPage(8)
@@ -192,7 +192,7 @@ func TestGetPage(t *testing.T) {
 }
 
 func TestGetPages(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPagesResp)
+	ts, c := testServerString(http.StatusOK, getPagesResp)
 	defer ts.Close()
 
 	ids := []int{36, 215}
@@ -233,7 +233,7 @@ func TestGetPages(t *testing.T) {
 }
 
 func TestSearchPages(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPagesResp)
+	ts, c := testServerString(http.StatusOK, searchPagesResp)
 	defer ts.Close()
 
 	pg, err := c.SearchPages("PC")

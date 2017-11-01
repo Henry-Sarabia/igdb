@@ -102,7 +102,7 @@ func TestTitleTypeIntegrity(t *testing.T) {
 }
 
 func TestGetTitle(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getTitleResp)
+	ts, c := testServerString(http.StatusOK, getTitleResp)
 	defer ts.Close()
 
 	ti, err := c.GetTitle(16549)
@@ -138,7 +138,7 @@ func TestGetTitle(t *testing.T) {
 }
 
 func TestGetTitles(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getTitlesResp)
+	ts, c := testServerString(http.StatusOK, getTitlesResp)
 	defer ts.Close()
 
 	ids := []int{7839, 25381}
@@ -181,7 +181,7 @@ func TestGetTitles(t *testing.T) {
 }
 
 func TestSearchTitles(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchTitlesResp)
+	ts, c := testServerString(http.StatusOK, searchTitlesResp)
 	defer ts.Close()
 
 	ti, err := c.SearchTitles("graphic")

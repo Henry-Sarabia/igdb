@@ -184,7 +184,7 @@ func TestGameTypeIntegrity(t *testing.T) {
 }
 
 func TestGetGame(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGameResp)
+	ts, c := testServerString(http.StatusOK, getGameResp)
 	defer ts.Close()
 
 	g, err := c.GetGame(7346)
@@ -230,7 +230,7 @@ func TestGetGame(t *testing.T) {
 }
 
 func TestGetGames(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGamesResp)
+	ts, c := testServerString(http.StatusOK, getGamesResp)
 	defer ts.Close()
 
 	ids := []int{1721, 2777}
@@ -271,7 +271,7 @@ func TestGetGames(t *testing.T) {
 }
 
 func TestSearchGames(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchGamesResp)
+	ts, c := testServerString(http.StatusOK, searchGamesResp)
 	defer ts.Close()
 
 	g, err := c.SearchGames("mario")

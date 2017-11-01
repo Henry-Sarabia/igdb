@@ -44,7 +44,7 @@ func TestValidateStruct(t *testing.T) {
 
 	for _, vt := range validateTests {
 		t.Run(vt.Name, func(t *testing.T) {
-			ts, c := startTestServer(http.StatusOK, vt.Resp)
+			ts, c := testServerString(http.StatusOK, vt.Resp)
 			defer ts.Close()
 
 			err := c.validateStruct(vt.Struct, testEndpoint)
@@ -67,7 +67,7 @@ func TestValidateStruct(t *testing.T) {
 
 	for _, nt := range networkTests {
 		t.Run(nt.Name, func(t *testing.T) {
-			ts, c := startTestServer(nt.Status, nt.Resp)
+			ts, c := testServerString(nt.Status, nt.Resp)
 			defer ts.Close()
 
 			err := c.validateStruct(manyTags, testEndpoint)

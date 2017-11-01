@@ -210,7 +210,7 @@ func TestPulseTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulse(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulseResp)
+	ts, c := testServerString(http.StatusOK, getPulseResp)
 	defer ts.Close()
 
 	p, err := c.GetPulse(145346)
@@ -246,7 +246,7 @@ func TestGetPulse(t *testing.T) {
 }
 
 func TestGetPulses(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulsesResp)
+	ts, c := testServerString(http.StatusOK, getPulsesResp)
 	defer ts.Close()
 
 	ids := []int{132354, 257394, 109415}
@@ -301,7 +301,7 @@ func TestGetPulses(t *testing.T) {
 }
 
 func TestSearchPulses(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPulsesResp)
+	ts, c := testServerString(http.StatusOK, searchPulsesResp)
 	defer ts.Close()
 
 	p, err := c.SearchPulses("megaman")

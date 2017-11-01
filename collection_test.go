@@ -136,7 +136,7 @@ func TestCollectionTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCollection(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCollectionResp)
+	ts, c := testServerString(http.StatusOK, getCollectionResp)
 	defer ts.Close()
 
 	col, err := c.GetCollection(2404)
@@ -166,7 +166,7 @@ func TestGetCollection(t *testing.T) {
 }
 
 func TestGetCollections(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCollectionsResp)
+	ts, c := testServerString(http.StatusOK, getCollectionsResp)
 	defer ts.Close()
 
 	ids := []int{338, 1}
@@ -209,7 +209,7 @@ func TestGetCollections(t *testing.T) {
 }
 
 func TestSearchCollections(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchCollectionsResp)
+	ts, c := testServerString(http.StatusOK, searchCollectionsResp)
 	defer ts.Close()
 
 	col, err := c.SearchCollections("mario")

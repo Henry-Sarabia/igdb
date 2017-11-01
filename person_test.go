@@ -148,7 +148,7 @@ func TestPersonTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPerson(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPersonResp)
+	ts, c := testServerString(http.StatusOK, getPersonResp)
 	defer ts.Close()
 
 	p, err := c.GetPerson(2107)
@@ -184,7 +184,7 @@ func TestGetPerson(t *testing.T) {
 }
 
 func TestGetPersons(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPersonsResp)
+	ts, c := testServerString(http.StatusOK, getPersonsResp)
 	defer ts.Close()
 
 	ids := []int{52302, 84908}
@@ -227,7 +227,7 @@ func TestGetPersons(t *testing.T) {
 }
 
 func TestSearchPersons(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPersonsResp)
+	ts, c := testServerString(http.StatusOK, searchPersonsResp)
 	defer ts.Close()
 
 	p, err := c.SearchPersons("hideokojima")

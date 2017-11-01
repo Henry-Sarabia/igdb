@@ -80,7 +80,7 @@ func TestCreditTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCredit(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCreditResp)
+	ts, c := testServerString(http.StatusOK, getCreditResp)
 	defer ts.Close()
 
 	cr, err := c.GetCredit(1342182279)
@@ -114,7 +114,7 @@ func TestGetCredit(t *testing.T) {
 }
 
 func TestGetCredits(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getCreditsResp)
+	ts, c := testServerString(http.StatusOK, getCreditsResp)
 	defer ts.Close()
 
 	ids := []int{1342181334, 1342186852}
@@ -155,7 +155,7 @@ func TestGetCredits(t *testing.T) {
 }
 
 func TestSearchCredits(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchCreditsResp)
+	ts, c := testServerString(http.StatusOK, searchCreditsResp)
 	defer ts.Close()
 
 	cr, err := c.SearchCredits("jim")

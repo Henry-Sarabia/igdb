@@ -62,7 +62,7 @@ func TestPulseSourceTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulseSource(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulseSourceResp)
+	ts, c := testServerString(http.StatusOK, getPulseSourceResp)
 	defer ts.Close()
 
 	ps, err := c.GetPulseSource(4943)
@@ -90,7 +90,7 @@ func TestGetPulseSource(t *testing.T) {
 }
 
 func TestGetPulseSources(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulseSourcesResp)
+	ts, c := testServerString(http.StatusOK, getPulseSourcesResp)
 	defer ts.Close()
 
 	ids := []int{6, 10}
@@ -125,7 +125,7 @@ func TestGetPulseSources(t *testing.T) {
 }
 
 func TestSearchPulseSources(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPulseSourcesResp)
+	ts, c := testServerString(http.StatusOK, searchPulseSourcesResp)
 	defer ts.Close()
 
 	ps, err := c.SearchPulseSources("game")

@@ -20,7 +20,7 @@ func TestGetEndpointFieldManifest(t *testing.T) {
 
 	for _, ft := range fieldsTests {
 		t.Run(ft.Name, func(t *testing.T) {
-			ts, c := startTestServer(ft.Status, ft.Resp)
+			ts, c := testServerString(ft.Status, ft.Resp)
 			defer ts.Close()
 
 			fields, err := c.GetEndpointFieldManifest(testEndpoint)
@@ -59,7 +59,7 @@ func TestGetEndpointCount(t *testing.T) {
 
 	for _, ct := range countTests {
 		t.Run(ct.Name, func(t *testing.T) {
-			ts, c := startTestServer(ct.Status, ct.Resp)
+			ts, c := testServerString(ct.Status, ct.Resp)
 			defer ts.Close()
 
 			count, err := c.GetEndpointCount(testEndpoint)

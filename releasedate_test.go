@@ -78,7 +78,7 @@ func TestReleaseDateTypeIntegrity(t *testing.T) {
 }
 
 func TestGetReleaseDate(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getReleaseDateResp)
+	ts, c := testServerString(http.StatusOK, getReleaseDateResp)
 	defer ts.Close()
 
 	rd, err := c.GetReleaseDate(1073)
@@ -106,7 +106,7 @@ func TestGetReleaseDate(t *testing.T) {
 }
 
 func TestGetReleaseDates(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getReleaseDatesResp)
+	ts, c := testServerString(http.StatusOK, getReleaseDatesResp)
 	defer ts.Close()
 
 	ids := []int{62566, 32350, 1077}

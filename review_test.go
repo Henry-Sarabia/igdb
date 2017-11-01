@@ -153,7 +153,7 @@ func TestReviewTypeIntegrity(t *testing.T) {
 }
 
 func TestGetReview(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getReviewResp)
+	ts, c := testServerString(http.StatusOK, getReviewResp)
 	defer ts.Close()
 
 	r, err := c.GetReview(1462)
@@ -181,7 +181,7 @@ func TestGetReview(t *testing.T) {
 }
 
 func TestGetReviews(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getReviewsResp)
+	ts, c := testServerString(http.StatusOK, getReviewsResp)
 	defer ts.Close()
 
 	ids := []int{1571, 65}
@@ -234,7 +234,7 @@ func TestGetReviews(t *testing.T) {
 }
 
 func TestSearchReviews(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchReviewsResp)
+	ts, c := testServerString(http.StatusOK, searchReviewsResp)
 	defer ts.Close()
 
 	r, err := c.SearchReviews("zelda")

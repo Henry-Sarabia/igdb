@@ -129,7 +129,7 @@ func TestPerspectiveTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPerspective(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPerspectiveResp)
+	ts, c := testServerString(http.StatusOK, getPerspectiveResp)
 	defer ts.Close()
 
 	p, err := c.GetPerspective(7)
@@ -165,7 +165,7 @@ func TestGetPerspective(t *testing.T) {
 }
 
 func TestGetPerspectives(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPerspectivesResp)
+	ts, c := testServerString(http.StatusOK, getPerspectivesResp)
 	defer ts.Close()
 
 	ids := []int{6, 3}
@@ -208,7 +208,7 @@ func TestGetPerspectives(t *testing.T) {
 }
 
 func TestSearchPerspectives(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPerspectivesResp)
+	ts, c := testServerString(http.StatusOK, searchPerspectivesResp)
 	defer ts.Close()
 
 	p, err := c.SearchPerspectives("person")

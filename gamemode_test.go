@@ -132,7 +132,7 @@ func TestGameModeTypeIntegrity(t *testing.T) {
 }
 
 func TestGetGameMode(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGameModeResp)
+	ts, c := testServerString(http.StatusOK, getGameModeResp)
 	defer ts.Close()
 
 	g, err := c.GetGameMode(1)
@@ -162,7 +162,7 @@ func TestGetGameMode(t *testing.T) {
 }
 
 func TestGetGameModes(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGameModesResp)
+	ts, c := testServerString(http.StatusOK, getGameModesResp)
 	defer ts.Close()
 
 	ids := []int{3, 4}
@@ -205,7 +205,7 @@ func TestGetGameModes(t *testing.T) {
 }
 
 func TestSearchGameModes(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchGameModesResp)
+	ts, c := testServerString(http.StatusOK, searchGameModesResp)
 	defer ts.Close()
 
 	g, err := c.SearchGameModes("multiplayer")

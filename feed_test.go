@@ -63,7 +63,7 @@ func TestFeedTypeIntegrity(t *testing.T) {
 }
 
 func TestGetFeed(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getFeedResp)
+	ts, c := testServerString(http.StatusOK, getFeedResp)
 	defer ts.Close()
 
 	f, err := c.GetFeed(132482)
@@ -103,7 +103,7 @@ func TestGetFeed(t *testing.T) {
 }
 
 func TestGetFeeds(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getFeedsResp)
+	ts, c := testServerString(http.StatusOK, getFeedsResp)
 	defer ts.Close()
 
 	ids := []int{62732, 132484, 143318}

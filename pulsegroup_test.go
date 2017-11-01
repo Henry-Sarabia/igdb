@@ -185,7 +185,7 @@ func TestPulseGroupTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulseGroup(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulseGroupResp)
+	ts, c := testServerString(http.StatusOK, getPulseGroupResp)
 	defer ts.Close()
 
 	pg, err := c.GetPulseGroup(4943)
@@ -219,7 +219,7 @@ func TestGetPulseGroup(t *testing.T) {
 }
 
 func TestGetPulseGroups(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getPulseGroupsResp)
+	ts, c := testServerString(http.StatusOK, getPulseGroupsResp)
 	defer ts.Close()
 
 	ids := []int{2096, 1108}
@@ -262,7 +262,7 @@ func TestGetPulseGroups(t *testing.T) {
 }
 
 func TestSearchPulseGroups(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchPulseGroupsResp)
+	ts, c := testServerString(http.StatusOK, searchPulseGroupsResp)
 	defer ts.Close()
 
 	pg, err := c.SearchPulseGroups("LeagueofLegends")

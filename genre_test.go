@@ -143,7 +143,7 @@ func TestGenreTypeIntegrity(t *testing.T) {
 }
 
 func TestGetGenre(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGenreResp)
+	ts, c := testServerString(http.StatusOK, getGenreResp)
 	defer ts.Close()
 
 	g, err := c.GetGenre(8)
@@ -179,7 +179,7 @@ func TestGetGenre(t *testing.T) {
 }
 
 func TestGetGenres(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getGenresResp)
+	ts, c := testServerString(http.StatusOK, getGenresResp)
 	defer ts.Close()
 
 	ids := []int{5, 10}
@@ -222,7 +222,7 @@ func TestGetGenres(t *testing.T) {
 }
 
 func TestSearchGenres(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchGenresResp)
+	ts, c := testServerString(http.StatusOK, searchGenresResp)
 	defer ts.Close()
 
 	g, err := c.SearchGenres("strategy")

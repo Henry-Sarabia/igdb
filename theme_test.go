@@ -103,7 +103,7 @@ func TestThemeTypeIntegrity(t *testing.T) {
 }
 
 func TestGetTheme(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getThemeResp)
+	ts, c := testServerString(http.StatusOK, getThemeResp)
 	defer ts.Close()
 
 	th, err := c.GetTheme(17)
@@ -139,7 +139,7 @@ func TestGetTheme(t *testing.T) {
 }
 
 func TestGetThemes(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, getThemesResp)
+	ts, c := testServerString(http.StatusOK, getThemesResp)
 	defer ts.Close()
 
 	ids := []int{20, 23}
@@ -182,7 +182,7 @@ func TestGetThemes(t *testing.T) {
 }
 
 func TestSearchThemes(t *testing.T) {
-	ts, c := startTestServer(http.StatusOK, searchThemesResp)
+	ts, c := testServerString(http.StatusOK, searchThemesResp)
 	defer ts.Close()
 
 	th, err := c.SearchThemes("horror")
