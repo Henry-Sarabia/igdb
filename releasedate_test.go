@@ -6,61 +6,6 @@ import (
 	"testing"
 )
 
-const getReleaseDateResp = `
-[{
-	"id": 1073,
-	"game": 475,
-	"created_at": 1303935024000,
-	"updated_at": 1339423937521,
-	"category": 0,
-	"platform": 39,
-	"date": 1221523200000,
-	"y": 2008,
-	"m": 9,
-	"human": "2008-Sep-16"
-}]
-`
-
-const getReleaseDatesResp = `
-[{
-	"id": 62566,
-	"game": 26408,
-	"created_at": 1481527043783,
-	"updated_at": 1481527043783,
-	"category": 2,
-	"platform": 27,
-	"date": 536371200000,
-	"region": 1,
-	"y": 1986,
-	"m": 12,
-	"human": "1986"
-},
-{
-	"id": 32350,
-	"game": 11676,
-	"created_at": 1439613484873,
-	"updated_at": 1439613484873,
-	"category": 2,
-	"platform": 13,
-	"date": 978220800000,
-	"y": 2000,
-	"m": 12,
-	"human": "2000"
-},
-{
-	"id": 1077,
-	"game": 137,
-	"created_at": 1303935281000,
-	"updated_at": 1339423937557,
-	"category": 0,
-	"platform": 9,
-	"date": 1288051200000,
-	"y": 2010,
-	"m": 10,
-	"human": "2010-Oct-26"
-}]
-`
-
 func TestReleaseDateTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -78,7 +23,10 @@ func TestReleaseDateTypeIntegrity(t *testing.T) {
 }
 
 func TestGetReleaseDate(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getReleaseDateResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_releasedate.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	rd, err := c.GetReleaseDate(1073)
@@ -106,7 +54,10 @@ func TestGetReleaseDate(t *testing.T) {
 }
 
 func TestGetReleaseDates(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getReleaseDatesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_releasedates.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{62566, 32350, 1077}
