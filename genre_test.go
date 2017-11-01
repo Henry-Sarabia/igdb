@@ -6,126 +6,6 @@ import (
 	"testing"
 )
 
-const getGenreResp = `
-[{
-	"id": 8,
-	"name": "Platform",
-	"created_at": 1297639288000,
-	"updated_at": 1323289215000,
-	"slug": "platform",
-	"url": "https://www.igdb.com/genres/platform",
-	"games": [
-		358,
-		360,
-		452,
-		337,
-		454,
-		185,
-		190,
-		71,
-		72,
-		217
-	]
-}]
-`
-
-const getGenresResp = `
-[{
-	"id": 5,
-	"name": "Shooter",
-	"created_at": 1297639288000,
-	"updated_at": 1323289215000,
-	"slug": "shooter",
-	"url": "https://www.igdb.com/genres/shooter",
-	"games": [
-		1,
-		2,
-		3,
-		15,
-		16,
-		20,
-		21,
-		41,
-		42
-	]
-},
-{
-	"id": 10,
-	"name": "Racing",
-	"created_at": 1297639288000,
-	"updated_at": 1323289215000,
-	"slug": "racing",
-	"url": "https://www.igdb.com/genres/racing",
-	"games": [
-		143,
-		154,
-		177,
-		390,
-		422,
-		90,
-		91,
-		92,
-		99
-	]
-}]
-`
-
-const searchGenresResp = `
-[{
-	"id": 15,
-	"name": "Strategy",
-	"created_at": 1297639288000,
-	"updated_at": 1323289215000,
-	"slug": "strategy",
-	"url": "https://www.igdb.com/genres/strategy",
-	"games": [
-		67,
-		6,
-		205,
-		175,
-		82,
-		432,
-		435,
-		334
-	]
-},
-{
-	"id": 16,
-	"name": "Turn-based strategy (TBS)",
-	"created_at": 1297678340000,
-	"updated_at": 1323289215000,
-	"slug": "turn-based-strategy-tbs",
-	"url": "https://www.igdb.com/genres/turn-based-strategy-tbs",
-	"games": [
-		8,
-		9,
-		13,
-		14,
-		17,
-		25,
-		26,
-		67
-	]
-},
-{
-	"id": 11,
-	"name": "Real Time Strategy (RTS)",
-	"created_at": 1297639288000,
-	"updated_at": 1323289215000,
-	"slug": "real-time-strategy-rts",
-	"url": "https://www.igdb.com/genres/real-time-strategy-rts",
-	"games": [
-		34,
-		35,
-		36,
-		133,
-		151,
-		159,
-		289
-	]
-}]
-`
-
 func TestGenreTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -143,7 +23,10 @@ func TestGenreTypeIntegrity(t *testing.T) {
 }
 
 func TestGetGenre(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getGenreResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_genre.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	g, err := c.GetGenre(8)
@@ -179,7 +62,10 @@ func TestGetGenre(t *testing.T) {
 }
 
 func TestGetGenres(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getGenresResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_genres.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{5, 10}
@@ -222,7 +108,10 @@ func TestGetGenres(t *testing.T) {
 }
 
 func TestSearchGenres(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchGenresResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_genres.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	g, err := c.SearchGenres("strategy")

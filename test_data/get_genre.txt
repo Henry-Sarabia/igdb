@@ -1,0 +1,20 @@
+[{
+	"id": 8,
+	"name": "Platform",
+	"created_at": 1297639288000,
+	"updated_at": 1323289215000,
+	"slug": "platform",
+	"url": "https://www.igdb.com/genres/platform",
+	"games": [
+		358,
+		360,
+		452,
+		337,
+		454,
+		185,
+		190,
+		71,
+		72,
+		217
+	]
+}]

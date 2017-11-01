@@ -1,0 +1,38 @@
+[{
+	"id": 5,
+	"name": "Shooter",
+	"created_at": 1297639288000,
+	"updated_at": 1323289215000,
+	"slug": "shooter",
+	"url": "https://www.igdb.com/genres/shooter",
+	"games": [
+		1,
+		2,
+		3,
+		15,
+		16,
+		20,
+		21,
+		41,
+		42
+	]
+},
+{
+	"id": 10,
+	"name": "Racing",
+	"created_at": 1297639288000,
+	"updated_at": 1323289215000,
+	"slug": "racing",
+	"url": "https://www.igdb.com/genres/racing",
+	"games": [
+		143,
+		154,
+		177,
+		390,
+		422,
+		90,
+		91,
+		92,
+		99
+	]
+}]
