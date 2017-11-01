@@ -1,0 +1,58 @@
+[{
+	"id": 255433,
+	"category": 10,
+	"title": "Review: Mega Man Legacy Collection 2",
+	"summary": "8 gets its due, . JUMP JUMP!SLIDE SLIDE!",
+	"image": "https://www.destructoid.com//ul/452158-AAA1.jpg",
+	"url": "http://feedproxy.google.com/~r/Destructoid/~3/Q5Gll61WQPM/review-mega-man-legacy-collection-2-452158.phtml",
+	"uid": "4ba55b81080f244a9b405d33b5228877",
+	"author": "Chris Carter",
+	"created_at": 1502176226691,
+	"updated_at": 1502177553457,
+	"pulse_source": 10,
+	"published_at": 1502157660000,
+	"videos": [
+		{
+			"category": 1,
+			"video_id": "iamiA3ki4-o"
+		}
+	],
+	"pulse_image": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/pz3baoetyfezjx2j0nw0.jpg",
+		"cloudinary_id": "pz3baoetyfezjx2j0nw0",
+		"width": 1258,
+		"height": 499
+	}
+},
+{
+	"id": 260033,
+	"category": 10,
+	"title": "Retroid talks Mega Man tonight",
+	"summary": "Get equipped with Question Beam, . Retroid is recording our sixth episode tonight, and for this one we'll be taking a look back at the Mega Man/Rockman franchise. There have been nearly 100 games tied to Mega Man, so there's a lot to cover! Fortunately, I'll be joined by som...",
+	"url": "http://feedproxy.google.com/~r/Destructoid/~3/ChzHjztL10M/retroid-talks-mega-man-tonight-456282.phtml",
+	"uid": "b08c5a4959be5c3deb6da77bc8cb07a9",
+	"author": "Kevin McClusky",
+	"created_at": 1503433253964,
+	"updated_at": 1503435195108,
+	"pulse_source": 10,
+	"published_at": 1503414000000
+},
+{
+	"id": 105878,
+	"category": 1,
+	"title": "Mega Man Is Very Sad",
+	"summary": "<img src=\"https://i.kinja-img.com/gawker-media/image/upload/s--P-wPzHZq--/c_fit,fl_progressive,q_80,w_636/mg1trrbab9lyzriu6vgu.png\"><p>Mega Man fans are sad, this we know. But I had no idea that Mega Man himself was “imbued with sadness” by his creator.<br></p><p><a href=\"http://kotaku.com/mega-man-is-very-sad-1789064690\">Read more...</a></p>",
+	"image": "https://i.kinja-img.com/gawker-media/image/upload/s--P-wPzHZq--/c_fit,fl_progressive,q_80,w_636/mg1trrbab9lyzriu6vgu.png",
+	"url": "http://kotaku.com/mega-man-is-very-sad-1789064690",
+	"uid": "1789064690",
+	"created_at": 1479378087141,
+	"updated_at": 1479383085195,
+	"pulse_source": 1,
+	"published_at": 1479339000000,
+	"pulse_image": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/y4wwcqqbkuyeteoq4l2n.jpg",
+		"cloudinary_id": "y4wwcqqbkuyeteoq4l2n",
+		"width": 636,
+		"height": 365
+	}
+}]

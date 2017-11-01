@@ -6,168 +6,6 @@ import (
 	"testing"
 )
 
-const getPulseGroupResp = `
-[{
-	"id": 4943,
-	"name": "DOTA 2",
-	"category": 1,
-	"created_at": 1500399501694,
-	"updated_at": 1500399501694,
-	"published_at": 1500390000000,
-	"tags": [
-		1,
-		17,
-		39,
-		268435467,
-		268435468,
-		268435471,
-		268435480,
-		536871004,
-		536871060,
-		536871717,
-		536872567,
-		805309331,
-		1073741827,
-		1073741826
-	],
-	"game": 2963,
-	"pulses": [
-		224467
-	]
-}]
-`
-
-const getPulseGroupsResp = `
-[{
-	"id": 13385,
-	"name": "Battleborn",
-	"category": 1,
-	"created_at": 1505670431652,
-	"updated_at": 1505672182912,
-	"published_at": 1505664360000,
-	"tags": [
-		1,
-		17,
-		18,
-		27,
-		268435461,
-		268435468,
-		536871378,
-		536871458,
-		536872244,
-		536873085,
-		536873286,
-		536873287,
-		805314055,
-		1073741825
-	],
-	"game": 7687,
-	"pulses": [
-		268536,
-		268550,
-		268533
-	]
-},
-{
-	"id": 6126,
-	"name": "Heroes of the Storm",
-	"category": 1,
-	"created_at": 1501184656575,
-	"updated_at": 1501184656575,
-	"published_at": 1501162200000,
-	"tags": [
-		1,
-		268435467,
-		536871060,
-		536871439,
-		536872159,
-		536872160,
-		536872161,
-		536872162,
-		536872163,
-		536872567,
-		805313681,
-		1073741827
-	],
-	"game": 7313,
-	"pulses": [
-		252265
-	]
-}]
-`
-
-const searchPulseGroupsResp = `
-[{
-	"id": 3907,
-	"name": "League of Legends",
-	"category": 1,
-	"created_at": 1499759917719,
-	"updated_at": 1499759917719,
-	"published_at": 1499734800000,
-	"tags": [
-		1,
-		17,
-		268435467,
-		268435471,
-		536871004,
-		536871060,
-		536872567,
-		805306483,
-		1073741827
-	],
-	"game": 115,
-	"pulses": [
-		153381
-	]
-},
-{
-	"id": 5501,
-	"name": "League of Legends",
-	"category": 1,
-	"created_at": 1500792572855,
-	"updated_at": 1500792572855,
-	"published_at": 1500771647000,
-	"tags": [
-		1,
-		17,
-		268435467,
-		268435471,
-		536871004,
-		536871060,
-		536872567,
-		805306483,
-		1073741827
-	],
-	"game": 115,
-	"pulses": [
-		250686
-	]
-},
-{
-	"id": 6356,
-	"name": "League of Legends",
-	"category": 1,
-	"created_at": 1501359594279,
-	"updated_at": 1501359594279,
-	"published_at": 1501358634000,
-	"tags": [
-		1,
-		17,
-		268435467,
-		268435471,
-		536871004,
-		536871060,
-		536872567,
-		805306483,
-		1073741827
-	],
-	"game": 115,
-	"pulses": [
-		252828
-	]
-}]
-`
-
 func TestPulseGroupTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -185,7 +23,10 @@ func TestPulseGroupTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulseGroup(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPulseGroupResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulsegroup.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	pg, err := c.GetPulseGroup(4943)
@@ -219,7 +60,10 @@ func TestGetPulseGroup(t *testing.T) {
 }
 
 func TestGetPulseGroups(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPulseGroupsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulsegroups.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{2096, 1108}
@@ -262,7 +106,10 @@ func TestGetPulseGroups(t *testing.T) {
 }
 
 func TestSearchPulseGroups(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchPulseGroupsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_pulsegroups.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	pg, err := c.SearchPulseGroups("LeagueofLegends")

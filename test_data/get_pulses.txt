@@ -1,0 +1,91 @@
+[{
+	"id": 132354,
+	"category": 10,
+	"title": "Battleborn: a great game with a fatal flaw",
+	"summary": "Things could have been different, . One year ago today, Battleborn released to the world. And sure, we have fun with Randy Pitchford's ridiculous tweet about it, but the game holds a secret not many know: actually, it is very good. It could have been popular. Heck, I think it...",
+	"image": "https://www.destructoid.com//ul/434247-Rendain.jpg",
+	"url": "http://feedproxy.google.com/~r/Destructoid/~3/Icdv9HZL2V8/battleborn-a-great-game-with-a-fatal-flaw-434247.phtml",
+	"uid": "d98ff53330026bd45afdb0d28949fab7",
+	"author": "Darren Nakamura",
+	"created_at": 1493846597080,
+	"updated_at": 1493846597080,
+	"pulse_source": 10,
+	"published_at": 1493827200000,
+	"pulse_image": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/fmtbomzsqfc5uvgguked.jpg",
+		"cloudinary_id": "fmtbomzsqfc5uvgguked",
+		"width": 1920,
+		"height": 1080
+	},
+	"tags": [
+		1,
+		17,
+		18,
+		27,
+		268435461,
+		268435468,
+		536871378,
+		536871458,
+		536872244,
+		536873085,
+		536873286,
+		536873287,
+		805314055,
+		1073741825
+	]
+},
+{
+	"id": 257394,
+	"category": 18,
+	"title": "Cliff Bleszinski Reckons His Personality May have Something To Do With LawBreaker’s Lukewarm Reception",
+	"summary": "But he also believes that this is a marathon, not a sprint.",
+	"image": "http://gamingbolt.com/wp-content/uploads/2016/03/LawBreakers.jpg",
+	"url": "http://gamingbolt.com/cliff-bleszinski-reckons-his-personality-may-have-something-to-do-with-lawbreakers-lukewarm-reception",
+	"uid": "5fc0c5269a2aa7887d1a2c13a27c5bd2",
+	"author": "Pramath",
+	"created_at": 1502757342455,
+	"updated_at": 1502757342455,
+	"pulse_source": 18,
+	"published_at": 1502756274000,
+	"pulse_image": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ibmrifg0uxp8w3y6hfzo.jpg",
+		"cloudinary_id": "ibmrifg0uxp8w3y6hfzo",
+		"width": 620,
+		"height": 349
+	},
+	"tags": [
+		1,
+		18,
+		268435461,
+		536871049,
+		536871378,
+		536871436,
+		536871882,
+		536871937,
+		536872363,
+		805318165,
+		1073741825
+	]
+},
+{
+	"id": 109415,
+	"category": 8,
+	"title": "Overwatch's 'Winter Wonderland' Event Now Live",
+	"summary": "Blizzard is kicking off the holidays in Overwatch with winter-themed skins, maps, and more.",
+	"url": "http://www.ign.com/articles/2016/12/13/overwatch-winter-wonderland-event-now-live",
+	"uid": "585051a4e4b079863aa40471",
+	"author": "Brandin Tyrrel",
+	"created_at": 1481664038655,
+	"updated_at": 1481664038655,
+	"pulse_source": 8,
+	"published_at": 1481659863000,
+	"tags": [
+		1,
+		18,
+		27,
+		268435461,
+		268435468,
+		268435471,
+		536871198
+	]
+}]

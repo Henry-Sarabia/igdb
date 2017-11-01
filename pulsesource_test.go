@@ -6,45 +6,6 @@ import (
 	"testing"
 )
 
-const getPulseSourceResp = `
-[{
-	"id": 1,
-	"name": "Kotaku",
-	"page": 501
-}]
-`
-
-const getPulseSourcesResp = `
-[{
-	"id": 6,
-	"name": "Escapist",
-	"page": 553
-},
-{
-	"id": 10,
-	"name": "Destructoid",
-	"page": 552
-}]
-`
-
-const searchPulseSourcesResp = `
-[{
-	"id": 3,
-	"name": "GameInformer",
-	"page": 261
-},
-{
-	"id": 16,
-	"name": "GameIndustry.biz",
-	"page": 563
-},
-{
-	"id": 17,
-	"name": "GameSpot",
-	"page": 564
-}]
-`
-
 func TestPulseSourceTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -62,7 +23,10 @@ func TestPulseSourceTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulseSource(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPulseSourceResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulsesource.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ps, err := c.GetPulseSource(4943)
@@ -90,7 +54,10 @@ func TestGetPulseSource(t *testing.T) {
 }
 
 func TestGetPulseSources(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getPulseSourcesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulsesources.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{6, 10}
@@ -125,7 +92,10 @@ func TestGetPulseSources(t *testing.T) {
 }
 
 func TestSearchPulseSources(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchPulseSourcesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_pulsesources.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ps, err := c.SearchPulseSources("game")

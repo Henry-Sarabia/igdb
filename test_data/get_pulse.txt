@@ -1,0 +1,29 @@
+[{
+	"id": 145346,
+	"category": 2,
+	"title": "Nintendo announces new Mario, Zelda amiibo",
+	"summary": "Seven new amiibo are coming, and they look great",
+	"image": "https://cdn.vox-cdn.com/thumbor/XyUL3xlst_v2qfQf3X0lWoJhV5k=/0x0:1280x720/1600x900/cdn.vox-cdn.com/uploads/chorus_image/image/55234879/vlcsnap_2017_06_13_12h50m33s654.0.png",
+	"url": "https://www.polygon.com/e3/2017/6/13/15792800/nintendo-e3-2017-mario-zelda-amiibo",
+	"uid": "0cf56e50dac7df79b22a7917d092259f",
+	"author": "Ben Kuchera",
+	"created_at": 1497375274087,
+	"updated_at": 1497396776349,
+	"pulse_source": 2,
+	"published_at": 1497374540000,
+	"pulse_image": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/i1fti435exzyu1ydftu4.jpg",
+		"cloudinary_id": "i1fti435exzyu1ydftu4",
+		"width": 1600,
+		"height": 900
+	},
+	"tags": [
+		1,
+		17,
+		38,
+		268435468,
+		268435487,
+		536871422,
+		536872221
+	]
+}]
