@@ -1,0 +1,37 @@
+[{
+	"id": 1721,
+	"name": "Mega Man 8",
+	"slug": "mega-man-8",
+	"url": "https://www.igdb.com/games/mega-man-8",
+	"created_at": 1352059102919,
+	"updated_at": 1502526599128,
+	"popularity": 1.666666666666667,
+	"developers": [
+		37
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/k8tdkafvthvfrxawnod4.jpg",
+		"cloudinary_id": "k8tdkafvthvfrxawnod4",
+		"width": 950,
+		"height": 788
+	}
+},
+{
+	"id": 2777,
+	"name": "Kirby Air Ride",
+	"slug": "kirby-air-ride",
+	"url": "https://www.igdb.com/games/kirby-air-ride",
+	"created_at": 1374907021184,
+	"updated_at": 1500383884617,
+	"rating": 84.4665388294525,
+	"popularity": 1.666666666666667,
+	"developers": [
+		762
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/etjab1sgankzyq6p6qgf.jpg",
+		"cloudinary_id": "etjab1sgankzyq6p6qgf",
+		"width": 256,
+		"height": 357
+	}
+}]

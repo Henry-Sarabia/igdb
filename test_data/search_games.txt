@@ -1,0 +1,63 @@
+[{
+	"id": 1074,
+	"name": "Super Mario 64",
+	"slug": "super-mario-64",
+	"url": "https://www.igdb.com/games/super-mario-64",
+	"created_at": 1339251703388,
+	"updated_at": 1503657933500,
+	"rating": 89.92645562042,
+	"popularity": 10.66666666666667,
+	"developers": [
+		421
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/scutr4p9gytl4txb2soy.jpg",
+		"cloudinary_id": "scutr4p9gytl4txb2soy",
+		"width": 795,
+		"height": 554
+	}
+},
+{
+	"id": 2350,
+	"name": "Mario Kart 8",
+	"slug": "mario-kart-8",
+	"url": "https://www.igdb.com/games/mario-kart-8",
+	"created_at": 1372712056850,
+	"updated_at": 1503173840741,
+	"rating": 85.5273965373542,
+	"popularity": 3.666666666666667,
+	"developers": [
+		1103
+	],
+	"videos": [
+		{
+			"name": "Trailer",
+			"video_id": "NA6CAgv6p6g"
+		}
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ivcvfoeo23xitx8xfz8m.jpg",
+		"cloudinary_id": "ivcvfoeo23xitx8xfz8m",
+		"width": 904,
+		"height": 1273
+	}
+},
+{
+	"id": 2327,
+	"name": "Mario Party",
+	"slug": "mario-party",
+	"url": "https://www.igdb.com/games/mario-party",
+	"created_at": 1372629718263,
+	"updated_at": 1500314266411,
+	"rating": 80.6722124072401,
+	"popularity": 2.666666666666667,
+	"developers": [ 
+		864
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/clmh270eov5rimiggwrk.jpg",
+		"cloudinary_id": "clmh270eov5rimiggwrk",
+		"width": 640,
+		"height": 441
+	}
+}]

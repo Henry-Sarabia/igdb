@@ -1,0 +1,52 @@
+[{
+	"id": 7346,
+	"name": "The Legend of Zelda: Breath of the Wild",
+	"slug": "the-legend-of-zelda-breath-of-the-wild",
+	"url": "https://www.igdb.com/games/the-legend-of-zelda-breath-of-the-wild",
+	"created_at": 1402423357911,
+	"updated_at": 1504638741974,
+	"summary": "Step into a world of discovery, exploration and adventure in The Legend of Zelda: Breath of the Wild, a boundary-breaking new game in the acclaimed series. Travel across fields, through forests and to mountain peaks as you discover what has become of the ruined kingdom of Hyrule in this stunning open-air adventure.",
+	"storyline": "Link awakes in a mysterious chamber after 100 years of slumber to find that Calamity Ganon has taken over Hyrule Castle and left Hyrule to decay and be taken over by nature.",
+	"collection": 106,
+	"franchise": 596,
+	"franchises": [
+		596
+	],
+	"hypes": 142,
+	"rating": 97.05963818994093,
+	"popularity": 55,
+	"aggregated_rating": 98.5,
+	"aggregated_rating_count": 29,
+	"total_rating": 97.77981909497047,
+	"total_rating_count": 94,
+	"rating_count": 65,
+	"developers": [
+		7902
+	],
+	"first_release_date": 1488499200000,
+	"pulse_count": 586,
+	"videos": [
+		{
+			"name": "Trailer",
+			"video_id": "Z6BeAtdoELY"
+		},
+		{
+			"name": "Trailer",
+			"video_id": "1rPxiXXxftE"
+		},
+		{
+			"name": "Trailer",
+			"video_id": "vDFZIUdo764"
+		},
+		{
+			"name": "Trailer",
+			"video_id": "zw47_q9wbBE"
+		}
+	],
+	"cover": {
+		"url": "//images.igdb.com/igdb/image/upload/t_thumb/jk9el4ksl4c7qwaex2y5.jpg",
+		"cloudinary_id": "jk9el4ksl4c7qwaex2y5",
+		"width": 2709,
+		"height": 3816
+	}
+}]
