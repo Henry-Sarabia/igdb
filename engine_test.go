@@ -6,144 +6,6 @@ import (
 	"testing"
 )
 
-const getEngineResp = `
-[{
-	"id": 26,
-	"name": "RAGE",
-	"created_at": 1402868699497,
-	"updated_at": 1499128991855,
-	"logo": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ssdjdq31lxtqqgpfkycg.jpg",
-		"cloudinary_id": "ssdjdq31lxtqqgpfkycg",
-		"width": 476,
-		"height": 201
-	},
-	"slug": "rage",
-	"url": "https://www.igdb.com/game_engines/rage",
-	"games": [
-		731,
-		434,
-		7071,
-		1020,
-		960,
-		2541,
-		3174,
-		3265,
-		1969
-	],
-	"platforms": [
-		5,
-		9,
-		12,
-		48,
-		49,
-		6
-	],
-	"companies": [
-		364
-	]
-}]
-`
-
-const getEnginesResp = `
-[{
-	"id": 9,
-	"name": "Anvil",
-	"created_at": 1399589546212,
-	"updated_at": 1420976957180,
-	"logo": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/ugq9i3qhp1m1bvitr4h3.jpg",
-		"cloudinary_id": "ugq9i3qhp1m1bvitr4h3",
-		"width": 840,
-		"height": 315
-	},
-	"slug": "anvil",
-	"url": "https://www.igdb.com/game_engines/anvil",
-	"games": [
-		127,
-		113,
-		537,
-		1855,
-		8216,
-		8217,
-		2468
-	],
-	"platforms": [
-		6,
-		9,
-		48,
-		46,
-		41,
-		12,
-		49
-	],
-	"companies": [
-		38
-	]
-},
-{
-	"id": 22,
-	"name": "UbiArt Framework",
-	"created_at": 1402435973694,
-	"updated_at": 1466690712748,
-	"logo": {
-		"url": "//images.igdb.com/igdb/image/upload/t_thumb/pbscffthi6uhqxs3ubjk.jpg",
-		"cloudinary_id": "pbscffthi6uhqxs3ubjk",
-		"width": 1070,
-		"height": 1377
-	},
-	"slug": "ubiart-framework",
-	"url": "https://www.igdb.com/game_engines/ubiart-framework",
-	"games": [
-		7327,
-		981,
-		1968,
-		4756,
-		14533,
-		19726
-	]
-}]
-`
-
-const searchEnginesResp = `
-[{
-	"id": 12,
-	"name": "Telltale Tool",
-	"created_at": 1399826402127,
-	"updated_at": 1492514717250,
-	"slug": "telltale-tool",
-	"url": "https://www.igdb.com/game_engines/telltale-tool",
-	"games": [
-		6707,
-		1871,
-		3097,
-		6778,
-		2993,
-		7610,
-		8339,
-		11307,
-		9463,
-		19268,
-		4781,
-		7025,
-		3232
-	]
-},
-{
-	"id": 114,
-	"name": "Crystal Tools",
-	"created_at": 1415283742080,
-	"updated_at": 1499989864468,
-	"slug": "crystal-tools",
-	"url": "https://www.igdb.com/game_engines/crystal-tools",
-	"games": [
-		389,
-		384,
-		2449
-	]
-}]
-`
-
 func TestEngineTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -161,7 +23,10 @@ func TestEngineTypeIntegrity(t *testing.T) {
 }
 
 func TestGetEngine(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getEngineResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_engine.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	eng, err := c.GetEngine(26)
@@ -191,7 +56,10 @@ func TestGetEngine(t *testing.T) {
 }
 
 func TestGetEngines(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getEnginesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_engines.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{9, 22}
@@ -234,7 +102,10 @@ func TestGetEngines(t *testing.T) {
 }
 
 func TestSearchEngines(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchEnginesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_engines.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	eng, err := c.SearchEngines("tool")
