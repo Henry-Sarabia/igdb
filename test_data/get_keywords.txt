@@ -1,0 +1,28 @@
+[{
+	"id": 2096,
+	"name": "humor",
+	"created_at": 1452454352817,
+	"updated_at": 1452454352817,
+	"slug": "humor",
+	"url": "https://www.igdb.com/categories/humor",
+	"games": [
+		15857,
+		3364,
+		24415
+	]
+},
+{
+	"id": 1108,
+	"name": "action sports",
+	"created_at": 1403518560769,
+	"updated_at": 1403518560769,
+	"slug": "action-sports",
+	"url": "https://www.igdb.com/categories/action-sports",
+	"games": [
+		6749,
+		7591,
+		10666,
+		14952,
+		36899
+	]
+}]

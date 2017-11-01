@@ -1,0 +1,41 @@
+[{
+	"id": 3782,
+	"name": "strategy",
+	"created_at": 1495537045343,
+	"updated_at": 1495537045343,
+	"slug": "strategy",
+	"url": "https://www.igdb.com/categories/strategy",
+	"games": [
+		30229,
+		223,
+		51997,
+		46270
+	]
+},
+{
+	"id": 3908,
+	"name": "historical strategy",
+	"created_at": 1499532005267,
+	"updated_at": 1499532005267,
+	"slug": "historical-strategy",
+	"url": "https://www.igdb.com/categories/historical-strategy",
+	"games": [
+		46076
+	]
+},
+{
+	"id": 2547,
+	"name": "real time strategy",
+	"created_at": 1469623570981,
+	"updated_at": 1469623570981,
+	"slug": "real-time-strategy--1",
+	"url": "https://www.igdb.com/categories/real-time-strategy--1",
+	"games": [
+		21620,
+		27254,
+		21221,
+		24273,
+		27448,
+		54723
+	]
+}]

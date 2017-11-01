@@ -6,101 +6,6 @@ import (
 	"testing"
 )
 
-const getKeywordResp = `
-[{
-	"id": 2107,
-	"name": "space adventure",
-	"created_at": 1452513769816,
-	"updated_at": 1452513769816,
-	"slug": "space-adventure",
-	"url": "https://www.igdb.com/categories/space-adventure",
-	"games": [
-		8506,
-		26187,
-		25919,
-		23905,
-		23908,
-		27903,
-		52205
-	]
-}]
-`
-
-const getKeywordsResp = `
-[{
-	"id": 2096,
-	"name": "humor",
-	"created_at": 1452454352817,
-	"updated_at": 1452454352817,
-	"slug": "humor",
-	"url": "https://www.igdb.com/categories/humor",
-	"games": [
-		15857,
-		3364,
-		24415
-	]
-},
-{
-	"id": 1108,
-	"name": "action sports",
-	"created_at": 1403518560769,
-	"updated_at": 1403518560769,
-	"slug": "action-sports",
-	"url": "https://www.igdb.com/categories/action-sports",
-	"games": [
-		6749,
-		7591,
-		10666,
-		14952,
-		36899
-	]
-}]
-`
-
-const searchKeywordsResp = `
-[{
-	"id": 3782,
-	"name": "strategy",
-	"created_at": 1495537045343,
-	"updated_at": 1495537045343,
-	"slug": "strategy",
-	"url": "https://www.igdb.com/categories/strategy",
-	"games": [
-		30229,
-		223,
-		51997,
-		46270
-	]
-},
-{
-	"id": 3908,
-	"name": "historical strategy",
-	"created_at": 1499532005267,
-	"updated_at": 1499532005267,
-	"slug": "historical-strategy",
-	"url": "https://www.igdb.com/categories/historical-strategy",
-	"games": [
-		46076
-	]
-},
-{
-	"id": 2547,
-	"name": "real time strategy",
-	"created_at": 1469623570981,
-	"updated_at": 1469623570981,
-	"slug": "real-time-strategy--1",
-	"url": "https://www.igdb.com/categories/real-time-strategy--1",
-	"games": [
-		21620,
-		27254,
-		21221,
-		24273,
-		27448,
-		54723
-	]
-}]
-`
-
 func TestKeywordTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -118,7 +23,10 @@ func TestKeywordTypeIntegrity(t *testing.T) {
 }
 
 func TestGetKeyword(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getKeywordResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_keyword.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	kw, err := c.GetKeyword(2107)
@@ -154,7 +62,10 @@ func TestGetKeyword(t *testing.T) {
 }
 
 func TestGetKeywords(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getKeywordsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_keywords.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{2096, 1108}
@@ -197,7 +108,10 @@ func TestGetKeywords(t *testing.T) {
 }
 
 func TestSearchKeywords(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchKeywordsResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_keywords.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	kw, err := c.SearchKeywords("strategy")
