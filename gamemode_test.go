@@ -6,115 +6,6 @@ import (
 	"testing"
 )
 
-const getGameModeResp = `
-[{
-	"id": 1,
-	"name": "Single player",
-	"created_at": 1298968834000,
-	"updated_at": 1323289216000,
-	"slug": "single-player",
-	"url": "https://www.igdb.com/game_modes/single-player",
-	"games": [
-		37,
-		1,
-		2,
-		60,
-		54,
-		6,
-		38,
-		3,
-		5,
-		35,
-		36
-	]
-}]
-`
-
-const getGameModesResp = `
-[{
-	"id": 3,
-	"name": "Co-operative",
-	"created_at": 1298968887000,
-	"updated_at": 1323289216000,
-	"slug": "co-operative",
-	"url": "https://www.igdb.com/game_modes/co-operative",
-	"games": [
-		84,
-		115,
-		120,
-		122,
-		124,
-		125,
-		126,
-		141,
-		83,
-		498,
-		470
-	]
-},
-{
-	"id": 4,
-	"name": "Split screen",
-	"created_at": 1298968900000,
-	"updated_at": 1323289216000,
-	"slug": "split-screen",
-	"url": "https://www.igdb.com/game_modes/split-screen",
-	"games": [
-		141,
-		143,
-		176,
-		211,
-		95,
-		545,
-		642,
-		847,
-		784
-	]
-}]
-`
-
-const searchGameModesResp = `
-[{
-	"id": 2,
-	"name": "Multiplayer",
-	"created_at": 1298968853000,
-	"updated_at": 1323289216000,
-	"slug": "multiplayer",
-	"url": "https://www.igdb.com/game_modes/multiplayer",
-	"games": [
-		35,
-		36,
-		21,
-		84,
-		113,
-		115,
-		119,
-		123,
-		124
-	]
-},
-{
-	"id": 5,
-	"name": "Massively Multiplayer Online (MMO)",
-	"created_at": 1298969041000,
-	"updated_at": 1323289216000,
-	"slug": "massively-multiplayer-online-mmo",
-	"url": "https://www.igdb.com/game_modes/massively-multiplayer-online-mmo",
-	"games": [
-		114,
-		123,
-		206,
-		145,
-		215,
-		228,
-		227,
-		229,
-		270,
-		282
-	]
-}]
-`
-
 func TestGameModeTypeIntegrity(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping test requiring communication with external server")
@@ -132,7 +23,10 @@ func TestGameModeTypeIntegrity(t *testing.T) {
 }
 
 func TestGetGameMode(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getGameModeResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_gamemode.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	g, err := c.GetGameMode(1)
@@ -162,7 +56,10 @@ func TestGetGameMode(t *testing.T) {
 }
 
 func TestGetGameModes(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, getGameModesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/get_gamemodes.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	ids := []int{3, 4}
@@ -205,7 +102,10 @@ func TestGetGameModes(t *testing.T) {
 }
 
 func TestSearchGameModes(t *testing.T) {
-	ts, c := testServerString(http.StatusOK, searchGameModesResp)
+	ts, c, err := testServerFile(http.StatusOK, "test_data/search_gamemodes.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer ts.Close()
 
 	g, err := c.SearchGameModes("multiplayer")
