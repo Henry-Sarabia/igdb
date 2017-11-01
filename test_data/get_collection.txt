@@ -1,0 +1,19 @@
+[{
+	"id": 2404,
+	"name": "Chocobo",
+	"created_at": 1472012155368,
+	"updated_at": 1472012155368,
+	"slug": "chocobo",
+	"url": "https://www.igdb.com/collections/chocobo",
+	"games": [
+		22896,
+		22909,
+		22905,
+		22903,
+		22907,
+		22906,
+		22898,
+		22908,
+		22901
+	]
+}]
