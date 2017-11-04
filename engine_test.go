@@ -23,125 +23,177 @@ func TestEngineTypeIntegrity(t *testing.T) {
 }
 
 func TestGetEngine(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_engine.txt")
-	if err != nil {
-		t.Fatal(err)
+	var engineTests = []struct {
+		Name   string
+		Resp   string
+		ID     int
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_engine.txt", 26, ""},
+		{"Invalid ID", "test_data/empty.txt", -100, ErrNegativeID.Error()},
+		{"Empty Response", "test_data/empty.txt", 26, errEndOfJSON.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range engineTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	eng, err := c.GetEngine(26)
-	if err != nil {
-		t.Error(err)
-	}
+			eng, err := c.GetEngine(tt.ID)
+			assertError(t, err, tt.ExpErr)
 
-	en := "RAGE"
-	an := eng.Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	ew := 476
-	aw := eng.Logo.Width
-	if aw != ew {
-		t.Errorf("Expected width of %d, got %d", ew, aw)
-	}
+			en := "RAGE"
+			an := eng.Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	egID := []int{731, 434, 7071, 1020, 960, 2541, 3174, 3265, 1969}
-	agID := eng.Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			ew := 476
+			aw := eng.Logo.Width
+			if aw != ew {
+				t.Errorf("Expected width of %d, got %d", ew, aw)
+			}
+
+			egID := []int{731, 434, 7071, 1020, 960, 2541, 3174, 3265, 1969}
+			agID := eng.Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestGetEngines(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_engines.txt")
-	if err != nil {
-		t.Fatal(err)
+	var engineTests = []struct {
+		Name   string
+		Resp   string
+		IDs    []int
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_engines.txt", []int{9, 22}, []OptionFunc{OptLimit(5)}, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-999}, nil, ErrNegativeID.Error()},
+		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{9, 22}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{9, 22}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range engineTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	ids := []int{9, 22}
-	eng, err := c.GetEngines(ids)
-	if err != nil {
-		t.Error(err)
-	}
+			eng, err := c.GetEngines(tt.IDs, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 2
-	al := len(eng)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Anvil"
-	an := eng[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			el := 2
+			al := len(eng)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	eURL := URL("https://www.igdb.com/game_engines/anvil")
-	aURL := eng[0].URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			en := "Anvil"
+			an := eng[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	ecID := "pbscffthi6uhqxs3ubjk"
-	acID := eng[1].Logo.ID
-	if acID != ecID {
-		t.Errorf("Expected Cloudinary ID '%s', got '%s'", ecID, acID)
-	}
+			eURL := URL("https://www.igdb.com/game_engines/anvil")
+			aURL := eng[0].URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
 
-	egID := []int{7327, 981, 1968, 4756, 14533, 19726}
-	agID := eng[1].Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			ecID := "pbscffthi6uhqxs3ubjk"
+			acID := eng[1].Logo.ID
+			if acID != ecID {
+				t.Errorf("Expected Cloudinary ID '%s', got '%s'", ecID, acID)
+			}
+
+			egID := []int{7327, 981, 1968, 4756, 14533, 19726}
+			agID := eng[1].Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestSearchEngines(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/search_engines.txt")
-	if err != nil {
-		t.Fatal(err)
+	var engineTests = []struct {
+		Name   string
+		Resp   string
+		Qry    string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_engines.txt", "tool", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/search_engines.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty response", "test_data/empty.txt", "tool", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "tool", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range engineTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	eng, err := c.SearchEngines("tool")
-	if err != nil {
-		t.Error(err)
-	}
+			eng, err := c.SearchEngines(tt.Qry, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 2
-	al := len(eng)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Telltale Tool"
-	an := eng[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			el := 2
+			al := len(eng)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	eu := 1492514717250
-	au := eng[0].UpdatedAt
-	if au != eu {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-	}
+			en := "Telltale Tool"
+			an := eng[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eURL := URL("https://www.igdb.com/game_engines/crystal-tools")
-	aURL := eng[1].URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			eu := 1492514717250
+			au := eng[0].UpdatedAt
+			if au != eu {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
+			}
 
-	egID := []int{389, 384, 2449}
-	agID := eng[1].Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			eURL := URL("https://www.igdb.com/game_engines/crystal-tools")
+			aURL := eng[1].URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			egID := []int{389, 384, 2449}
+			agID := eng[1].Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
