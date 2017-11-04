@@ -23,138 +23,190 @@ func TestCollectionTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCollection(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_collection.txt")
-	if err != nil {
-		t.Fatal(err)
+	var collectionTests = []struct {
+		Name   string
+		Resp   string
+		ID     int
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_collection.txt", 2404, ""},
+		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
+		{"Empty Response", "test_data/empty.txt", 2404, errEndOfJSON.Error()},
 	}
+	for _, tt := range collectionTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
 
-	defer ts.Close()
+			defer ts.Close()
 
-	col, err := c.GetCollection(2404)
-	if err != nil {
-		t.Error(err)
-	}
+			col, err := c.GetCollection(tt.ID)
+			assertError(t, err, tt.ExpErr)
 
-	en := "Chocobo"
-	an := col.Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eURL := URL("https://www.igdb.com/collections/chocobo")
-	aURL := col.URL
-	if aURL != eURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			en := "Chocobo"
+			an := col.Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eID := []int{22896, 22909, 22905, 22903, 22907, 22906, 22898, 22908, 22901}
-	aID := col.Games
-	for i := range aID {
-		if aID[i] != eID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", eID[i], aID[i])
-		}
+			eURL := URL("https://www.igdb.com/collections/chocobo")
+			aURL := col.URL
+			if aURL != eURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			eID := []int{22896, 22909, 22905, 22903, 22907, 22906, 22898, 22908, 22901}
+			aID := col.Games
+			for i := range aID {
+				if aID[i] != eID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", eID[i], aID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestGetCollections(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_collections.txt")
-	if err != nil {
-		t.Fatal(err)
+	var collectionTests = []struct {
+		Name   string
+		Resp   string
+		IDs    []int
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_collections.txt", []int{338, 1}, []OptionFunc{OptLimit(5)}, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
+		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{338, 1}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{338, 1}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range collectionTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	ids := []int{338, 1}
-	col, err := c.GetCollections(ids)
-	if err != nil {
-		t.Error(err)
-	}
+			col, err := c.GetCollections(tt.IDs, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 2
-	al := len(col)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Mega Man X"
-	an := col[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			el := 2
+			al := len(col)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	ec := 1352059968884
-	ac := col[0].CreatedAt
-	if ac != ec {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-	}
+			en := "Mega Man X"
+			an := col[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eURL := URL("https://www.igdb.com/collections/bioshock")
-	aURL := col[1].URL
-	if aURL != eURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			ec := 1352059968884
+			ac := col[0].CreatedAt
+			if ac != ec {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
+			}
 
-	eID := []int{538, 14543, 19839, 20, 10047, 21}
-	aID := col[1].Games
-	for i := range aID {
-		if aID[i] != eID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", eID[i], aID[i])
-		}
+			eURL := URL("https://www.igdb.com/collections/bioshock")
+			aURL := col[1].URL
+			if aURL != eURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			eID := []int{538, 14543, 19839, 20, 10047, 21}
+			aID := col[1].Games
+			for i := range aID {
+				if aID[i] != eID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", eID[i], aID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestSearchCollections(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/search_collections.txt")
-	if err != nil {
-		t.Fatal(err)
+	var collectionTests = []struct {
+		Name   string
+		Resp   string
+		Qry    string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_collections.txt", "mario", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/search_collections.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty response", "test_data/empty.txt", "mario", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "mario", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range collectionTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	col, err := c.SearchCollections("mario")
-	if err != nil {
-		t.Error(err)
-	}
+			col, err := c.SearchCollections(tt.Qry, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 3
-	al := len(col)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eID := 593
-	aID := col[0].ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
+			el := 3
+			al := len(col)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	en := "Paper Mario"
-	an := col[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			eID := 593
+			aID := col[0].ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
 
-	ec := 1388973829025
-	ac := col[1].CreatedAt
-	if ac != ec {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-	}
+			en := "Paper Mario"
+			an := col[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	es := "mario-tennis"
-	as := col[1].Slug
-	if as != es {
-		t.Errorf("Expected slug '%s', got '%s'", es, as)
-	}
+			ec := 1388973829025
+			ac := col[1].CreatedAt
+			if ac != ec {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
+			}
 
-	eURL := URL("https://www.igdb.com/collections/mario-golf")
-	aURL := col[2].URL
-	if aURL != eURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			es := "mario-tennis"
+			as := col[1].Slug
+			if as != es {
+				t.Errorf("Expected slug '%s', got '%s'", es, as)
+			}
 
-	eIDs := []int{3402, 3400, 3404, 3401, 3405, 3403}
-	aIDs := col[2].Games
-	for i := range aIDs {
-		if aIDs[i] != eIDs[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", eIDs[i], aIDs[i])
-		}
+			eURL := URL("https://www.igdb.com/collections/mario-golf")
+			aURL := col[2].URL
+			if aURL != eURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			eIDs := []int{3402, 3400, 3404, 3401, 3405, 3403}
+			aIDs := col[2].Games
+			for i := range aIDs {
+				if aIDs[i] != eIDs[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", eIDs[i], aIDs[i])
+				}
+			}
+		})
 	}
 }
