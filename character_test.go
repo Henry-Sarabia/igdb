@@ -31,7 +31,7 @@ func TestGetCharacter(t *testing.T) {
 	}{
 		{"Happy path", "test_data/get_character.txt", 10617, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 0, errEndOfJSON.Error()},
+		{"Empty Response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -80,8 +80,8 @@ func TestGetCharacters(t *testing.T) {
 		{"Happy path", "test_data/get_characters.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{100}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{100}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -143,8 +143,8 @@ func TestSearchCharacters(t *testing.T) {
 	}{
 		{"Happy path", "test_data/search_characters.txt", "snake", []OptionFunc{OptLimit(50)}, ""},
 		{"Empty query", "test_data/search_characters.txt", "", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty response", "test_data/empty.txt", "zelda", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "zelda", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Empty response", "test_data/empty.txt", "snake", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "snake", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
