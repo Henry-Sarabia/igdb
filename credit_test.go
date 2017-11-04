@@ -23,137 +23,189 @@ func TestCreditTypeIntegrity(t *testing.T) {
 }
 
 func TestGetCredit(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_credit.txt")
-	if err != nil {
-		t.Fatal(err)
+	var creditTests = []struct {
+		Name   string
+		Resp   string
+		ID     int
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_credit.txt", 1342182279, ""},
+		{"Invalid ID", "test_data/empty.txt", -321, ErrNegativeID.Error()},
+		{"Empty Response", "test_data/empty.txt", 1342182279, errEndOfJSON.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range creditTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	cr, err := c.GetCredit(1342182279)
-	if err != nil {
-		t.Error(err)
-	}
+			cr, err := c.GetCredit(tt.ID)
+			assertError(t, err, tt.ExpErr)
 
-	eID := 1342182279
-	aID := cr.ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Michael"
-	an := cr.Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			eID := 1342182279
+			aID := cr.ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
 
-	ec := CreditCategory(5)
-	ac := cr.Category
-	if ac != ec {
-		t.Errorf("Expected category %d, got %d", ec, ac)
-	}
+			en := "Michael"
+			an := cr.Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	ep := 45
-	ap := cr.Position
-	if ap != ep {
-		t.Errorf("Expected position %d, got %d", ep, ap)
+			ec := CreditCategory(5)
+			ac := cr.Category
+			if ac != ec {
+				t.Errorf("Expected category %d, got %d", ec, ac)
+			}
+
+			ep := 45
+			ap := cr.Position
+			if ap != ep {
+				t.Errorf("Expected position %d, got %d", ep, ap)
+			}
+		})
 	}
 }
 
 func TestGetCredits(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_credits.txt")
-	if err != nil {
-		t.Fatal(err)
+	var creditTests = []struct {
+		Name   string
+		Resp   string
+		IDs    []int
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_credits.txt", []int{1342181334, 1342186852}, []OptionFunc{OptLimit(5)}, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-100}, nil, ErrNegativeID.Error()},
+		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{1342181334, 1342186852}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{1342181334, 1342186852}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range creditTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	ids := []int{1342181334, 1342186852}
-	cr, err := c.GetCredits(ids)
-	if err != nil {
-		t.Error(err)
-	}
+			cr, err := c.GetCredits(tt.IDs, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 2
-	al := len(cr)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eID := 1342180316
-	aID := cr[0].ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
+			el := 2
+			al := len(cr)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	en := "Scott"
-	an := cr[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			eID := 1342180316
+			aID := cr[0].ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
 
-	ec := CreditCategory(5)
-	ac := cr[1].Category
-	if ac != ec {
-		t.Errorf("Expected category %d, got %d", ec, ac)
-	}
+			en := "Scott"
+			an := cr[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	ep := 140
-	ap := cr[1].Position
-	if ap != ep {
-		t.Errorf("Expected position %d, got %d", ep, ap)
+			ec := CreditCategory(5)
+			ac := cr[1].Category
+			if ac != ec {
+				t.Errorf("Expected category %d, got %d", ec, ac)
+			}
+
+			ep := 140
+			ap := cr[1].Position
+			if ap != ep {
+				t.Errorf("Expected position %d, got %d", ep, ap)
+			}
+		})
 	}
 }
 
 func TestSearchCredits(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/search_credits.txt")
-	if err != nil {
-		t.Fatal(err)
+	var creditTests = []struct {
+		Name   string
+		Resp   string
+		Qry    string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_credits.txt", "jim", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/search_credits.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty response", "test_data/empty.txt", "jim", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "jim", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range creditTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	cr, err := c.SearchCredits("jim")
-	if err != nil {
-		t.Error(err)
-	}
+			cr, err := c.SearchCredits(tt.Qry, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 3
-	al := len(cr)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eID := 1342181334
-	aID := cr[0].ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
+			el := 3
+			al := len(cr)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	en := "Justin - Mom Cody Mark Josh Jim Kerri"
-	an := cr[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			eID := 1342181334
+			aID := cr[0].ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
 
-	ec := 1463521290038
-	ac := cr[1].CreatedAt
-	if ac != ec {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-	}
+			en := "Justin - Mom Cody Mark Josh Jim Kerri"
+			an := cr[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eu := 1463521290038
-	au := cr[1].UpdatedAt
-	if au != eu {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-	}
+			ec := 1463521290038
+			ac := cr[1].CreatedAt
+			if ac != ec {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
+			}
 
-	eCat := CreditCategory(5)
-	aCat := cr[2].Category
-	if aCat != eCat {
-		t.Errorf("Expected category %d, got %d", eCat, aCat)
-	}
+			eu := 1463521290038
+			au := cr[1].UpdatedAt
+			if au != eu {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
+			}
 
-	ep := 365
-	ap := cr[2].Position
-	if ap != ep {
-		t.Errorf("Expected position %d, got %d", ep, ap)
+			eCat := CreditCategory(5)
+			aCat := cr[2].Category
+			if aCat != eCat {
+				t.Errorf("Expected category %d, got %d", eCat, aCat)
+			}
+
+			ep := 365
+			ap := cr[2].Position
+			if ap != ep {
+				t.Errorf("Expected position %d, got %d", ep, ap)
+			}
+		})
 	}
 }
