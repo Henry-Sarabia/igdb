@@ -23,137 +23,189 @@ func TestFranchiseTypeIntegrity(t *testing.T) {
 }
 
 func TestGetFranchise(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_franchise.txt")
-	if err != nil {
-		t.Fatal(err)
+	var franchiseTests = []struct {
+		Name   string
+		Resp   string
+		ID     int
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_franchise.txt", 596, ""},
+		{"Invalid ID", "test_data/empty.txt", -200, ErrNegativeID.Error()},
+		{"Empty Response", "test_data/empty.txt", 596, errEndOfJSON.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range franchiseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	f, err := c.GetFranchise(596)
-	if err != nil {
-		t.Error(err)
-	}
+			f, err := c.GetFranchise(tt.ID)
+			assertError(t, err, tt.ExpErr)
 
-	en := "The Legend of Zelda"
-	an := f.Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eURL := URL("https://www.igdb.com/franchises/the-legend-of-zelda")
-	aURL := f.URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			en := "The Legend of Zelda"
+			an := f.Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	egID := []int{11607, 1036, 18017, 18066, 7346, 25840, 8534, 41829, 1628, 9602}
-	agID := f.Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			eURL := URL("https://www.igdb.com/franchises/the-legend-of-zelda")
+			aURL := f.URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			egID := []int{11607, 1036, 18017, 18066, 7346, 25840, 8534, 41829, 1628, 9602}
+			agID := f.Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestGetFranchises(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_franchises.txt")
-	if err != nil {
-		t.Fatal(err)
+	var franchiseTests = []struct {
+		Name   string
+		Resp   string
+		IDs    []int
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_franchises.txt", []int{9, 22}, []OptionFunc{OptLimit(5)}, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-666}, nil, ErrNegativeID.Error()},
+		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{9, 22}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{9, 22}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range franchiseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	ids := []int{9, 22}
-	f, err := c.GetFranchises(ids)
-	if err != nil {
-		t.Error(err)
-	}
+			f, err := c.GetFranchises(tt.IDs, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 2
-	al := len(f)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Red Dead"
-	an := f[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			el := 2
+			al := len(f)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	eURL := URL("https://www.igdb.com/franchises/red-dead")
-	aURL := f[0].URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			en := "Red Dead"
+			an := f[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eu := 1479418914178
-	au := f[1].UpdatedAt
-	if au != eu {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-	}
+			eURL := URL("https://www.igdb.com/franchises/red-dead")
+			aURL := f[0].URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
 
-	egID := []int{25639, 26546, 26180, 28368, 44157}
-	agID := f[1].Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			eu := 1479418914178
+			au := f[1].UpdatedAt
+			if au != eu {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
+			}
+
+			egID := []int{25639, 26546, 26180, 28368, 44157}
+			agID := f[1].Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestSearchFranchises(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/search_franchises.txt")
-	if err != nil {
-		t.Fatal(err)
+	var franchiseTests = []struct {
+		Name   string
+		Resp   string
+		Qry    string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_franchises.txt", "super", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/search_franchises.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty response", "test_data/empty.txt", "super", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "super", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range franchiseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	f, err := c.SearchFranchises("super")
-	if err != nil {
-		t.Error(err)
-	}
+			f, err := c.SearchFranchises(tt.Qry, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 3
-	al := len(f)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	en := "Super Man"
-	an := f[0].Name
-	if an != en {
-		t.Errorf("Expected name '%s', got '%s'", en, an)
-	}
+			el := 3
+			al := len(f)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	ec := 1381669592350
-	ac := f[0].CreatedAt
-	if ac != ec {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-	}
+			en := "Super Man"
+			an := f[0].Name
+			if an != en {
+				t.Errorf("Expected name '%s', got '%s'", en, an)
+			}
 
-	eID := 860
-	aID := f[1].ID
-	if aID != eID {
-		t.Errorf("Expected ID %d, got %d", eID, aID)
-	}
+			ec := 1381669592350
+			ac := f[0].CreatedAt
+			if ac != ec {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
+			}
 
-	eURL := URL("https://www.igdb.com/franchises/super-mario")
-	aURL := f[1].URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			eID := 860
+			aID := f[1].ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
 
-	es := "marvel-super-hero-squad"
-	as := f[2].Slug
-	if as != es {
-		t.Errorf("Expected slug '%s', got '%s'", es, as)
-	}
+			eURL := URL("https://www.igdb.com/franchises/super-mario")
+			aURL := f[1].URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
 
-	egID := []int{4997, 5188}
-	agID := f[2].Games
-	for i := range agID {
-		if agID[i] != egID[i] {
-			t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-		}
+			es := "marvel-super-hero-squad"
+			as := f[2].Slug
+			if as != es {
+				t.Errorf("Expected slug '%s', got '%s'", es, as)
+			}
+
+			egID := []int{4997, 5188}
+			agID := f[2].Games
+			for i := range agID {
+				if agID[i] != egID[i] {
+					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
+				}
+			}
+		})
 	}
 }
