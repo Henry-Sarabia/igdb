@@ -23,153 +23,205 @@ func TestPulseTypeIntegrity(t *testing.T) {
 }
 
 func TestGetPulse(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulse.txt")
-	if err != nil {
-		t.Fatal(err)
+	var pulseTests = []struct {
+		Name   string
+		Resp   string
+		ID     int
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_pulse.txt", 145346, ""},
+		{"Invalid ID", "test_data/empty.txt", -25000, ErrNegativeID.Error()},
+		{"Empty Response", "test_data/empty.txt", 145346, errEndOfJSON.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range pulseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	p, err := c.GetPulse(145346)
-	if err != nil {
-		t.Error(err)
-	}
+			p, err := c.GetPulse(tt.ID)
+			assertError(t, err, tt.ExpErr)
 
-	et := "Nintendo announces new Mario, Zelda amiibo"
-	at := p.Title
-	if at != et {
-		t.Errorf("Expected title '%s', got '%s'", et, at)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	ep := 2
-	ap := p.PulseSource
-	if ap != ep {
-		t.Errorf("Expected Pulse Source %d, got %d", ep, ap)
-	}
+			et := "Nintendo announces new Mario, Zelda amiibo"
+			at := p.Title
+			if at != et {
+				t.Errorf("Expected title '%s', got '%s'", et, at)
+			}
 
-	eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/i1fti435exzyu1ydftu4.jpg")
-	aURL := p.PulseImage.URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			ep := 2
+			ap := p.PulseSource
+			if ap != ep {
+				t.Errorf("Expected Pulse Source %d, got %d", ep, ap)
+			}
 
-	etID := []Tag{1, 17, 38, 268435468, 268435487, 536871422, 536872221}
-	atID := p.Tags
-	for i := range atID {
-		if atID[i] != etID[i] {
-			t.Errorf("Expected Tag ID %d, got %d\n", etID[i], atID[i])
-		}
+			eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/i1fti435exzyu1ydftu4.jpg")
+			aURL := p.PulseImage.URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			etID := []Tag{1, 17, 38, 268435468, 268435487, 536871422, 536872221}
+			atID := p.Tags
+			for i := range atID {
+				if atID[i] != etID[i] {
+					t.Errorf("Expected Tag ID %d, got %d\n", etID[i], atID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestGetPulses(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/get_pulses.txt")
-	if err != nil {
-		t.Fatal(err)
+	var pulseTests = []struct {
+		Name   string
+		Resp   string
+		IDs    []int
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/get_pulses.txt", []int{132354, 257394, 109415}, []OptionFunc{OptLimit(5)}, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-250000}, nil, ErrNegativeID.Error()},
+		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Empty Response", "test_data/empty.txt", []int{132354, 257394, 109415}, nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{132354, 257394, 109415}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range pulseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	ids := []int{132354, 257394, 109415}
-	p, err := c.GetPulses(ids)
-	if err != nil {
-		t.Error(err)
-	}
+			p, err := c.GetPulses(tt.IDs, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 3
-	al := len(p)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	et := "Battleborn: a great game with a fatal flaw"
-	at := p[0].Title
-	if at != et {
-		t.Errorf("Expected title '%s', got '%s'", et, at)
-	}
+			el := 3
+			al := len(p)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	ea := "Darren Nakamura"
-	aa := p[0].Author
-	if aa != ea {
-		t.Errorf("Expected slug '%s', got '%s'", ea, aa)
-	}
+			et := "Battleborn: a great game with a fatal flaw"
+			at := p[0].Title
+			if at != et {
+				t.Errorf("Expected title '%s', got '%s'", et, at)
+			}
 
-	eUID := "5fc0c5269a2aa7887d1a2c13a27c5bd2"
-	aUID := p[1].UID
-	if aUID != eUID {
-		t.Errorf("Expected ID '%s', got '%s'", eUID, aUID)
-	}
+			ea := "Darren Nakamura"
+			aa := p[0].Author
+			if aa != ea {
+				t.Errorf("Expected slug '%s', got '%s'", ea, aa)
+			}
 
-	eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/ibmrifg0uxp8w3y6hfzo.jpg")
-	aURL := p[1].PulseImage.URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			eUID := "5fc0c5269a2aa7887d1a2c13a27c5bd2"
+			aUID := p[1].UID
+			if aUID != eUID {
+				t.Errorf("Expected ID '%s', got '%s'", eUID, aUID)
+			}
 
-	ep := 8
-	ap := p[2].PulseSource
-	if ap != ep {
-		t.Errorf("Expected Pulse Source %d, got %d", ep, ap)
-	}
+			eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/ibmrifg0uxp8w3y6hfzo.jpg")
+			aURL := p[1].PulseImage.URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
 
-	etID := []Tag{1, 18, 27, 268435461, 268435468, 268435471, 536871198}
-	atID := p[2].Tags
-	for i := range atID {
-		if atID[i] != etID[i] {
-			t.Errorf("Expected Tag ID %d, got %d\n", etID[i], atID[i])
-		}
+			ep := 8
+			ap := p[2].PulseSource
+			if ap != ep {
+				t.Errorf("Expected Pulse Source %d, got %d", ep, ap)
+			}
+
+			etID := []Tag{1, 18, 27, 268435461, 268435468, 268435471, 536871198}
+			atID := p[2].Tags
+			for i := range atID {
+				if atID[i] != etID[i] {
+					t.Errorf("Expected Tag ID %d, got %d\n", etID[i], atID[i])
+				}
+			}
+		})
 	}
 }
 
 func TestSearchPulses(t *testing.T) {
-	ts, c, err := testServerFile(http.StatusOK, "test_data/search_pulses.txt")
-	if err != nil {
-		t.Fatal(err)
+	var pulseTests = []struct {
+		Name   string
+		Resp   string
+		Qry    string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_pulses.txt", "megaman", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/search_pulses.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty response", "test_data/empty.txt", "megaman", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "megaman", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
-	defer ts.Close()
+	for _, tt := range pulseTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
 
-	p, err := c.SearchPulses("megaman")
-	if err != nil {
-		t.Error(err)
-	}
+			p, err := c.SearchPulses(tt.Qry, tt.Opts...)
+			assertError(t, err, tt.ExpErr)
 
-	el := 3
-	al := len(p)
-	if al != el {
-		t.Errorf("Expected length of %d, got %d", el, al)
-	}
+			if tt.ExpErr != "" {
+				return
+			}
 
-	eCat := 10
-	aCat := p[0].Category
-	if aCat != eCat {
-		t.Errorf("Expected category %d, got %d", eCat, aCat)
-	}
+			el := 3
+			al := len(p)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
 
-	ec := 1502176226691
-	ac := p[0].CreatedAt
-	if ac != ec {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-	}
+			eCat := 10
+			aCat := p[0].Category
+			if aCat != eCat {
+				t.Errorf("Expected category %d, got %d", eCat, aCat)
+			}
 
-	et := "Retroid talks Mega Man tonight"
-	at := p[1].Title
-	if at != et {
-		t.Errorf("Expected title '%s', got '%s'", et, at)
-	}
+			ec := 1502176226691
+			ac := p[0].CreatedAt
+			if ac != ec {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
+			}
 
-	eURL := URL("http://feedproxy.google.com/~r/Destructoid/~3/ChzHjztL10M/retroid-talks-mega-man-tonight-456282.phtml")
-	aURL := p[1].URL
-	if eURL != aURL {
-		t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-	}
+			et := "Retroid talks Mega Man tonight"
+			at := p[1].Title
+			if at != et {
+				t.Errorf("Expected title '%s', got '%s'", et, at)
+			}
 
-	ep := 1479339000000
-	ap := p[2].PublishedAt
-	if ap != ep {
-		t.Errorf("Expected Unix time in milliseconds of %d, got %d", ep, ap)
-	}
+			eURL := URL("http://feedproxy.google.com/~r/Destructoid/~3/ChzHjztL10M/retroid-talks-mega-man-tonight-456282.phtml")
+			aURL := p[1].URL
+			if eURL != aURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
 
-	eID := "y4wwcqqbkuyeteoq4l2n"
-	aID := p[2].PulseImage.ID
-	if aID != eID {
-		t.Errorf("Expected ID '%s', got '%s'", eID, aID)
+			ep := 1479339000000
+			ap := p[2].PublishedAt
+			if ap != ep {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ep, ap)
+			}
+
+			eID := "y4wwcqqbkuyeteoq4l2n"
+			aID := p[2].PulseImage.ID
+			if aID != eID {
+				t.Errorf("Expected ID '%s', got '%s'", eID, aID)
+			}
+		})
 	}
 }
