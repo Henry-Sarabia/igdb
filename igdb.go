@@ -30,12 +30,19 @@ type Client struct {
 	rootURL     string
 	ScrollNext  string
 	ScrollCount int
+	ScrollReset bool
 }
 
 // NewClient returns a new Client set with a default HTTP
 // client and the default IGDB root URL.
 func NewClient() Client {
-	return Client{http: http.DefaultClient, rootURL: igdbURL}
+	return Client{
+		http:        http.DefaultClient,
+		rootURL:     igdbURL,
+		ScrollNext:  "",
+		ScrollCount: 0,
+		ScrollReset: true,
+	}
 }
 
 // get sends a GET request to the provided url and stores
@@ -70,10 +77,13 @@ func (c *Client) get(url string, result interface{}) error {
 		return err
 	}
 
-	err = c.setScrollHeaders(resp.Header)
-	if err != nil {
-		return nil
+	if c.ScrollReset {
+		err = c.setScrollHeaders(resp.Header)
+		if err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 
