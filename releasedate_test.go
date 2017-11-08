@@ -142,3 +142,74 @@ func TestGetReleaseDates(t *testing.T) {
 		})
 	}
 }
+
+func TestSearchReleaseDates(t *testing.T) {
+	var releaseDateTests = []struct {
+		Name   string
+		Resp   string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_releasedates.txt", []OptionFunc{OptLimit(3)}, ""},
+		{"Empty response", "test_data/empty.txt", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+	}
+	for _, tt := range releaseDateTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			rd, err := c.SearchReleaseDates(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if tt.ExpErr != "" {
+				return
+			}
+
+			el := 3
+			al := len(rd)
+			if al != el {
+				t.Errorf("Expected length of %d, got %d", el, al)
+			}
+
+			ec := DateCategory(0)
+			ac := rd[0].Category
+			if ac != ec {
+				t.Errorf("Expected date category %d, got %d", ec, ac)
+			}
+
+			ep := 6
+			ap := rd[0].Platform
+			if ap != ep {
+				t.Errorf("Expected platform %d, got %d", ep, ap)
+			}
+
+			ed := 1435795200000
+			ad := rd[1].Date
+			if ad != ed {
+				t.Errorf("Expected Unix time in milliseconds %d, got %d", ed, ad)
+			}
+
+			ey := 2015
+			ay := rd[1].Year
+			if ay != ey {
+				t.Errorf("Expected year %d, got %d", ey, ay)
+			}
+
+			em := 10
+			am := rd[2].Month
+			if am != em {
+				t.Errorf("Expected month %d, got %d", em, am)
+			}
+
+			eh := "1997-Oct-31"
+			ah := rd[2].Human
+			if ah != eh {
+				t.Errorf("Expected date '%s', got '%s'", eh, ah)
+			}
+		})
+	}
+}
