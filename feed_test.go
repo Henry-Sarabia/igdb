@@ -122,10 +122,10 @@ func TestGetFeeds(t *testing.T) {
 				t.Errorf("Expected ID %d, got %d", eID, aID)
 			}
 
-			em := "eSports Ready - Rainbow Six Siege http://www.youtube.com/watch?v=jRYVzfQz9nU"
-			am := f[0].Content
-			if am != em {
-				t.Errorf("Expected content '%s', got '%s'", em, am)
+			ec := "eSports Ready - Rainbow Six Siege http://www.youtube.com/watch?v=jRYVzfQz9nU"
+			ac := f[0].Content
+			if ac != ec {
+				t.Errorf("Expected content '%s', got '%s'", ec, ac)
 			}
 
 			eu := 1501156914070
@@ -154,4 +154,75 @@ func TestGetFeeds(t *testing.T) {
 		})
 	}
 
+}
+
+func TestSearchFeeds(t *testing.T) {
+	var feedTests = []struct {
+		Name   string
+		Resp   string
+		Opts   []OptionFunc
+		ExpErr string
+	}{
+		{"Happy path", "test_data/search_feeds.txt", []OptionFunc{OptLimit(3)}, ""},
+		{"Empty response", "test_data/empty.txt", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+	}
+	for _, tt := range feedTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			f, err := c.SearchFeeds(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if tt.ExpErr != "" {
+				return
+			}
+
+			el := 3
+			al := len(f)
+			if al != el {
+				t.Errorf("Expected lfth of %d, got %d", el, al)
+			}
+
+			eID := 48651
+			aID := f[0].ID
+			if aID != eID {
+				t.Errorf("Expected ID %d, got %d", eID, aID)
+			}
+
+			ec := "Minecraft Hide N Seek! HIDE FROM THE NEIGHBOR! (Minecraft HELLO NEIGHBOR MINIGAME!) http://www.youtube.com/watch?v=kyYz_r-DQ8g"
+			ac := f[0].Content
+			if ac != ec {
+				t.Errorf("Expected content '%s', got '%s'", ec, ac)
+			}
+
+			eu := 1492105740351
+			au := f[1].UpdatedAt
+			if au != eu {
+				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
+			}
+
+			eURL := URL("https://www.igdb.com/feed/11jg")
+			aURL := f[1].URL
+			if aURL != eURL {
+				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
+			}
+
+			eCat := FeedCategory(7)
+			aCat := f[2].Category
+			if aCat != eCat {
+				t.Errorf("Expected category %d, got %d", eCat, aCat)
+			}
+
+			em := "{\"aggregator\":\"youtube\",\"external_id\":\"tLZpWNItcq0\"}"
+			am := f[2].Meta
+			if am != em {
+				t.Errorf("Expected meta '%s', got '%s'", em, am)
+			}
+		})
+	}
 }
