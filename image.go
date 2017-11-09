@@ -59,9 +59,6 @@ func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
 	if ImageID == "" {
 		return "", ErrEmptyID
 	}
-	if ratio < 1 || ratio > 2 {
-		return "", ErrPixelRatio
-	}
 
 	var dpr string
 
