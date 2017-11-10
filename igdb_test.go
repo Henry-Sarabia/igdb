@@ -7,44 +7,39 @@ import (
 )
 
 const testEndpoint endpoint = "tests/"
-const testGetResp = `{"example": "value"}`
+const testGetResp = `{"field": "value"}`
 const testNextHeader = "/games/scroll/DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAECqQWdzRScEJ3YkVUVldrb0pycUtGR2l4QQ==/?fields=name,id,rating,popularity"
 
 type testResultPlaceholder struct {
-	Example string `json:"example"`
+	Field string `json:"field"`
 }
 
 func TestGet(t *testing.T) {
 	var getTests = []struct {
 		Name    string
+		Status  int
+		Resp    string
 		URL     string
-		Code    int
 		ExpResp string
 		ExpErr  string
 	}{
-		{"Bad request with bad response", "fakeurl", http.StatusBadRequest, "", errEndOfJSON.Error()},
-		{"OK request with OK response", string(testEndpoint), http.StatusOK, testGetResp, ""},
-		{"OK request with bad response", string(testEndpoint), http.StatusOK, "", errEndOfJSON.Error()},
+		{"OK request with valid response", http.StatusOK, testGetResp, string(testEndpoint), "value", ""},
+		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errEndOfJSON.Error()},
+		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errEndOfJSON.Error()},
+		{"Bad request with error response", http.StatusNotFound, testErrNotFound, "badURL", "", "Status 404 - status not found"},
 	}
 
 	for _, gt := range getTests {
 		testResp := testResultPlaceholder{}
 		t.Run(gt.Name, func(t *testing.T) {
-			ts, c := testServerString(gt.Code, gt.ExpResp)
+			ts, c := testServerString(gt.Status, gt.Resp)
 			defer ts.Close()
 
 			err := c.get(c.rootURL+gt.URL, &testResp)
-			if err == nil {
-				if gt.ExpErr != "" {
-					t.Fatalf("Expected error '%v', got nil error'", gt.ExpErr)
-				}
-				return
-			} else if err.Error() != gt.ExpErr {
-				t.Fatalf("Expected error '%v', got error '%v'", gt.ExpErr, err.Error())
-			}
+			assertError(t, err, gt.ExpErr)
 
-			if testResp.Example != gt.ExpResp {
-				t.Fatalf("Expected response '%v', got '%v'", gt.ExpResp, testResp.Example)
+			if testResp.Field != gt.ExpResp {
+				t.Fatalf("Expected response '%v', got '%v'", gt.ExpResp, testResp.Field)
 			}
 		})
 	}
