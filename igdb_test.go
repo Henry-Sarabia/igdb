@@ -74,15 +74,7 @@ func TestSetScrollHeaders(t *testing.T) {
 
 			c := NewClient()
 			err := c.setScrollHeaders(hdr)
-			if err != nil {
-				if err.Error() != ht.ExpErr {
-					t.Fatalf("Expected error '%v', got '%v'", ht.ExpErr, err.Error())
-				}
-			} else {
-				if ht.ExpErr != "" {
-					t.Fatalf("Expected error '%v', got nil error", ht.ExpErr)
-				}
-			}
+			assertError(t, err, ht.ExpErr)
 
 			if c.ScrollNext != ht.ExpNext {
 				t.Errorf("Expected ScrollNext of '%s', got '%s'", ht.ExpNext, c.ScrollNext)
