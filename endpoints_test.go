@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestGetEndpointFieldManifest(t *testing.T) {
+func TestGetEndpointFieldList(t *testing.T) {
 	var fieldsTests = []struct {
 		Name      string
 		Status    int
@@ -23,7 +23,7 @@ func TestGetEndpointFieldManifest(t *testing.T) {
 			ts, c := testServerString(ft.Status, ft.Resp)
 			defer ts.Close()
 
-			fields, err := c.GetEndpointFieldManifest(testEndpoint)
+			fields, err := c.GetEndpointFieldList(testEndpoint)
 			actErr := ""
 			if err != nil {
 				actErr = err.Error()

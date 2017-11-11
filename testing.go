@@ -81,16 +81,16 @@ func assertError(t *testing.T, err error, expErr string) {
 }
 
 // validateStruct checks if the given struct contains all of the fields
-// listed by the field manifest provided by the given IGDB endpoint.
+// listed by the field list provided by the given IGDB endpoint.
 func (c *Client) validateStruct(str reflect.Type, end endpoint) error {
-	f, err := c.GetEndpointFieldManifest(end)
+	fl, err := c.GetEndpointFieldList(end)
 	if err != nil {
 		return err
 	}
 
-	f = removeSubfields(f)
+	fl = removeSubfields(fl)
 
-	err = validateStructTags(str, f)
+	err = validateStructTags(str, fl)
 	if err != nil {
 		return err
 	}
@@ -98,15 +98,15 @@ func (c *Client) validateStruct(str reflect.Type, end endpoint) error {
 }
 
 // validateStructTags checks if the given struct contains all of
-// the struct tags in the provided field manifest.
-func validateStructTags(str reflect.Type, fm []string) error {
+// the struct tags in the provided field list.
+func validateStructTags(str reflect.Type, fl []string) error {
 	old, err := getStructTags(str)
 	if err != nil {
 		return err
 	}
 
 	found := make(map[string]bool)
-	for _, v := range fm {
+	for _, v := range fl {
 		found[v] = false
 	}
 
