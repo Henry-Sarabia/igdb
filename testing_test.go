@@ -71,14 +71,7 @@ func TestValidateStruct(t *testing.T) {
 			defer ts.Close()
 
 			err := c.validateStruct(manyTags, testEndpoint)
-			if err == nil {
-				if nt.ExpErr != "" {
-					t.Fatalf("Expected error '%v', got nil error", nt.ExpErr)
-				}
-				return
-			} else if err.Error() != nt.ExpErr {
-				t.Fatalf("Expected error '%v', got error '%v'", nt.ExpErr, err.Error())
-			}
+			assertError(t, err, nt.ExpErr)
 		})
 	}
 }

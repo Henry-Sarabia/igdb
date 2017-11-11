@@ -18,27 +18,20 @@ func TestGetEndpointFieldList(t *testing.T) {
 		{"Bad request with empty response", http.StatusBadRequest, "", nil, errEndOfJSON.Error()},
 	}
 
-	for _, ft := range fieldsTests {
-		t.Run(ft.Name, func(t *testing.T) {
-			ts, c := testServerString(ft.Status, ft.Resp)
+	for _, tt := range fieldsTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
 			fields, err := c.GetEndpointFieldList(testEndpoint)
-			actErr := ""
-			if err != nil {
-				actErr = err.Error()
-			}
+			assertError(t, err, tt.ExpErr)
 
-			if actErr != ft.ExpErr {
-				t.Fatalf("Expected error '%s', got '%s'", ft.ExpErr, actErr)
-			}
-
-			ok, err := equalSlice(fields, ft.ExpFields)
+			ok, err := equalSlice(fields, tt.ExpFields)
 			if err != nil {
 				t.Fatal(err)
 			}
 			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", ft.ExpFields, fields)
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}
@@ -57,23 +50,16 @@ func TestGetEndpointCount(t *testing.T) {
 		{"Bad request with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
 	}
 
-	for _, ct := range countTests {
-		t.Run(ct.Name, func(t *testing.T) {
-			ts, c := testServerString(ct.Status, ct.Resp)
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
 			count, err := c.GetEndpointCount(testEndpoint)
-			actErr := ""
-			if err != nil {
-				actErr = err.Error()
-			}
+			assertError(t, err, tt.ExpErr)
 
-			if actErr != ct.ExpErr {
-				t.Fatalf("Expecter error '%v', got '%v'", ct.ExpErr, actErr)
-			}
-
-			if count != ct.ExpCount {
-				t.Fatalf("Expected count %d, got %d", ct.ExpCount, count)
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
 			}
 		})
 	}
