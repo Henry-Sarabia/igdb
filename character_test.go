@@ -22,7 +22,7 @@ func TestCharacterTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetCharacter(t *testing.T) {
+func TestCharactersGet(t *testing.T) {
 	var characterTests = []struct {
 		Name   string
 		Resp   string
@@ -32,6 +32,7 @@ func TestGetCharacter(t *testing.T) {
 		{"Happy path", "test_data/get_character.txt", 10617, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
 		{"Empty Response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
+		//{"Empty Array", "test_data/empty_array.txt", 0, ""},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -40,8 +41,7 @@ func TestGetCharacter(t *testing.T) {
 				t.Fatal(err)
 			}
 			defer ts.Close()
-
-			ch, err := c.GetCharacter(tt.ID)
+			ch, err := c.Characters.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -69,7 +69,7 @@ func TestGetCharacter(t *testing.T) {
 	}
 }
 
-func TestGetCharacters(t *testing.T) {
+func TestCharactersMultiGet(t *testing.T) {
 	var characterTests = []struct {
 		Name   string
 		Resp   string
@@ -91,7 +91,7 @@ func TestGetCharacters(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.GetCharacters(tt.IDs, tt.Opts...)
+			ch, err := c.Characters.MultiGet(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -133,7 +133,7 @@ func TestGetCharacters(t *testing.T) {
 
 }
 
-func TestSearchCharacters(t *testing.T) {
+func TestCharactersSearch(t *testing.T) {
 	var characterTests = []struct {
 		Name   string
 		Resp   string
@@ -154,7 +154,7 @@ func TestSearchCharacters(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.SearchCharacters(tt.Qry, tt.Opts...)
+			ch, err := c.Characters.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -183,6 +183,34 @@ func TestSearchCharacters(t *testing.T) {
 			aID := ch[2].ID
 			if aID != eID {
 				t.Errorf("Expected ID %d, got %d\n", eID, aID)
+			}
+		})
+	}
+}
+
+func TestCharactersCount(t *testing.T) {
+	var characterTests = []struct {
+		Name     string
+		Status   int
+		Resp     string
+		ExpCount int
+		ExpErr   string
+	}{
+		{"OK request with non-empty response", http.StatusOK, `{"count": 100}`, 100, ""},
+		{"OK request with empty response", http.StatusOK, "", 0, errEndOfJSON.Error()},
+		{"Bad request with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
+	}
+
+	for _, tt := range characterTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(tt.Status, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Characters.Count()
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
 			}
 		})
 	}

@@ -31,18 +31,33 @@ type Client struct {
 	ScrollNext  string
 	ScrollCount int
 	ScrollReset bool
+
+	common service
+
+	// Services
+	Characters *CharacterService
 }
 
 // NewClient returns a new Client set with a default HTTP
 // client and the default IGDB root URL.
-func NewClient() Client {
-	return Client{
+func NewClient() *Client {
+	c := &Client{
 		http:        http.DefaultClient,
 		rootURL:     igdbURL,
 		ScrollNext:  "",
 		ScrollCount: 0,
 		ScrollReset: true,
 	}
+	c.common.client = c
+	c.Characters = (*CharacterService)(&c.common)
+	return c
+}
+
+// service is the underlying struct that
+// handles all API calls for different
+// IGDB endpoints.
+type service struct {
+	client *Client
 }
 
 // get sends a GET request to the provided url and stores

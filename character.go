@@ -1,5 +1,9 @@
 package igdb
 
+// CharacterService handles all the API calls
+// for the IGDB Characters endpoint.
+type CharacterService service
+
 // Character contains information on an IGDB
 // entry for a particular video game character.
 type Character struct {
@@ -18,19 +22,19 @@ type Character struct {
 	People      []int       `json:"people"`
 }
 
-// GetCharacter returns a single Character identified by the provided IGDB ID.
+// Get returns a single Character identified by the provided IGDB ID.
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetCharacter only returning a single Character object and
 // not a list of Characters.
-func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
-	url, err := c.singleURL(CharacterEndpoint, id, opts...)
+func (cs *CharacterService) Get(id int, opts ...OptionFunc) (*Character, error) {
+	url, err := cs.client.singleURL(CharacterEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var ch []Character
 
-	err = c.get(url, &ch)
+	err = cs.client.get(url, &ch)
 	if err != nil {
 		return nil, err
 	}
@@ -38,17 +42,17 @@ func (c *Client) GetCharacter(id int, opts ...OptionFunc) (*Character, error) {
 	return &ch[0], nil
 }
 
-// GetCharacters returns a list of Characters identified by the provided list of
+// MultiGet returns a list of Characters identified by the provided list of
 // IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, error) {
-	url, err := c.multiURL(CharacterEndpoint, ids, opts...)
+func (cs *CharacterService) MultiGet(ids []int, opts ...OptionFunc) ([]*Character, error) {
+	url, err := cs.client.multiURL(CharacterEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var ch []*Character
 
-	err = c.get(url, &ch)
+	err = cs.client.get(url, &ch)
 	if err != nil {
 		return nil, err
 	}
@@ -56,22 +60,32 @@ func (c *Client) GetCharacters(ids []int, opts ...OptionFunc) ([]*Character, err
 	return ch, nil
 }
 
-// SearchCharacters returns a list of Characters found by searching the IGDB using the
+// Search returns a list of Characters found by searching the IGDB using the
 // provided query. Provide functional options to filter, sort, and paginate the results.
 // Providing an empty query will instead retrieve an index of Characters based solely on
 // the provided options.
-func (c *Client) SearchCharacters(qry string, opts ...OptionFunc) ([]*Character, error) {
-	url, err := c.searchURL(CharacterEndpoint, qry, opts...)
+func (cs *CharacterService) Search(qry string, opts ...OptionFunc) ([]*Character, error) {
+	url, err := cs.client.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var ch []*Character
 
-	err = c.get(url, &ch)
+	err = cs.client.get(url, &ch)
 	if err != nil {
 		return nil, err
 	}
 
 	return ch, nil
+}
+
+// Count returns the number of Characters available in the IGDB.
+func (cs *CharacterService) Count() (int, error) {
+	c, err := cs.client.GetEndpointCount(CharacterEndpoint)
+	if err != nil {
+		return 0, err
+	}
+
+	return c, nil
 }

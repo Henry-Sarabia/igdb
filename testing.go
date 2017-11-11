@@ -42,7 +42,7 @@ func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httpte
 	c.http = ts.Client()
 	c.rootURL = ts.URL + "/"
 
-	return ts, &c
+	return ts, c
 }
 
 // testServerString initializes and returns a test server that will respond with the provided
