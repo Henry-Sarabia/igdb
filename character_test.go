@@ -189,7 +189,7 @@ func TestCharactersSearch(t *testing.T) {
 }
 
 func TestCharactersCount(t *testing.T) {
-	var characterTests = []struct {
+	var countTests = []struct {
 		Name     string
 		Status   int
 		Resp     string
@@ -201,7 +201,7 @@ func TestCharactersCount(t *testing.T) {
 		{"Bad request with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
 	}
 
-	for _, tt := range characterTests {
+	for _, tt := range countTests {
 		t.Run(tt.Name, func(t *testing.T) {
 			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
@@ -211,6 +211,38 @@ func TestCharactersCount(t *testing.T) {
 
 			if count != tt.ExpCount {
 				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestCharactersListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Status    int
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"OK request with non-empty response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"OK request with empty response", http.StatusOK, "", nil, errEndOfJSON.Error()},
+		{"Bad request with empty response", http.StatusBadRequest, "", nil, errEndOfJSON.Error()},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(tt.Status, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Characters.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}

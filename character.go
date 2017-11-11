@@ -89,3 +89,14 @@ func (cs *CharacterService) Count() (int, error) {
 
 	return c, nil
 }
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Character object.
+func (cs *CharacterService) ListFields() ([]string, error) {
+	fl, err := cs.client.GetEndpointFieldList(CharacterEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
+}
