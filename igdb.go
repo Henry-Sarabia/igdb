@@ -12,12 +12,17 @@ import (
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-2445582011268.apicast.io/"
 
+const openBracketASCII = 91
+const closedBracketASCII = 93
+
 // Errors returned when creating API call URLs.
 var (
 	// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
 	ErrNegativeID = errors.New("igdb.Client: negative ID")
 	// ErrEmptyIDs occurs when an empty slice of IDs is used as an argument in an API call.
 	ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
+	// ErrNoResults occurs when the IGDB returns no results
+	ErrNoResults = errors.New("igdb.Client: no results")
 )
 
 // URL represents a URL as a string.
@@ -63,13 +68,10 @@ type service struct {
 // get sends a GET request to the provided url and stores
 // the response in the provided result empty interface.
 func (c *Client) get(url string, result interface{}) error {
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := c.newRequest(url)
 	if err != nil {
 		return err
 	}
-
-	req.Header.Add("user-key", APIkey)
-	req.Header.Add("Accept", "application/json")
 
 	resp, err := c.http.Do(req)
 	if err != nil {
@@ -87,6 +89,10 @@ func (c *Client) get(url string, result interface{}) error {
 		return err
 	}
 
+	// if err = checkResults(b); err != nil {
+	// 	return err
+	// }
+
 	err = json.Unmarshal(b, &result)
 	if err != nil {
 		return err
@@ -97,6 +103,35 @@ func (c *Client) get(url string, result interface{}) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+// newRequest configures a new request for the provided URL
+// and adds the necesarry headers to communicate with the IGDB.
+func (c *Client) newRequest(url string) (*http.Request, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("user-key", APIkey)
+	req.Header.Add("Accept", "application/json")
+
+	return req, nil
+}
+
+// checkResults checks if the results of an API call are
+// an empty array. If they are, an error is returned.
+// Otherwise, nil is returned.
+func checkResults(r []byte) error {
+	if len(r) != 2 {
+		return nil
+	}
+
+	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
+		return ErrNoResults
 	}
 
 	return nil
