@@ -31,8 +31,8 @@ func TestCharactersGet(t *testing.T) {
 	}{
 		{"Happy path", "test_data/get_character.txt", 10617, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
-		//{"Empty Array", "test_data/empty_array.txt", 0, ""},
+		{"Empty response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
+		//{"Empty array", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -82,6 +82,7 @@ func TestCharactersMultiGet(t *testing.T) {
 		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
 		{"Empty Response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		//{"Empty array", "test_data/empty_array.txt", []int{3726, 9580}, nil, ""},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {

@@ -39,6 +39,10 @@ func (cs *CharacterService) Get(id int, opts ...OptionFunc) (*Character, error) 
 		return nil, err
 	}
 
+	if len(ch) == 0 {
+		return nil, nil
+	}
+
 	return &ch[0], nil
 }
 
