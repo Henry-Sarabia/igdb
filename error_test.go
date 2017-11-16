@@ -14,7 +14,7 @@ const testErrNotFound = `
 }
 `
 
-func TestCheckError(t *testing.T) {
+func TestCheckResponse(t *testing.T) {
 	var errTests = []struct {
 		Name string
 		Code int
@@ -28,13 +28,11 @@ func TestCheckError(t *testing.T) {
 
 	for _, et := range errTests {
 		t.Run(et.Name, func(t *testing.T) {
-			c := NewClient()
-
 			resp := &http.Response{StatusCode: et.Code,
 				Body: ioutil.NopCloser(bytes.NewBufferString(et.Body)),
 			}
 
-			err := c.checkError(resp)
+			err := checkResponse(resp)
 			if resp.StatusCode == http.StatusOK {
 				if err != nil {
 					t.Fatalf("Expected nil err, got '%v'", err)

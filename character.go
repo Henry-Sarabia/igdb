@@ -22,7 +22,9 @@ type Character struct {
 	People      []int       `json:"people"`
 }
 
-// Get returns a single Character identified by the provided IGDB ID.
+// Get returns a single Character identified by the provided IGDB ID. If no
+// result is found, a nil pointer is returned.
+//
 // Functional options may be provided but sorting and pagination will not have
 // an effect due to GetCharacter only returning a single Character object and
 // not a list of Characters.
@@ -39,15 +41,13 @@ func (cs *CharacterService) Get(id int, opts ...OptionFunc) (*Character, error) 
 		return nil, err
 	}
 
-	if len(ch) == 0 {
-		return nil, nil
-	}
-
 	return &ch[0], nil
 }
 
-// MultiGet returns a list of Characters identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
+// MultiGet returns a list of Characters identified by the provided list of IGDB IDs.
+// If no results are found, a nil slice is returned.
+//
+// Provide functional options to filter, sort, and paginate the results.
 func (cs *CharacterService) MultiGet(ids []int, opts ...OptionFunc) ([]*Character, error) {
 	url, err := cs.client.multiURL(CharacterEndpoint, ids, opts...)
 	if err != nil {
@@ -64,10 +64,12 @@ func (cs *CharacterService) MultiGet(ids []int, opts ...OptionFunc) ([]*Characte
 	return ch, nil
 }
 
-// Search returns a list of Characters found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Characters based solely on
-// the provided options.
+// Search returns a list of Characters found by searching the IGDB using the provided
+// query. If no results are found, a nil slice is returned.
+//
+// Provide functional options to filter, sort, and paginate the results. Providing an
+// empty query will instead retrieve an index of Characters based solely on the provided
+// options.
 func (cs *CharacterService) Search(qry string, opts ...OptionFunc) ([]*Character, error) {
 	url, err := cs.client.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {

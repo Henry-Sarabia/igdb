@@ -36,7 +36,7 @@ func (c *Client) GetEndpointFieldList(end endpoint) ([]string, error) {
 	var f []string
 
 	err := c.get(url, &f)
-	if err != nil {
+	if err != nil && err != ErrNoResults {
 		return nil, err
 	}
 

@@ -18,9 +18,9 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-// checkError checks the provided HTTP Response for errors
-// returned by the IGDB.
-func (c *Client) checkError(resp *http.Response) error {
+// checkResponse checks the provided HTTP response
+// for errors returned by the IGDB.
+func checkResponse(resp *http.Response) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil
 	}

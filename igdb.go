@@ -3,6 +3,7 @@ package igdb
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -11,9 +12,6 @@ import (
 
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-2445582011268.apicast.io/"
-
-const openBracketASCII = 91
-const closedBracketASCII = 93
 
 // Errors returned when creating API call URLs.
 var (
@@ -27,6 +25,13 @@ var (
 
 // URL represents a URL as a string.
 type URL string
+
+// service is the underlying struct that
+// handles all API calls for different
+// IGDB endpoints.
+type service struct {
+	client *Client
+}
 
 // Client wraps a typical http.Client.
 // Client is used for all IGDB API calls.
@@ -58,13 +63,6 @@ func NewClient() *Client {
 	return c
 }
 
-// service is the underlying struct that
-// handles all API calls for different
-// IGDB endpoints.
-type service struct {
-	client *Client
-}
-
 // get sends a GET request to the provided url and stores
 // the response in the provided result empty interface.
 func (c *Client) get(url string, result interface{}) error {
@@ -79,8 +77,7 @@ func (c *Client) get(url string, result interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	err = c.checkError(resp)
-	if err != nil {
+	if err = checkResponse(resp); err != nil {
 		return err
 	}
 
@@ -89,73 +86,13 @@ func (c *Client) get(url string, result interface{}) error {
 		return err
 	}
 
-	// if err = checkResults(b); err != nil {
-	// 	return err
-	// }
-
-	err = json.Unmarshal(b, &result)
-	if err != nil {
+	if err = checkResults(b); err != nil {
 		return err
 	}
 
-	if c.ScrollReset {
-		err = c.setScrollHeaders(resp.Header)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-// newRequest configures a new request for the provided URL
-// and adds the necesarry headers to communicate with the IGDB.
-func (c *Client) newRequest(url string) (*http.Request, error) {
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("user-key", APIkey)
-	req.Header.Add("Accept", "application/json")
-
-	return req, nil
-}
-
-// checkResults checks if the results of an API call are
-// an empty array. If they are, an error is returned.
-// Otherwise, nil is returned.
-func checkResults(r []byte) error {
-	if len(r) != 2 {
-		return nil
-	}
-
-	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
-		return ErrNoResults
-	}
-
-	return nil
-}
-
-// setScrollHeaders checks the provided HTTP header for
-// the two additional Scroll API headers. If found, they
-// will be stored in the Client. If not found, the Client
-// fields will simply be set to zero values.
-func (c *Client) setScrollHeaders(h http.Header) error {
-	c.ScrollNext = ""
-	c.ScrollCount = 0
-
-	c.ScrollNext = h.Get("X-Next-Page")
-	xc := h.Get("X-Count")
-	if xc == "" {
-		return nil
-	}
-
-	count, err := strconv.Atoi(xc)
-	if err != nil {
+	if err = json.Unmarshal(b, &result); err != nil {
 		return err
 	}
-	c.ScrollCount = count
 
 	return nil
 }
@@ -220,8 +157,48 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string
 	return url, nil
 }
 
-// intsToStrings converts a slice of ints
-// to a slice of strings.
+// newRequest configures a new request for the provided URL and
+// adds the necesarry headers to communicate with the IGDB.
+func (c *Client) newRequest(url string) (*http.Request, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("user-key", APIkey)
+	req.Header.Add("Accept", "application/json")
+
+	return req, nil
+}
+
+// Byte representations of ASCII characters.
+// Used for empty result checks.
+const (
+	// openBracketASCII represents the ASCII code for an open bracket.
+	openBracketASCII = 91
+	// closedBracketASCII represents the ASCII code for a closed bracket.
+	closedBracketASCII = 93
+)
+
+// checkResults checks if the results of an API call are
+// an empty array. If they are, an error is returned.
+// Otherwise, nil is returned.
+func checkResults(r []byte) error {
+	if len(r) != 2 {
+		fmt.Println(r)
+		return nil
+	}
+
+	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
+		return ErrNoResults
+	}
+
+	return nil
+}
+
+// intsToStrings is a helper function that
+// converts a slice of ints to a slice of
+// strings.
 func intsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
@@ -230,9 +207,33 @@ func intsToStrings(ints []int) []string {
 	return str
 }
 
-// intsToCommaString returns a comma separated
-// list of ints as a single string.
+// intsToCommaString is a helper function that
+// returns a comma separated list of ints as
+// a single string.
 func intsToCommaString(ints []int) string {
 	s := intsToStrings(ints)
 	return strings.Join(s, ",")
+}
+
+// setScrollHeaders checks the provided HTTP header for
+// the two additional Scroll API headers. If found, they
+// will be stored in the Client. If not found, the Client
+// fields will simply be set to zero values.
+func (c *Client) setScrollHeaders(h http.Header) error {
+	c.ScrollNext = ""
+	c.ScrollCount = 0
+
+	c.ScrollNext = h.Get("X-Next-Page")
+	xc := h.Get("X-Count")
+	if xc == "" {
+		return nil
+	}
+
+	count, err := strconv.Atoi(xc)
+	if err != nil {
+		return err
+	}
+	c.ScrollCount = count
+
+	return nil
 }
