@@ -3,7 +3,6 @@ package igdb
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -99,8 +98,8 @@ func (c *Client) get(url string, result interface{}) error {
 
 // singleURL creates a URL configured to request a single IGDB object identified by
 // its unique IGDB ID using the provided endpoint and options.
-func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, error) {
-	if id < 0 {
+func (c *Client) singleURL(end endpoint, ID int, opts ...OptionFunc) (string, error) {
+	if ID < 0 {
 		return "", ErrNegativeID
 	}
 	opt, err := newOpt(opts...)
@@ -108,21 +107,19 @@ func (c *Client) singleURL(end endpoint, id int, opts ...OptionFunc) (string, er
 		return "", err
 	}
 
-	url := c.rootURL + string(end) + strconv.Itoa(id)
+	url := c.rootURL + string(end) + strconv.Itoa(ID)
 	url = encodeURL(&opt.Values, url)
 
 	return url, nil
 }
 
 // multiURL creates a URL configured to request multiple IGDB objects identified
-// by their unique IGDB IDs using the provided endpoint and options.
-func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, error) {
-	if len(ids) == 0 {
-		return "", ErrEmptyIDs
-	}
-
-	for _, id := range ids {
-		if id < 0 {
+// by their unique IGDB IDs using the provided endpoint and options. An empty slice
+// of IDs creates a URL configured to retrieve an index of IGDB objects from the given
+// endpoint based solely on the provided options.
+func (c *Client) multiURL(end endpoint, IDs []int, opts ...OptionFunc) (string, error) {
+	for _, ID := range IDs {
+		if ID < 0 {
 			return "", ErrNegativeID
 		}
 	}
@@ -132,20 +129,20 @@ func (c *Client) multiURL(end endpoint, ids []int, opts ...OptionFunc) (string, 
 		return "", err
 	}
 
-	url := c.rootURL + string(end) + intsToCommaString(ids)
+	url := c.rootURL + string(end) + intsToCommaString(IDs)
 	url = encodeURL(&opt.Values, url)
 
 	return url, nil
 }
 
 // searchURL creates a URL configured to search the IGDB based on the given query using
-// the provided endpoint and options. An empty query creates a URL configured to retrieve
-// an index of IGDB objects from the given endpoint based solely on the provided options.
+// the provided endpoint and options.
 func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
-	if strings.TrimSpace(qry) != "" {
-		opts = append(opts, optSearch(qry))
+	if strings.TrimSpace(qry) == "" {
+		return "", ErrEmptyQuery
 	}
 
+	opts = append(opts, optSearch(qry))
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err
@@ -185,7 +182,6 @@ const (
 // Otherwise, nil is returned.
 func checkResults(r []byte) error {
 	if len(r) != 2 {
-		fmt.Println(r)
 		return nil
 	}
 

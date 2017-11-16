@@ -69,7 +69,7 @@ func TestCharactersGet(t *testing.T) {
 	}
 }
 
-func TestCharactersMultiGet(t *testing.T) {
+func TestCharactersList(t *testing.T) {
 	var characterTests = []struct {
 		Name   string
 		Resp   string
@@ -77,9 +77,9 @@ func TestCharactersMultiGet(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_characters.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/list_characters.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
+		{"Zero IDs", "test_data/list_characters.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
 		{"Empty Response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"Empty array", "test_data/empty_array.txt", []int{3726, 9580}, nil, ErrNoResults.Error()},
@@ -92,7 +92,7 @@ func TestCharactersMultiGet(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.Characters.MultiGet(tt.IDs, tt.Opts...)
+			ch, err := c.Characters.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -143,7 +143,7 @@ func TestCharactersSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/search_characters.txt", "snake", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_characters.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "snake", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "snake", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
