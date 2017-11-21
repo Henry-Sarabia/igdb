@@ -128,9 +128,8 @@ func OptOffset(off int) OptionFunc {
 // specify which fields of the requested IGDB
 // object you wnat the API to respond with.
 // Subfields are accessed with a dot operator.
-// The default is set to all available fields.
-// All fields can be also be accessed with a
-// single asterisk.
+// To select all available fields at once, use
+// an asterisk (*) character.
 func OptFields(fields ...string) OptionFunc {
 	return func(o *options) error {
 		if len(fields) == 0 {
