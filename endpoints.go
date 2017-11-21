@@ -28,6 +28,10 @@ const (
 	TitleEndpoint       endpoint = "titles/"
 )
 
+type Count struct {
+	Count int `json:"count"`
+}
+
 // GetEndpointFieldList returns a list of fields that represent the
 // model of the data available at the given IGDB endpoint.
 func (c *Client) GetEndpointFieldList(end endpoint) ([]string, error) {
@@ -45,14 +49,15 @@ func (c *Client) GetEndpointFieldList(end endpoint) ([]string, error) {
 
 // GetEndpointCount returns the count of entities available for
 // the given IGDB endpoint.
-func (c *Client) GetEndpointCount(end endpoint) (int, error) {
-	url := c.rootURL + string(end) + "count"
-
-	var ct struct {
-		Count int `json:"count"`
+func (c *Client) GetEndpointCount(end endpoint, opts ...OptionFunc) (int, error) {
+	url, err := c.countURL(end, opts...)
+	if err != nil {
+		return 0, err
 	}
 
-	err := c.get(url, &ct)
+	var ct Count
+
+	err = c.get(url, &ct)
 	if err != nil {
 		return 0, err
 	}

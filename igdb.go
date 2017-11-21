@@ -154,6 +154,20 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string
 	return url, nil
 }
 
+// countURL creates a URL configured to retrieve the count of IGDB objects
+// using the provided endpoint and options.
+func (c *Client) countURL(end endpoint, opts ...OptionFunc) (string, error) {
+	opt, err := newOpt(opts...)
+	if err != nil {
+		return "", err
+	}
+
+	url := c.rootURL + string(end) + "count"
+	url = encodeURL(&opt.Values, url)
+
+	return url, nil
+}
+
 // newRequest configures a new request for the provided URL and
 // adds the necesarry headers to communicate with the IGDB.
 func (c *Client) newRequest(url string) (*http.Request, error) {

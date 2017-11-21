@@ -32,7 +32,7 @@ func TestCharactersGet(t *testing.T) {
 		{"Happy path", "test_data/get_character.txt", 10617, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
-		{"Empty array", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -82,7 +82,7 @@ func TestCharactersList(t *testing.T) {
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Empty Response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
-		{"Empty array", "test_data/empty_array.txt", []int{3726, 9580}, nil, ErrNoResults.Error()},
+		{"No results", "test_data/empty_array.txt", []int{3726, 9580}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -146,6 +146,7 @@ func TestCharactersSearch(t *testing.T) {
 		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "snake", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "snake", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "snake", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range characterTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -192,22 +193,23 @@ func TestCharactersSearch(t *testing.T) {
 func TestCharactersCount(t *testing.T) {
 	var countTests = []struct {
 		Name     string
-		Status   int
 		Resp     string
+		Opts     []OptionFunc
 		ExpCount int
 		ExpErr   string
 	}{
-		{"OK request with non-empty response", http.StatusOK, `{"count": 100}`, 100, ""},
-		{"OK request with empty response", http.StatusOK, "", 0, errEndOfJSON.Error()},
-		{"Bad request with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
 	}
 
 	for _, tt := range countTests {
 		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(tt.Status, tt.Resp)
+			ts, c := testServerString(http.StatusOK, tt.Resp)
 			defer ts.Close()
 
-			count, err := c.Characters.Count()
+			count, err := c.Characters.Count(tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if count != tt.ExpCount {
