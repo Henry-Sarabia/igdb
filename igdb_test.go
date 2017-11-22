@@ -8,7 +8,6 @@ import (
 
 const testEndpoint endpoint = "tests/"
 const testGetResp = `{"field": "value"}`
-const testNextHeader = "/games/scroll/DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAECqQWdzRScEJ3YkVUVldrb0pycUtGR2l4QQ==/?fields=name,id,rating,popularity"
 
 type testResultPlaceholder struct {
 	Field string `json:"field"`
@@ -40,43 +39,6 @@ func TestGet(t *testing.T) {
 
 			if testResp.Field != gt.ExpResp {
 				t.Fatalf("Expected response '%v', got '%v'", gt.ExpResp, testResp.Field)
-			}
-		})
-	}
-}
-
-func TestSetScrollHeaders(t *testing.T) {
-	var headerTests = []struct {
-		Name     string
-		Headers  []testHeader
-		ExpNext  string
-		ExpCount int
-		ExpErr   string
-	}{
-		{"Non-empty Next and non-empty Count", []testHeader{{"X-Next-Page", testNextHeader}, {"X-Count", "105"}}, testNextHeader, 105, ""},
-		{"Empty Next and non-empty Count", []testHeader{{"X-Count", "31"}}, "", 31, ""},
-		{"Non-empty Next and empty Count", []testHeader{{"X-Next-Page", testNextHeader}}, testNextHeader, 0, ""},
-		{"Empty Next and empty Count", []testHeader{}, "", 0, ""},
-		{"Non-empty Next and invalid Count", []testHeader{{"X-Next-Page", testNextHeader}, {"X-Count", "abcd"}}, testNextHeader, 0, `strconv.Atoi: parsing "abcd": invalid syntax`},
-	}
-
-	for _, ht := range headerTests {
-		t.Run(ht.Name, func(t *testing.T) {
-			hdr := http.Header{}
-			for _, h := range ht.Headers {
-				hdr.Set(h.Key, h.Value)
-			}
-
-			c := NewClient()
-			err := c.setScrollHeaders(hdr)
-			assertError(t, err, ht.ExpErr)
-
-			if c.ScrollNext != ht.ExpNext {
-				t.Errorf("Expected ScrollNext of '%s', got '%s'", ht.ExpNext, c.ScrollNext)
-			}
-
-			if c.ScrollCount != ht.ExpCount {
-				t.Errorf("Expected ScrollCount of %d, got %d", ht.ExpCount, c.ScrollCount)
 			}
 		})
 	}

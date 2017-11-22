@@ -104,17 +104,11 @@ func OptLimit(lim int) OptionFunc {
 
 // OptOffset is a functional option used to offset
 // results from an API call. The default offset is
-// 0. The maximum offset is 10,000. For results with
-// more than 10,000 objects, use the Scroll option.
-// OptOffset and OptScroll are mutually exclusive
-// options (i.e. only one can be used per API call).
+// 0. The maximum offset is 10,000.
 func OptOffset(off int) OptionFunc {
 	return func(o *options) error {
 		if off < 0 || off > 50 {
 			return ErrOutOfRange
-		}
-		if o.Values.Get("scroll") != "" {
-			return ErrExclusiveOption
 		}
 		if o.Values.Get("offset") != "" {
 			return ErrOptionSet
@@ -202,59 +196,6 @@ func OptFilter(field string, op operator, val string) OptionFunc {
 		}
 		s := fmt.Sprintf("filter[%s][%s]", field, string(op))
 		o.Values.Set(s, val)
-		return nil
-	}
-}
-
-// OptScroll is a functional option used
-// to paginate the results of an API call
-// using IGDB's Scroll API. The given
-// integer denotes which page of results
-// to retrieve from the API call. When not
-// included in an API call, this option has
-// no default value. This option and OptScroll
-// are mutually exclusive options; only one can
-// be used per API call.
-// WORK IN PROGRESS
-func OptScroll(page int) OptionFunc {
-	return func(o *options) error {
-		if page < 1 {
-			return ErrOutOfRange
-		}
-		if o.Values.Get("offset") != "" {
-			return ErrExclusiveOption
-		}
-		if o.Values.Get("scroll") != "" {
-			return ErrOptionSet
-		}
-		o.Values.Set("scroll", strconv.Itoa(page))
-		return nil
-	}
-}
-
-// OptScrollNew is a functional option used to
-// paginate the results of an API call using
-// the Scroll API. If OptScrollNew is set,
-// the API call will return two additional
-// headers that will be stored in the Client.
-// One header contains the number of results
-// found for the API call and the second header
-// contains a special Scroll path that can be
-// queried to get the next page of results.
-// This path can be repeatedly queried to
-// iterate through pages because it does not
-// change. The path will expire after 3 minutes
-// of not being queried.
-func OptScrollNew() OptionFunc {
-	return func(o *options) error {
-		if o.Values.Get("offset") != "" {
-			return ErrExclusiveOption
-		}
-		if o.Values.Get("scroll") != "" {
-			return ErrOptionSet
-		}
-
-		o.Values.Set("scroll", "1")
 		return nil
 	}
 }

@@ -35,11 +35,8 @@ type service struct {
 // Client wraps a typical http.Client.
 // Client is used for all IGDB API calls.
 type Client struct {
-	http        *http.Client
-	rootURL     string
-	ScrollNext  string
-	ScrollCount int
-	ScrollReset bool
+	http    *http.Client
+	rootURL string
 
 	common service
 
@@ -51,11 +48,8 @@ type Client struct {
 // client and the default IGDB root URL.
 func NewClient() *Client {
 	c := &Client{
-		http:        http.DefaultClient,
-		rootURL:     igdbURL,
-		ScrollNext:  "",
-		ScrollCount: 0,
-		ScrollReset: true,
+		http:    http.DefaultClient,
+		rootURL: igdbURL,
 	}
 	c.common.client = c
 	c.Characters = (*CharacterService)(&c.common)
@@ -223,27 +217,4 @@ func intsToStrings(ints []int) []string {
 func intsToCommaString(ints []int) string {
 	s := intsToStrings(ints)
 	return strings.Join(s, ",")
-}
-
-// setScrollHeaders checks the provided HTTP header for
-// the two additional Scroll API headers. If found, they
-// will be stored in the Client. If not found, the Client
-// fields will simply be set to zero values.
-func (c *Client) setScrollHeaders(h http.Header) error {
-	c.ScrollNext = ""
-	c.ScrollCount = 0
-
-	c.ScrollNext = h.Get("X-Next-Page")
-	xc := h.Get("X-Count")
-	if xc == "" {
-		return nil
-	}
-
-	count, err := strconv.Atoi(xc)
-	if err != nil {
-		return err
-	}
-	c.ScrollCount = count
-
-	return nil
 }

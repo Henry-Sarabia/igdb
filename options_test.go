@@ -207,39 +207,6 @@ func TestOptFilter(t *testing.T) {
 	}
 }
 
-func TestOptScroll(t *testing.T) {
-	var scrollTests = []struct {
-		Name    string
-		Page    int
-		ExpPage string
-		ExpErr  error
-	}{
-		{"Page within range", 5, "5", nil},
-		{"Zero page", 0, "", ErrOutOfRange},
-		{"Page below range", -15, "", ErrOutOfRange},
-	}
-
-	for _, st := range scrollTests {
-		t.Run(st.Name, func(t *testing.T) {
-			opt, err := newOpt()
-			if err != nil {
-				t.Fatalf(err.Error())
-			}
-			optFunc := OptScroll(st.Page)
-
-			err = optFunc(opt)
-			if !reflect.DeepEqual(err, st.ExpErr) {
-				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
-			}
-
-			actPage := opt.Values.Get("scroll")
-			if actPage != st.ExpPage {
-				t.Fatalf("Expected offset '%s', got '%s'", st.ExpPage, actPage)
-			}
-		})
-	}
-}
-
 func TestOptSearch(t *testing.T) {
 	var searchTests = []struct {
 		Name   string
@@ -284,10 +251,7 @@ func TestOptOverlap(t *testing.T) {
 		{"OptOffset overlap", []OptionFunc{OptOffset(0), OptOffset(25)}, ErrOptionSet},
 		{"OptFields overlap", []OptionFunc{OptFields("id"), OptFields("name")}, ErrOptionSet},
 		{"OptFilter overlap", []OptionFunc{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
-		{"OptScroll overlap", []OptionFunc{OptScroll(1), OptScroll(10)}, ErrOptionSet},
 		{"OptSearch overlap", []OptionFunc{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
-		{"OptOffset and OptScroll overlap", []OptionFunc{OptOffset(40), OptScroll(4)}, ErrExclusiveOption},
-		{"OptScroll and OptOffset overlap", []OptionFunc{OptScroll(3), OptOffset(30)}, ErrExclusiveOption},
 	}
 
 	for _, ot := range overlapTests {
