@@ -222,19 +222,18 @@ func TestCharactersCount(t *testing.T) {
 func TestCharactersListFields(t *testing.T) {
 	var fieldTests = []struct {
 		Name      string
-		Status    int
 		Resp      string
 		ExpFields []string
 		ExpErr    string
 	}{
-		{"OK request with non-empty response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"OK request with empty response", http.StatusOK, "", nil, errEndOfJSON.Error()},
-		{"Bad request with empty response", http.StatusBadRequest, "", nil, errEndOfJSON.Error()},
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
 	}
 
 	for _, tt := range fieldTests {
 		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(tt.Status, tt.Resp)
+			ts, c := testServerString(http.StatusOK, tt.Resp)
 			defer ts.Close()
 
 			fields, err := c.Characters.ListFields()
