@@ -1,5 +1,9 @@
 package igdb
 
+// FranchiseService handles all the API
+// calls for the IGDB Franchise endpoint.
+type FranchiseService service
+
 // Franchise contains information on an
 // IGDB entry for a particular video game
 // franchise.
@@ -13,19 +17,18 @@ type Franchise struct {
 	Games     []int  `json:"games"`
 }
 
-// GetFranchise returns a single Franchise identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have
-// an effect due to GetFranchise only returning a single Franchise object and
-// not a list of Franchises.
-func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
-	url, err := c.singleURL(FranchiseEndpoint, id, opts...)
+// Get returns a single Franchise identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Franchises, an error is returned.
+func (fs *FranchiseService) Get(id int, opts ...OptionFunc) (*Franchise, error) {
+	url, err := fs.client.singleURL(FranchiseEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var f []Franchise
 
-	err = c.get(url, &f)
+	err = fs.client.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -33,17 +36,20 @@ func (c *Client) GetFranchise(id int, opts ...OptionFunc) (*Franchise, error) {
 	return &f[0], nil
 }
 
-// GetFranchises returns a list of Franchises identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
-	url, err := c.multiURL(FranchiseEndpoint, ids, opts...)
+// List returns a list of Franchises identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Franchises based solely on the provided
+// options. Any ID that does not match a Franchise is ignored. If none of the IDs
+// match a Franchise, an error is returned.
+func (fs *FranchiseService) List(ids []int, opts ...OptionFunc) ([]*Franchise, error) {
+	url, err := fs.client.multiURL(FranchiseEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var f []*Franchise
 
-	err = c.get(url, &f)
+	err = fs.client.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -51,22 +57,44 @@ func (c *Client) GetFranchises(ids []int, opts ...OptionFunc) ([]*Franchise, err
 	return f, nil
 }
 
-// SearchFranchises returns a list of Franchises found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Franchises based solely
-// on the provided options.
-func (c *Client) SearchFranchises(qry string, opts ...OptionFunc) ([]*Franchise, error) {
-	url, err := c.searchURL(FranchiseEndpoint, qry, opts...)
+// Search returns a list of Franchises found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Franchises are found using the provided query, an error is returned.
+func (fs *FranchiseService) Search(qry string, opts ...OptionFunc) ([]*Franchise, error) {
+	url, err := fs.client.searchURL(FranchiseEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var f []*Franchise
 
-	err = c.get(url, &f)
+	err = fs.client.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
 
 	return f, nil
+}
+
+// Count returns the number of Franchises available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Franchises to count.
+func (fs *FranchiseService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := fs.client.GetEndpointCount(FranchiseEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Franchise object.
+func (fs *FranchiseService) ListFields() ([]string, error) {
+	fl, err := fs.client.GetEndpointFieldList(FranchiseEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
