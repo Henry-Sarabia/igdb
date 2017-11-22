@@ -22,16 +22,17 @@ func TestGameModeTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetGameMode(t *testing.T) {
+func TestGameModesGet(t *testing.T) {
 	var gameModeTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_gamemode.txt", 1, ""},
+		{"Happy path", "test_data/gamemodes_get.txt", 1, ""},
 		{"Invalid ID", "test_data/empty.txt", -100, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 1, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 1, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range gameModeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetGameMode(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.GetGameMode(tt.ID)
+			g, err := c.GameModes.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -71,7 +72,7 @@ func TestGetGameMode(t *testing.T) {
 	}
 }
 
-func TestGetGameModes(t *testing.T) {
+func TestGameModesList(t *testing.T) {
 	var gameModeTests = []struct {
 		Name   string
 		Resp   string
@@ -79,11 +80,12 @@ func TestGetGameModes(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_gamemodes.txt", []int{3, 4}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/gamemodes_list.txt", []int{3, 4}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-100}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{3, 4}, nil, errEndOfJSON.Error()},
+		{"Zero IDs", "test_data/gamemodes_list.txt", nil, nil, ""},
+		{"Empty response", "test_data/empty.txt", []int{3, 4}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3, 4}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range gameModeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -93,7 +95,7 @@ func TestGetGameModes(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.GetGameModes(tt.IDs, tt.Opts...)
+			g, err := c.GameModes.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -135,7 +137,7 @@ func TestGetGameModes(t *testing.T) {
 	}
 }
 
-func TestSearchGameModes(t *testing.T) {
+func TestGameModesSearch(t *testing.T) {
 	var gameModeTests = []struct {
 		Name   string
 		Resp   string
@@ -143,10 +145,11 @@ func TestSearchGameModes(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_gamemodes.txt", "multiplayer", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_gamemodes.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/gamemodes_search.txt", "multiplayer", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/gamemodes_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "multiplayer", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "multiplayer", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range gameModeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -156,7 +159,7 @@ func TestSearchGameModes(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.SearchGameModes(tt.Qry, tt.Opts...)
+			g, err := c.GameModes.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -205,6 +208,68 @@ func TestSearchGameModes(t *testing.T) {
 				if agID[i] != egID[i] {
 					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 				}
+			}
+		})
+	}
+}
+
+func TestGameModesCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.GameModes.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestGameModesListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.GameModes.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}

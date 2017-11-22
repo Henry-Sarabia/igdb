@@ -49,6 +49,7 @@ type Client struct {
 	Feeds        *FeedService
 	Franchises   *FranchiseService
 	Games        *GameService
+	GameModes    *GameModeService
 	ReleaseDates *ReleaseDateService
 }
 
@@ -68,6 +69,7 @@ func NewClient() *Client {
 	c.Feeds = (*FeedService)(&c.common)
 	c.Franchises = (*FranchiseService)(&c.common)
 	c.Games = (*GameService)(&c.common)
+	c.GameModes = (*GameModeService)(&c.common)
 	c.ReleaseDates = (*ReleaseDateService)(&c.common)
 	return c
 }
