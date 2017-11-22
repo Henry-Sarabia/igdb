@@ -22,16 +22,17 @@ func TestEngineTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetEngine(t *testing.T) {
+func TestEnginesGet(t *testing.T) {
 	var engineTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_engine.txt", 26, ""},
+		{"Happy path", "test_data/engines_get.txt", 26, ""},
 		{"Invalid ID", "test_data/empty.txt", -100, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 26, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 26, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range engineTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetEngine(t *testing.T) {
 			}
 			defer ts.Close()
 
-			eng, err := c.GetEngine(tt.ID)
+			eng, err := c.Engines.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -71,7 +72,7 @@ func TestGetEngine(t *testing.T) {
 	}
 }
 
-func TestGetEngines(t *testing.T) {
+func TestEnginesList(t *testing.T) {
 	var engineTests = []struct {
 		Name   string
 		Resp   string
@@ -79,11 +80,12 @@ func TestGetEngines(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_engines.txt", []int{9, 22}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/engines_list.txt", []int{9, 22}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-999}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Zero IDs", "test_data/engines_list.txt", nil, nil, ""},
 		{"Empty Response", "test_data/empty.txt", []int{9, 22}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{9, 22}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range engineTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -93,7 +95,7 @@ func TestGetEngines(t *testing.T) {
 			}
 			defer ts.Close()
 
-			eng, err := c.GetEngines(tt.IDs, tt.Opts...)
+			eng, err := c.Engines.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -135,7 +137,7 @@ func TestGetEngines(t *testing.T) {
 	}
 }
 
-func TestSearchEngines(t *testing.T) {
+func TestEnginesSearch(t *testing.T) {
 	var engineTests = []struct {
 		Name   string
 		Resp   string
@@ -143,10 +145,11 @@ func TestSearchEngines(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_engines.txt", "tool", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_engines.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/engines_search.txt", "tool", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/engines_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "tool", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "tool", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range engineTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -156,7 +159,7 @@ func TestSearchEngines(t *testing.T) {
 			}
 			defer ts.Close()
 
-			eng, err := c.SearchEngines(tt.Qry, tt.Opts...)
+			eng, err := c.Engines.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -193,6 +196,68 @@ func TestSearchEngines(t *testing.T) {
 				if agID[i] != egID[i] {
 					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 				}
+			}
+		})
+	}
+}
+
+func TestEnginesCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Engines.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestEnginesListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Engines.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}
