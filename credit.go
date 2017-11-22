@@ -1,5 +1,9 @@
 package igdb
 
+// CreditService handles all the API
+// calls for the IGDB Credit endpoint.
+type CreditService service
+
 // Credit contains information on an IGDB entry
 // for an employee responsible for working on
 // a particular video game.
@@ -23,19 +27,18 @@ type Credit struct {
 	PersonTitle           interface{}    `json:"person_title"`
 }
 
-// GetCredit returns a single Credit identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have
-// an effect due to GetCredit only returning a single Credit object and
-// not a list of Credits.
-func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
-	url, err := c.singleURL(CreditEndpoint, id, opts...)
+// Get returns a single Credit identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Credits, an error is returned.
+func (cs *CreditService) Get(id int, opts ...OptionFunc) (*Credit, error) {
+	url, err := cs.client.singleURL(CreditEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var cr []Credit
 
-	err = c.get(url, &cr)
+	err = cs.client.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}
@@ -43,17 +46,20 @@ func (c *Client) GetCredit(id int, opts ...OptionFunc) (*Credit, error) {
 	return &cr[0], nil
 }
 
-// GetCredits returns a list of Credits identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
-	url, err := c.multiURL(CreditEndpoint, ids, opts...)
+// List returns a list of Credits identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Credits based solely on the provided
+// options. Any ID that does not match a Credit is ignored. If none of the IDs
+// match a Credit, an error is returned.
+func (cs *CreditService) List(ids []int, opts ...OptionFunc) ([]*Credit, error) {
+	url, err := cs.client.multiURL(CreditEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var cr []*Credit
 
-	err = c.get(url, &cr)
+	err = cs.client.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}
@@ -61,22 +67,44 @@ func (c *Client) GetCredits(ids []int, opts ...OptionFunc) ([]*Credit, error) {
 	return cr, nil
 }
 
-// SearchCredits returns a list of Credits found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Credits based solely
-// on the provided options.
-func (c *Client) SearchCredits(qry string, opts ...OptionFunc) ([]*Credit, error) {
-	url, err := c.searchURL(CreditEndpoint, qry, opts...)
+// Search returns a list of Credits found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Credits are found using the provided query, an error is returned.
+func (cs *CreditService) Search(qry string, opts ...OptionFunc) ([]*Credit, error) {
+	url, err := cs.client.searchURL(CreditEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var cr []*Credit
 
-	err = c.get(url, &cr)
+	err = cs.client.get(url, &cr)
 	if err != nil {
 		return nil, err
 	}
 
 	return cr, nil
+}
+
+// Count returns the number of Credits available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Credits to count.
+func (cs *CreditService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := cs.client.GetEndpointCount(CreditEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Credit object.
+func (cs *CreditService) ListFields() ([]string, error) {
+	fl, err := cs.client.GetEndpointFieldList(CreditEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
