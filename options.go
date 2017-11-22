@@ -32,10 +32,10 @@ type options struct {
 	Values url.Values
 }
 
-// OptionFunc is the first-order function returned
-// by the available functional options (e.g. OptLimit
-// or OptFilter). OptionFunc is used to set the
-// options for an API call.
+// OptionFunc is used to set the options for an
+// API call. OptionFunc is the first-order function
+// returned by the available functional options
+// (e.g. OptLimit or OptFilter).
 type OptionFunc func(*options) error
 
 // newOpt returns a new options object mutated by
@@ -62,10 +62,10 @@ type order string
 
 // The available orders for the functional option OptOrder.
 const (
-	// OrderAscending is used as an argument in the SetOrder functional
+	// OrderAscending is used as an argument in the OptOrder functional
 	// option to set the results from an API call in ascending order.
 	OrderAscending order = ":asc"
-	// OrderDescending is used as an argument in the SetOrder functional
+	// OrderDescending is used as an argument in the OptOrder functional
 	// option to set the results from an API call in descending order.
 	OrderDescending order = ":desc"
 )
@@ -120,10 +120,10 @@ func OptOffset(off int) OptionFunc {
 
 // OptFields is a functional option used to
 // specify which fields of the requested IGDB
-// object you wnat the API to respond with.
-// Subfields are accessed with a dot operator.
-// To select all available fields at once, use
-// an asterisk (*) character.
+// object you want the API to provide. Subfields
+// are accessed with a dot operator. To select all
+// available fields at once, use an asterisk (*)
+// character.
 func OptFields(fields ...string) OptionFunc {
 	return func(o *options) error {
 		if len(fields) == 0 {
@@ -201,8 +201,8 @@ func OptFilter(field string, op operator, val string) OptionFunc {
 }
 
 // optSearch is an unexported functional
-// option used to search the IGDB for the
-// given query.
+// option used to search the IGDB using the
+// provided query.
 func optSearch(qry string) OptionFunc {
 	return func(o *options) error {
 		if qry == "" {
