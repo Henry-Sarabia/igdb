@@ -1,57 +1,8 @@
 package igdb
 
-// AltName contains information on an
-// alternative name for an IGDB object.
-type AltName struct {
-	Name    string `json:"name"`
-	Comment string `json:"comment"`
-}
-
-// CompletionTime contains the time to complete
-// a particular video game measured in seconds.
-type CompletionTime struct {
-	Hastly     int `json:"hastly"`
-	Normally   int `json:"normally"`
-	Completely int `json:"completely"`
-}
-
-// ESRB contains the rating and synopsis
-// for a particular video game given by
-// the Entertainment Software Rating Board.
-type ESRB struct {
-	Rating   ESRBCode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
-}
-
-// External contains information for
-// connecting external service IDs to
-// the IGDB for a particular object.
-type External struct {
-	Steam string `json:"steam"`
-}
-
-// PEGI contains the rating and synopsis
-// for a particular video game given by
-// the Pan European Game Information organization.
-type PEGI struct {
-	Rating   PEGICode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
-}
-
-// YoutubeVideo contains the name and
-// ID for a particular Youtube video.
-type YoutubeVideo struct {
-	Name string `json:"name"`
-	ID   string `json:"video_id"` // Youtube slug
-}
-
-// Website contains address and category
-// information on a website referenced
-// in the IGDB.
-type Website struct {
-	Category WebsiteCategory `json:"category"`
-	URL      URL             `json:"url"`
-}
+// GameService handles all the API
+// calls for the IGDB Game endpoint.
+type GameService service
 
 // Game contains information on an IGDB
 // entry for a particular video game.
@@ -110,18 +61,71 @@ type Game struct {
 	Platforms            []int          `json:"platforms"`
 }
 
-// GetGame returns a single Game identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will
-// not have an effect due to GetGame only returning a single Game
-// object and not a list of Games.
-func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
-	url, err := c.singleURL(GameEndpoint, id, opts...)
+// AltName contains information on an
+// alternative name for an IGDB object.
+type AltName struct {
+	Name    string `json:"name"`
+	Comment string `json:"comment"`
+}
+
+// CompletionTime contains the time to complete
+// a particular video game measured in seconds.
+type CompletionTime struct {
+	Hastly     int `json:"hastly"`
+	Normally   int `json:"normally"`
+	Completely int `json:"completely"`
+}
+
+// ESRB contains the rating and synopsis
+// for a particular video game given by
+// the Entertainment Software Rating Board.
+type ESRB struct {
+	Rating   ESRBCode `json:"rating"`
+	Synopsis string   `json:"synopsis"`
+}
+
+// External contains information for
+// connecting external service IDs to
+// the IGDB for a particular object.
+type External struct {
+	Steam string `json:"steam"`
+}
+
+// PEGI contains the rating and synopsis
+// for a particular video game given by
+// the Pan European Game Information organization.
+type PEGI struct {
+	Rating   PEGICode `json:"rating"`
+	Synopsis string   `json:"synopsis"`
+}
+
+// YoutubeVideo contains the name and
+// ID for a particular Youtube video.
+type YoutubeVideo struct {
+	Name string `json:"name"`
+	ID   string `json:"video_id"` // Youtube slug
+}
+
+// Website contains address and category
+// information on a website referenced
+// in the IGDB.
+type Website struct {
+	Category WebsiteCategory `json:"category"`
+	URL      URL             `json:"url"`
+}
+
+// Get returns a single Game identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Games, an error is returned.
+func (gs *GameService) Get(id int, opts ...OptionFunc) (*Game, error) {
+	url, err := gs.client.singleURL(GameEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var g []Game
 
-	err = c.get(url, &g)
+	err = gs.client.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -129,16 +133,20 @@ func (c *Client) GetGame(id int, opts ...OptionFunc) (*Game, error) {
 	return &g[0], nil
 }
 
-// GetGames returns a list of Games identified by the provided list of IGDB
-// IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
-	url, err := c.multiURL(GameEndpoint, ids, opts...)
+// List returns a list of Games identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Games based solely on the provided
+// options. Any ID that does not match a Game is ignored. If none of the IDs
+// match a Game, an error is returned.
+func (gs *GameService) List(ids []int, opts ...OptionFunc) ([]*Game, error) {
+	url, err := gs.client.multiURL(GameEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var g []*Game
 
-	err = c.get(url, &g)
+	err = gs.client.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -146,21 +154,44 @@ func (c *Client) GetGames(ids []int, opts ...OptionFunc) ([]*Game, error) {
 	return g, nil
 }
 
-// SearchGames returns a list of Games found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Collections based
-// solely on the provided options.
-func (c *Client) SearchGames(qry string, opts ...OptionFunc) ([]*Game, error) {
-	url, err := c.searchURL(GameEndpoint, qry, opts...)
+// Search returns a list of Games found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Games are found using the provided query, an error is returned.
+func (gs *GameService) Search(qry string, opts ...OptionFunc) ([]*Game, error) {
+	url, err := gs.client.searchURL(GameEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var g []*Game
 
-	err = c.get(url, &g)
+	err = gs.client.get(url, &g)
 	if err != nil {
 		return nil, err
 	}
 
 	return g, nil
+}
+
+// Count returns the number of Games available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Games to count.
+func (gs *GameService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := gs.client.GetEndpointCount(GameEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Game object.
+func (gs *GameService) ListFields() ([]string, error) {
+	fl, err := gs.client.GetEndpointFieldList(GameEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
