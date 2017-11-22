@@ -29,7 +29,7 @@ func TestCharactersGet(t *testing.T) {
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_character.txt", 10617, ""},
+		{"Happy path", "test_data/characters_get.txt", 10617, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", 10617, errEndOfJSON.Error()},
 		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
@@ -77,8 +77,8 @@ func TestCharactersList(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/list_characters.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
-		{"Zero IDs", "test_data/list_characters.txt", nil, nil, ""},
+		{"Happy path", "test_data/characters_list.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
+		{"Zero IDs", "test_data/characters_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
@@ -142,7 +142,7 @@ func TestCharactersSearch(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_characters.txt", "snake", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/characters_search.txt", "snake", []OptionFunc{OptLimit(50)}, ""},
 		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "snake", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "snake", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
