@@ -251,6 +251,8 @@ func TestCollectionsListFields(t *testing.T) {
 		ExpErr    string
 	}{
 		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
 		{"Empty response", "", nil, errEndOfJSON.Error()},
 		{"No results", "[]", nil, ""},
 	}

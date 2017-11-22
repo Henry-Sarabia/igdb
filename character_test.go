@@ -80,7 +80,7 @@ func TestCharactersList(t *testing.T) {
 		{"Happy path", "test_data/list_characters.txt", []int{3726, 9580}, []OptionFunc{OptLimit(5)}, ""},
 		{"Zero IDs", "test_data/list_characters.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", []int{3726, 9580}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{3726, 9580}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{3726, 9580}, nil, ErrNoResults.Error()},
 	}
@@ -227,6 +227,8 @@ func TestCharactersListFields(t *testing.T) {
 		ExpErr    string
 	}{
 		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
 		{"Empty response", "", nil, errEndOfJSON.Error()},
 		{"No results", "[]", nil, ""},
 	}
