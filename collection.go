@@ -1,5 +1,9 @@
 package igdb
 
+// CollectionService handles all the API
+// calls for the IGDB Collection endpoint.
+type CollectionService service
+
 // Collection contains information on an
 // IGDB entry for a particular video game
 // series.
@@ -13,19 +17,18 @@ type Collection struct {
 	Games     []int  `json:"games"`
 }
 
-// GetCollection returns a single Collection identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have
-// an effect due to GetCollection only returning a single Collection object and
-// not a list of Collections.
-func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) {
-	url, err := c.singleURL(CollectionEndpoint, id, opts...)
+// Get returns a single Collection identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to retrieve.
+// If the ID does not match any Collection, an error is returned.
+func (cs *CollectionService) Get(id int, opts ...OptionFunc) (*Collection, error) {
+	url, err := cs.client.singleURL(CollectionEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var col []Collection
 
-	err = c.get(url, &col)
+	err = cs.client.get(url, &col)
 	if err != nil {
 		return nil, err
 	}
@@ -33,17 +36,20 @@ func (c *Client) GetCollection(id int, opts ...OptionFunc) (*Collection, error) 
 	return &col[0], nil
 }
 
-// GetCollections returns a list of Collections identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, error) {
-	url, err := c.multiURL(CollectionEndpoint, ids, opts...)
+// List returns a list of Collections identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Collections based solely on the provided
+// options. Any IDs that do not match a Collection are ignored. If all of the IDs
+// do not match a Collection, an error is returned.
+func (cs *CollectionService) List(ids []int, opts ...OptionFunc) ([]*Collection, error) {
+	url, err := cs.client.multiURL(CollectionEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var col []*Collection
 
-	err = c.get(url, &col)
+	err = cs.client.get(url, &col)
 	if err != nil {
 		return nil, err
 	}
@@ -51,22 +57,44 @@ func (c *Client) GetCollections(ids []int, opts ...OptionFunc) ([]*Collection, e
 	return col, nil
 }
 
-// SearchCollections returns a list of Collections found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Collections based solely on
-// the provided options.
-func (c *Client) SearchCollections(qry string, opts ...OptionFunc) ([]*Collection, error) {
-	url, err := c.searchURL(CollectionEndpoint, qry, opts...)
+// Search returns a list of Collections found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If the
+// query does not match any Collections, an error is returned.
+func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collection, error) {
+	url, err := cs.client.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var col []*Collection
 
-	err = c.get(url, &col)
+	err = cs.client.get(url, &col)
 	if err != nil {
 		return nil, err
 	}
 
 	return col, nil
+}
+
+// Count returns the number of Collections available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Collections will be counted.
+func (cs *CollectionService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := cs.client.GetEndpointCount(CollectionEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Collection object.
+func (cs *CollectionService) ListFields() ([]string, error) {
+	fl, err := cs.client.GetEndpointFieldList(CollectionEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }

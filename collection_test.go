@@ -22,16 +22,17 @@ func TestCollectionTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetCollection(t *testing.T) {
+func TestCollectionsGet(t *testing.T) {
 	var collectionTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_collection.txt", 2404, ""},
+		{"Happy path", "test_data/collections_get.txt", 2404, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
 		{"Empty Response", "test_data/empty.txt", 2404, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range collectionTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -42,7 +43,7 @@ func TestGetCollection(t *testing.T) {
 
 			defer ts.Close()
 
-			col, err := c.GetCollection(tt.ID)
+			col, err := c.Collections.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -72,7 +73,7 @@ func TestGetCollection(t *testing.T) {
 	}
 }
 
-func TestGetCollections(t *testing.T) {
+func TestCollectionsList(t *testing.T) {
 	var collectionTests = []struct {
 		Name   string
 		Resp   string
@@ -80,11 +81,12 @@ func TestGetCollections(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_collections.txt", []int{338, 1}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/collections_list.txt", []int{338, 1}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Zero IDs", "test_data/collections_list.txt", nil, nil, ""},
 		{"Empty Response", "test_data/empty.txt", []int{338, 1}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{338, 1}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range collectionTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -94,7 +96,7 @@ func TestGetCollections(t *testing.T) {
 			}
 			defer ts.Close()
 
-			col, err := c.GetCollections(tt.IDs, tt.Opts...)
+			col, err := c.Collections.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -136,7 +138,7 @@ func TestGetCollections(t *testing.T) {
 	}
 }
 
-func TestSearchCollections(t *testing.T) {
+func TestCollectionsSearch(t *testing.T) {
 	var collectionTests = []struct {
 		Name   string
 		Resp   string
@@ -144,10 +146,11 @@ func TestSearchCollections(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_collections.txt", "mario", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_collections.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/collections_search.txt", "mario", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "mario", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "mario", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range collectionTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -157,7 +160,7 @@ func TestSearchCollections(t *testing.T) {
 			}
 			defer ts.Close()
 
-			col, err := c.SearchCollections(tt.Qry, tt.Opts...)
+			col, err := c.Collections.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -206,6 +209,66 @@ func TestSearchCollections(t *testing.T) {
 				if aIDs[i] != eIDs[i] {
 					t.Errorf("Expected Game ID %d, got %d\n", eIDs[i], aIDs[i])
 				}
+			}
+		})
+	}
+}
+
+func TestCollectionsCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Collections.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestCollectionsListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Collections.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}
