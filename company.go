@@ -1,5 +1,9 @@
 package igdb
 
+// CompanyService handles all the API
+// calls for the IGDB Company endpoint.
+type CompanyService service
+
 // Company contains information on an IGDB entry
 // for a particular video game company, including
 // both publishers and developers.
@@ -26,19 +30,18 @@ type Company struct {
 	Facebook           string       `json:"facebook"`
 }
 
-// GetCompany returns a single Company identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have
-// an effect due to GetCompany only returning a single Company object and
-// not a list of Companies.
-func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
-	url, err := c.singleURL(CompanyEndpoint, id, opts...)
+// Get returns a single Company identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Companies, an error is returned.
+func (cs *CompanyService) Get(id int, opts ...OptionFunc) (*Company, error) {
+	url, err := cs.client.singleURL(CompanyEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var com []Company
 
-	err = c.get(url, &com)
+	err = cs.client.get(url, &com)
 	if err != nil {
 		return nil, err
 	}
@@ -46,17 +49,20 @@ func (c *Client) GetCompany(id int, opts ...OptionFunc) (*Company, error) {
 	return &com[0], nil
 }
 
-// GetCompanies returns a list of Companies identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error) {
-	url, err := c.multiURL(CompanyEndpoint, ids, opts...)
+// List returns a list of Companies identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Companies based solely on the provided
+// options. Any ID that does not match a Company is ignored. If none of the IDs
+// match a Company, an error is returned.
+func (cs *CompanyService) List(ids []int, opts ...OptionFunc) ([]*Company, error) {
+	url, err := cs.client.multiURL(CompanyEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var com []*Company
 
-	err = c.get(url, &com)
+	err = cs.client.get(url, &com)
 	if err != nil {
 		return nil, err
 	}
@@ -64,22 +70,44 @@ func (c *Client) GetCompanies(ids []int, opts ...OptionFunc) ([]*Company, error)
 	return com, nil
 }
 
-// SearchCompanies returns a list of Companies found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Companies based solely
-// on the provided options.
-func (c *Client) SearchCompanies(qry string, opts ...OptionFunc) ([]*Company, error) {
-	url, err := c.searchURL(CompanyEndpoint, qry, opts...)
+// Search returns a list of Companies found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Companies are found using the provided query, an error is returned.
+func (cs *CompanyService) Search(qry string, opts ...OptionFunc) ([]*Company, error) {
+	url, err := cs.client.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var com []*Company
 
-	err = c.get(url, &com)
+	err = cs.client.get(url, &com)
 	if err != nil {
 		return nil, err
 	}
 
 	return com, nil
+}
+
+// Count returns the number of Companies available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Companies to count.
+func (cs *CompanyService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := cs.client.GetEndpointCount(CompanyEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Company object.
+func (cs *CompanyService) ListFields() ([]string, error) {
+	fl, err := cs.client.GetEndpointFieldList(CompanyEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }

@@ -43,6 +43,7 @@ type Client struct {
 	// Services
 	Characters  *CharacterService
 	Collections *CollectionService
+	Companies   *CompanyService
 }
 
 // NewClient returns a new Client set with a default HTTP
@@ -55,6 +56,7 @@ func NewClient() *Client {
 	c.common.client = c
 	c.Characters = (*CharacterService)(&c.common)
 	c.Collections = (*CollectionService)(&c.common)
+	c.Companies = (*CompanyService)(&c.common)
 	return c
 }
 
