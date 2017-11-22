@@ -1,5 +1,9 @@
 package igdb
 
+// FeedService handles all the API
+// calls for the IGDB Feed endpoint.
+type FeedService service
+
 // Feed contains information on an IGDB
 // entry for a social feed composed of
 // status updates, media, and news articles.
@@ -23,19 +27,18 @@ type Feed struct {
 	UID         string       `json:"uid"`
 }
 
-// GetFeed returns a single Feed identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will
-// not have an effect due to GetFeed only returning a single Feed object
-// and not a list of Feeds.
-func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
-	url, err := c.singleURL(FeedEndpoint, id, opts...)
+// Get returns a single Feed identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Feeds, an error is returned.
+func (fs *FeedService) Get(id int, opts ...OptionFunc) (*Feed, error) {
+	url, err := fs.client.singleURL(FeedEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var f []Feed
 
-	err = c.get(url, &f)
+	err = fs.client.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -43,17 +46,20 @@ func (c *Client) GetFeed(id int, opts ...OptionFunc) (*Feed, error) {
 	return &f[0], nil
 }
 
-// GetFeeds returns a list of Feeds identified by the provided list of IGDB
-// IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
-	url, err := c.multiURL(FeedEndpoint, ids, opts...)
+// List returns a list of Feeds identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Feeds based solely on the provided
+// options. Any ID that does not match a Feed is ignored. If none of the IDs
+// match a Feed, an error is returned.
+func (fs *FeedService) List(ids []int, opts ...OptionFunc) ([]*Feed, error) {
+	url, err := fs.client.multiURL(FeedEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var f []*Feed
 
-	err = c.get(url, &f)
+	err = fs.client.get(url, &f)
 	if err != nil {
 		return nil, err
 	}
@@ -61,22 +67,25 @@ func (c *Client) GetFeeds(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 	return f, nil
 }
 
-// SearchFeeds returns a list of Feeds found by retrieving an index
-// of Feeds from the IGDB. Provide functional options to filter, sort,
-// and paginate the result. The index of Feeds returned is based solely
-// on the provided options.
-func (c *Client) SearchFeeds(opts ...OptionFunc) ([]*Feed, error) {
-	url, err := c.searchURL(FeedEndpoint, "", opts...)
+// Count returns the number of Feeds available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Feeds to count.
+func (fs *FeedService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := fs.client.GetEndpointCount(FeedEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Feed object.
+func (fs *FeedService) ListFields() ([]string, error) {
+	fl, err := fs.client.GetEndpointFieldList(FeedEndpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	var f []*Feed
-
-	err = c.get(url, &f)
-	if err != nil {
-		return nil, err
-	}
-
-	return f, nil
+	return fl, nil
 }
