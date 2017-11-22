@@ -50,6 +50,7 @@ type Client struct {
 	Franchises   *FranchiseService
 	Games        *GameService
 	GameModes    *GameModeService
+	Genres       *GenreService
 	ReleaseDates *ReleaseDateService
 }
 
@@ -71,6 +72,7 @@ func NewClient() *Client {
 	c.Games = (*GameService)(&c.common)
 	c.GameModes = (*GameModeService)(&c.common)
 	c.ReleaseDates = (*ReleaseDateService)(&c.common)
+	c.Genres = (*GenreService)(&c.common)
 	return c
 }
 
