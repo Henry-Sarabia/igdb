@@ -1,5 +1,9 @@
 package igdb
 
+// PageService handles all the API
+// calls for the IGDB Page endpoint.
+type PageService service
+
 // Page contains information on an IGDB entry
 // for a multipurpose page used for Youtubers
 // and media corporations.
@@ -40,57 +44,84 @@ type Page struct {
 	Discord         string      `json:"discord"`
 }
 
-// GetPage returns a single Page identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will
-// not have an effect due to GetPage only returning a single Page
-// object and not a list of Pages.
-func (c *Client) GetPage(id int, opts ...OptionFunc) (*Page, error) {
-	url, err := c.singleURL(PageEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []Page
-
-	err = c.get(url, &p)
+// Get returns a single Page identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Pages, an error is returned.
+func (ps *PageService) Get(id int, opts ...OptionFunc) (*Page, error) {
+	url, err := ps.client.singleURL(PageEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return &p[0], nil
+	var pg []Page
+
+	err = ps.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pg[0], nil
 }
 
-// GetPages returns a list of Pages identified by the provided list of IGDB
-// IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetPages(ids []int, opts ...OptionFunc) ([]*Page, error) {
-	url, err := c.multiURL(PageEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []*Page
-
-	err = c.get(url, &p)
+// List returns a list of Pages identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Pages based solely on the provided
+// options. Any ID that does not match a Page is ignored. If none of the IDs
+// match a Page, an error is returned.
+func (ps *PageService) List(ids []int, opts ...OptionFunc) ([]*Page, error) {
+	url, err := ps.client.multiURL(PageEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return p, nil
+	var pg []*Page
+
+	err = ps.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return pg, nil
 }
 
-// SearchPages returns a list of Pages found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate
-// the results. Providing an empty query will instead retrieve an index of 
-// Pages based solely on the provided options.
-func (c *Client) SearchPages(qry string, opts ...OptionFunc) ([]*Page, error) {
-	url, err := c.searchURL(PageEndpoint, qry, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []*Page
-
-	err = c.get(url, &p)
+// Search returns a list of Pages found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Pages are found using the provided query, an error is returned.
+func (ps *PageService) Search(qry string, opts ...OptionFunc) ([]*Page, error) {
+	url, err := ps.client.searchURL(PageEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return p, nil
+	var pg []*Page
+
+	err = ps.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return pg, nil
+}
+
+// Count returns the number of Pages available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Pages to count.
+func (ps *PageService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := ps.client.GetEndpointCount(PageEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Page object.
+func (ps *PageService) ListFields() ([]string, error) {
+	fl, err := ps.client.GetEndpointFieldList(PageEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
