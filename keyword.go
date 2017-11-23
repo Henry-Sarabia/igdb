@@ -1,5 +1,9 @@
 package igdb
 
+// KeywordService handles all the API
+// calls for the IGDB Keyword endpoint.
+type KeywordService service
+
 // Keyword contains information on an IGDB
 // entry for a particular keyword. Keywords
 // are words or phrases that get tagged to
@@ -14,57 +18,84 @@ type Keyword struct {
 	Games     []int  `json:"games"`
 }
 
-// GetKeyword returns a single Keyword identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not
-// have an effect due to GetKeyword only returning a single Keyword object
-// and not a list of Keywords.
-func (c *Client) GetKeyword(id int, opts ...OptionFunc) (*Keyword, error) {
-	url, err := c.singleURL(KeywordEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var k []Keyword
-
-	err = c.get(url, &k)
+// Get returns a single Keyword identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Keywords, an error is returned.
+func (ks *KeywordService) Get(id int, opts ...OptionFunc) (*Keyword, error) {
+	url, err := ks.client.singleURL(KeywordEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return &k[0], nil
+	var kw []Keyword
+
+	err = ks.client.get(url, &kw)
+	if err != nil {
+		return nil, err
+	}
+
+	return &kw[0], nil
 }
 
-// GetKeywords returns a list of Keywords identified by the provided list of IGDB
-// IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetKeywords(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
-	url, err := c.multiURL(KeywordEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var k []*Keyword
-
-	err = c.get(url, &k)
+// List returns a list of Keywords identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Keywords based solely on the provided
+// options. Any ID that does not match a Keyword is ignored. If none of the IDs
+// match a Keyword, an error is returned.
+func (ks *KeywordService) List(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
+	url, err := ks.client.multiURL(KeywordEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return k, nil
+	var kw []*Keyword
+
+	err = ks.client.get(url, &kw)
+	if err != nil {
+		return nil, err
+	}
+
+	return kw, nil
 }
 
-// SearchKeywords returns a list of Keywords found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Keywords based solely on
-// the provided options.
-func (c *Client) SearchKeywords(qry string, opts ...OptionFunc) ([]*Keyword, error) {
-	url, err := c.searchURL(KeywordEndpoint, qry, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var k []*Keyword
-
-	err = c.get(url, &k)
+// Search returns a list of Keywords found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Keywords are found using the provided query, an error is returned.
+func (ks *KeywordService) Search(qry string, opts ...OptionFunc) ([]*Keyword, error) {
+	url, err := ks.client.searchURL(KeywordEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return k, nil
+	var kw []*Keyword
+
+	err = ks.client.get(url, &kw)
+	if err != nil {
+		return nil, err
+	}
+
+	return kw, nil
+}
+
+// Count returns the number of Keywords available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Keywords to count.
+func (ks *KeywordService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := ks.client.GetEndpointCount(KeywordEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Keyword object.
+func (ks *KeywordService) ListFields() ([]string, error) {
+	fl, err := ks.client.GetEndpointFieldList(KeywordEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }

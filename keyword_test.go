@@ -22,16 +22,17 @@ func TestKeywordTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetKeyword(t *testing.T) {
+func TestKeywordsGet(t *testing.T) {
 	var keywordTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_keyword.txt", 2107, ""},
+		{"Happy path", "test_data/keywords_get.txt", 2107, ""},
 		{"Invalid ID", "test_data/empty.txt", -1000, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 2107, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 2107, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range keywordTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetKeyword(t *testing.T) {
 			}
 			defer ts.Close()
 
-			kw, err := c.GetKeyword(tt.ID)
+			kw, err := c.Keywords.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -77,7 +78,7 @@ func TestGetKeyword(t *testing.T) {
 	}
 }
 
-func TestGetKeywords(t *testing.T) {
+func TestKeywordsList(t *testing.T) {
 	var keywordTests = []struct {
 		Name   string
 		Resp   string
@@ -85,11 +86,12 @@ func TestGetKeywords(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_keywords.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/keywords_list.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-2000}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
+		{"Zero IDs", "test_data/keywords_list.txt", nil, nil, ""},
 		{"Empty Response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range keywordTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -99,7 +101,7 @@ func TestGetKeywords(t *testing.T) {
 			}
 			defer ts.Close()
 
-			kw, err := c.GetKeywords(tt.IDs, tt.Opts...)
+			kw, err := c.Keywords.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -141,7 +143,7 @@ func TestGetKeywords(t *testing.T) {
 	}
 }
 
-func TestSearchKeywords(t *testing.T) {
+func TestKeywordsSearch(t *testing.T) {
 	var keywordTests = []struct {
 		Name   string
 		Resp   string
@@ -149,10 +151,11 @@ func TestSearchKeywords(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_keywords.txt", "strategy", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_keywords.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/keywords_search.txt", "strategy", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/keywords_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "strategy", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "strategy", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range keywordTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -162,7 +165,7 @@ func TestSearchKeywords(t *testing.T) {
 			}
 			defer ts.Close()
 
-			kw, err := c.SearchKeywords(tt.Qry, tt.Opts...)
+			kw, err := c.Keywords.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -211,6 +214,68 @@ func TestSearchKeywords(t *testing.T) {
 				if agID[i] != egID[i] {
 					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
 				}
+			}
+		})
+	}
+}
+
+func TestKeywordsCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Keywords.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestKeywordsListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Keywords.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}

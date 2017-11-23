@@ -41,16 +41,18 @@ type Client struct {
 	common service
 
 	// Services
-	Characters   *CharacterService
-	Collections  *CollectionService
-	Companies    *CompanyService
-	Credits      *CreditService
-	Engines      *EngineService
-	Feeds        *FeedService
-	Franchises   *FranchiseService
-	Games        *GameService
-	GameModes    *GameModeService
-	Genres       *GenreService
+	Characters  *CharacterService
+	Collections *CollectionService
+	Companies   *CompanyService
+	Credits     *CreditService
+	Engines     *EngineService
+	Feeds       *FeedService
+	Franchises  *FranchiseService
+	Games       *GameService
+	GameModes   *GameModeService
+	Genres      *GenreService
+	Keywords    *KeywordService
+
 	ReleaseDates *ReleaseDateService
 }
 
@@ -71,8 +73,10 @@ func NewClient() *Client {
 	c.Franchises = (*FranchiseService)(&c.common)
 	c.Games = (*GameService)(&c.common)
 	c.GameModes = (*GameModeService)(&c.common)
-	c.ReleaseDates = (*ReleaseDateService)(&c.common)
 	c.Genres = (*GenreService)(&c.common)
+	c.Keywords = (*KeywordService)(&c.common)
+
+	c.ReleaseDates = (*ReleaseDateService)(&c.common)
 	return c
 }
 
