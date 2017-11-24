@@ -53,6 +53,7 @@ type Client struct {
 	Genres       *GenreService
 	Keywords     *KeywordService
 	Pages        *PageService
+	People       *PersonService
 	ReleaseDates *ReleaseDateService
 }
 
@@ -76,6 +77,7 @@ func NewClient() *Client {
 	c.Genres = (*GenreService)(&c.common)
 	c.Keywords = (*KeywordService)(&c.common)
 	c.Pages = (*PageService)(&c.common)
+	c.People = (*PersonService)(&c.common)
 	c.ReleaseDates = (*ReleaseDateService)(&c.common)
 	return c
 }

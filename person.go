@@ -1,5 +1,9 @@
 package igdb
 
+// PersonService handles all the API
+// calls for the IGDB Person endpoint.
+type PersonService service
+
 // Person contains information on an IGDB
 // entry for a particular individual who
 // works in the video game industry.
@@ -34,18 +38,18 @@ type Person struct {
 	VoiceActed  []int       `json:"voice_acted"`
 }
 
-// GetPerson returns a single Person identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not
-// have an effect due to GetPerson only returning a single Person object
-// and not a list of Persons.
-func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
-	url, err := c.singleURL(PersonEndpoint, id, opts...)
+// Get returns a single Person identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any People, an error is returned.
+func (ps *PersonService) Get(id int, opts ...OptionFunc) (*Person, error) {
+	url, err := ps.client.singleURL(PersonEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []Person
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +57,20 @@ func (c *Client) GetPerson(id int, opts ...OptionFunc) (*Person, error) {
 	return &p[0], nil
 }
 
-// GetPersons returns a list of Persons identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the
-// results.
-func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
-	url, err := c.multiURL(PersonEndpoint, ids, opts...)
+// List returns a list of People identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of People based solely on the provided
+// options. Any ID that does not match a Person is ignored. If none of the IDs
+// match a Person, an error is returned.
+func (ps *PersonService) List(ids []int, opts ...OptionFunc) ([]*Person, error) {
+	url, err := ps.client.multiURL(PersonEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []*Person
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -71,21 +78,44 @@ func (c *Client) GetPersons(ids []int, opts ...OptionFunc) ([]*Person, error) {
 	return p, nil
 }
 
-// SearchPersons returns a list of Persons found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the
-// results. Providing an empty query will instead retrieve an index of Persons
-// based solely on the provided options.
-func (c *Client) SearchPersons(qry string, opts ...OptionFunc) ([]*Person, error) {
-	url, err := c.searchURL(PersonEndpoint, qry, opts...)
+// Search returns a list of People found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no People are found using the provided query, an error is returned.
+func (ps *PersonService) Search(qry string, opts ...OptionFunc) ([]*Person, error) {
+	url, err := ps.client.searchURL(PersonEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []*Person
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
 
 	return p, nil
+}
+
+// Count returns the number of People available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which People to count.
+func (ps *PersonService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := ps.client.GetEndpointCount(PersonEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Person object.
+func (ps *PersonService) ListFields() ([]string, error) {
+	fl, err := ps.client.GetEndpointFieldList(PersonEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
