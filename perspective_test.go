@@ -22,16 +22,17 @@ func TestPerspectiveTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetPerspective(t *testing.T) {
+func TestPerspectivesGet(t *testing.T) {
 	var perspectiveTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_perspective.txt", 7, ""},
+		{"Happy path", "test_data/perspectives_get.txt", 7, ""},
 		{"Invalid ID", "test_data/empty.txt", -10, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 7, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 7, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range perspectiveTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetPerspective(t *testing.T) {
 			}
 			defer ts.Close()
 
-			p, err := c.GetPerspective(tt.ID)
+			p, err := c.Perspectives.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -77,7 +78,7 @@ func TestGetPerspective(t *testing.T) {
 	}
 }
 
-func TestGetPerspectives(t *testing.T) {
+func TestPerspectivesList(t *testing.T) {
 	var perspectiveTests = []struct {
 		Name   string
 		Resp   string
@@ -85,10 +86,10 @@ func TestGetPerspectives(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_perspectives.txt", []int{6, 3}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/perspectives_list.txt", []int{6, 3}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-10}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{6, 3}, nil, errEndOfJSON.Error()},
+		{"Zero IDs", "test_data/perspectives_list.txt", nil, nil, ""},
+		{"Empty response", "test_data/empty.txt", []int{6, 3}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{6, 3}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
 	for _, tt := range perspectiveTests {
@@ -99,7 +100,7 @@ func TestGetPerspectives(t *testing.T) {
 			}
 			defer ts.Close()
 
-			p, err := c.GetPerspectives(tt.IDs, tt.Opts...)
+			p, err := c.Perspectives.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -141,7 +142,7 @@ func TestGetPerspectives(t *testing.T) {
 	}
 }
 
-func TestSearchPerspectives(t *testing.T) {
+func TestPerspectivesSearch(t *testing.T) {
 	var perspectiveTests = []struct {
 		Name   string
 		Resp   string
@@ -149,8 +150,8 @@ func TestSearchPerspectives(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_perspectives.txt", "person", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_perspectives.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/perspectives_search.txt", "person", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/perspectives_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "person", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "person", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 	}
@@ -162,7 +163,7 @@ func TestSearchPerspectives(t *testing.T) {
 			}
 			defer ts.Close()
 
-			p, err := c.SearchPerspectives(tt.Qry, tt.Opts...)
+			p, err := c.Perspectives.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -197,6 +198,68 @@ func TestSearchPerspectives(t *testing.T) {
 			as := p[1].Slug
 			if as != es {
 				t.Errorf("Expected slug '%s', got '%s'", es, as)
+			}
+		})
+	}
+}
+
+func TestPerspectivesCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Perspectives.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestPerspectivesListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Perspectives.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}

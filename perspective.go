@@ -1,5 +1,9 @@
 package igdb
 
+// PerspectiveService handles all the API
+// calls for the IGDB Perspective endpoint.
+type PerspectiveService service
+
 // Perspective contains information on
 // an IGDB entry for a particular player
 // perspective (e.g. first-person or
@@ -14,18 +18,18 @@ type Perspective struct {
 	Games     []int  `json:"games"`
 }
 
-// GetPerspective returns a single Perspective identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have an
-// effect due to GetPerspective only returning a single Perspective object and not
-// a list of Perspectives.
-func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error) {
-	url, err := c.singleURL(PerspectiveEndpoint, id, opts...)
+// Get returns a single Perspective identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Perspectives, an error is returned.
+func (ps *PerspectiveService) Get(id int, opts ...OptionFunc) (*Perspective, error) {
+	url, err := ps.client.singleURL(PerspectiveEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []Perspective
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -33,16 +37,20 @@ func (c *Client) GetPerspective(id int, opts ...OptionFunc) (*Perspective, error
 	return &p[0], nil
 }
 
-// GetPerspectives returns a list of Perspectives identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective, error) {
-	url, err := c.multiURL(PerspectiveEndpoint, ids, opts...)
+// List returns a list of Perspectives identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Perspectives based solely on the provided
+// options. Any ID that does not match a Perspective is ignored. If none of the IDs
+// match a Perspective, an error is returned.
+func (ps *PerspectiveService) List(ids []int, opts ...OptionFunc) ([]*Perspective, error) {
+	url, err := ps.client.multiURL(PerspectiveEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []*Perspective
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
@@ -50,21 +58,44 @@ func (c *Client) GetPerspectives(ids []int, opts ...OptionFunc) ([]*Perspective,
 	return p, nil
 }
 
-// SearchPerspectives returns a list of Perspectives found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Perspectives based solely on
-// the provided options.
-func (c *Client) SearchPerspectives(qry string, opts ...OptionFunc) ([]*Perspective, error) {
-	url, err := c.searchURL(PerspectiveEndpoint, qry, opts...)
+// Search returns a list of Perspectives found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Perspectives are found using the provided query, an error is returned.
+func (ps *PerspectiveService) Search(qry string, opts ...OptionFunc) ([]*Perspective, error) {
+	url, err := ps.client.searchURL(PerspectiveEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var p []*Perspective
 
-	err = c.get(url, &p)
+	err = ps.client.get(url, &p)
 	if err != nil {
 		return nil, err
 	}
 
 	return p, nil
+}
+
+// Count returns the number of Perspectives available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Perspectives to count.
+func (ps *PerspectiveService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := ps.client.GetEndpointCount(PerspectiveEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Perspective object.
+func (ps *PerspectiveService) ListFields() ([]string, error) {
+	fl, err := ps.client.GetEndpointFieldList(PerspectiveEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
