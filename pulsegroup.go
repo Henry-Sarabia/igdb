@@ -1,5 +1,9 @@
 package igdb
 
+// PulseGroupService handles all the API
+// calls for the IGDB PulseGroup endpoint.
+type PulseGroupService service
+
 // PulseGroup contains information on an
 // IGDB entry for a group of news articles.
 type PulseGroup struct {
@@ -16,57 +20,84 @@ type PulseGroup struct {
 	Game        int    `json:"game"`
 }
 
-// GetPulseGroup returns a single PulseGroup identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will not have
-// an effect due to GetPulseGroup only returning a single PulseGroup object and
-// not a list of PulseGroups.
-func (c *Client) GetPulseGroup(id int, opts ...OptionFunc) (*PulseGroup, error) {
-	url, err := c.singleURL(PulseGroupEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []PulseGroup
-
-	err = c.get(url, &p)
+// Get returns a single PulseGroup identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any PulseGroups, an error is returned.
+func (pgs *PulseGroupService) Get(id int, opts ...OptionFunc) (*PulseGroup, error) {
+	url, err := pgs.client.singleURL(PulseGroupEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return &p[0], nil
+	var pg []PulseGroup
+
+	err = pgs.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pg[0], nil
 }
 
-// GetPulseGroups returns a list of PulseGroups identified by the provided list of
-// IGDB IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetPulseGroups(ids []int, opts ...OptionFunc) ([]*PulseGroup, error) {
-	url, err := c.multiURL(PulseGroupEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []*PulseGroup
-
-	err = c.get(url, &p)
+// List returns a list of PulseGroups identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of PulseGroups based solely on the provided
+// options. Any ID that does not match a PulseGroup is ignored. If none of the IDs
+// match a PulseGroup, an error is returned.
+func (pgs *PulseGroupService) List(ids []int, opts ...OptionFunc) ([]*PulseGroup, error) {
+	url, err := pgs.client.multiURL(PulseGroupEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return p, nil
+	var pg []*PulseGroup
+
+	err = pgs.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return pg, nil
 }
 
-// SearchPulseGroups returns a list of PulseGroups found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of PulseGroups based solely on
-// the provided options.
-func (c *Client) SearchPulseGroups(qry string, opts ...OptionFunc) ([]*PulseGroup, error) {
-	url, err := c.searchURL(PulseGroupEndpoint, qry, opts...)
-	if err != nil {
-		return nil, err
-	}
-	var p []*PulseGroup
-
-	err = c.get(url, &p)
+// Search returns a list of PulseGroups found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no PulseGroups are found using the provided query, an error is returned.
+func (pgs *PulseGroupService) Search(qry string, opts ...OptionFunc) ([]*PulseGroup, error) {
+	url, err := pgs.client.searchURL(PulseGroupEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	return p, nil
+	var pg []*PulseGroup
+
+	err = pgs.client.get(url, &pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return pg, nil
+}
+
+// Count returns the number of PulseGroups available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which PulseGroups to count.
+func (pgs *PulseGroupService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := pgs.client.GetEndpointCount(PulseGroupEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB PulseGroup object.
+func (pgs *PulseGroupService) ListFields() ([]string, error) {
+	fl, err := pgs.client.GetEndpointFieldList(PulseGroupEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }

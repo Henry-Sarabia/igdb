@@ -22,16 +22,17 @@ func TestPulseGroupTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetPulseGroup(t *testing.T) {
+func TestPulseGroupsGet(t *testing.T) {
 	var pulseGroupTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_pulsegroup.txt", 4943, ""},
+		{"Happy path", "test_data/pulsegroups_get.txt", 4943, ""},
 		{"Invalid ID", "test_data/empty.txt", -4000, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 4943, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 4943, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range pulseGroupTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetPulseGroup(t *testing.T) {
 			}
 			defer ts.Close()
 
-			pg, err := c.GetPulseGroup(tt.ID)
+			pg, err := c.PulseGroups.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -75,7 +76,7 @@ func TestGetPulseGroup(t *testing.T) {
 	}
 }
 
-func TestGetPulseGroups(t *testing.T) {
+func TestPulseGroupsList(t *testing.T) {
 	var pulseGroupTests = []struct {
 		Name   string
 		Resp   string
@@ -83,11 +84,12 @@ func TestGetPulseGroups(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_pulsegroups.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/pulsegroups_list.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-1000}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
+		{"Zero IDs", "test_data/pulsegroups_list.txt", nil, nil, ""},
+		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range pulseGroupTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -97,7 +99,7 @@ func TestGetPulseGroups(t *testing.T) {
 			}
 			defer ts.Close()
 
-			pg, err := c.GetPulseGroups(tt.IDs, tt.Opts...)
+			pg, err := c.PulseGroups.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -139,7 +141,7 @@ func TestGetPulseGroups(t *testing.T) {
 	}
 }
 
-func TestSearchPulseGroups(t *testing.T) {
+func TestPulseGroupsSearch(t *testing.T) {
 	var pulseGroupTests = []struct {
 		Name   string
 		Resp   string
@@ -147,10 +149,11 @@ func TestSearchPulseGroups(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_pulsegroups.txt", "LeagueofLegends", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_pulsegroups.txt", "", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty response", "test_data/empty.txt", "LeagueofLegends", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "LeagueofLegends", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Happy path", "test_data/pulsegroups_search.txt", "League of Legends", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty response", "test_data/empty.txt", "League of Legends", nil, errEndOfJSON.Error()},
+		{"Invalid option", "test_data/empty.txt", "League of Legends", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range pulseGroupTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -160,7 +163,7 @@ func TestSearchPulseGroups(t *testing.T) {
 			}
 			defer ts.Close()
 
-			pg, err := c.SearchPulseGroups(tt.Qry, tt.Opts...)
+			pg, err := c.PulseGroups.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -207,6 +210,68 @@ func TestSearchPulseGroups(t *testing.T) {
 			atl := len(pg[2].Tags)
 			if atl != etl {
 				t.Errorf("Expected Tags length %d, got %d", etl, atl)
+			}
+		})
+	}
+}
+
+func TestPulseGroupsCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.PulseGroups.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestPulseGroupsListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.PulseGroups.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}
