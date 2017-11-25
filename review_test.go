@@ -23,16 +23,17 @@ func TestReviewTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetReview(t *testing.T) {
+func TestReviewsGet(t *testing.T) {
 	var reviewTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_review.txt", 1462, ""},
+		{"Happy path", "test_data/reviews_get.txt", 1462, ""},
 		{"Invalid ID", "test_data/empty.txt", -1000, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 1462, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 1462, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range reviewTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -42,7 +43,7 @@ func TestGetReview(t *testing.T) {
 			}
 			defer ts.Close()
 
-			r, err := c.GetReview(tt.ID)
+			r, err := c.Reviews.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -70,7 +71,7 @@ func TestGetReview(t *testing.T) {
 	}
 }
 
-func TestGetReviews(t *testing.T) {
+func TestReviewsList(t *testing.T) {
 	var reviewTests = []struct {
 		Name   string
 		Resp   string
@@ -78,11 +79,12 @@ func TestGetReviews(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_reviews.txt", []int{1571, 65}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/reviews_list.txt", []int{1571, 65}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-1500}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{1571, 65}, nil, errEndOfJSON.Error()},
+		{"Zero IDs", "test_data/reviews_list.txt", nil, nil, ""},
+		{"Empty response", "test_data/empty.txt", []int{1571, 65}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{1571, 65}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range reviewTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -92,7 +94,7 @@ func TestGetReviews(t *testing.T) {
 			}
 			defer ts.Close()
 
-			r, err := c.GetReviews(tt.IDs, tt.Opts...)
+			r, err := c.Reviews.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -144,7 +146,7 @@ func TestGetReviews(t *testing.T) {
 	}
 }
 
-func TestSearchReviews(t *testing.T) {
+func TestReviewsSearch(t *testing.T) {
 	var reviewTests = []struct {
 		Name   string
 		Resp   string
@@ -152,10 +154,11 @@ func TestSearchReviews(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_reviews.txt", "zelda", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_reviews.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/reviews_search.txt", "zelda", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "zelda", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "zelda", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range reviewTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -165,7 +168,7 @@ func TestSearchReviews(t *testing.T) {
 			}
 			defer ts.Close()
 
-			r, err := c.SearchReviews(tt.Qry, tt.Opts...)
+			r, err := c.Reviews.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -212,6 +215,68 @@ func TestSearchReviews(t *testing.T) {
 			alc := r[2].Likes
 			if alc != elc {
 				t.Errorf("Expected Likes count %d, got %d", elc, alc)
+			}
+		})
+	}
+}
+
+func TestReviewsCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Reviews.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestReviewsListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Reviews.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}

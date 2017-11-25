@@ -60,6 +60,7 @@ type Client struct {
 	PulseGroups  *PulseGroupService
 	PulseSources *PulseSourceService
 	ReleaseDates *ReleaseDateService
+	Reviews      *ReviewService
 }
 
 // NewClient returns a new Client set with a default HTTP
@@ -89,6 +90,7 @@ func NewClient() *Client {
 	c.PulseGroups = (*PulseGroupService)(&c.common)
 	c.PulseSources = (*PulseSourceService)(&c.common)
 	c.ReleaseDates = (*ReleaseDateService)(&c.common)
+	c.Reviews = (*ReviewService)(&c.common)
 	return c
 }
 

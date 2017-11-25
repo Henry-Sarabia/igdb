@@ -1,5 +1,9 @@
 package igdb
 
+// ReviewService handles all the API
+// calls for the IGDB Review endpoint.
+type ReviewService service
+
 // Review contains information on an
 // IGDB entry for a review on a particular
 // video game.
@@ -26,18 +30,18 @@ type Review struct {
 	NegativePoints string `json:"negative_points"`
 }
 
-// GetReview returns a single Review identified by the provided IGDB ID.
-// Functional options may be provided but sorting and pagination will
-// not have an effect due to GetReview only returning a single Review
-// object and not a list of Reviews.
-func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
-	url, err := c.singleURL(ReviewEndpoint, id, opts...)
+// Get returns a single Review identified by the provided IGDB ID. Provide
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Reviews, an error is returned.
+func (rs *ReviewService) Get(id int, opts ...OptionFunc) (*Review, error) {
+	url, err := rs.client.singleURL(ReviewEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var r []Review
 
-	err = c.get(url, &r)
+	err = rs.client.get(url, &r)
 	if err != nil {
 		return nil, err
 	}
@@ -45,16 +49,20 @@ func (c *Client) GetReview(id int, opts ...OptionFunc) (*Review, error) {
 	return &r[0], nil
 }
 
-// GetReviews returns a list of Reviews identified by the provided list of IGDB
-// IDs. Provide functional options to filter, sort, and paginate the results.
-func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
-	url, err := c.multiURL(ReviewEndpoint, ids, opts...)
+// List returns a list of Reviews identified by the provided list of IGDB IDs.
+// Provide functional options to filter, sort, and paginate the results. Omitting
+// IDs will instead retrieve an index of Reviews based solely on the provided
+// options. Any ID that does not match a Review is ignored. If none of the IDs
+// match a Review, an error is returned.
+func (rs *ReviewService) List(ids []int, opts ...OptionFunc) ([]*Review, error) {
+	url, err := rs.client.multiURL(ReviewEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var r []*Review
 
-	err = c.get(url, &r)
+	err = rs.client.get(url, &r)
 	if err != nil {
 		return nil, err
 	}
@@ -62,21 +70,44 @@ func (c *Client) GetReviews(ids []int, opts ...OptionFunc) ([]*Review, error) {
 	return r, nil
 }
 
-// SearchReviews returns a list of Reviews found by searching the IGDB using the
-// provided query. Provide functional options to filter, sort, and paginate the results.
-// Providing an empty query will instead retrieve an index of Reviews based solely on
-// the provided options.
-func (c *Client) SearchReviews(qry string, opts ...OptionFunc) ([]*Review, error) {
-	url, err := c.searchURL(ReviewEndpoint, qry, opts...)
+// Search returns a list of Reviews found by searching the IGDB using the provided
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Reviews are found using the provided query, an error is returned.
+func (rs *ReviewService) Search(qry string, opts ...OptionFunc) ([]*Review, error) {
+	url, err := rs.client.searchURL(ReviewEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
 	}
+
 	var r []*Review
 
-	err = c.get(url, &r)
+	err = rs.client.get(url, &r)
 	if err != nil {
 		return nil, err
 	}
 
 	return r, nil
+}
+
+// Count returns the number of Reviews available in the IGDB.
+// Provide the OptFilter functional option if you need to filter
+// which Reviews to count.
+func (rs *ReviewService) Count(opts ...OptionFunc) (int, error) {
+	ct, err := rs.client.GetEndpointCount(ReviewEndpoint, opts...)
+	if err != nil {
+		return 0, err
+	}
+
+	return ct, nil
+}
+
+// ListFields returns the up-to-date list of fields in an
+// IGDB Review object.
+func (rs *ReviewService) ListFields() ([]string, error) {
+	fl, err := rs.client.GetEndpointFieldList(ReviewEndpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return fl, nil
 }
