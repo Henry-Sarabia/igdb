@@ -58,6 +58,7 @@ type Client struct {
 	Platforms    *PlatformService
 	Pulses       *PulseService
 	PulseGroups  *PulseGroupService
+	PulseSources *PulseSourceService
 	ReleaseDates *ReleaseDateService
 }
 
@@ -86,6 +87,7 @@ func NewClient() *Client {
 	c.Platforms = (*PlatformService)(&c.common)
 	c.Pulses = (*PulseService)(&c.common)
 	c.PulseGroups = (*PulseGroupService)(&c.common)
+	c.PulseSources = (*PulseSourceService)(&c.common)
 	c.ReleaseDates = (*ReleaseDateService)(&c.common)
 	return c
 }
