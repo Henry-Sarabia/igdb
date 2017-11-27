@@ -85,8 +85,8 @@ func TestPulseGroupsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/pulsegroups_list.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-1000}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/pulsegroups_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-1000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},

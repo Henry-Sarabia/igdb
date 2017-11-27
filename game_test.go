@@ -97,8 +97,8 @@ func TestGamesList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/games_list.txt", []int{1721, 2777}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/games_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{1721, 2777}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{1721, 2777}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
@@ -160,7 +160,7 @@ func TestGamesSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/games_search.txt", "mario", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/games_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "mario", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "mario", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},

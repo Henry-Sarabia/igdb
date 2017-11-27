@@ -31,7 +31,7 @@ func TestCreditsGet(t *testing.T) {
 	}{
 		{"Happy path", "test_data/credits_get.txt", 1342182279, ""},
 		{"Invalid ID", "test_data/empty.txt", -321, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 1342182279, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 1342182279, errEndOfJSON.Error()},
 		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range creditTests {
@@ -85,9 +85,9 @@ func TestCreditsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/credits_list.txt", []int{1342181334, 1342186852}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-100}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/credits_list.txt", nil, nil, ""},
-		{"Empty Response", "test_data/empty.txt", []int{1342181334, 1342186852}, nil, errEndOfJSON.Error()},
+		{"Invalid ID", "test_data/empty.txt", []int{-100}, nil, ErrNegativeID.Error()},
+		{"Empty response", "test_data/empty.txt", []int{1342181334, 1342186852}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{1342181334, 1342186852}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
@@ -148,7 +148,7 @@ func TestCreditsSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/credits_search.txt", "jim", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/credits_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "jim", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "jim", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},

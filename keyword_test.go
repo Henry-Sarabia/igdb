@@ -87,9 +87,9 @@ func TestKeywordsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/keywords_list.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-2000}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/keywords_list.txt", nil, nil, ""},
-		{"Empty Response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
+		{"Invalid ID", "test_data/empty.txt", []int{-2000}, nil, ErrNegativeID.Error()},
+		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
@@ -152,7 +152,7 @@ func TestKeywordsSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/keywords_search.txt", "strategy", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/keywords_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "strategy", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "strategy", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},

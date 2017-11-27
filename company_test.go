@@ -81,8 +81,8 @@ func TestCompaniesList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/companies_list.txt", []int{854, 7260}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-400}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/companies_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-400}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{854, 7260}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{854, 7260}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
@@ -146,7 +146,7 @@ func TestCompaniesSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/companies_search.txt", "toby fox", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/companies_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "toby fox", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "toby fox", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},

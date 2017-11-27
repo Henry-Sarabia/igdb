@@ -31,7 +31,7 @@ func TestCollectionsGet(t *testing.T) {
 	}{
 		{"Happy path", "test_data/collections_get.txt", 2404, ""},
 		{"Invalid ID", "test_data/empty.txt", -500, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 2404, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 2404, errEndOfJSON.Error()},
 		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range collectionTests {
@@ -82,9 +82,9 @@ func TestCollectionsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/collections_list.txt", []int{338, 1}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/collections_list.txt", nil, nil, ""},
-		{"Empty Response", "test_data/empty.txt", []int{338, 1}, nil, errEndOfJSON.Error()},
+		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
+		{"Empty response", "test_data/empty.txt", []int{338, 1}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{338, 1}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}

@@ -87,8 +87,8 @@ func TestPeopleList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/people_list.txt", []int{52302, 84908}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-50000}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/people_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-50000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{52302, 84908}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{52302, 84908}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
@@ -152,7 +152,7 @@ func TestSearchPersons(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/people_search.txt", "hideokojima", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/people_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "hideokojima", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "hideokojima", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},

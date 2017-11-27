@@ -80,8 +80,8 @@ func TestReviewsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/reviews_list.txt", []int{1571, 65}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-1500}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/reviews_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-1500}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{1571, 65}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{1571, 65}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},

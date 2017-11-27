@@ -87,10 +87,11 @@ func TestPerspectivesList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/perspectives_list.txt", []int{6, 3}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-10}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/perspectives_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-10}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{6, 3}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{6, 3}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range perspectiveTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -151,9 +152,10 @@ func TestPerspectivesSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/perspectives_search.txt", "person", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/perspectives_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "person", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "person", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range perspectiveTests {
 		t.Run(tt.Name, func(t *testing.T) {

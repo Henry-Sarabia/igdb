@@ -93,8 +93,8 @@ func TestPlatformsList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/platforms_list.txt", []int{23, 130}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/platforms_list.txt", nil, nil, ""},
+		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{23, 130}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{23, 130}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},

@@ -81,9 +81,9 @@ func TestEnginesList(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/engines_list.txt", []int{9, 22}, []OptionFunc{OptLimit(5)}, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-999}, nil, ErrNegativeID.Error()},
 		{"Zero IDs", "test_data/engines_list.txt", nil, nil, ""},
-		{"Empty Response", "test_data/empty.txt", []int{9, 22}, nil, errEndOfJSON.Error()},
+		{"Invalid ID", "test_data/empty.txt", []int{-999}, nil, ErrNegativeID.Error()},
+		{"Empty response", "test_data/empty.txt", []int{9, 22}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{9, 22}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
@@ -146,7 +146,7 @@ func TestEnginesSearch(t *testing.T) {
 		ExpErr string
 	}{
 		{"Happy path", "test_data/engines_search.txt", "tool", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/engines_search.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "tool", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "tool", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
