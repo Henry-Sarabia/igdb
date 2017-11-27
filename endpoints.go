@@ -28,6 +28,8 @@ const (
 	TitleEndpoint       endpoint = "titles/"
 )
 
+// Count contains the number of objects
+// of a certain type counted in the IGDB.
 type Count struct {
 	Count int `json:"count"`
 }
