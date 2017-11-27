@@ -24,7 +24,7 @@ type Character struct {
 
 // Get returns a single Character identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to retrieve.
-// If the ID does not match any Character, an error is returned.
+// If the ID does not match any Characters, an error is returned.
 func (cs *CharacterService) Get(id int, opts ...OptionFunc) (*Character, error) {
 	url, err := cs.client.singleURL(CharacterEndpoint, id, opts...)
 	if err != nil {
@@ -44,8 +44,8 @@ func (cs *CharacterService) Get(id int, opts ...OptionFunc) (*Character, error) 
 // List returns a list of Characters identified by the provided list of IGDB IDs.
 // Provide functional options to filter, sort, and paginate the results. Omitting
 // IDs will instead retrieve an index of Characters based solely on the provided
-// options. Any IDs that do not match a Character are ignored. If all of the IDs
-// do not match a Character, an error is returned.
+// options. Any ID that does not match a Character is ignored. If none of the IDs
+// match a Character, an error is returned.
 func (cs *CharacterService) List(ids []int, opts ...OptionFunc) ([]*Character, error) {
 	url, err := cs.client.multiURL(CharacterEndpoint, ids, opts...)
 	if err != nil {
@@ -63,8 +63,8 @@ func (cs *CharacterService) List(ids []int, opts ...OptionFunc) ([]*Character, e
 }
 
 // Search returns a list of Characters found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If the
-// query does not match any Characters, an error is returned.
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Characters are found using the provided query, an error is returned.
 func (cs *CharacterService) Search(qry string, opts ...OptionFunc) ([]*Character, error) {
 	url, err := cs.client.searchURL(CharacterEndpoint, qry, opts...)
 	if err != nil {
@@ -83,7 +83,7 @@ func (cs *CharacterService) Search(qry string, opts ...OptionFunc) ([]*Character
 
 // Count returns the number of Characters available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
-// which Characters will be counted.
+// which Characters to count.
 func (cs *CharacterService) Count(opts ...OptionFunc) (int, error) {
 	ct, err := cs.client.GetEndpointCount(CharacterEndpoint, opts...)
 	if err != nil {

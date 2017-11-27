@@ -18,8 +18,8 @@ type Collection struct {
 }
 
 // Get returns a single Collection identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to retrieve.
-// If the ID does not match any Collection, an error is returned.
+// the OptFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Collections, an error is returned.
 func (cs *CollectionService) Get(id int, opts ...OptionFunc) (*Collection, error) {
 	url, err := cs.client.singleURL(CollectionEndpoint, id, opts...)
 	if err != nil {
@@ -39,8 +39,8 @@ func (cs *CollectionService) Get(id int, opts ...OptionFunc) (*Collection, error
 // List returns a list of Collections identified by the provided list of IGDB IDs.
 // Provide functional options to filter, sort, and paginate the results. Omitting
 // IDs will instead retrieve an index of Collections based solely on the provided
-// options. Any IDs that do not match a Collection are ignored. If all of the IDs
-// do not match a Collection, an error is returned.
+// options. Any ID that does not match a Collection is ignored. If none of the IDs
+// match a Collection, an error is returned.
 func (cs *CollectionService) List(ids []int, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := cs.client.multiURL(CollectionEndpoint, ids, opts...)
 	if err != nil {
@@ -58,8 +58,8 @@ func (cs *CollectionService) List(ids []int, opts ...OptionFunc) ([]*Collection,
 }
 
 // Search returns a list of Collections found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If the
-// query does not match any Collections, an error is returned.
+// query. Provide functional options to filter, sort, and paginate the results. If
+// no Collections are found using the provided query, an error is returned.
 func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collection, error) {
 	url, err := cs.client.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {
@@ -78,7 +78,7 @@ func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collecti
 
 // Count returns the number of Collections available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
-// which Collections will be counted.
+// which Collections to count.
 func (cs *CollectionService) Count(opts ...OptionFunc) (int, error) {
 	ct, err := cs.client.GetEndpointCount(CollectionEndpoint, opts...)
 	if err != nil {
