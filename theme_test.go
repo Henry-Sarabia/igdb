@@ -22,16 +22,17 @@ func TestThemeTypeIntegrity(t *testing.T) {
 	}
 }
 
-func TestGetTheme(t *testing.T) {
+func TestThemesGet(t *testing.T) {
 	var themeTests = []struct {
 		Name   string
 		Resp   string
 		ID     int
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_theme.txt", 17, ""},
+		{"Happy path", "test_data/themes_get.txt", 17, ""},
 		{"Invalid ID", "test_data/empty.txt", -15, ErrNegativeID.Error()},
-		{"Empty Response", "test_data/empty.txt", 17, errEndOfJSON.Error()},
+		{"Empty response", "test_data/empty.txt", 17, errEndOfJSON.Error()},
+		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
 	}
 	for _, tt := range themeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -41,7 +42,7 @@ func TestGetTheme(t *testing.T) {
 			}
 			defer ts.Close()
 
-			th, err := c.GetTheme(tt.ID)
+			th, err := c.Themes.Get(tt.ID)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -77,7 +78,7 @@ func TestGetTheme(t *testing.T) {
 	}
 }
 
-func TestGetThemes(t *testing.T) {
+func TestThemesList(t *testing.T) {
 	var themeTests = []struct {
 		Name   string
 		Resp   string
@@ -85,11 +86,12 @@ func TestGetThemes(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/get_themes.txt", []int{20, 23}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/themes_list.txt", []int{20, 23}, []OptionFunc{OptLimit(5)}, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-50}, nil, ErrNegativeID.Error()},
-		{"Zero IDs", "test_data/empty.txt", nil, nil, ErrEmptyIDs.Error()},
-		{"Empty Response", "test_data/empty.txt", []int{20, 23}, nil, errEndOfJSON.Error()},
+		{"Zero IDs", "test_data/themes_list.txt", nil, nil, ""},
+		{"Empty response", "test_data/empty.txt", []int{20, 23}, nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", []int{20, 23}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range themeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -99,7 +101,7 @@ func TestGetThemes(t *testing.T) {
 			}
 			defer ts.Close()
 
-			th, err := c.GetThemes(tt.IDs, tt.Opts...)
+			th, err := c.Themes.List(tt.IDs, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -141,7 +143,7 @@ func TestGetThemes(t *testing.T) {
 	}
 }
 
-func TestSearchThemes(t *testing.T) {
+func TestThemesSearch(t *testing.T) {
 	var themeTests = []struct {
 		Name   string
 		Resp   string
@@ -149,10 +151,11 @@ func TestSearchThemes(t *testing.T) {
 		Opts   []OptionFunc
 		ExpErr string
 	}{
-		{"Happy path", "test_data/search_themes.txt", "horror", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/search_themes.txt", "", []OptionFunc{OptLimit(50)}, ""},
+		{"Happy path", "test_data/themes_search.txt", "horror", []OptionFunc{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "horror", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "horror", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range themeTests {
 		t.Run(tt.Name, func(t *testing.T) {
@@ -162,7 +165,7 @@ func TestSearchThemes(t *testing.T) {
 			}
 			defer ts.Close()
 
-			th, err := c.SearchThemes(tt.Qry, tt.Opts...)
+			th, err := c.Themes.Search(tt.Qry, tt.Opts...)
 			assertError(t, err, tt.ExpErr)
 
 			if tt.ExpErr != "" {
@@ -197,6 +200,68 @@ func TestSearchThemes(t *testing.T) {
 			agl := len(th[0].Games)
 			if agl != egl {
 				t.Errorf("Expected Games length %d, got %d", egl, agl)
+			}
+		})
+	}
+}
+
+func TestThemesCount(t *testing.T) {
+	var countTests = []struct {
+		Name     string
+		Resp     string
+		Opts     []OptionFunc
+		ExpCount int
+		ExpErr   string
+	}{
+		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
+		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+	}
+
+	for _, tt := range countTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			count, err := c.Themes.Count(tt.Opts...)
+			assertError(t, err, tt.ExpErr)
+
+			if count != tt.ExpCount {
+				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			}
+		})
+	}
+}
+
+func TestThemesListFields(t *testing.T) {
+	var fieldTests = []struct {
+		Name      string
+		Resp      string
+		ExpFields []string
+		ExpErr    string
+	}{
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
+		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
+		{"Asterisk", `["*"]`, []string{"*"}, ""},
+		{"Empty response", "", nil, errEndOfJSON.Error()},
+		{"No results", "[]", nil, ""},
+	}
+
+	for _, tt := range fieldTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, tt.Resp)
+			defer ts.Close()
+
+			fields, err := c.Themes.ListFields()
+			assertError(t, err, tt.ExpErr)
+
+			ok, err := equalSlice(fields, tt.ExpFields)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !ok {
+				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
 			}
 		})
 	}
