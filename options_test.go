@@ -39,11 +39,16 @@ func TestOptOrder(t *testing.T) {
 		Name   string
 		Field  string
 		Order  order
+		Sub    []subfilter
 		ExpOrd string
 		ExpErr error
 	}{
-		{"Non-empty field", "popularity", OrderAscending, "popularity:asc", nil},
-		{"Empty field", "", OrderDescending, "", ErrEmptyField},
+		{"Non-empty field with single subfilter", "release_dates.date", OrderDescending, []subfilter{SubMin}, "release_dates.date:desc:min", nil},
+		{"Non-empty field with no subfilter", "rating", OrderAscending, nil, "rating:asc", nil},
+		{"Non-empty field with multiple subfilters", "release_dates.date", OrderDescending, []subfilter{SubMin, SubMax}, "", ErrTooManyArgs},
+		{"Empty field with single subfilter", "", OrderAscending, []subfilter{SubAverage}, "", ErrEmptyField},
+		{"Empty field with no subfilter", "", OrderDescending, nil, "", ErrEmptyField},
+		{"Empty field with multiple subfilters", "", OrderAscending, []subfilter{SubMedian, SubSum}, "", ErrEmptyField},
 	}
 
 	for _, ot := range orderTests {
@@ -52,7 +57,7 @@ func TestOptOrder(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptOrder(ot.Field, ot.Order)
+			optFunc := OptOrder(ot.Field, ot.Order, ot.Sub...)
 
 			err = optFunc(opt)
 			if !reflect.DeepEqual(err, ot.ExpErr) {

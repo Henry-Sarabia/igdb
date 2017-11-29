@@ -16,10 +16,12 @@ var (
 	ErrEmptyField = errors.New("igdb.OptionFunc: field value empty")
 	// ErrEmptySlice occurs when an empty slice is used as an argument in a variadic function.
 	ErrEmptySlice = errors.New("igdb.OptionFunc: slice empty")
-	// ErrOutOfRange occurs when a provided number value is out of valid range.
-	ErrOutOfRange = errors.New("igdb.OptionFunc: value out of range")
 	// ErrEmptyQuery occurs when an empty string is used as a query value.
 	ErrEmptyQuery = errors.New("igdb.OptionFunc: query value empty")
+	// ErrOutOfRange occurs when a provided number value is out of valid range.
+	ErrOutOfRange = errors.New("igdb.OptionFunc: value out of range")
+	// ErrTooManyArgs occurs when too many arguments are provided in a variadic function.
+	ErrTooManyArgs = errors.New("igdb.OptionFunc: too many arguments")
 )
 
 // options contains a value map that stores the optional parameters for
@@ -71,18 +73,54 @@ const (
 	OrderDescending order = ":desc"
 )
 
+// subfilter specifies which type of filter you want to apply to the associated
+// IGDB object's array field when using OptOrder's optional subfiltering
+// functionality.
+type subfilter string
+
+const (
+	// SubMax filters based on the maximum element in the array.
+	SubMax subfilter = ":max"
+	// SubMin filters based on the minimum element in the array.
+	SubMin subfilter = ":min"
+	// SubSum filters based on the sum of the elements in the array.
+	SubSum subfilter = ":sum"
+	// SubAverage filters based on the average of the elements in the array.
+	SubAverage subfilter = ":avg"
+	// SubMedian filters based on the median element in the array.
+	SubMedian subfilter = ":median"
+)
+
 // OptOrder is a functional option used to set the order of the results from
-// an API call, either ascending or descending. The default order is based on
-// relevance and cannot be explicitly set.
-func OptOrder(field string, ord order) OptionFunc {
+// an API call, either ascending or descending. The provided field and order
+// specify which field to sort by and in what order, respectively. Subfields
+// are accessed with a dot operator. Note that the field string must match an
+// IGDB object's JSON field tag exactly, not the Go struct field name. The
+// default order is based on relevance and cannot be explicitly set.
+//
+// Optionally, OptOrder also allows you to provide a subfilter argument with
+// which to perform array subfiltering on any of an IGBD object's array fields
+// (e.g. a Game object's ReleaseDates field). In other words, you can order
+// based on the max, min, sum, average, or median value of an array field's
+// contents. If more than one subfilter is provided, an error is returned.
+func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
 	return func(o *options) error {
 		if len(field) == 0 {
 			return ErrEmptyField
 		}
+		if len(sub) > 1 {
+			return ErrTooManyArgs
+		}
 		if o.Values.Get("order") != "" {
 			return ErrOptionSet
 		}
-		o.Values.Set("order", field+string(ord))
+
+		if len(sub) == 0 {
+			o.Values.Set("order", field+string(ord))
+			return nil
+		}
+
+		o.Values.Set("order", field+string(ord)+string(sub[0]))
 		return nil
 	}
 }
@@ -120,7 +158,9 @@ func OptOffset(off int) OptionFunc {
 // OptFields is a functional option used to specify which fields of the
 // requested IGDB object you want the API to provide. Subfields are accessed
 // with a dot operator (e.g. cover.url). To select all available fields at
-// once, use an asterisk character (i.e. *).
+// once, use an asterisk character (i.e. *). Note that the field string must
+// match an IGDB object's JSON field tag exactly, not the Go struct field
+// name.
 //
 // The default for Get and List functions is set to all available fields.
 // The default for Search functions is set to solely the ID field.
