@@ -105,7 +105,7 @@ const (
 // contents. If more than one subfilter is provided, an error is returned.
 func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
 	return func(o *options) error {
-		if len(field) == 0 {
+		if strings.TrimSpace(field) == "" {
 			return ErrEmptyField
 		}
 		if len(sub) > 1 {

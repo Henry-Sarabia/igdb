@@ -47,8 +47,8 @@ func TestOptOrder(t *testing.T) {
 		{"Non-empty field with no subfilter", "rating", OrderAscending, nil, "rating:asc", nil},
 		{"Non-empty field with multiple subfilters", "release_dates.date", OrderDescending, []subfilter{SubMin, SubMax}, "", ErrTooManyArgs},
 		{"Empty field with single subfilter", "", OrderAscending, []subfilter{SubAverage}, "", ErrEmptyField},
-		{"Empty field with no subfilter", "", OrderDescending, nil, "", ErrEmptyField},
-		{"Empty field with multiple subfilters", "", OrderAscending, []subfilter{SubMedian, SubSum}, "", ErrEmptyField},
+		{"Empty field with no subfilter", "  ", OrderDescending, nil, "", ErrEmptyField},
+		{"Empty field with multiple subfilters", "    ", OrderAscending, []subfilter{SubMedian, SubSum}, "", ErrEmptyField},
 	}
 
 	for _, ot := range orderTests {
