@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestReleaseDateTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	rd := ReleaseDate{}
-	typ := reflect.ValueOf(rd).Type()
-
-	err := c.validateStruct(typ, ReleaseDateEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestReleaseDatesGet(t *testing.T) {
 	var releaseDateTests = []struct {

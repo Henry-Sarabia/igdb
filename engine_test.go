@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestEngineTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	e := Engine{}
-	typ := reflect.ValueOf(e).Type()
-
-	err := c.validateStruct(typ, EngineEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestEnginesGet(t *testing.T) {
 	var engineTests = []struct {

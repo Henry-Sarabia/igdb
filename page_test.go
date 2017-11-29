@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestPageTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	p := Page{}
-	typ := reflect.ValueOf(p).Type()
-
-	err := c.validateStruct(typ, PageEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestPagesGet(t *testing.T) {
 	var pageTests = []struct {

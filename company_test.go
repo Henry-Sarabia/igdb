@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestCompanyTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	com := Company{}
-	typ := reflect.ValueOf(com).Type()
-
-	err := c.validateStruct(typ, CompanyEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestCompaniesGet(t *testing.T) {
 	var companyTests = []struct {

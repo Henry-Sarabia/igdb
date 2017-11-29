@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestCreditTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	cr := Credit{}
-	typ := reflect.ValueOf(cr).Type()
-
-	err := c.validateStruct(typ, CreditEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestCreditsGet(t *testing.T) {
 	var creditTests = []struct {

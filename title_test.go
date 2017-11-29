@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestTitleTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	r := Title{}
-	typ := reflect.ValueOf(r).Type()
-
-	err := c.validateStruct(typ, TitleEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestTitlesGet(t *testing.T) {
 	var titleTests = []struct {

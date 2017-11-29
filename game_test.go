@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestGameTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	g := Game{}
-	typ := reflect.ValueOf(g).Type()
-
-	err := c.validateStruct(typ, GameEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestGamesGet(t *testing.T) {
 	var gameTests = []struct {

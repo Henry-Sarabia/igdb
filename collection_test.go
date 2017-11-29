@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestCollectionTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	col := Collection{}
-	typ := reflect.ValueOf(col).Type()
-
-	err := c.validateStruct(typ, CollectionEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestCollectionsGet(t *testing.T) {
 	var collectionTests = []struct {

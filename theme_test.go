@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestThemeTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	r := Theme{}
-	typ := reflect.ValueOf(r).Type()
-
-	err := c.validateStruct(typ, ThemeEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestThemesGet(t *testing.T) {
 	var themeTests = []struct {

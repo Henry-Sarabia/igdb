@@ -2,26 +2,9 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 )
-
-func TestReviewTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	r := Review{}
-	typ := reflect.ValueOf(r).Type()
-
-	err := c.validateStruct(typ, ReviewEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestReviewsGet(t *testing.T) {
 	var reviewTests = []struct {

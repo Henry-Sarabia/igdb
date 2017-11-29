@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestPulseSourceTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	ps := PulseSource{}
-	typ := reflect.ValueOf(ps).Type()
-
-	err := c.validateStruct(typ, PulseSourceEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestPulseSourcesGet(t *testing.T) {
 	var pulseSourceTests = []struct {

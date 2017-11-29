@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestPerspectiveTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	p := Perspective{}
-	typ := reflect.ValueOf(p).Type()
-
-	err := c.validateStruct(typ, PerspectiveEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestPerspectivesGet(t *testing.T) {
 	var perspectiveTests = []struct {

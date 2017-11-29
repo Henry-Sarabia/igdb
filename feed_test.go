@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestFeedTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	f := Feed{}
-	typ := reflect.ValueOf(f).Type()
-
-	err := c.validateStruct(typ, FeedEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestFeedsGet(t *testing.T) {
 	var feedTests = []struct {

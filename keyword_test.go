@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestKeywordTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	k := Keyword{}
-	typ := reflect.ValueOf(k).Type()
-
-	err := c.validateStruct(typ, KeywordEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestKeywordsGet(t *testing.T) {
 	var keywordTests = []struct {

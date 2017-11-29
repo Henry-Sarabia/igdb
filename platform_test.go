@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestPlatformTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	p := Platform{}
-	typ := reflect.ValueOf(p).Type()
-
-	err := c.validateStruct(typ, PlatformEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestPlatformsGet(t *testing.T) {
 	var platformTests = []struct {

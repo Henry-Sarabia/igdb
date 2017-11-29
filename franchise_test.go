@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestFranchiseTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	f := Franchise{}
-	typ := reflect.ValueOf(f).Type()
-
-	err := c.validateStruct(typ, FranchiseEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestFranchisesGet(t *testing.T) {
 	var franchiseTests = []struct {

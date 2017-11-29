@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestGenreTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	g := Genre{}
-	typ := reflect.ValueOf(g).Type()
-
-	err := c.validateStruct(typ, GenreEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestGenresGet(t *testing.T) {
 	var genreTests = []struct {

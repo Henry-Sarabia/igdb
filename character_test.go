@@ -2,25 +2,8 @@ package igdb
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 )
-
-func TestCharacterTypeIntegrity(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping test requiring communication with external server")
-	}
-
-	c := NewClient()
-
-	ch := Character{}
-	typ := reflect.ValueOf(ch).Type()
-
-	err := c.validateStruct(typ, CharacterEndpoint)
-	if err != nil {
-		t.Error(err)
-	}
-}
 
 func TestCharactersGet(t *testing.T) {
 	var characterTests = []struct {
