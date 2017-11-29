@@ -5,9 +5,12 @@ import (
 	"testing"
 )
 
-const testImageID = "dfgkfivjrhcksyymh9vw"
-const testImageURL = "https://images.igdb.com/igdb/image/upload/t_screenshot_med/dfgkfivjrhcksyymh9vw.jpg"
-const testImageURL2x = "https://images.igdb.com/igdb/image/upload/t_screenshot_med_2x/dfgkfivjrhcksyymh9vw.jpg"
+// Mocked image arguments for testing.
+const (
+	testImageID    = "dfgkfivjrhcksyymh9vw"
+	testImageURL   = "https://images.igdb.com/igdb/image/upload/t_screenshot_med/dfgkfivjrhcksyymh9vw.jpg"
+	testImageURL2x = "https://images.igdb.com/igdb/image/upload/t_screenshot_med_2x/dfgkfivjrhcksyymh9vw.jpg"
+)
 
 func TestSizedImageURL(t *testing.T) {
 	var imageTests = []struct {
