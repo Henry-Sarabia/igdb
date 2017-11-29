@@ -11,6 +11,9 @@ import (
 	"testing"
 )
 
+// testKey mocks an IGDB API key.
+const testKey = "notarealkey"
+
 // Errors returned when performing struct type validation.
 var (
 	// ErrNotStruct occurs when a non-struct type is provided to a function expecting a struct.
@@ -38,7 +41,7 @@ func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httpte
 		io.Copy(w, resp)
 	}))
 
-	c := NewClient()
+	c := NewClient(testKey, nil)
 	c.http = ts.Client()
 	c.rootURL = ts.URL + "/"
 

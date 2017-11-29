@@ -6,9 +6,14 @@ import (
 	"testing"
 )
 
-const testEndpoint endpoint = "tests/"
-const testGetResp = `{"field": "value"}`
+// Mocked arguments for testing.
+const (
+	testEndpoint endpoint = "tests/"
+	// testGetResp is a mocked response from a Get request.
+	testGetResp = `{"field": "value"}`
+)
 
+// testResultPlaceHolder mocks an IGDB object.
 type testResultPlaceholder struct {
 	Field string `json:"field"`
 }
@@ -63,7 +68,7 @@ func TestSingleURL(t *testing.T) {
 	}
 	for _, st := range singleTests {
 		t.Run(st.Name, func(t *testing.T) {
-			c := NewClient()
+			c := NewClient(testKey, nil)
 
 			url, err := c.singleURL(testEndpoint, st.ID, st.Opts...)
 			if !reflect.DeepEqual(err, st.ExpErr) {
@@ -103,7 +108,7 @@ func TestMultiURL(t *testing.T) {
 	}
 	for _, mt := range multiTests {
 		t.Run(mt.Name, func(t *testing.T) {
-			c := NewClient()
+			c := NewClient(testKey, nil)
 
 			url, err := c.multiURL(testEndpoint, mt.IDs, mt.Opts...)
 			if !reflect.DeepEqual(err, mt.ExpErr) {
@@ -140,7 +145,7 @@ func TestSearchURL(t *testing.T) {
 
 	for _, st := range searchTests {
 		t.Run(st.Name, func(t *testing.T) {
-			c := NewClient()
+			c := NewClient(testKey, nil)
 
 			url, err := c.searchURL(testEndpoint, st.Query, st.Opts...)
 			if !reflect.DeepEqual(err, st.ExpErr) {

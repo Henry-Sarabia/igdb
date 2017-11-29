@@ -37,6 +37,7 @@ type service struct {
 type Client struct {
 	http    *http.Client
 	rootURL string
+	key     string
 
 	common service
 
@@ -67,11 +68,20 @@ type Client struct {
 
 // NewClient returns a new Client set with a default HTTP
 // client and the default IGDB root URL.
-func NewClient() *Client {
-	c := &Client{
-		http:    http.DefaultClient,
-		rootURL: igdbURL,
+
+// NewClient returns a new Client configured to communicate with the IGDB.
+// The provided apiKey will be used to make requests on your behalf.
+//
+// If you need an IGDB API key, please visit: https://api.igdb.com/signup
+func NewClient(apiKey string, custom *http.Client) *Client {
+	if custom == nil {
+		custom = http.DefaultClient
 	}
+	c := &Client{}
+	c.http = custom
+	c.key = apiKey
+	c.rootURL = igdbURL
+
 	c.common.client = c
 	c.Characters = (*CharacterService)(&c.common)
 	c.Collections = (*CollectionService)(&c.common)
@@ -130,6 +140,20 @@ func (c *Client) get(url string, result interface{}) error {
 	}
 
 	return nil
+}
+
+// newRequest configures a new request for the provided URL and
+// adds the necesarry headers to communicate with the IGDB.
+func (c *Client) newRequest(url string) (*http.Request, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("user-key", c.key)
+	req.Header.Add("Accept", "application/json")
+
+	return req, nil
 }
 
 // singleURL creates a URL configured to request a single IGDB object identified by
@@ -202,20 +226,6 @@ func (c *Client) countURL(end endpoint, opts ...OptionFunc) (string, error) {
 	url = encodeURL(&opt.Values, url)
 
 	return url, nil
-}
-
-// newRequest configures a new request for the provided URL and
-// adds the necesarry headers to communicate with the IGDB.
-func (c *Client) newRequest(url string) (*http.Request, error) {
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("user-key", APIkey)
-	req.Header.Add("Accept", "application/json")
-
-	return req, nil
 }
 
 // Byte representations of ASCII characters.
