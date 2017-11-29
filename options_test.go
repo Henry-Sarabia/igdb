@@ -150,9 +150,9 @@ func TestOptFields(t *testing.T) {
 		{"Single non-empty field", []string{"name"}, "name", nil},
 		{"Multiple non-empty fields", []string{"name", "popularity", "rating"}, "name,popularity,rating", nil},
 		{"Empty fields slice", []string{}, "", ErrEmptySlice},
-		{"Single empty field", []string{""}, "", ErrEmptyField},
-		{"Multiple empty fields", []string{"", "", "", ""}, "", ErrEmptyField},
-		{"Mixed empty and non-empty fields", []string{"", "id", "", "url"}, "", ErrEmptyField},
+		{"Single empty field", []string{"  "}, "", ErrEmptyField},
+		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyField},
+		{"Mixed empty and non-empty fields", []string{"", "id", "  ", "url"}, "", ErrEmptyField},
 	}
 
 	for _, ft := range fieldsTests {

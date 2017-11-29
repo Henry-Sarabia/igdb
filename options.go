@@ -170,7 +170,7 @@ func OptFields(fields ...string) OptionFunc {
 			return ErrEmptySlice
 		}
 		for _, f := range fields {
-			if f == "" {
+			if strings.TrimSpace(f) == "" {
 				return ErrEmptyField
 			}
 		}
