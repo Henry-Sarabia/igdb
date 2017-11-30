@@ -104,7 +104,7 @@ type PEGI struct {
 }
 
 // YoutubeVideo contains the name and
-// ID for a particular Youtube video.
+// ID of a  Youtube video.
 type YoutubeVideo struct {
 	Name string `json:"name"`
 	ID   string `json:"video_id"` // Youtube slug
