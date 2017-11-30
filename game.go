@@ -27,6 +27,8 @@ type Game struct {
 	TotalRatingCount     int            `json:"total_rating_count"`
 	WeightedRating       float64        `json:"weighted_rating"`
 	Game                 int            `json:"game"`
+	VersionParent        int            `json:"version_parent"`
+	VersionTitle         interface{}    `json:"version_title"`
 	Developers           []int          `json:"developers"`
 	Publishers           []int          `json:"publishers"`
 	Engines              []int          `json:"game_engines"`
