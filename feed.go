@@ -47,7 +47,7 @@ func (fs *FeedService) Get(id int, opts ...OptionFunc) (*Feed, error) {
 }
 
 // List returns a list of Feeds identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Feeds based solely on the provided
 // options. Any ID that does not match a Feed is ignored. If none of the IDs
 // match a Feed, an error is returned.

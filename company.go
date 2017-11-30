@@ -50,7 +50,7 @@ func (cs *CompanyService) Get(id int, opts ...OptionFunc) (*Company, error) {
 }
 
 // List returns a list of Companies identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Companies based solely on the provided
 // options. Any ID that does not match a Company is ignored. If none of the IDs
 // match a Company, an error is returned.
@@ -71,7 +71,7 @@ func (cs *CompanyService) List(ids []int, opts ...OptionFunc) ([]*Company, error
 }
 
 // Search returns a list of Companies found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If
+// query. Provide functional options to sort, filter, and paginate  the results. If
 // no Companies are found using the provided query, an error is returned.
 func (cs *CompanyService) Search(qry string, opts ...OptionFunc) ([]*Company, error) {
 	url, err := cs.client.searchURL(CompanyEndpoint, qry, opts...)

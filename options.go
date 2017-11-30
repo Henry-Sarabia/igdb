@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Errors returned by an OptionFunc when setting API call options.
+// Errors returned by an OptionFunc when setting options for an API call.
 var (
 	// ErrOptionSet occurs when the same option is used multiple times in a single API call.
 	ErrOptionSet = errors.New("igdb.OptionFunc: option already set")

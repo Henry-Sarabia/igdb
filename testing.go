@@ -14,7 +14,7 @@ import (
 // testKey mocks an IGDB API key.
 const testKey = "notarealkey"
 
-// Errors returned when performing struct type validation.
+// Errors returned when performing type validation.
 var (
 	// ErrNotStruct occurs when a non-struct type is provided to a function expecting a struct.
 	ErrNotStruct = errors.New("igdb: not a struct")

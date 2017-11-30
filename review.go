@@ -49,7 +49,7 @@ func (rs *ReviewService) Get(id int, opts ...OptionFunc) (*Review, error) {
 }
 
 // List returns a list of Reviews identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Reviews based solely on the provided
 // options. Any ID that does not match a Review is ignored. If none of the IDs
 // match a Review, an error is returned.
@@ -70,7 +70,7 @@ func (rs *ReviewService) List(ids []int, opts ...OptionFunc) ([]*Review, error) 
 }
 
 // Search returns a list of Reviews found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If
+// query. Provide functional options to sort, filter, and paginate  the results. If
 // no Reviews are found using the provided query, an error is returned.
 func (rs *ReviewService) Search(qry string, opts ...OptionFunc) ([]*Review, error) {
 	url, err := rs.client.searchURL(ReviewEndpoint, qry, opts...)

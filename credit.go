@@ -47,7 +47,7 @@ func (cs *CreditService) Get(id int, opts ...OptionFunc) (*Credit, error) {
 }
 
 // List returns a list of Credits identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Credits based solely on the provided
 // options. Any ID that does not match a Credit is ignored. If none of the IDs
 // match a Credit, an error is returned.
@@ -68,7 +68,7 @@ func (cs *CreditService) List(ids []int, opts ...OptionFunc) ([]*Credit, error) 
 }
 
 // Search returns a list of Credits found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If
+// query. Provide functional options to sort, filter, and paginate  the results. If
 // no Credits are found using the provided query, an error is returned.
 func (cs *CreditService) Search(qry string, opts ...OptionFunc) ([]*Credit, error) {
 	url, err := cs.client.searchURL(CreditEndpoint, qry, opts...)

@@ -37,7 +37,7 @@ func (ts *TitleService) Get(id int, opts ...OptionFunc) (*Title, error) {
 }
 
 // List returns a list of Titles identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Titles based solely on the provided
 // options. Any ID that does not match a Title is ignored. If none of the IDs
 // match a Title, an error is returned.
@@ -58,7 +58,7 @@ func (ts *TitleService) List(ids []int, opts ...OptionFunc) ([]*Title, error) {
 }
 
 // Search returns a list of Titles found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If
+// query. Provide functional options to sort, filter, and paginate  the results. If
 // no Titles are found using the provided query, an error is returned.
 func (ts *TitleService) Search(qry string, opts ...OptionFunc) ([]*Title, error) {
 	url, err := ts.client.searchURL(TitleEndpoint, qry, opts...)

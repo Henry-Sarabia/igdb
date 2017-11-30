@@ -37,7 +37,7 @@ func (ks *KeywordService) Get(id int, opts ...OptionFunc) (*Keyword, error) {
 }
 
 // List returns a list of Keywords identified by the provided list of IGDB IDs.
-// Provide functional options to filter, sort, and paginate the results. Omitting
+// Provide functional options to sort, filter, and paginate  the results. Omitting
 // IDs will instead retrieve an index of Keywords based solely on the provided
 // options. Any ID that does not match a Keyword is ignored. If none of the IDs
 // match a Keyword, an error is returned.
@@ -58,7 +58,7 @@ func (ks *KeywordService) List(ids []int, opts ...OptionFunc) ([]*Keyword, error
 }
 
 // Search returns a list of Keywords found by searching the IGDB using the provided
-// query. Provide functional options to filter, sort, and paginate the results. If
+// query. Provide functional options to sort, filter, and paginate  the results. If
 // no Keywords are found using the provided query, an error is returned.
 func (ks *KeywordService) Search(qry string, opts ...OptionFunc) ([]*Keyword, error) {
 	url, err := ks.client.searchURL(KeywordEndpoint, qry, opts...)
