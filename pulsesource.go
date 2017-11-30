@@ -76,7 +76,7 @@ func (pss *PulseSourceService) Search(qry string, opts ...OptionFunc) ([]*PulseS
 // Provide the OptFilter functional option if you need to filter
 // which PulseSources to count.
 func (pss *PulseSourceService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := pss.client.GetEndpointCount(PulseSourceEndpoint, opts...)
+	ct, err := pss.client.getEndpointCount(PulseSourceEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -87,7 +87,7 @@ func (pss *PulseSourceService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB PulseSource object.
 func (pss *PulseSourceService) ListFields() ([]string, error) {
-	fl, err := pss.client.GetEndpointFieldList(PulseSourceEndpoint)
+	fl, err := pss.client.getEndpointFieldList(PulseSourceEndpoint)
 	if err != nil {
 		return nil, err
 	}

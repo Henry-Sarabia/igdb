@@ -80,7 +80,7 @@ func (ts *TitleService) Search(qry string, opts ...OptionFunc) ([]*Title, error)
 // Provide the OptFilter functional option if you need to filter
 // which Titles to count.
 func (ts *TitleService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ts.client.GetEndpointCount(TitleEndpoint, opts...)
+	ct, err := ts.client.getEndpointCount(TitleEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -91,7 +91,7 @@ func (ts *TitleService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Title object.
 func (ts *TitleService) ListFields() ([]string, error) {
-	fl, err := ts.client.GetEndpointFieldList(TitleEndpoint)
+	fl, err := ts.client.getEndpointFieldList(TitleEndpoint)
 	if err != nil {
 		return nil, err
 	}

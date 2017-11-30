@@ -82,7 +82,7 @@ func (es *EngineService) Search(qry string, opts ...OptionFunc) ([]*Engine, erro
 // Provide the OptFilter functional option if you need to filter
 // which Engines to count.
 func (es *EngineService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := es.client.GetEndpointCount(EngineEndpoint, opts...)
+	ct, err := es.client.getEndpointCount(EngineEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -93,7 +93,7 @@ func (es *EngineService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Engine object.
 func (es *EngineService) ListFields() ([]string, error) {
-	fl, err := es.client.GetEndpointFieldList(EngineEndpoint)
+	fl, err := es.client.getEndpointFieldList(EngineEndpoint)
 	if err != nil {
 		return nil, err
 	}

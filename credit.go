@@ -90,7 +90,7 @@ func (cs *CreditService) Search(qry string, opts ...OptionFunc) ([]*Credit, erro
 // Provide the OptFilter functional option if you need to filter
 // which Credits to count.
 func (cs *CreditService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := cs.client.GetEndpointCount(CreditEndpoint, opts...)
+	ct, err := cs.client.getEndpointCount(CreditEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -101,7 +101,7 @@ func (cs *CreditService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Credit object.
 func (cs *CreditService) ListFields() ([]string, error) {
-	fl, err := cs.client.GetEndpointFieldList(CreditEndpoint)
+	fl, err := cs.client.getEndpointFieldList(CreditEndpoint)
 	if err != nil {
 		return nil, err
 	}

@@ -100,7 +100,7 @@ func (ps *PersonService) Search(qry string, opts ...OptionFunc) ([]*Person, erro
 // Provide the OptFilter functional option if you need to filter
 // which People to count.
 func (ps *PersonService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ps.client.GetEndpointCount(PersonEndpoint, opts...)
+	ct, err := ps.client.getEndpointCount(PersonEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -111,7 +111,7 @@ func (ps *PersonService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Person object.
 func (ps *PersonService) ListFields() ([]string, error) {
-	fl, err := ps.client.GetEndpointFieldList(PersonEndpoint)
+	fl, err := ps.client.getEndpointFieldList(PersonEndpoint)
 	if err != nil {
 		return nil, err
 	}

@@ -106,7 +106,7 @@ func (ps *PageService) Search(qry string, opts ...OptionFunc) ([]*Page, error) {
 // Provide the OptFilter functional option if you need to filter
 // which Pages to count.
 func (ps *PageService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ps.client.GetEndpointCount(PageEndpoint, opts...)
+	ct, err := ps.client.getEndpointCount(PageEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -117,7 +117,7 @@ func (ps *PageService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Page object.
 func (ps *PageService) ListFields() ([]string, error) {
-	fl, err := ps.client.GetEndpointFieldList(PageEndpoint)
+	fl, err := ps.client.getEndpointFieldList(PageEndpoint)
 	if err != nil {
 		return nil, err
 	}

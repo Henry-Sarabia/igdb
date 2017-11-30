@@ -71,7 +71,7 @@ func (fs *FeedService) List(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 // Provide the OptFilter functional option if you need to filter
 // which Feeds to count.
 func (fs *FeedService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := fs.client.GetEndpointCount(FeedEndpoint, opts...)
+	ct, err := fs.client.getEndpointCount(FeedEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -82,7 +82,7 @@ func (fs *FeedService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Feed object.
 func (fs *FeedService) ListFields() ([]string, error) {
-	fl, err := fs.client.GetEndpointFieldList(FeedEndpoint)
+	fl, err := fs.client.getEndpointFieldList(FeedEndpoint)
 	if err != nil {
 		return nil, err
 	}

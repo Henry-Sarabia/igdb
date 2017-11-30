@@ -95,7 +95,7 @@ func (ps *PulseService) Search(qry string, opts ...OptionFunc) ([]*Pulse, error)
 // Provide the OptFilter functional option if you need to filter
 // which Pulses to count.
 func (ps *PulseService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ps.client.GetEndpointCount(PulseEndpoint, opts...)
+	ct, err := ps.client.getEndpointCount(PulseEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -106,7 +106,7 @@ func (ps *PulseService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Pulse object.
 func (ps *PulseService) ListFields() ([]string, error) {
-	fl, err := ps.client.GetEndpointFieldList(PulseEndpoint)
+	fl, err := ps.client.getEndpointFieldList(PulseEndpoint)
 	if err != nil {
 		return nil, err
 	}

@@ -65,7 +65,7 @@ func (rds *ReleaseDateService) List(ids []int, opts ...OptionFunc) ([]*ReleaseDa
 // Provide the OptFilter functional option if you need to filter
 // which ReleaseDates to count.
 func (rds *ReleaseDateService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := rds.client.GetEndpointCount(ReleaseDateEndpoint, opts...)
+	ct, err := rds.client.getEndpointCount(ReleaseDateEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -76,7 +76,7 @@ func (rds *ReleaseDateService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB ReleaseDate object.
 func (rds *ReleaseDateService) ListFields() ([]string, error) {
-	fl, err := rds.client.GetEndpointFieldList(ReleaseDateEndpoint)
+	fl, err := rds.client.getEndpointFieldList(ReleaseDateEndpoint)
 	if err != nil {
 		return nil, err
 	}

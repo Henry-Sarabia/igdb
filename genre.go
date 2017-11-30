@@ -79,7 +79,7 @@ func (gs *GenreService) Search(qry string, opts ...OptionFunc) ([]*Genre, error)
 // Provide the OptFilter functional option if you need to filter
 // which Genres to count.
 func (gs *GenreService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := gs.client.GetEndpointCount(GenreEndpoint, opts...)
+	ct, err := gs.client.getEndpointCount(GenreEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (gs *GenreService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Genre object.
 func (gs *GenreService) ListFields() ([]string, error) {
-	fl, err := gs.client.GetEndpointFieldList(GenreEndpoint)
+	fl, err := gs.client.getEndpointFieldList(GenreEndpoint)
 	if err != nil {
 		return nil, err
 	}

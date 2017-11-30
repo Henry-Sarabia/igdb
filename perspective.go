@@ -79,7 +79,7 @@ func (ps *PerspectiveService) Search(qry string, opts ...OptionFunc) ([]*Perspec
 // Provide the OptFilter functional option if you need to filter
 // which Perspectives to count.
 func (ps *PerspectiveService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ps.client.GetEndpointCount(PerspectiveEndpoint, opts...)
+	ct, err := ps.client.getEndpointCount(PerspectiveEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (ps *PerspectiveService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Perspective object.
 func (ps *PerspectiveService) ListFields() ([]string, error) {
-	fl, err := ps.client.GetEndpointFieldList(PerspectiveEndpoint)
+	fl, err := ps.client.getEndpointFieldList(PerspectiveEndpoint)
 	if err != nil {
 		return nil, err
 	}

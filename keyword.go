@@ -80,7 +80,7 @@ func (ks *KeywordService) Search(qry string, opts ...OptionFunc) ([]*Keyword, er
 // Provide the OptFilter functional option if you need to filter
 // which Keywords to count.
 func (ks *KeywordService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ks.client.GetEndpointCount(KeywordEndpoint, opts...)
+	ct, err := ks.client.getEndpointCount(KeywordEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -91,7 +91,7 @@ func (ks *KeywordService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Keyword object.
 func (ks *KeywordService) ListFields() ([]string, error) {
-	fl, err := ks.client.GetEndpointFieldList(KeywordEndpoint)
+	fl, err := ks.client.getEndpointFieldList(KeywordEndpoint)
 	if err != nil {
 		return nil, err
 	}

@@ -83,7 +83,7 @@ func (pgs *PulseGroupService) Search(qry string, opts ...OptionFunc) ([]*PulseGr
 // Provide the OptFilter functional option if you need to filter
 // which PulseGroups to count.
 func (pgs *PulseGroupService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := pgs.client.GetEndpointCount(PulseGroupEndpoint, opts...)
+	ct, err := pgs.client.getEndpointCount(PulseGroupEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -94,7 +94,7 @@ func (pgs *PulseGroupService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB PulseGroup object.
 func (pgs *PulseGroupService) ListFields() ([]string, error) {
-	fl, err := pgs.client.GetEndpointFieldList(PulseGroupEndpoint)
+	fl, err := pgs.client.getEndpointFieldList(PulseGroupEndpoint)
 	if err != nil {
 		return nil, err
 	}

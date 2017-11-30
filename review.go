@@ -92,7 +92,7 @@ func (rs *ReviewService) Search(qry string, opts ...OptionFunc) ([]*Review, erro
 // Provide the OptFilter functional option if you need to filter
 // which Reviews to count.
 func (rs *ReviewService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := rs.client.GetEndpointCount(ReviewEndpoint, opts...)
+	ct, err := rs.client.getEndpointCount(ReviewEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -103,7 +103,7 @@ func (rs *ReviewService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Review object.
 func (rs *ReviewService) ListFields() ([]string, error) {
-	fl, err := rs.client.GetEndpointFieldList(ReviewEndpoint)
+	fl, err := rs.client.getEndpointFieldList(ReviewEndpoint)
 	if err != nil {
 		return nil, err
 	}

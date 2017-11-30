@@ -79,7 +79,7 @@ func (gms *GameModeService) Search(qry string, opts ...OptionFunc) ([]*GameMode,
 // Provide the OptFilter functional option if you need to filter
 // which GameModes to count.
 func (gms *GameModeService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := gms.client.GetEndpointCount(GameModeEndpoint, opts...)
+	ct, err := gms.client.getEndpointCount(GameModeEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (gms *GameModeService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB GameMode object.
 func (gms *GameModeService) ListFields() ([]string, error) {
-	fl, err := gms.client.GetEndpointFieldList(GameModeEndpoint)
+	fl, err := gms.client.getEndpointFieldList(GameModeEndpoint)
 	if err != nil {
 		return nil, err
 	}

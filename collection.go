@@ -79,7 +79,7 @@ func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collecti
 // Provide the OptFilter functional option if you need to filter
 // which Collections to count.
 func (cs *CollectionService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := cs.client.GetEndpointCount(CollectionEndpoint, opts...)
+	ct, err := cs.client.getEndpointCount(CollectionEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (cs *CollectionService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Collection object.
 func (cs *CollectionService) ListFields() ([]string, error) {
-	fl, err := cs.client.GetEndpointFieldList(CollectionEndpoint)
+	fl, err := cs.client.getEndpointFieldList(CollectionEndpoint)
 	if err != nil {
 		return nil, err
 	}

@@ -79,7 +79,7 @@ func (ts *ThemeService) Search(qry string, opts ...OptionFunc) ([]*Theme, error)
 // Provide the OptFilter functional option if you need to filter
 // which Themes to count.
 func (ts *ThemeService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ts.client.GetEndpointCount(ThemeEndpoint, opts...)
+	ct, err := ts.client.getEndpointCount(ThemeEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (ts *ThemeService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Theme object.
 func (ts *ThemeService) ListFields() ([]string, error) {
-	fl, err := ts.client.GetEndpointFieldList(ThemeEndpoint)
+	fl, err := ts.client.getEndpointFieldList(ThemeEndpoint)
 	if err != nil {
 		return nil, err
 	}

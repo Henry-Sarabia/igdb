@@ -26,7 +26,7 @@ func TestGetEndpointFieldList(t *testing.T) {
 			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
-			fields, err := c.GetEndpointFieldList(testEndpoint)
+			fields, err := c.getEndpointFieldList(testEndpoint)
 			assertError(t, err, tt.ExpErr)
 
 			ok, err := equalSlice(fields, tt.ExpFields)
@@ -60,7 +60,7 @@ func TestGetEndpointCount(t *testing.T) {
 			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
-			count, err := c.GetEndpointCount(testEndpoint)
+			count, err := c.getEndpointCount(testEndpoint)
 			assertError(t, err, tt.ExpErr)
 
 			if count != tt.ExpCount {

@@ -85,7 +85,7 @@ func (cs *CharacterService) Search(qry string, opts ...OptionFunc) ([]*Character
 // Provide the OptFilter functional option if you need to filter
 // which Characters to count.
 func (cs *CharacterService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := cs.client.GetEndpointCount(CharacterEndpoint, opts...)
+	ct, err := cs.client.getEndpointCount(CharacterEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -96,7 +96,7 @@ func (cs *CharacterService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Character object.
 func (cs *CharacterService) ListFields() ([]string, error) {
-	fl, err := cs.client.GetEndpointFieldList(CharacterEndpoint)
+	fl, err := cs.client.getEndpointFieldList(CharacterEndpoint)
 	if err != nil {
 		return nil, err
 	}

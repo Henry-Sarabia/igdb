@@ -128,7 +128,7 @@ func (ps *PlatformService) Search(qry string, opts ...OptionFunc) ([]*Platform, 
 // Provide the OptFilter functional option if you need to filter
 // which Platforms to count.
 func (ps *PlatformService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := ps.client.GetEndpointCount(PlatformEndpoint, opts...)
+	ct, err := ps.client.getEndpointCount(PlatformEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -139,7 +139,7 @@ func (ps *PlatformService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Platform object.
 func (ps *PlatformService) ListFields() ([]string, error) {
-	fl, err := ps.client.GetEndpointFieldList(PlatformEndpoint)
+	fl, err := ps.client.getEndpointFieldList(PlatformEndpoint)
 	if err != nil {
 		return nil, err
 	}

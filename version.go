@@ -76,7 +76,7 @@ func (vs *VersionService) List(ids []int, opts ...OptionFunc) ([]*Version, error
 // Provide the OptFilter functional option if you need to filter
 // which Versions to count.
 func (vs *VersionService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := vs.client.GetEndpointCount(VersionEndpoint, opts...)
+	ct, err := vs.client.getEndpointCount(VersionEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -87,7 +87,7 @@ func (vs *VersionService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Version object.
 func (vs *VersionService) ListFields() ([]string, error) {
-	fl, err := vs.client.GetEndpointFieldList(VersionEndpoint)
+	fl, err := vs.client.getEndpointFieldList(VersionEndpoint)
 	if err != nil {
 		return nil, err
 	}

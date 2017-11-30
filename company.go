@@ -93,7 +93,7 @@ func (cs *CompanyService) Search(qry string, opts ...OptionFunc) ([]*Company, er
 // Provide the OptFilter functional option if you need to filter
 // which Companies to count.
 func (cs *CompanyService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := cs.client.GetEndpointCount(CompanyEndpoint, opts...)
+	ct, err := cs.client.getEndpointCount(CompanyEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -104,7 +104,7 @@ func (cs *CompanyService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Company object.
 func (cs *CompanyService) ListFields() ([]string, error) {
-	fl, err := cs.client.GetEndpointFieldList(CompanyEndpoint)
+	fl, err := cs.client.getEndpointFieldList(CompanyEndpoint)
 	if err != nil {
 		return nil, err
 	}

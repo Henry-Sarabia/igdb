@@ -178,7 +178,7 @@ func (gs *GameService) Search(qry string, opts ...OptionFunc) ([]*Game, error) {
 // Provide the OptFilter functional option if you need to filter
 // which Games to count.
 func (gs *GameService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := gs.client.GetEndpointCount(GameEndpoint, opts...)
+	ct, err := gs.client.getEndpointCount(GameEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -189,7 +189,7 @@ func (gs *GameService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Game object.
 func (gs *GameService) ListFields() ([]string, error) {
-	fl, err := gs.client.GetEndpointFieldList(GameEndpoint)
+	fl, err := gs.client.getEndpointFieldList(GameEndpoint)
 	if err != nil {
 		return nil, err
 	}

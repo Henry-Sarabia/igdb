@@ -79,7 +79,7 @@ func (fs *FranchiseService) Search(qry string, opts ...OptionFunc) ([]*Franchise
 // Provide the OptFilter functional option if you need to filter
 // which Franchises to count.
 func (fs *FranchiseService) Count(opts ...OptionFunc) (int, error) {
-	ct, err := fs.client.GetEndpointCount(FranchiseEndpoint, opts...)
+	ct, err := fs.client.getEndpointCount(FranchiseEndpoint, opts...)
 	if err != nil {
 		return 0, err
 	}
@@ -90,7 +90,7 @@ func (fs *FranchiseService) Count(opts ...OptionFunc) (int, error) {
 // ListFields returns the up-to-date list of fields in an
 // IGDB Franchise object.
 func (fs *FranchiseService) ListFields() ([]string, error) {
-	fl, err := fs.client.GetEndpointFieldList(FranchiseEndpoint)
+	fl, err := fs.client.getEndpointFieldList(FranchiseEndpoint)
 	if err != nil {
 		return nil, err
 	}
