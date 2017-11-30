@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Platform endpoint.
 type PlatformService service
 
-// Platform contains information on an IGDB entry
-// for the particular hardware used to run a game
-// or game delivery network.
+// Platform contains information on an IGDB entry for the particular
+// hardware used to run a game or game delivery network.
 type Platform struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`
@@ -26,9 +25,8 @@ type Platform struct {
 	Versions      []PlatformVersion `json:"versions"`
 }
 
-// PlatformVersion contains information on an
-// IGDB entry for a particular version of a
-// Platform.
+// PlatformVersion contains information on an IGDB
+// entry for a particular version of a Platform.
 type PlatformVersion struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`
@@ -53,17 +51,15 @@ type PlatformVersion struct {
 	Manufacturers []PlatformCompany `json:"manufacturers"`
 }
 
-// PlatformDate contains information
-// on the release date for a particular
-// PlatformVersion.
+// PlatformDate contains information on the
+// release date for a particular PlatformVersion.
 type PlatformDate struct {
 	Date   int        `json:"date"` // Unix time in milliseconds
 	Region RegionCode `json:"region"`
 }
 
-// PlatformCompany contains information
-// on an IGDB entry for a company that
-// worked on a particular platform.
+// PlatformCompany contains information on an IGDB entry
+// for a company that worked on a particular platform.
 type PlatformCompany struct {
 	Company int    `json:"company"`
 	Comment string `json:"comment"`

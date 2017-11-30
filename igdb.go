@@ -25,15 +25,16 @@ var (
 // URL represents a URL as a string.
 type URL string
 
-// service is the underlying struct that
-// handles all API calls for different
-// IGDB endpoints.
+// service is the underlying struct that handles
+// all API calls for different IGDB endpoints.
 type service struct {
 	client *Client
 }
 
-// Client wraps a typical http.Client.
-// Client is used for all IGDB API calls.
+// Client wraps an HTTP Client used to communicate with the IGDB,
+// the root URL of the IGDB, and the user's IGDB API key.
+// Client also initializes all the separate services to communicate
+// with each individual IGDB API endpoint.
 type Client struct {
 	http    *http.Client
 	rootURL string
@@ -67,11 +68,10 @@ type Client struct {
 	Versions     *VersionService
 }
 
-// NewClient returns a new Client set with a default HTTP
-// client and the default IGDB root URL.
-
 // NewClient returns a new Client configured to communicate with the IGDB.
-// The provided apiKey will be used to make requests on your behalf.
+// The provided apiKey will be used to make requests on your behalf. The
+// provided HTTP Client will be the client making requests to the IGDB.
+// If no HTTP Client is provided, a default HTTP client is used instead.
 //
 // If you need an IGDB API key, please visit: https://api.igdb.com/signup
 func NewClient(apiKey string, custom *http.Client) *Client {
@@ -113,6 +113,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 
 // get sends a GET request to the provided url and stores
 // the response in the provided result empty interface.
+// The response will be checked and return any errors.
 func (c *Client) get(url string, result interface{}) error {
 	req, err := c.newRequest(url)
 	if err != nil {
@@ -231,8 +232,7 @@ func (c *Client) countURL(end endpoint, opts ...OptionFunc) (string, error) {
 	return url, nil
 }
 
-// Byte representations of ASCII characters.
-// Used for empty result checks.
+// Byte representations of ASCII characters. Used for empty result checks.
 const (
 	// openBracketASCII represents the ASCII code for an open bracket.
 	openBracketASCII = 91
@@ -240,9 +240,8 @@ const (
 	closedBracketASCII = 93
 )
 
-// checkResults checks if the results of an API call are
-// an empty array. If they are, an error is returned.
-// Otherwise, nil is returned.
+// checkResults checks if the results of an API call are an empty array.
+// If they are, an error is returned. Otherwise, nil is returned.
 func checkResults(r []byte) error {
 	if len(r) != 2 {
 		return nil
@@ -255,9 +254,8 @@ func checkResults(r []byte) error {
 	return nil
 }
 
-// intsToStrings is a helper function that
-// converts a slice of ints to a slice of
-// strings.
+// intsToStrings is a helper function that converts a slice of ints to a
+// slice of strings.
 func intsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
@@ -266,9 +264,8 @@ func intsToStrings(ints []int) []string {
 	return str
 }
 
-// intsToCommaString is a helper function that
-// returns a comma separated list of ints as
-// a single string.
+// intsToCommaString is a helper function that returns a comma separated
+// list of ints as a single string.
 func intsToCommaString(ints []int) string {
 	s := intsToStrings(ints)
 	return strings.Join(s, ",")

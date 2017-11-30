@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Engine endpoint.
 type EngineService service
 
-// Engine contains information on an
-// IGDB entry for a particular video
-// game engine.
+// Engine contains information on an IGDB
+// entry for a particular video game engine.
 type Engine struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

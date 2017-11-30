@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Review endpoint.
 type ReviewService service
 
-// Review contains information on an
-// IGDB entry for a review on a particular
-// video game.
+// Review contains information on an IGDB entry
+// for a review on a particular video game.
 type Review struct {
 	ID             int    `json:"id"`
 	Username       string `json:"username"`

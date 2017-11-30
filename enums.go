@@ -1,34 +1,24 @@
 package igdb
 
-// CountryCode is a code representing
-// a country according to the ISO-3316-1
-// standard. For the full list of codes,
-// visit: https://en.wikipedia.org/wiki/ISO_3166-1_numeric
+// CountryCode is a code representing a country according to the ISO-3316-1
+// standard.
+//
+// For the full list of codes, visit: https://en.wikipedia.org/wiki/ISO_3166-1_numeric
 type CountryCode int
 
-// CreditCategory represents the IGDB
-// enumerated type Credit Category which
-// describes the type of an entry in an
-// end credits list. Use the Stringer
-// interface to access the corresponding
-// Credit Category values as strings.
+// CreditCategory represents the IGDB enumerated type Credit Category which
+// describes the type of an entry in an end credits list. Use the Stringer
+// interface to access the corresponding Credit Category values as strings.
 type CreditCategory int
 
-// DateCategory represents the IGDB
-// enumerated type Date Category which
-// describes the format of a release
-// date. Use the Stringer interface to
-// access the corresponding Date Category
-// values as strings.
+// DateCategory represents the IGDB enumerated type Date Category which
+// describes the format of a release date. Use the Stringer interface to
+// access the corresponding Date Category values as strings.
 type DateCategory int
 
-// ESRBCode represents the IGDB
-// enumerated type ESRB Rating which
-// describes the recommended age group
-// for consumers of a specific game.
-// Use the Stringer interface to
-// access the corresponding ESRB Rating
-// values as strings.
+// ESRBCode represents the IGDB enumerated type ESRB Rating which describes
+// the recommended age group for consumers of a specific game. Use the
+// Stringer interface to access the corresponding ESRB Rating values as strings.
 type ESRBCode int
 
 // FeatureCategory represents the IGDB enumerated type Feature Category which
@@ -38,75 +28,52 @@ type ESRBCode int
 // values as strings.
 type FeatureCategory int
 
-// FeedCategory represents the IGDB
-// enumerated type Feed Item Category
-// which describes the type of a feed
-// item in a specific feed. Use the
-// Stringer interface to access the
-// corresponding Feed Item Category
-// values as strings.
+// FeedCategory represents the IGDB enumerated type Feed Item Category which
+// describes the type of a feed item in a specific feed. Use the Stringer
+// interface to access the corresponding Feed Item Category values as strings.
 type FeedCategory int
 
-// GameCategory represents the IGDB
-// enumerated type Game Category which
-// describes a type of game content.
-// Use the Stringer interface to access
-// the corresponding Game Category
-// values as strings.
+// GameCategory represents the IGDB enumerated type Game Category which
+// describes a type of game content. Use the Stringer interface to access
+// the corresponding Game Category values as strings.
 type GameCategory int
 
-// GameStatus represents the IGDB
-// enumerated type Game Status which
-// describes the release status of
-// a specific game. Use the Stringer
-// interface to access the corresponding
-// Game Status values as strings.
+// GameStatus represents the IGDB enumerated type Game Status which describes
+// the release status of a specific game. Use the Stringer interface to access
+// the corresponding Game Status values as strings.
 type GameStatus int
 
-// GenderCode represents the IGDB
-// enumerated type Gender which describes
-// the gender of a specific entity. Use
-// the Stringer interface to access the
+// GenderCode represents the IGDB enumerated type Gender which describes the
+// gender of a specific entity. Use the Stringer interface to access the
 // corresponding Gender values as strings.
 type GenderCode int
 
-// PEGICode represents the IGDB
-// enumerated type PEGI Rating which
-// describes the recommended minimum
-// age for consumers of a specific
-// game. Use the Stringer interface to
-// access the corresponding PEGI Rating
-// values as strings.
+// PEGICode represents the IGDB enumerated type PEGI Rating which describes
+// the recommended minimum age for consumers of a specific game. Use the
+// Stringer interface to access the corresponding PEGI Rating values as strings.
 type PEGICode int
 
-// RegionCode represents the IGDB
-// enumerated type Region which describes
-// a geographic region. Use the Stringer
-// interface to access the corresponding
+// RegionCode represents the IGDB enumerated type Region which describes a
+// geographic region. Use the Stringer interface to access the corresponding
 // Region values as strings.
 type RegionCode int
 
-// SpeciesCode represents the IGDB
-// enumerated type Species which describes
-// the species of a specific entity. Use
-// the Stringer interface to access the
+// SpeciesCode represents the IGDB enumerated type Species which describes the
+// species of a specific entity. Use the Stringer interface to access the
 // corresponding species values as strings.
 type SpeciesCode int
 
-// WebsiteCategory represents the IGDB
-// enumerated type Website Category which
-// simply describes the category in which
-// a website or URL falls under. Use the
-// Stringer interface to access the
-// corresponding category values as strings.
+// WebsiteCategory represents the IGDB enumerated type Website Category which
+// simply describes the category in which a website or URL falls under.
+// Use the Stringer interface to access the corresponding category values
+// as strings.
 type WebsiteCategory int
 
-// CreditCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated type
-// Credit Category and returns the category as a string.
-// Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/credit-category/
+// CreditCategory implements the Stringer interface by matching its code with
+// the IGDBs enumerated type Credit Category and returns the category as a
+// string. Codes with no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/credit-category/
 func (c CreditCategory) String() string {
 	switch c {
 	case 1:
@@ -126,12 +93,11 @@ func (c CreditCategory) String() string {
 	}
 }
 
-// DateCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated type
-// Date Category and returns the category as a string.
-// Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/date-category/
+// DateCategory implements the Stringer interface by matching its code with
+// the IGDBs enumerated type Date Category and returns the category as a
+// string. Codes with no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/date-category/
 func (d DateCategory) String() string {
 	switch d {
 	case 0:
@@ -155,12 +121,11 @@ func (d DateCategory) String() string {
 	}
 }
 
-// ESRBCode implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type ESRB Rating and returns the rating as a
-// string. Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/esrb-rating/
+// ESRBCode implements the Stringer interface by matching its code with the
+// IGDBs enumerated type ESRB Rating and returns the rating as a string.
+// Codes with no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/esrb-rating/
 func (e ESRBCode) String() string {
 	switch e {
 	case 1:
@@ -184,8 +149,9 @@ func (e ESRBCode) String() string {
 
 // FeatureCategory implements the Stringer interface by matching its code with
 // the IGDB's enumerated type Feature Category and returned the category as a
-// string. Codes with no match will return "Undefined". For the list of codes,
-// visit: https://igdb.github.io/api/endpoints/versions/
+// string. Codes with no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/endpoints/versions/
 func (f FeatureCategory) String() string {
 	switch f {
 	case 0:
@@ -199,12 +165,11 @@ func (f FeatureCategory) String() string {
 	}
 }
 
-// FeedCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type Feed Item Category and returns the category
-// as a string. Codes with no match will return
-// "Undefined". For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/feed-item-category/
+// FeedCategory implements the Stringer interface by matching its code with
+// the IGDBs enumerated type Feed Item Category and returns the category as
+// a string. Codes with no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/feed-item-category/
 func (f FeedCategory) String() string {
 	switch f {
 	case 1:
@@ -224,12 +189,11 @@ func (f FeedCategory) String() string {
 	}
 }
 
-// GameCategory implements the stringer interface
-// by matching its code with the IGDBs enumerated type
-// Game Category and returns the category as a string.
+// GameCategory implements the stringer interface by matching its code with the
+// IGDBs enumerated type Game Category and returns the category as a string.
 // Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/game-category/
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-category/
 func (g GameCategory) String() string {
 	switch g {
 	case 0:
@@ -247,12 +211,11 @@ func (g GameCategory) String() string {
 	}
 }
 
-// GameStatus implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// Game Status type and returns the status as a
-// string. Codes with no match return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/game-status/
+// GameStatus implements the Stringer interface by matching its code with the
+// IGDBs enumerated Game Status type and returns the status as a string.
+// Codes with no match return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-status/
 func (g GameStatus) String() string {
 	switch g {
 	case 0:
@@ -272,12 +235,11 @@ func (g GameStatus) String() string {
 	}
 }
 
-// GenderCode implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type Gender and returns the value as a string.
-// Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/gender/
+// GenderCode implements the Stringer interface by matching its code with the
+// IGDBs enumerated type Gender and returns the value as a string. Codes with
+// no match will return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/gender/
 func (g GenderCode) String() string {
 	switch g {
 	case 0:
@@ -291,12 +253,11 @@ func (g GenderCode) String() string {
 	}
 }
 
-// PEGICode implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type PEGI Rating and returns the value as a string.
+// PEGICode implements the Stringer interface by matching its code with the
+// IGDBs enumerated type PEGI Rating and returns the value as a string.
 // Codes with no match will return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/pegi-rating/
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/pegi-rating/
 func (p PEGICode) String() string {
 	switch p {
 	case 1:
@@ -314,12 +275,11 @@ func (p PEGICode) String() string {
 	}
 }
 
-// RegionCode implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type Region and returns the value as a string.
-// Codes with no match return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/region/
+// RegionCode implements the Stringer interface by matching its code with the
+// IGDBs enumerated type Region and returns the value as a string. Codes with
+// no match return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/region/
 func (r RegionCode) String() string {
 	switch r {
 	case 1:
@@ -343,13 +303,12 @@ func (r RegionCode) String() string {
 	}
 }
 
-// String will return the enumerated type as a string
-// corresponding to its IGDB code. For more information,
-// SpeciesCode implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// type Species and returns the value as a string.
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/species/
+// String will return the enumerated type as a string corresponding to its
+// IGDB code. For more information, SpeciesCode implements the Stringer
+// interface by matching its code with the IGDBs enumerated type Species
+// and returns the value as a string.
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/species/
 func (s SpeciesCode) String() string {
 	switch s {
 	case 1:
@@ -367,12 +326,11 @@ func (s SpeciesCode) String() string {
 	}
 }
 
-// WebsiteCategory implements the Stringer interface
-// by matching its code with the IGDBs enumerated
-// Website Category and returns the value as a
-// string. Codes with no match return "Undefined".
-// For the list of codes, visit:
-// https://igdb.github.io/api/enum-fields/website-category/
+// WebsiteCategory implements the Stringer interface by matching its code with
+// the IGDBs enumerated Website Category and returns the value as a string.
+// Codes with no match return "Undefined".
+//
+// For the list of codes, visit: https://igdb.github.io/api/enum-fields/website-category/
 func (w WebsiteCategory) String() string {
 	switch w {
 	case 1:

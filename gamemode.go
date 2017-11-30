@@ -4,8 +4,7 @@ package igdb
 // calls for the IGDB GameMode endpoint.
 type GameModeService service
 
-// GameMode contains information on an
-// IGDB entry for a particular game mode
+// GameMode contains information on an IGDB entry for a particular game mode
 // (e.g. single player, multiplayer).
 type GameMode struct {
 	ID        int    `json:"id"`

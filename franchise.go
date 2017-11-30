@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Franchise endpoint.
 type FranchiseService service
 
-// Franchise contains information on an
-// IGDB entry for a particular video game
-// franchise.
+// Franchise contains information on an IGDB
+// entry for a particular video game franchise.
 type Franchise struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

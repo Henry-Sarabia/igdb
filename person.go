@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Person endpoint.
 type PersonService service
 
-// Person contains information on an IGDB
-// entry for a particular individual who
-// works in the video game industry.
+// Person contains information on an IGDB entry for a particular
+// individual who works in the video game industry.
 type Person struct {
 	ID          int         `json:"id"`
 	Name        string      `json:"name"`

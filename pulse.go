@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Pulse endpoint.
 type PulseService service
 
-// PulseVideo contains the ID and
-// category for a video related to
-// a pulse.
+// PulseVideo contains the ID and category
+// for a video related to a pulse.
 type PulseVideo struct {
 	Category int    `json:"category"`
 	ID       string `json:"video_id"`

@@ -22,8 +22,7 @@ var (
 	ErrNotSlice = errors.New("igdb: not a slice")
 )
 
-// testHeader mocks a single HTTP header
-// entry with a key and value field.
+// testHeader mocks a single HTTP header entry with a key and value field.
 type testHeader struct {
 	Key   string
 	Value string
@@ -85,6 +84,7 @@ func assertError(t *testing.T, err error, expErr string) {
 
 // equalSlice returns true if two slices contain
 // the same elements, otherwise it returns false.
+//
 // Adapted from github.com/emou/testify/assert/assertions.go
 func equalSlice(x, y interface{}) (bool, error) {
 	if x == nil || y == nil {

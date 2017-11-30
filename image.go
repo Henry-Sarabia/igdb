@@ -13,8 +13,7 @@ var (
 	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
 )
 
-// Image contains the URL, dimensions,
-// and Cloudinary ID of a particular image.
+// Image contains the URL, dimensions, and Cloudinary ID of a particular image.
 type Image struct {
 	URL    URL    `json:"url"`
 	ID     string `json:"cloudinary_id"`
@@ -22,13 +21,12 @@ type Image struct {
 	Height int    `json:"height"`
 }
 
-// imageSize is the size of the image
-// being hosted at a given URL.
+// imageSize is the size of an image from the IGDB API.
 type imageSize string
 
-// The precise size of an image is unknown. The
-// imageSizes are solely the maximum size of an
-// image hosted at a given URL.
+// These are the currently available image sizes supported by the IGDB API.
+// Note that these are not the precise size of an image, but rather the
+// maximum possible size of the referenced image.
 const (
 	// SizeCoverSmall is sized at 90x128.
 	SizeCoverSmall imageSize = "cover_small"
@@ -52,11 +50,11 @@ const (
 	Size1080p imageSize = "1080p"
 )
 
-// SizedImageURL returns the URL of an image identified by the provided ImageID,
+// SizedImageURL returns the URL of an image identified by the provided imageID,
 // image size, and display pixel ratio. The display pixel ratio only multiplies
 // the resolution of the image. The current available ratios are 1 and 2.
-func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
-	if ImageID == "" {
+func SizedImageURL(imageID string, size imageSize, ratio int) (string, error) {
+	if imageID == "" {
 		return "", ErrEmptyID
 	}
 
@@ -71,7 +69,7 @@ func SizedImageURL(ImageID string, size imageSize, ratio int) (string, error) {
 		return "", ErrPixelRatio
 	}
 
-	url := fmt.Sprintf("https://images.igdb.com/igdb/image/upload/t_%s%s/%s.jpg", size, dpr, ImageID)
+	url := fmt.Sprintf("https://images.igdb.com/igdb/image/upload/t_%s%s/%s.jpg", size, dpr, imageID)
 	return url, nil
 }
 

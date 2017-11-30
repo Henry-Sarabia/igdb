@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Theme endpoint.
 type ThemeService service
 
-// Theme contains information on an IGDB
-// entry for a particular video game theme
-// (e.g. Fantasy or Horror).
+// Theme contains information on an IGDB entry for a
+// particular video game theme (e.g. Fantasy or Horror).
 type Theme struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

@@ -4,8 +4,7 @@ package igdb
 // calls for the IGDB Game endpoint.
 type GameService service
 
-// Game contains information on an IGDB
-// entry for a particular video game.
+// Game contains information on an IGDB entry for a particular video game.
 type Game struct {
 	ID                   int            `json:"id"`
 	Name                 string         `json:"name"`

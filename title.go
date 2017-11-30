@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Title endpoint.
 type TitleService service
 
-// Title contains information on an
-// IGDB entry for a particular job
-// title in the video game industry.
+// Title contains information on an IGDB entry for
+// a particular job title in the video game industry.
 type Title struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`

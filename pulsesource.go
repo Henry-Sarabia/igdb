@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB PulseSource endpoint.
 type PulseSourceService service
 
-// PulseSource contains information
-// on an IGDB entry for a specific
-// news source.
+// PulseSource contains information on
+// an IGDB entry for a specific news source.
 type PulseSource struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`

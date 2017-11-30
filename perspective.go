@@ -4,10 +4,8 @@ package igdb
 // calls for the IGDB Perspective endpoint.
 type PerspectiveService service
 
-// Perspective contains information on
-// an IGDB entry for a particular player
-// perspective (e.g. first-person or
-// virtual reality).
+// Perspective contains information on an IGDB entry for a particular
+// player perspective (e.g. first-person or virtual reality).
 type Perspective struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

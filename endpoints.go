@@ -2,7 +2,7 @@ package igdb
 
 type endpoint string
 
-// Endpoints to their respective IGDB endpoints
+// These are the available IGDB API endpoints.
 const (
 	CharacterEndpoint   endpoint = "characters/"
 	CollectionEndpoint  endpoint = "collections/"
@@ -50,8 +50,7 @@ func (c *Client) GetEndpointFieldList(end endpoint) ([]string, error) {
 	return f, nil
 }
 
-// GetEndpointCount returns the count of entities available for
-// the given IGDB endpoint.
+// GetEndpointCount returns the count of entities available for the given IGDB endpoint.
 func (c *Client) GetEndpointCount(end endpoint, opts ...OptionFunc) (int, error) {
 	url, err := c.countURL(end, opts...)
 	if err != nil {

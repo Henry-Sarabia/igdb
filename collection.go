@@ -4,9 +4,8 @@ package igdb
 // calls for the IGDB Collection endpoint.
 type CollectionService service
 
-// Collection contains information on an
-// IGDB entry for a particular video game
-// series.
+// Collection contains information on an IGDB
+// entry for a particular video game series.
 type Collection struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

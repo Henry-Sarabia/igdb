@@ -2,12 +2,10 @@ package igdb
 
 import "strings"
 
-// Encoder is implemented by any values that has
-// an encode method, which returns the encoded
-// format for that value. The Encode method is
-// used to print a case-sensitive key value map
-// used for query parameters or form values as a
-// string.
+// Encoder is implemented by any values that has an encode method, which
+// returns the encoded format for that value. The Encode method is used
+// to print a case-sensitive key value map used for query parameters or
+// form values as a string.
 type Encoder interface {
 	Encode() string
 }

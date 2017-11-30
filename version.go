@@ -16,8 +16,8 @@ type Version struct {
 	Features  []Feature `json:"features"`
 }
 
-// Feature contains information on a feature included with a particular
-// version of a game.
+// Feature contains information on a feature
+// included with a particular version of a game.
 type Feature struct {
 	Title       string          `json:"title"`
 	Description string          `json:"description"`
@@ -26,10 +26,7 @@ type Feature struct {
 	Values      []FeatureValue  `json:"values"`
 }
 
-// FeatureValue describes a type of Feature. For example, a Feature
-// can either be a boolean, that is a particular version of a game
-// either contains the feature or not, or it can contain specific
-// information on
+// FeatureValue describes a type of Feature.
 type FeatureValue struct {
 	Game  int    `json:"game"`
 	Value string `json:"value"`
