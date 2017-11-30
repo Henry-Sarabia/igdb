@@ -74,6 +74,26 @@ func TestESRBCode(t *testing.T) {
 	}
 }
 
+func TestFeatureCategory(t *testing.T) {
+	var featureTests = []struct {
+		Name      string
+		Feature   FeatureCategory
+		ExpString string
+	}{
+		{"Boolean", FeatureCategory(0), "Boolean. String should either be “1” or “0” (yes or no)."},
+		{"String", FeatureCategory(1), "String. Free text."},
+		{"Empty String", FeatureCategory(2), "Preorder only. Whether the feature is only available in preorder. Value is always an empty string."},
+		{"Undefined default", FeatureCategory(100), "Undefined"},
+	}
+	for _, tt := range featureTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			if tt.Feature.String() != tt.ExpString {
+				t.Errorf("Expected Feature Category '%s', got '%s'", tt.ExpString, tt.Feature.String())
+			}
+		})
+	}
+}
+
 func TestFeedCategory(t *testing.T) {
 	var feedTests = []struct {
 		Name      string

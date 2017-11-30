@@ -1,0 +1,73 @@
+[{
+    "id": 100,
+    "game": 7346,
+    "created_at": 1352059968884,
+    "updated_at": 1352059968884,
+    "games": [
+        1748,
+        1751,
+        1749,
+        1743
+    ],
+    "url": "https://www.igdb.com/games/mega-man-x",
+    "features": [
+        {
+            "title": "X-Buster",
+            "description": "Online copies only.",
+            "category": 0,
+            "position": 1,
+            "values": [
+                {
+                    "game": 1751,
+                    "value": ""
+                },
+                {
+                    "game": 1748,
+                    "value": "1"
+                },
+                {
+                    "game": 1749,
+                    "value": "1"
+                },
+                {
+                    "game": 1743,
+                    "value": ""
+                }
+            ]
+        }
+    ]
+},
+{
+    "id": 200,
+    "game": 1,
+    "created_at": 1298843586000,
+    "updated_at": 1323289207000,
+    "games": [
+        20,
+        10047,
+        21
+    ],
+    "url": "https://www.igdb.com/games/bioshock",
+    "features": [
+        {
+            "title": "Big Daddy Statuette",
+            "description": "Retail only.",
+            "category": 0,
+            "position": 1,
+            "values": [
+                {
+                    "game": 20,
+                    "value": ""
+                },
+                {
+                    "game": 10047,
+                    "value": "1"
+                },
+                {
+                    "game": 21,
+                    "value": ""
+                }
+            ]
+        }
+    ]
+}]

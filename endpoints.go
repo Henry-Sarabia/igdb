@@ -26,6 +26,7 @@ const (
 	ReviewEndpoint      endpoint = "reviews/"
 	ThemeEndpoint       endpoint = "themes/"
 	TitleEndpoint       endpoint = "titles/"
+	VersionEndpoint     endpoint = "game_versions/"
 )
 
 // Count contains the number of objects

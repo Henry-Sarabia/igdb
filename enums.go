@@ -31,6 +31,13 @@ type DateCategory int
 // values as strings.
 type ESRBCode int
 
+// FeatureCategory represents the IGDB enumerated type Feature Category which
+// describes a type of feature value. The Feature value can either be a
+// Boolean, a string, or an empty string which means "Preorder Only". Use
+// the Stringer interface to access the corresponding Feature Category
+// values as strings.
+type FeatureCategory int
+
 // FeedCategory represents the IGDB
 // enumerated type Feed Item Category
 // which describes the type of a feed
@@ -170,6 +177,23 @@ func (e ESRBCode) String() string {
 		return "M"
 	case 7:
 		return "AO"
+	default:
+		return "Undefined"
+	}
+}
+
+// FeatureCategory implements the Stringer interface by matching its code with
+// the IGDB's enumerated type Feature Category and returned the category as a
+// string. Codes with no match will return "Undefined". For the list of codes,
+// visit: https://igdb.github.io/api/endpoints/versions/
+func (f FeatureCategory) String() string {
+	switch f {
+	case 0:
+		return "Boolean. String should either be “1” or “0” (yes or no)."
+	case 1:
+		return "String. Free text."
+	case 2:
+		return "Preorder only. Whether the feature is only available in preorder. Value is always an empty string."
 	default:
 		return "Undefined"
 	}
