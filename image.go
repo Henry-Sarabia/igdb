@@ -14,6 +14,8 @@ var (
 )
 
 // Image contains the URL, dimensions, and Cloudinary ID of a particular image.
+//
+// For more information, visit: https://igdb.github.io/api/references/images/
 type Image struct {
 	URL    URL    `json:"url"`
 	ID     string `json:"cloudinary_id"`

@@ -4,15 +4,10 @@ package igdb
 // calls for the IGDB Pulse endpoint.
 type PulseService service
 
-// PulseVideo contains the ID and category
-// for a video related to a pulse.
-type PulseVideo struct {
-	Category int    `json:"category"`
-	ID       string `json:"video_id"`
-}
-
 // Pulse contains information on an IGDB
 // entry for a single news article.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/pulse/
 type Pulse struct {
 	ID          int          `json:"id"`
 	PulseSource int          `json:"pulse_source"`
@@ -30,6 +25,13 @@ type Pulse struct {
 	Author      string       `json:"author"`
 	Tags        []Tag        `json:"tags"`
 	Ignored     interface{}  `json:"ignored"`
+}
+
+// PulseVideo contains the ID and category
+// for a video related to a pulse.
+type PulseVideo struct {
+	Category int    `json:"category"`
+	ID       string `json:"video_id"`
 }
 
 // Get returns a single Pulse identified by the provided IGDB ID. Provide

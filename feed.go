@@ -7,6 +7,8 @@ type FeedService service
 // Feed contains information on an IGDB entry for a social feed composed of
 // status updates, media, and news articles. Feed does not support the search
 // function.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/feed/
 type Feed struct {
 	ID          int          `json:"id"`
 	Name        string       `json:"name"`

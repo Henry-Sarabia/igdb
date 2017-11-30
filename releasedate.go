@@ -7,6 +7,8 @@ type ReleaseDateService service
 // ReleaseDate contains information on an IGDB entry for a particular release
 // date. ReleaseDate is used primarily as an extension to the Game endpoint.
 // ReleaseDate does not support the search function.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/release-date/
 type ReleaseDate struct {
 	ID        int          `json:"id"`
 	Game      int          `json:"game"`

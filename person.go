@@ -6,6 +6,8 @@ type PersonService service
 
 // Person contains information on an IGDB entry for a particular
 // individual who works in the video game industry.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/person/
 type Person struct {
 	ID          int         `json:"id"`
 	Name        string      `json:"name"`

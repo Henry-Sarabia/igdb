@@ -6,6 +6,8 @@ type GenreService service
 
 // Genre contains information on an IGDB
 // entry for a particular video game genre.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/genre/
 type Genre struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

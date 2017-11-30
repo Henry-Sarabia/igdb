@@ -6,6 +6,8 @@ type CharacterService service
 
 // Character contains information on an IGDB
 // entry for a particular video game character.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/character/
 type Character struct {
 	ID          int         `json:"id"`
 	Name        string      `json:"name"`

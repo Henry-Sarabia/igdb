@@ -6,6 +6,8 @@ type PulseSourceService service
 
 // PulseSource contains information on
 // an IGDB entry for a specific news source.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/pulse-source/
 type PulseSource struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`

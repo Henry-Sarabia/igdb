@@ -6,6 +6,8 @@ type PerspectiveService service
 
 // Perspective contains information on an IGDB entry for a particular
 // player perspective (e.g. first-person or virtual reality).
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/player-perspective/
 type Perspective struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

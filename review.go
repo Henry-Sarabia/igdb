@@ -6,6 +6,8 @@ type ReviewService service
 
 // Review contains information on an IGDB entry
 // for a review on a particular video game.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/review/
 type Review struct {
 	ID             int    `json:"id"`
 	Username       string `json:"username"`

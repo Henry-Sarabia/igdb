@@ -6,6 +6,8 @@ type GameModeService service
 
 // GameMode contains information on an IGDB entry for a particular game mode
 // (e.g. single player, multiplayer).
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/game-mode/
 type GameMode struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

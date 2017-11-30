@@ -7,6 +7,8 @@ type CompanyService service
 // Company contains information on an IGDB entry
 // for a particular video game company, including
 // both publishers and developers.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/company/
 type Company struct {
 	ID                 int          `json:"ID"`
 	Name               string       `json:"name"`

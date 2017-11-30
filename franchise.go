@@ -6,6 +6,8 @@ type FranchiseService service
 
 // Franchise contains information on an IGDB
 // entry for a particular video game franchise.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/franchise/
 type Franchise struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

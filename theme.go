@@ -6,6 +6,8 @@ type ThemeService service
 
 // Theme contains information on an IGDB entry for a
 // particular video game theme (e.g. Fantasy or Horror).
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/theme/
 type Theme struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

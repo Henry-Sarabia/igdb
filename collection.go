@@ -6,6 +6,8 @@ type CollectionService service
 
 // Collection contains information on an IGDB
 // entry for a particular video game series.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/collection/
 type Collection struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

@@ -6,6 +6,8 @@ type EngineService service
 
 // Engine contains information on an IGDB
 // entry for a particular video game engine.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/game-engine/
 type Engine struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

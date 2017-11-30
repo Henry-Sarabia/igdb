@@ -6,6 +6,8 @@ type PageService service
 
 // Page contains information on an IGDB entry for a multipurpose
 // page used for Youtubers and media corporations.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/page/
 type Page struct {
 	ID              int         `json:"id"`
 	Slug            string      `json:"slug"`

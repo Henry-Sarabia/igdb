@@ -6,6 +6,8 @@ type PlatformService service
 
 // Platform contains information on an IGDB entry for the particular
 // hardware used to run a game or game delivery network.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/platform/
 type Platform struct {
 	ID            int               `json:"id"`
 	Name          string            `json:"name"`

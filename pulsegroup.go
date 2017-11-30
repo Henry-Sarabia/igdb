@@ -6,6 +6,8 @@ type PulseGroupService service
 
 // PulseGroup contains information on an
 // IGDB entry for a group of news articles.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/pulse-group/
 type PulseGroup struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`

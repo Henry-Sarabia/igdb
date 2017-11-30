@@ -7,6 +7,8 @@ type CreditService service
 // Credit contains information on an IGDB entry
 // for an employee responsible for working on
 // a particular video game.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/credit/
 type Credit struct {
 	ID                    int            `json:"id"`
 	Name                  string         `json:"name"`

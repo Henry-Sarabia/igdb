@@ -5,6 +5,8 @@ package igdb
 type GameService service
 
 // Game contains information on an IGDB entry for a particular video game.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/game/
 type Game struct {
 	ID                   int            `json:"id"`
 	Name                 string         `json:"name"`
@@ -70,7 +72,8 @@ type AltName struct {
 }
 
 // CompletionTime contains the time to complete
-// a particular video game measured in seconds.
+// a particular video game. This time is measured
+// in seconds.
 type CompletionTime struct {
 	Hastly     int `json:"hastly"`
 	Normally   int `json:"normally"`

@@ -6,6 +6,8 @@ type VersionService service
 
 // Version contains information on an IGDB entry for details about game
 // editions and versions. Version does not support the Search function.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/versions/
 type Version struct {
 	ID        int       `json:"id"`
 	Game      int       `json:"game"`

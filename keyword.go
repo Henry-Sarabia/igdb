@@ -7,6 +7,8 @@ type KeywordService service
 // Keyword contains information on an IGDB entry for a particular keyword.
 // Keywords are words or phrases that get tagged to a game
 // (e.g. "world war 2" or "steampunk").
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/keyword/
 type Keyword struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`

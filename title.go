@@ -6,6 +6,8 @@ type TitleService service
 
 // Title contains information on an IGDB entry for
 // a particular job title in the video game industry.
+//
+// For more information, visit: https://igdb.github.io/api/endpoints/title/
 type Title struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`

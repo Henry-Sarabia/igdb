@@ -104,6 +104,8 @@ const (
 // (e.g. a Game object's ReleaseDates field). In other words, you can order
 // based on the max, min, sum, average, or median value of an array field's
 // contents. If more than one subfilter is provided, an error is returned.
+//
+// For more information, visit: https://igdb.github.io/api/references/ordering/
 func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
 	return func(o *options) error {
 		if strings.TrimSpace(field) == "" {
@@ -128,6 +130,8 @@ func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
 
 // OptLimit is a functional option used to limit the number of results from
 // an API call. The default limit is 10. The maximum limit is 50.
+//
+// For more information, visit: https://igdb.github.io/api/references/pagination/
 func OptLimit(lim int) OptionFunc {
 	return func(o *options) error {
 		if lim <= 0 || lim > 50 {
@@ -143,6 +147,8 @@ func OptLimit(lim int) OptionFunc {
 
 // OptOffset is a functional option used to offset the results from an API
 // call. The default offset is 0. The maximum offset is 10,000.
+//
+// For more information, visit: https://igdb.github.io/api/references/pagination/
 func OptOffset(off int) OptionFunc {
 	return func(o *options) error {
 		if off < 0 || off > 50 {
@@ -165,6 +171,8 @@ func OptOffset(off int) OptionFunc {
 //
 // The default for Get and List functions is set to all available fields.
 // The default for Search functions is set to solely the ID field.
+//
+// For more information, visit: https://igdb.github.io/api/references/fields/
 func OptFields(fields ...string) OptionFunc {
 	return func(o *options) error {
 		if len(fields) == 0 {
@@ -229,6 +237,8 @@ const (
 // filtering a field that consists of an enumerated type (e.g. Gender Code,
 // Feed Category, Game Status, etc.), you must provide the number corresponding
 // to the intended field value.
+//
+// For more information, visit: https://igdb.github.io/api/references/filters/
 func OptFilter(field string, op operator, val string) OptionFunc {
 	return func(o *options) error {
 		if op == OpExists || op == OpNotExists {
