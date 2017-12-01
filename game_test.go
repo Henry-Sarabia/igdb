@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 )
@@ -268,4 +269,74 @@ func TestGamesListFields(t *testing.T) {
 			}
 		})
 	}
+}
+
+func ExampleGameService_Get() {
+	c := NewClient(APIkey, nil)
+
+	g, err := c.Games.Get(7346, OptFields("name", "url", "summary", "storyline", "rating", "popularity", "cover"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("IGDB entry for The Legend of Zelda: Breath of the Wild\n", *g)
+}
+
+func ExampleGameService_List() {
+	c := NewClient(APIkey, nil)
+
+	g, err := c.Games.List([]int{1721, 2777, 1074})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("IGDB entries for Megaman 8, Kirby Air Ride, and Super Mario 64")
+	for _, v := range g {
+		fmt.Println(*v)
+	}
+}
+
+func ExampleGameService_Search() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	g, err := c.Games.Search("mario",
+		OptFields("*"),
+		OptFilter("rating", OpGreaterThanEqual, "80"),
+		OptOrder("rating", OrderDescending),
+		OptLimit(3))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("IGDB entries for Super Mario 64, Mario Kart 8, and Mario Party")
+	for _, v := range g {
+		fmt.Println(*v)
+	}
+}
+
+func ExampleGameService_Count() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	ct, err := c.Games.Count(OptFilter("release_dates.date", OpGreaterThan, "1993-12-15"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Number of games released after December 15, 1993: ", ct)
+}
+
+func ExampleGameService_ListFields() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	fl, err := c.Games.ListFields()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("List of available fields for the IGDB Game object: ", fl)
 }
