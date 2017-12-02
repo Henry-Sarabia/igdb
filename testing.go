@@ -16,10 +16,10 @@ const testKey = "notarealkey"
 
 // Errors returned when performing type validation.
 var (
-	// ErrNotStruct occurs when a non-struct type is provided to a function expecting a struct.
-	ErrNotStruct = errors.New("igdb: not a struct")
-	// ErrNotSlice occurs when a non-slice type is provided to a function expecting a slice.
-	ErrNotSlice = errors.New("igdb: not a slice")
+	// errNotStruct occurs when a non-struct type is provided to a function expecting a struct.
+	errNotStruct = errors.New("igdb: not a struct")
+	// errNotSlice occurs when a non-slice type is provided to a function expecting a slice.
+	errNotSlice = errors.New("igdb: not a slice")
 )
 
 // testHeader mocks a single HTTP header entry with a key and value field.
@@ -92,11 +92,11 @@ func equalSlice(x, y interface{}) (bool, error) {
 	}
 
 	if reflect.TypeOf(x).Kind() != reflect.Slice {
-		return false, ErrNotSlice
+		return false, errNotSlice
 	}
 
 	if reflect.TypeOf(y).Kind() != reflect.Slice {
-		return false, ErrNotSlice
+		return false, errNotSlice
 	}
 
 	vx := reflect.ValueOf(x)
