@@ -51,7 +51,7 @@ func (c *Client) getEndpointFieldList(end endpoint) ([]string, error) {
 }
 
 // getEndpointCount returns the count of entities available for the given IGDB endpoint.
-func (c *Client) getEndpointCount(end endpoint, opts ...OptionFunc) (int, error) {
+func (c *Client) getEndpointCount(end endpoint, opts ...FuncOption) (int, error) {
 	url, err := c.countURL(end, opts...)
 	if err != nil {
 		return 0, err

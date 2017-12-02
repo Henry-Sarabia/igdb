@@ -21,7 +21,7 @@ type GameMode struct {
 // Get returns a single GameMode identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameModes, an error is returned.
-func (gms *GameModeService) Get(id int, opts ...OptionFunc) (*GameMode, error) {
+func (gms *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
 	url, err := gms.client.singleURL(GameModeEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (gms *GameModeService) Get(id int, opts ...OptionFunc) (*GameMode, error) {
 // IDs will instead retrieve an index of GameModes based solely on the provided
 // options. Any ID that does not match a GameMode is ignored. If none of the IDs
 // match a GameMode, an error is returned.
-func (gms *GameModeService) List(ids []int, opts ...OptionFunc) ([]*GameMode, error) {
+func (gms *GameModeService) List(ids []int, opts ...FuncOption) ([]*GameMode, error) {
 	url, err := gms.client.multiURL(GameModeEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (gms *GameModeService) List(ids []int, opts ...OptionFunc) ([]*GameMode, er
 // Search returns a list of GameModes found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no GameModes are found using the provided query, an error is returned.
-func (gms *GameModeService) Search(qry string, opts ...OptionFunc) ([]*GameMode, error) {
+func (gms *GameModeService) Search(qry string, opts ...FuncOption) ([]*GameMode, error) {
 	url, err := gms.client.searchURL(GameModeEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (gms *GameModeService) Search(qry string, opts ...OptionFunc) ([]*GameMode,
 // Count returns the number of GameModes available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which GameModes to count.
-func (gms *GameModeService) Count(opts ...OptionFunc) (int, error) {
+func (gms *GameModeService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gms.client.getEndpointCount(GameModeEndpoint, opts...)
 	if err != nil {
 		return 0, err

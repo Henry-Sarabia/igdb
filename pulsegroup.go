@@ -25,7 +25,7 @@ type PulseGroup struct {
 // Get returns a single PulseGroup identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PulseGroups, an error is returned.
-func (pgs *PulseGroupService) Get(id int, opts ...OptionFunc) (*PulseGroup, error) {
+func (pgs *PulseGroupService) Get(id int, opts ...FuncOption) (*PulseGroup, error) {
 	url, err := pgs.client.singleURL(PulseGroupEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (pgs *PulseGroupService) Get(id int, opts ...OptionFunc) (*PulseGroup, erro
 // IDs will instead retrieve an index of PulseGroups based solely on the provided
 // options. Any ID that does not match a PulseGroup is ignored. If none of the IDs
 // match a PulseGroup, an error is returned.
-func (pgs *PulseGroupService) List(ids []int, opts ...OptionFunc) ([]*PulseGroup, error) {
+func (pgs *PulseGroupService) List(ids []int, opts ...FuncOption) ([]*PulseGroup, error) {
 	url, err := pgs.client.multiURL(PulseGroupEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (pgs *PulseGroupService) List(ids []int, opts ...OptionFunc) ([]*PulseGroup
 // Search returns a list of PulseGroups found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no PulseGroups are found using the provided query, an error is returned.
-func (pgs *PulseGroupService) Search(qry string, opts ...OptionFunc) ([]*PulseGroup, error) {
+func (pgs *PulseGroupService) Search(qry string, opts ...FuncOption) ([]*PulseGroup, error) {
 	url, err := pgs.client.searchURL(PulseGroupEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (pgs *PulseGroupService) Search(qry string, opts ...OptionFunc) ([]*PulseGr
 // Count returns the number of PulseGroups available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which PulseGroups to count.
-func (pgs *PulseGroupService) Count(opts ...OptionFunc) (int, error) {
+func (pgs *PulseGroupService) Count(opts ...FuncOption) (int, error) {
 	ct, err := pgs.client.getEndpointCount(PulseGroupEndpoint, opts...)
 	if err != nil {
 		return 0, err

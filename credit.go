@@ -32,7 +32,7 @@ type Credit struct {
 // Get returns a single Credit identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Credits, an error is returned.
-func (cs *CreditService) Get(id int, opts ...OptionFunc) (*Credit, error) {
+func (cs *CreditService) Get(id int, opts ...FuncOption) (*Credit, error) {
 	url, err := cs.client.singleURL(CreditEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func (cs *CreditService) Get(id int, opts ...OptionFunc) (*Credit, error) {
 // IDs will instead retrieve an index of Credits based solely on the provided
 // options. Any ID that does not match a Credit is ignored. If none of the IDs
 // match a Credit, an error is returned.
-func (cs *CreditService) List(ids []int, opts ...OptionFunc) ([]*Credit, error) {
+func (cs *CreditService) List(ids []int, opts ...FuncOption) ([]*Credit, error) {
 	url, err := cs.client.multiURL(CreditEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (cs *CreditService) List(ids []int, opts ...OptionFunc) ([]*Credit, error) 
 // Search returns a list of Credits found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Credits are found using the provided query, an error is returned.
-func (cs *CreditService) Search(qry string, opts ...OptionFunc) ([]*Credit, error) {
+func (cs *CreditService) Search(qry string, opts ...FuncOption) ([]*Credit, error) {
 	url, err := cs.client.searchURL(CreditEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (cs *CreditService) Search(qry string, opts ...OptionFunc) ([]*Credit, erro
 // Count returns the number of Credits available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Credits to count.
-func (cs *CreditService) Count(opts ...OptionFunc) (int, error) {
+func (cs *CreditService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CreditEndpoint, opts...)
 	if err != nil {
 		return 0, err

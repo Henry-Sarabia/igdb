@@ -18,7 +18,7 @@ type PulseSource struct {
 // Get returns a single PulseSource identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PulseSources, an error is returned.
-func (pss *PulseSourceService) Get(id int, opts ...OptionFunc) (*PulseSource, error) {
+func (pss *PulseSourceService) Get(id int, opts ...FuncOption) (*PulseSource, error) {
 	url, err := pss.client.singleURL(PulseSourceEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func (pss *PulseSourceService) Get(id int, opts ...OptionFunc) (*PulseSource, er
 // IDs will instead retrieve an index of PulseSources based solely on the provided
 // options. Any ID that does not match a PulseSource is ignored. If none of the IDs
 // match a PulseSource, an error is returned.
-func (pss *PulseSourceService) List(ids []int, opts ...OptionFunc) ([]*PulseSource, error) {
+func (pss *PulseSourceService) List(ids []int, opts ...FuncOption) ([]*PulseSource, error) {
 	url, err := pss.client.multiURL(PulseSourceEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (pss *PulseSourceService) List(ids []int, opts ...OptionFunc) ([]*PulseSour
 // Search returns a list of PulseSources found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no PulseSources are found using the provided query, an error is returned.
-func (pss *PulseSourceService) Search(qry string, opts ...OptionFunc) ([]*PulseSource, error) {
+func (pss *PulseSourceService) Search(qry string, opts ...FuncOption) ([]*PulseSource, error) {
 	url, err := pss.client.searchURL(PulseSourceEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (pss *PulseSourceService) Search(qry string, opts ...OptionFunc) ([]*PulseS
 // Count returns the number of PulseSources available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which PulseSources to count.
-func (pss *PulseSourceService) Count(opts ...OptionFunc) (int, error) {
+func (pss *PulseSourceService) Count(opts ...FuncOption) (int, error) {
 	ct, err := pss.client.getEndpointCount(PulseSourceEndpoint, opts...)
 	if err != nil {
 		return 0, err

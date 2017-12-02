@@ -121,7 +121,7 @@ type Website struct {
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
-func (gs *GameService) Get(id int, opts ...OptionFunc) (*Game, error) {
+func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 	url, err := gs.client.singleURL(GameEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (gs *GameService) Get(id int, opts ...OptionFunc) (*Game, error) {
 // IDs will instead retrieve an index of Games based solely on the provided
 // options. Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
-func (gs *GameService) List(ids []int, opts ...OptionFunc) ([]*Game, error) {
+func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 	url, err := gs.client.multiURL(GameEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func (gs *GameService) List(ids []int, opts ...OptionFunc) ([]*Game, error) {
 // Search returns a list of Games found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Games are found using the provided query, an error is returned.
-func (gs *GameService) Search(qry string, opts ...OptionFunc) ([]*Game, error) {
+func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	url, err := gs.client.searchURL(GameEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func (gs *GameService) Search(qry string, opts ...OptionFunc) ([]*Game, error) {
 // Count returns the number of Games available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Games to count.
-func (gs *GameService) Count(opts ...OptionFunc) (int, error) {
+func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gs.client.getEndpointCount(GameEndpoint, opts...)
 	if err != nil {
 		return 0, err

@@ -21,7 +21,7 @@ type Perspective struct {
 // Get returns a single Perspective identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Perspectives, an error is returned.
-func (ps *PerspectiveService) Get(id int, opts ...OptionFunc) (*Perspective, error) {
+func (ps *PerspectiveService) Get(id int, opts ...FuncOption) (*Perspective, error) {
 	url, err := ps.client.singleURL(PerspectiveEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (ps *PerspectiveService) Get(id int, opts ...OptionFunc) (*Perspective, err
 // IDs will instead retrieve an index of Perspectives based solely on the provided
 // options. Any ID that does not match a Perspective is ignored. If none of the IDs
 // match a Perspective, an error is returned.
-func (ps *PerspectiveService) List(ids []int, opts ...OptionFunc) ([]*Perspective, error) {
+func (ps *PerspectiveService) List(ids []int, opts ...FuncOption) ([]*Perspective, error) {
 	url, err := ps.client.multiURL(PerspectiveEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (ps *PerspectiveService) List(ids []int, opts ...OptionFunc) ([]*Perspectiv
 // Search returns a list of Perspectives found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Perspectives are found using the provided query, an error is returned.
-func (ps *PerspectiveService) Search(qry string, opts ...OptionFunc) ([]*Perspective, error) {
+func (ps *PerspectiveService) Search(qry string, opts ...FuncOption) ([]*Perspective, error) {
 	url, err := ps.client.searchURL(PerspectiveEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (ps *PerspectiveService) Search(qry string, opts ...OptionFunc) ([]*Perspec
 // Count returns the number of Perspectives available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Perspectives to count.
-func (ps *PerspectiveService) Count(opts ...OptionFunc) (int, error) {
+func (ps *PerspectiveService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PerspectiveEndpoint, opts...)
 	if err != nil {
 		return 0, err

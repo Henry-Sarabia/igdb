@@ -21,7 +21,7 @@ type Theme struct {
 // Get returns a single Theme identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Themes, an error is returned.
-func (ts *ThemeService) Get(id int, opts ...OptionFunc) (*Theme, error) {
+func (ts *ThemeService) Get(id int, opts ...FuncOption) (*Theme, error) {
 	url, err := ts.client.singleURL(ThemeEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (ts *ThemeService) Get(id int, opts ...OptionFunc) (*Theme, error) {
 // IDs will instead retrieve an index of Themes based solely on the provided
 // options. Any ID that does not match a Theme is ignored. If none of the IDs
 // match a Theme, an error is returned.
-func (ts *ThemeService) List(ids []int, opts ...OptionFunc) ([]*Theme, error) {
+func (ts *ThemeService) List(ids []int, opts ...FuncOption) ([]*Theme, error) {
 	url, err := ts.client.multiURL(ThemeEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (ts *ThemeService) List(ids []int, opts ...OptionFunc) ([]*Theme, error) {
 // Search returns a list of Themes found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Themes are found using the provided query, an error is returned.
-func (ts *ThemeService) Search(qry string, opts ...OptionFunc) ([]*Theme, error) {
+func (ts *ThemeService) Search(qry string, opts ...FuncOption) ([]*Theme, error) {
 	url, err := ts.client.searchURL(ThemeEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (ts *ThemeService) Search(qry string, opts ...OptionFunc) ([]*Theme, error)
 // Count returns the number of Themes available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Themes to count.
-func (ts *ThemeService) Count(opts ...OptionFunc) (int, error) {
+func (ts *ThemeService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ts.client.getEndpointCount(ThemeEndpoint, opts...)
 	if err != nil {
 		return 0, err

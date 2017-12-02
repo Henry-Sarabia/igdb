@@ -66,14 +66,14 @@ func TestKeywordsList(t *testing.T) {
 		Name   string
 		Resp   string
 		IDs    []int
-		Opts   []OptionFunc
+		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/keywords_list.txt", []int{2096, 1108}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/keywords_list.txt", []int{2096, 1108}, []FuncOption{OptLimit(5)}, ""},
 		{"Zero IDs", "test_data/keywords_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-2000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range keywordTests {
@@ -131,13 +131,13 @@ func TestKeywordsSearch(t *testing.T) {
 		Name   string
 		Resp   string
 		Qry    string
-		Opts   []OptionFunc
+		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/keywords_search.txt", "strategy", []OptionFunc{OptLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []OptionFunc{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Happy path", "test_data/keywords_search.txt", "strategy", []FuncOption{OptLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []FuncOption{OptLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "strategy", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "strategy", []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "strategy", []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range keywordTests {
@@ -206,13 +206,13 @@ func TestKeywordsCount(t *testing.T) {
 	var countTests = []struct {
 		Name     string
 		Resp     string
-		Opts     []OptionFunc
+		Opts     []FuncOption
 		ExpCount int
 		ExpErr   string
 	}{
-		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Happy path", `{"count": 100}`, []FuncOption{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
 		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"Invalid option", "", []FuncOption{OptLimit(100)}, 0, ErrOutOfRange.Error()},
 		{"No results", "[]", nil, 0, ErrNoResults.Error()},
 	}
 

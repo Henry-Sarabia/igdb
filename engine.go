@@ -24,7 +24,7 @@ type Engine struct {
 // Get returns a single Engine identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Engines, an error is returned.
-func (es *EngineService) Get(id int, opts ...OptionFunc) (*Engine, error) {
+func (es *EngineService) Get(id int, opts ...FuncOption) (*Engine, error) {
 	url, err := es.client.singleURL(EngineEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func (es *EngineService) Get(id int, opts ...OptionFunc) (*Engine, error) {
 // IDs will instead retrieve an index of Engines based solely on the provided
 // options. Any ID that does not match a Engine is ignored. If none of the IDs
 // match a Engine, an error is returned.
-func (es *EngineService) List(ids []int, opts ...OptionFunc) ([]*Engine, error) {
+func (es *EngineService) List(ids []int, opts ...FuncOption) ([]*Engine, error) {
 	url, err := es.client.multiURL(EngineEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (es *EngineService) List(ids []int, opts ...OptionFunc) ([]*Engine, error) 
 // Search returns a list of Engines found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Engines are found using the provided query, an error is returned.
-func (es *EngineService) Search(qry string, opts ...OptionFunc) ([]*Engine, error) {
+func (es *EngineService) Search(qry string, opts ...FuncOption) ([]*Engine, error) {
 	url, err := es.client.searchURL(EngineEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (es *EngineService) Search(qry string, opts ...OptionFunc) ([]*Engine, erro
 // Count returns the number of Engines available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Engines to count.
-func (es *EngineService) Count(opts ...OptionFunc) (int, error) {
+func (es *EngineService) Count(opts ...FuncOption) (int, error) {
 	ct, err := es.client.getEndpointCount(EngineEndpoint, opts...)
 	if err != nil {
 		return 0, err

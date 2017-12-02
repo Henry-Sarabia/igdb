@@ -37,7 +37,7 @@ type PulseVideo struct {
 // Get returns a single Pulse identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Pulses, an error is returned.
-func (ps *PulseService) Get(id int, opts ...OptionFunc) (*Pulse, error) {
+func (ps *PulseService) Get(id int, opts ...FuncOption) (*Pulse, error) {
 	url, err := ps.client.singleURL(PulseEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (ps *PulseService) Get(id int, opts ...OptionFunc) (*Pulse, error) {
 // IDs will instead retrieve an index of Pulses based solely on the provided
 // options. Any ID that does not match a Pulse is ignored. If none of the IDs
 // match a Pulse, an error is returned.
-func (ps *PulseService) List(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
+func (ps *PulseService) List(ids []int, opts ...FuncOption) ([]*Pulse, error) {
 	url, err := ps.client.multiURL(PulseEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (ps *PulseService) List(ids []int, opts ...OptionFunc) ([]*Pulse, error) {
 // Search returns a list of Pulses found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Pulses are found using the provided query, an error is returned.
-func (ps *PulseService) Search(qry string, opts ...OptionFunc) ([]*Pulse, error) {
+func (ps *PulseService) Search(qry string, opts ...FuncOption) ([]*Pulse, error) {
 	url, err := ps.client.searchURL(PulseEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (ps *PulseService) Search(qry string, opts ...OptionFunc) ([]*Pulse, error)
 // Count returns the number of Pulses available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Pulses to count.
-func (ps *PulseService) Count(opts ...OptionFunc) (int, error) {
+func (ps *PulseService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PulseEndpoint, opts...)
 	if err != nil {
 		return 0, err

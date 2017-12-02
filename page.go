@@ -48,7 +48,7 @@ type Page struct {
 // Get returns a single Page identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Pages, an error is returned.
-func (ps *PageService) Get(id int, opts ...OptionFunc) (*Page, error) {
+func (ps *PageService) Get(id int, opts ...FuncOption) (*Page, error) {
 	url, err := ps.client.singleURL(PageEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (ps *PageService) Get(id int, opts ...OptionFunc) (*Page, error) {
 // IDs will instead retrieve an index of Pages based solely on the provided
 // options. Any ID that does not match a Page is ignored. If none of the IDs
 // match a Page, an error is returned.
-func (ps *PageService) List(ids []int, opts ...OptionFunc) ([]*Page, error) {
+func (ps *PageService) List(ids []int, opts ...FuncOption) ([]*Page, error) {
 	url, err := ps.client.multiURL(PageEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (ps *PageService) List(ids []int, opts ...OptionFunc) ([]*Page, error) {
 // Search returns a list of Pages found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Pages are found using the provided query, an error is returned.
-func (ps *PageService) Search(qry string, opts ...OptionFunc) ([]*Page, error) {
+func (ps *PageService) Search(qry string, opts ...FuncOption) ([]*Page, error) {
 	url, err := ps.client.searchURL(PageEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func (ps *PageService) Search(qry string, opts ...OptionFunc) ([]*Page, error) {
 // Count returns the number of Pages available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Pages to count.
-func (ps *PageService) Count(opts ...OptionFunc) (int, error) {
+func (ps *PageService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PageEndpoint, opts...)
 	if err != nil {
 		return 0, err

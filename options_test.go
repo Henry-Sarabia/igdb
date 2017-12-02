@@ -9,20 +9,20 @@ import (
 func TestComposeOptions(t *testing.T) {
 	var optTests = []struct {
 		Name     string
-		OptFuncs []OptionFunc
+		FuncOpts []FuncOption
 	}{
 		{"Zero options", nil},
-		{"Single option", []OptionFunc{OptLimit(20)}},
-		{"Multiple options", []OptionFunc{OptLimit(20), OptFields("name", "id"), OptFilter("popularity", OpLessThan, "50")}},
-		{"Single invalid option", []OptionFunc{OptOffset(-500)}},
-		{"Multiple invalid options", []OptionFunc{OptOffset(-500), OptLimit(999)}},
+		{"Single option", []FuncOption{OptLimit(20)}},
+		{"Multiple options", []FuncOption{OptLimit(20), OptFields("name", "id"), OptFilter("popularity", OpLessThan, "50")}},
+		{"Single invalid option", []FuncOption{OptOffset(-500)}},
+		{"Multiple invalid options", []FuncOption{OptOffset(-500), OptLimit(999)}},
 	}
 
 	for _, tt := range optTests {
 		t.Run(tt.Name, func(t *testing.T) {
-			comp := ComposeOptions(tt.OptFuncs...)
+			comp := ComposeOptions(tt.FuncOpts...)
 
-			expOpt, expErr := newOpt(tt.OptFuncs...)
+			expOpt, expErr := newOpt(tt.FuncOpts...)
 			actOpt, actErr := newOpt(comp)
 			if !reflect.DeepEqual(actErr, expErr) {
 				t.Fatalf("Expected error '%v', got '%v'", expErr, actErr)
@@ -37,19 +37,19 @@ func TestComposeOptions(t *testing.T) {
 func TestNewOpt(t *testing.T) {
 	var optTests = []struct {
 		Name     string
-		OptFuncs []OptionFunc
+		FuncOpts []FuncOption
 		ExpCount int
 		ExpErr   error
 	}{
-		{"Empty option", []OptionFunc{}, 0, nil},
-		{"Single option", []OptionFunc{OptLimit(4)}, 1, nil},
-		{"Multiple options", []OptionFunc{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", OrderAscending)}, 5, nil},
-		{"Multiple filter options", []OptionFunc{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
+		{"Empty option", []FuncOption{}, 0, nil},
+		{"Single option", []FuncOption{OptLimit(4)}, 1, nil},
+		{"Multiple options", []FuncOption{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", OrderAscending)}, 5, nil},
+		{"Multiple filter options", []FuncOption{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
 	}
 
 	for _, ot := range optTests {
 		t.Run(ot.Name, func(t *testing.T) {
-			opt, err := newOpt(ot.OptFuncs...)
+			opt, err := newOpt(ot.FuncOpts...)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ot.ExpErr, err)
 			}
@@ -85,9 +85,9 @@ func TestOptOrder(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptOrder(ot.Field, ot.Order, ot.Sub...)
+			funcOpt := OptOrder(ot.Field, ot.Order, ot.Sub...)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ot.ExpErr, err)
 			}
@@ -119,9 +119,9 @@ func TestOptLimit(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptLimit(lt.Limit)
+			funcOpt := OptLimit(lt.Limit)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, lt.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", lt.ExpErr, err)
 			}
@@ -153,9 +153,9 @@ func TestOptOffset(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptOffset(ot.Offset)
+			funcOpt := OptOffset(ot.Offset)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ot.ExpErr, err)
 			}
@@ -189,9 +189,9 @@ func TestOptFields(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptFields(ft.Fields...)
+			funcOpt := OptFields(ft.Fields...)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ft.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ft.ExpErr, err)
 			}
@@ -225,9 +225,9 @@ func TestOptFilter(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := OptFilter(ft.Field, ft.Op, ft.Val)
+			funcOpt := OptFilter(ft.Field, ft.Op, ft.Val)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ft.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ft.ExpErr, err)
 			}
@@ -258,9 +258,9 @@ func TestOptSearch(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			optFunc := optSearch(st.Qry)
+			funcOpt := optSearch(st.Qry)
 
-			err = optFunc(opt)
+			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, st.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
 			}
@@ -276,20 +276,20 @@ func TestOptSearch(t *testing.T) {
 func TestOptOverlap(t *testing.T) {
 	var overlapTests = []struct {
 		Name     string
-		OptFuncs []OptionFunc
+		FuncOpts []FuncOption
 		ExpErr   error
 	}{
-		{"OptOrder overlap", []OptionFunc{OptOrder("popularity", OrderDescending), OptOrder("rating", OrderAscending)}, ErrOptionSet},
-		{"OptLimit overlap", []OptionFunc{OptLimit(5), OptLimit(40)}, ErrOptionSet},
-		{"OptOffset overlap", []OptionFunc{OptOffset(0), OptOffset(25)}, ErrOptionSet},
-		{"OptFields overlap", []OptionFunc{OptFields("id"), OptFields("name")}, ErrOptionSet},
-		{"OptFilter overlap", []OptionFunc{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
-		{"OptSearch overlap", []OptionFunc{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
+		{"OptOrder overlap", []FuncOption{OptOrder("popularity", OrderDescending), OptOrder("rating", OrderAscending)}, ErrOptionSet},
+		{"OptLimit overlap", []FuncOption{OptLimit(5), OptLimit(40)}, ErrOptionSet},
+		{"OptOffset overlap", []FuncOption{OptOffset(0), OptOffset(25)}, ErrOptionSet},
+		{"OptFields overlap", []FuncOption{OptFields("id"), OptFields("name")}, ErrOptionSet},
+		{"OptFilter overlap", []FuncOption{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
+		{"OptSearch overlap", []FuncOption{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
 	}
 
 	for _, ot := range overlapTests {
 		t.Run(ot.Name, func(t *testing.T) {
-			_, err := newOpt(ot.OptFuncs...)
+			_, err := newOpt(ot.FuncOpts...)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ot.ExpErr, err)
 			}

@@ -32,7 +32,7 @@ type Feed struct {
 // Get returns a single Feed identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Feeds, an error is returned.
-func (fs *FeedService) Get(id int, opts ...OptionFunc) (*Feed, error) {
+func (fs *FeedService) Get(id int, opts ...FuncOption) (*Feed, error) {
 	url, err := fs.client.singleURL(FeedEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func (fs *FeedService) Get(id int, opts ...OptionFunc) (*Feed, error) {
 // IDs will instead retrieve an index of Feeds based solely on the provided
 // options. Any ID that does not match a Feed is ignored. If none of the IDs
 // match a Feed, an error is returned.
-func (fs *FeedService) List(ids []int, opts ...OptionFunc) ([]*Feed, error) {
+func (fs *FeedService) List(ids []int, opts ...FuncOption) ([]*Feed, error) {
 	url, err := fs.client.multiURL(FeedEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (fs *FeedService) List(ids []int, opts ...OptionFunc) ([]*Feed, error) {
 // Count returns the number of Feeds available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Feeds to count.
-func (fs *FeedService) Count(opts ...OptionFunc) (int, error) {
+func (fs *FeedService) Count(opts ...FuncOption) (int, error) {
 	ct, err := fs.client.getEndpointCount(FeedEndpoint, opts...)
 	if err != nil {
 		return 0, err

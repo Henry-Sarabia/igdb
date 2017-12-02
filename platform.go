@@ -70,7 +70,7 @@ type PlatformCompany struct {
 // Get returns a single Platform identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Platforms, an error is returned.
-func (ps *PlatformService) Get(id int, opts ...OptionFunc) (*Platform, error) {
+func (ps *PlatformService) Get(id int, opts ...FuncOption) (*Platform, error) {
 	url, err := ps.client.singleURL(PlatformEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (ps *PlatformService) Get(id int, opts ...OptionFunc) (*Platform, error) {
 // IDs will instead retrieve an index of Platforms based solely on the provided
 // options. Any ID that does not match a Platform is ignored. If none of the IDs
 // match a Platform, an error is returned.
-func (ps *PlatformService) List(ids []int, opts ...OptionFunc) ([]*Platform, error) {
+func (ps *PlatformService) List(ids []int, opts ...FuncOption) ([]*Platform, error) {
 	url, err := ps.client.multiURL(PlatformEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -110,7 +110,7 @@ func (ps *PlatformService) List(ids []int, opts ...OptionFunc) ([]*Platform, err
 // Search returns a list of Platforms found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Platforms are found using the provided query, an error is returned.
-func (ps *PlatformService) Search(qry string, opts ...OptionFunc) ([]*Platform, error) {
+func (ps *PlatformService) Search(qry string, opts ...FuncOption) ([]*Platform, error) {
 	url, err := ps.client.searchURL(PlatformEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ func (ps *PlatformService) Search(qry string, opts ...OptionFunc) ([]*Platform, 
 // Count returns the number of Platforms available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Platforms to count.
-func (ps *PlatformService) Count(opts ...OptionFunc) (int, error) {
+func (ps *PlatformService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PlatformEndpoint, opts...)
 	if err != nil {
 		return 0, err

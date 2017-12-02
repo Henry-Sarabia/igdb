@@ -162,7 +162,7 @@ func (c *Client) newRequest(url string) (*http.Request, error) {
 
 // singleURL creates a URL configured to request a single IGDB object identified by
 // its unique IGDB ID using the provided endpoint and options.
-func (c *Client) singleURL(end endpoint, ID int, opts ...OptionFunc) (string, error) {
+func (c *Client) singleURL(end endpoint, ID int, opts ...FuncOption) (string, error) {
 	if ID < 0 {
 		return "", ErrNegativeID
 	}
@@ -181,7 +181,7 @@ func (c *Client) singleURL(end endpoint, ID int, opts ...OptionFunc) (string, er
 // by their unique IGDB IDs using the provided endpoint and options. An empty slice
 // of IDs creates a URL configured to retrieve an index of IGDB objects from the given
 // endpoint based solely on the provided options.
-func (c *Client) multiURL(end endpoint, IDs []int, opts ...OptionFunc) (string, error) {
+func (c *Client) multiURL(end endpoint, IDs []int, opts ...FuncOption) (string, error) {
 	for _, ID := range IDs {
 		if ID < 0 {
 			return "", ErrNegativeID
@@ -201,7 +201,7 @@ func (c *Client) multiURL(end endpoint, IDs []int, opts ...OptionFunc) (string, 
 
 // searchURL creates a URL configured to search the IGDB based on the given query using
 // the provided endpoint and options.
-func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string, error) {
+func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string, error) {
 	if strings.TrimSpace(qry) == "" {
 		return "", ErrEmptyQuery
 	}
@@ -220,7 +220,7 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...OptionFunc) (string
 
 // countURL creates a URL configured to retrieve the count of IGDB objects
 // using the provided endpoint and options.
-func (c *Client) countURL(end endpoint, opts ...OptionFunc) (string, error) {
+func (c *Client) countURL(end endpoint, opts ...FuncOption) (string, error) {
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err

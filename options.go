@@ -8,47 +8,47 @@ import (
 	"strings"
 )
 
-// Errors returned by an OptionFunc when setting options for an API call.
+// Errors returned by an FuncOption when setting options for an API call.
 var (
 	// ErrOptionSet occurs when the same option is used multiple times in a single API call.
-	ErrOptionSet = errors.New("igdb.OptionFunc: option already set")
+	ErrOptionSet = errors.New("igdb.FuncOption: option already set")
 	// ErrEmptyField occurs when an empty string is used as a field name.
-	ErrEmptyField = errors.New("igdb.OptionFunc: field value empty")
+	ErrEmptyField = errors.New("igdb.FuncOption: field value empty")
 	// ErrEmptySlice occurs when an empty slice is used as an argument in a variadic function.
-	ErrEmptySlice = errors.New("igdb.OptionFunc: slice empty")
+	ErrEmptySlice = errors.New("igdb.FuncOption: slice empty")
 	// ErrEmptyQuery occurs when an empty string is used as a query value.
-	ErrEmptyQuery = errors.New("igdb.OptionFunc: query value empty")
+	ErrEmptyQuery = errors.New("igdb.FuncOption: query value empty")
 	// ErrOutOfRange occurs when a provided number value is out of valid range.
-	ErrOutOfRange = errors.New("igdb.OptionFunc: value out of range")
+	ErrOutOfRange = errors.New("igdb.FuncOption: value out of range")
 	// ErrTooManyArgs occurs when too many arguments are provided in a variadic function.
-	ErrTooManyArgs = errors.New("igdb.OptionFunc: too many arguments")
+	ErrTooManyArgs = errors.New("igdb.FuncOption: too many arguments")
 )
 
 // options contains a value map that stores the optional parameters for
 // the various IGDB API calls. The options type is not accessed directly,
-// but instead mutated using the functional options that return an OptionFunc.
+// but instead mutated using the functional options that return an FuncOption.
 type options struct {
 	Values url.Values
 }
 
-// OptionFunc functions are used to set the options for an API call.
-// OptionFunc is the first-order function returned by the available
+// FuncOption functions are used to set the options for an API call.
+// FuncOption is the first-order function returned by the available
 // functional options (e.g. OptLimit or OptFilter). This first-order
 // function is then passed into a service's Get, List, Search, or
 // Count function.
 //
-// Only one of each type of OptionFunc can be set per API call.
+// Only one of each type of FuncOption can be set per API call.
 // OptFilter is the only exception to this rule.
-type OptionFunc func(*options) error
+type FuncOption func(*options) error
 
-// newOpt returns a new options object mutated by the provided OptionFunc
-// arguments. If no OptionFunc's are provided, an empty options object is
+// newOpt returns a new options object mutated by the provided FuncOption
+// arguments. If no FuncOption's are provided, an empty options object is
 // returned.
-func newOpt(ofs ...OptionFunc) (*options, error) {
+func newOpt(funcOpts ...FuncOption) (*options, error) {
 	opt := &options{Values: url.Values{}}
 
-	for _, of := range ofs {
-		err := of(opt)
+	for _, funcOpt := range funcOpts {
+		err := funcOpt(opt)
 		if err != nil {
 			return nil, err
 		}
@@ -60,7 +60,7 @@ func newOpt(ofs ...OptionFunc) (*options, error) {
 // ComposeOptions allows you to compose several functional options into one.
 // This is primarily used to create a single functional option that will be
 // used repeatedly between different API calls.
-func ComposeOptions(opts ...OptionFunc) OptionFunc {
+func ComposeOptions(opts ...FuncOption) FuncOption {
 	return func(o *options) error {
 		for _, opt := range opts {
 			if err := opt(o); err != nil {
@@ -120,7 +120,7 @@ const (
 // contents. If more than one subfilter is provided, an error is returned.
 //
 // For more information, visit: https://igdb.github.io/api/references/ordering/
-func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
+func OptOrder(field string, ord order, sub ...subfilter) FuncOption {
 	return func(o *options) error {
 		if strings.TrimSpace(field) == "" {
 			return ErrEmptyField
@@ -146,7 +146,7 @@ func OptOrder(field string, ord order, sub ...subfilter) OptionFunc {
 // an API call. The default limit is 10. The maximum limit is 50.
 //
 // For more information, visit: https://igdb.github.io/api/references/pagination/
-func OptLimit(lim int) OptionFunc {
+func OptLimit(lim int) FuncOption {
 	return func(o *options) error {
 		if lim <= 0 || lim > 50 {
 			return ErrOutOfRange
@@ -163,7 +163,7 @@ func OptLimit(lim int) OptionFunc {
 // call. The default offset is 0. The maximum offset is 10,000.
 //
 // For more information, visit: https://igdb.github.io/api/references/pagination/
-func OptOffset(off int) OptionFunc {
+func OptOffset(off int) FuncOption {
 	return func(o *options) error {
 		if off < 0 || off > 50 {
 			return ErrOutOfRange
@@ -187,7 +187,7 @@ func OptOffset(off int) OptionFunc {
 // The default for Search functions is set to solely the ID field.
 //
 // For more information, visit: https://igdb.github.io/api/references/fields/
-func OptFields(fields ...string) OptionFunc {
+func OptFields(fields ...string) FuncOption {
 	return func(o *options) error {
 		if len(fields) == 0 {
 			return ErrEmptySlice
@@ -253,7 +253,7 @@ const (
 // to the intended field value.
 //
 // For more information, visit: https://igdb.github.io/api/references/filters/
-func OptFilter(field string, op operator, val string) OptionFunc {
+func OptFilter(field string, op operator, val string) FuncOption {
 	return func(o *options) error {
 		if op == OpExists || op == OpNotExists {
 			val = "1"
@@ -269,7 +269,7 @@ func OptFilter(field string, op operator, val string) OptionFunc {
 
 // optSearch is a functional option used to search the IGDB using the
 // provided query.
-func optSearch(qry string) OptionFunc {
+func optSearch(qry string) FuncOption {
 	return func(o *options) error {
 		if qry == "" {
 			return ErrEmptyQuery

@@ -34,7 +34,7 @@ type Review struct {
 // Get returns a single Review identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Reviews, an error is returned.
-func (rs *ReviewService) Get(id int, opts ...OptionFunc) (*Review, error) {
+func (rs *ReviewService) Get(id int, opts ...FuncOption) (*Review, error) {
 	url, err := rs.client.singleURL(ReviewEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (rs *ReviewService) Get(id int, opts ...OptionFunc) (*Review, error) {
 // IDs will instead retrieve an index of Reviews based solely on the provided
 // options. Any ID that does not match a Review is ignored. If none of the IDs
 // match a Review, an error is returned.
-func (rs *ReviewService) List(ids []int, opts ...OptionFunc) ([]*Review, error) {
+func (rs *ReviewService) List(ids []int, opts ...FuncOption) ([]*Review, error) {
 	url, err := rs.client.multiURL(ReviewEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (rs *ReviewService) List(ids []int, opts ...OptionFunc) ([]*Review, error) 
 // Search returns a list of Reviews found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Reviews are found using the provided query, an error is returned.
-func (rs *ReviewService) Search(qry string, opts ...OptionFunc) ([]*Review, error) {
+func (rs *ReviewService) Search(qry string, opts ...FuncOption) ([]*Review, error) {
 	url, err := rs.client.searchURL(ReviewEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -93,7 +93,7 @@ func (rs *ReviewService) Search(qry string, opts ...OptionFunc) ([]*Review, erro
 // Count returns the number of Reviews available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Reviews to count.
-func (rs *ReviewService) Count(opts ...OptionFunc) (int, error) {
+func (rs *ReviewService) Count(opts ...FuncOption) (int, error) {
 	ct, err := rs.client.getEndpointCount(ReviewEndpoint, opts...)
 	if err != nil {
 		return 0, err

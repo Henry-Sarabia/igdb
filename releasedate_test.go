@@ -58,14 +58,14 @@ func TestReleaseDatesList(t *testing.T) {
 		Name   string
 		Resp   string
 		IDs    []int
-		Opts   []OptionFunc
+		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/releasedates_list.txt", []int{62566, 32350, 1077}, []OptionFunc{OptLimit(5)}, ""},
+		{"Happy path", "test_data/releasedates_list.txt", []int{62566, 32350, 1077}, []FuncOption{OptLimit(5)}, ""},
 		{"Zero IDs", "test_data/releasedates_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{62566, 32350, 1077}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{62566, 32350, 1077}, []OptionFunc{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{62566, 32350, 1077}, []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range releaseDateTests {
@@ -132,13 +132,13 @@ func TestReleaseDatesCount(t *testing.T) {
 	var countTests = []struct {
 		Name     string
 		Resp     string
-		Opts     []OptionFunc
+		Opts     []FuncOption
 		ExpCount int
 		ExpErr   string
 	}{
-		{"Happy path", `{"count": 100}`, []OptionFunc{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Happy path", `{"count": 100}`, []FuncOption{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
 		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []OptionFunc{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"Invalid option", "", []FuncOption{OptLimit(100)}, 0, ErrOutOfRange.Error()},
 		{"No results", "[]", nil, 0, ErrNoResults.Error()},
 	}
 

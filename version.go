@@ -37,7 +37,7 @@ type FeatureValue struct {
 // Get returns a single Version identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to retrieve.
 // If the ID does not match any Versions, an error is returned.
-func (vs *VersionService) Get(id int, opts ...OptionFunc) (*Version, error) {
+func (vs *VersionService) Get(id int, opts ...FuncOption) (*Version, error) {
 	url, err := vs.client.singleURL(VersionEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (vs *VersionService) Get(id int, opts ...OptionFunc) (*Version, error) {
 // IDs will instead retrieve an index of Versions based solely on the provided
 // options. Any ID that does not match a Version is ignored. If none of the IDs
 // match a Version, an error is returned.
-func (vs *VersionService) List(ids []int, opts ...OptionFunc) ([]*Version, error) {
+func (vs *VersionService) List(ids []int, opts ...FuncOption) ([]*Version, error) {
 	url, err := vs.client.multiURL(VersionEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (vs *VersionService) List(ids []int, opts ...OptionFunc) ([]*Version, error
 // Count returns the number of Versions available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Versions to count.
-func (vs *VersionService) Count(opts ...OptionFunc) (int, error) {
+func (vs *VersionService) Count(opts ...FuncOption) (int, error) {
 	ct, err := vs.client.getEndpointCount(VersionEndpoint, opts...)
 	if err != nil {
 		return 0, err

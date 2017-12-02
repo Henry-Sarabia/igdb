@@ -22,7 +22,7 @@ type Title struct {
 // Get returns a single Title identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Titles, an error is returned.
-func (ts *TitleService) Get(id int, opts ...OptionFunc) (*Title, error) {
+func (ts *TitleService) Get(id int, opts ...FuncOption) (*Title, error) {
 	url, err := ts.client.singleURL(TitleEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (ts *TitleService) Get(id int, opts ...OptionFunc) (*Title, error) {
 // IDs will instead retrieve an index of Titles based solely on the provided
 // options. Any ID that does not match a Title is ignored. If none of the IDs
 // match a Title, an error is returned.
-func (ts *TitleService) List(ids []int, opts ...OptionFunc) ([]*Title, error) {
+func (ts *TitleService) List(ids []int, opts ...FuncOption) ([]*Title, error) {
 	url, err := ts.client.multiURL(TitleEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (ts *TitleService) List(ids []int, opts ...OptionFunc) ([]*Title, error) {
 // Search returns a list of Titles found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Titles are found using the provided query, an error is returned.
-func (ts *TitleService) Search(qry string, opts ...OptionFunc) ([]*Title, error) {
+func (ts *TitleService) Search(qry string, opts ...FuncOption) ([]*Title, error) {
 	url, err := ts.client.searchURL(TitleEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (ts *TitleService) Search(qry string, opts ...OptionFunc) ([]*Title, error)
 // Count returns the number of Titles available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Titles to count.
-func (ts *TitleService) Count(opts ...OptionFunc) (int, error) {
+func (ts *TitleService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ts.client.getEndpointCount(TitleEndpoint, opts...)
 	if err != nil {
 		return 0, err

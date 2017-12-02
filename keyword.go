@@ -22,7 +22,7 @@ type Keyword struct {
 // Get returns a single Keyword identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Keywords, an error is returned.
-func (ks *KeywordService) Get(id int, opts ...OptionFunc) (*Keyword, error) {
+func (ks *KeywordService) Get(id int, opts ...FuncOption) (*Keyword, error) {
 	url, err := ks.client.singleURL(KeywordEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (ks *KeywordService) Get(id int, opts ...OptionFunc) (*Keyword, error) {
 // IDs will instead retrieve an index of Keywords based solely on the provided
 // options. Any ID that does not match a Keyword is ignored. If none of the IDs
 // match a Keyword, an error is returned.
-func (ks *KeywordService) List(ids []int, opts ...OptionFunc) ([]*Keyword, error) {
+func (ks *KeywordService) List(ids []int, opts ...FuncOption) ([]*Keyword, error) {
 	url, err := ks.client.multiURL(KeywordEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (ks *KeywordService) List(ids []int, opts ...OptionFunc) ([]*Keyword, error
 // Search returns a list of Keywords found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Keywords are found using the provided query, an error is returned.
-func (ks *KeywordService) Search(qry string, opts ...OptionFunc) ([]*Keyword, error) {
+func (ks *KeywordService) Search(qry string, opts ...FuncOption) ([]*Keyword, error) {
 	url, err := ks.client.searchURL(KeywordEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (ks *KeywordService) Search(qry string, opts ...OptionFunc) ([]*Keyword, er
 // Count returns the number of Keywords available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Keywords to count.
-func (ks *KeywordService) Count(opts ...OptionFunc) (int, error) {
+func (ks *KeywordService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ks.client.getEndpointCount(KeywordEndpoint, opts...)
 	if err != nil {
 		return 0, err

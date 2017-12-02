@@ -21,7 +21,7 @@ type Collection struct {
 // Get returns a single Collection identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Collections, an error is returned.
-func (cs *CollectionService) Get(id int, opts ...OptionFunc) (*Collection, error) {
+func (cs *CollectionService) Get(id int, opts ...FuncOption) (*Collection, error) {
 	url, err := cs.client.singleURL(CollectionEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (cs *CollectionService) Get(id int, opts ...OptionFunc) (*Collection, error
 // IDs will instead retrieve an index of Collections based solely on the provided
 // options. Any ID that does not match a Collection is ignored. If none of the IDs
 // match a Collection, an error is returned.
-func (cs *CollectionService) List(ids []int, opts ...OptionFunc) ([]*Collection, error) {
+func (cs *CollectionService) List(ids []int, opts ...FuncOption) ([]*Collection, error) {
 	url, err := cs.client.multiURL(CollectionEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (cs *CollectionService) List(ids []int, opts ...OptionFunc) ([]*Collection,
 // Search returns a list of Collections found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Collections are found using the provided query, an error is returned.
-func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collection, error) {
+func (cs *CollectionService) Search(qry string, opts ...FuncOption) ([]*Collection, error) {
 	url, err := cs.client.searchURL(CollectionEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (cs *CollectionService) Search(qry string, opts ...OptionFunc) ([]*Collecti
 // Count returns the number of Collections available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Collections to count.
-func (cs *CollectionService) Count(opts ...OptionFunc) (int, error) {
+func (cs *CollectionService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CollectionEndpoint, opts...)
 	if err != nil {
 		return 0, err

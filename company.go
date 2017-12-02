@@ -35,7 +35,7 @@ type Company struct {
 // Get returns a single Company identified by the provided IGDB ID. Provide
 // the OptFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Companies, an error is returned.
-func (cs *CompanyService) Get(id int, opts ...OptionFunc) (*Company, error) {
+func (cs *CompanyService) Get(id int, opts ...FuncOption) (*Company, error) {
 	url, err := cs.client.singleURL(CompanyEndpoint, id, opts...)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (cs *CompanyService) Get(id int, opts ...OptionFunc) (*Company, error) {
 // IDs will instead retrieve an index of Companies based solely on the provided
 // options. Any ID that does not match a Company is ignored. If none of the IDs
 // match a Company, an error is returned.
-func (cs *CompanyService) List(ids []int, opts ...OptionFunc) ([]*Company, error) {
+func (cs *CompanyService) List(ids []int, opts ...FuncOption) ([]*Company, error) {
 	url, err := cs.client.multiURL(CompanyEndpoint, ids, opts...)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (cs *CompanyService) List(ids []int, opts ...OptionFunc) ([]*Company, error
 // Search returns a list of Companies found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate  the results. If
 // no Companies are found using the provided query, an error is returned.
-func (cs *CompanyService) Search(qry string, opts ...OptionFunc) ([]*Company, error) {
+func (cs *CompanyService) Search(qry string, opts ...FuncOption) ([]*Company, error) {
 	url, err := cs.client.searchURL(CompanyEndpoint, qry, opts...)
 	if err != nil {
 		return nil, err
@@ -94,7 +94,7 @@ func (cs *CompanyService) Search(qry string, opts ...OptionFunc) ([]*Company, er
 // Count returns the number of Companies available in the IGDB.
 // Provide the OptFilter functional option if you need to filter
 // which Companies to count.
-func (cs *CompanyService) Count(opts ...OptionFunc) (int, error) {
+func (cs *CompanyService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CompanyEndpoint, opts...)
 	if err != nil {
 		return 0, err
