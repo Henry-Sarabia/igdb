@@ -2,7 +2,7 @@ package igdb
 
 type endpoint string
 
-// These are the available IGDB API endpoints.
+// Available IGDB API endpoints
 const (
 	CharacterEndpoint   endpoint = "characters/"
 	CollectionEndpoint  endpoint = "collections/"

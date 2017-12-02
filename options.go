@@ -63,7 +63,7 @@ func newOpt(ofs ...OptionFunc) (*options, error) {
 // explicitly specified.
 type order string
 
-// These are the available orders for the functional option OptOrder.
+// Available orders for the functional option OptOrder
 const (
 	// OrderAscending is used as an argument in the OptOrder functional
 	// option to organize the results from an API call in ascending order.
@@ -78,7 +78,7 @@ const (
 // functionality.
 type subfilter string
 
-// These are the available subfilters for the functional option OptOrder.
+// Available subfilters for the functional option OptOrder
 const (
 	// SubMax filters based on the maximum element in the array.
 	SubMax subfilter = ":max"
@@ -198,7 +198,7 @@ func OptFields(fields ...string) OptionFunc {
 // https://igdb.github.io/api/references/filters/#available-postfixes
 type operator string
 
-// These are the available operators for the functional option OptFilter.
+// Available operators for the functional option OptFilter
 const (
 	// OpEquals checks for equality. Must match exactly.
 	OpEquals operator = "eq"

@@ -23,12 +23,12 @@ type Image struct {
 	Height int    `json:"height"`
 }
 
-// imageSize is the size of an image from the IGDB API.
+// imageSize is the size of an image from the IGDB API. Note that this is not
+// the precise size of an image, but rather the maximum possible size of
+// the referenced image.
 type imageSize string
 
-// These are the currently available image sizes supported by the IGDB API.
-// Note that these are not the precise size of an image, but rather the
-// maximum possible size of the referenced image.
+// Available image sizes supported by the IGDB API
 const (
 	// SizeCoverSmall is sized at 90x128.
 	SizeCoverSmall imageSize = "cover_small"
