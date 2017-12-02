@@ -33,7 +33,7 @@ type Company struct {
 }
 
 // Get returns a single Company identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Companies, an error is returned.
 func (cs *CompanyService) Get(id int, opts ...FuncOption) (*Company, error) {
 	url, err := cs.client.singleURL(CompanyEndpoint, id, opts...)
@@ -92,7 +92,7 @@ func (cs *CompanyService) Search(qry string, opts ...FuncOption) ([]*Company, er
 }
 
 // Count returns the number of Companies available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Companies to count.
 func (cs *CompanyService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CompanyEndpoint, opts...)

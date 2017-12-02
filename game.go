@@ -119,7 +119,7 @@ type Website struct {
 }
 
 // Get returns a single Game identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 	url, err := gs.client.singleURL(GameEndpoint, id, opts...)
@@ -178,7 +178,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 }
 
 // Count returns the number of Games available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Games to count.
 func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gs.client.getEndpointCount(GameEndpoint, opts...)

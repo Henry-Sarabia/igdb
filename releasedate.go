@@ -24,7 +24,7 @@ type ReleaseDate struct {
 }
 
 // Get returns a single ReleaseDate identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any ReleaseDates, an error is returned.
 func (rds *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, error) {
 	url, err := rds.client.singleURL(ReleaseDateEndpoint, id, opts...)
@@ -64,7 +64,7 @@ func (rds *ReleaseDateService) List(ids []int, opts ...FuncOption) ([]*ReleaseDa
 }
 
 // Count returns the number of ReleaseDates available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which ReleaseDates to count.
 func (rds *ReleaseDateService) Count(opts ...FuncOption) (int, error) {
 	ct, err := rds.client.getEndpointCount(ReleaseDateEndpoint, opts...)

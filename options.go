@@ -33,12 +33,12 @@ type options struct {
 
 // FuncOption functions are used to set the options for an API call.
 // FuncOption is the first-order function returned by the available
-// functional options (e.g. OptLimit or OptFilter). This first-order
+// functional options (e.g. SetLimit or SetFilter). This first-order
 // function is then passed into a service's Get, List, Search, or
 // Count function.
 //
 // Only one of each type of FuncOption can be set per API call.
-// OptFilter is the only exception to this rule.
+// SetFilter is the only exception to this rule.
 type FuncOption func(*options) error
 
 // newOpt returns a new options object mutated by the provided FuncOption
@@ -77,22 +77,22 @@ func ComposeOptions(opts ...FuncOption) FuncOption {
 // explicitly specified.
 type order string
 
-// Available orders for the functional option OptOrder
+// Available orders for the functional option SetOrder
 const (
-	// OrderAscending is used as an argument in the OptOrder functional
+	// OrderAscending is used as an argument in the SetOrder functional
 	// option to organize the results from an API call in ascending order.
 	OrderAscending order = ":asc"
-	// OrderDescending is used as an argument in the OptOrder functional
+	// OrderDescending is used as an argument in the SetOrder functional
 	// option to organize the results from an API call in descending order.
 	OrderDescending order = ":desc"
 )
 
 // subfilter specifies which type of filter you want to apply to the associated
-// IGDB object's array field when using OptOrder's optional subfiltering
+// IGDB object's array field when using SetOrder's optional subfiltering
 // functionality.
 type subfilter string
 
-// Available subfilters for the functional option OptOrder
+// Available subfilters for the functional option SetOrder
 const (
 	// SubMax filters based on the maximum element in the array.
 	SubMax subfilter = ":max"
@@ -106,21 +106,21 @@ const (
 	SubMedian subfilter = ":median"
 )
 
-// OptOrder is a functional option used to set the order of the results from
+// SetOrder is a functional option used to set the order of the results from
 // an API call, either ascending or descending. The provided field and order
 // specify which field to sort by and in what order, respectively. Subfields
 // are accessed with a dot operator. Note that the field string must match an
 // IGDB object's JSON field tag exactly, not the Go struct field name. The
 // default order is based on relevance and cannot be explicitly set.
 //
-// Optionally, OptOrder also allows you to provide a subfilter argument with
+// Optionally, SetOrder also allows you to provide a subfilter argument with
 // which to perform array subfiltering on any of an IGBD object's array fields
 // (e.g. a Game object's ReleaseDates field). In other words, you can order
 // based on the max, min, sum, average, or median value of an array field's
 // contents. If more than one subfilter is provided, an error is returned.
 //
 // For more information, visit: https://igdb.github.io/api/references/ordering/
-func OptOrder(field string, ord order, sub ...subfilter) FuncOption {
+func SetOrder(field string, ord order, sub ...subfilter) FuncOption {
 	return func(o *options) error {
 		if strings.TrimSpace(field) == "" {
 			return ErrEmptyField
@@ -142,11 +142,11 @@ func OptOrder(field string, ord order, sub ...subfilter) FuncOption {
 	}
 }
 
-// OptLimit is a functional option used to limit the number of results from
+// SetLimit is a functional option used to limit the number of results from
 // an API call. The default limit is 10. The maximum limit is 50.
 //
 // For more information, visit: https://igdb.github.io/api/references/pagination/
-func OptLimit(lim int) FuncOption {
+func SetLimit(lim int) FuncOption {
 	return func(o *options) error {
 		if lim <= 0 || lim > 50 {
 			return ErrOutOfRange
@@ -159,11 +159,11 @@ func OptLimit(lim int) FuncOption {
 	}
 }
 
-// OptOffset is a functional option used to offset the results from an API
+// SetOffset is a functional option used to offset the results from an API
 // call. The default offset is 0. The maximum offset is 10,000.
 //
 // For more information, visit: https://igdb.github.io/api/references/pagination/
-func OptOffset(off int) FuncOption {
+func SetOffset(off int) FuncOption {
 	return func(o *options) error {
 		if off < 0 || off > 50 {
 			return ErrOutOfRange
@@ -176,7 +176,7 @@ func OptOffset(off int) FuncOption {
 	}
 }
 
-// OptFields is a functional option used to specify which fields of the
+// SetFields is a functional option used to specify which fields of the
 // requested IGDB object you want the API to provide. Subfields are accessed
 // with a dot operator (e.g. cover.url). To select all available fields at
 // once, use an asterisk character (i.e. *). Note that the field string must
@@ -187,7 +187,7 @@ func OptOffset(off int) FuncOption {
 // The default for Search functions is set to solely the ID field.
 //
 // For more information, visit: https://igdb.github.io/api/references/fields/
-func OptFields(fields ...string) FuncOption {
+func SetFields(fields ...string) FuncOption {
 	return func(o *options) error {
 		if len(fields) == 0 {
 			return ErrEmptySlice
@@ -212,7 +212,7 @@ func OptFields(fields ...string) FuncOption {
 // https://igdb.github.io/api/references/filters/#available-postfixes
 type operator string
 
-// Available operators for the functional option OptFilter
+// Available operators for the functional option SetFilter
 const (
 	// OpEquals checks for equality. Must match exactly.
 	OpEquals operator = "eq"
@@ -240,10 +240,10 @@ const (
 	OpAny operator = "any"
 )
 
-// OptFilter is a functional option used to filter the results from an API
+// SetFilter is a functional option used to filter the results from an API
 // call. Most filtering operations need three different arguments: an operator
 // and 2 operands. The provided field and val strings act as the operands
-// for the provided operator. Optfilter is the only option allowed to be set
+// for the provided operator. SetFilter is the only option allowed to be set
 // multiple times in a single API call. By default, results are unfiltered.
 //
 // Note that the ID field cannot be used for filtering except when paired with
@@ -253,7 +253,7 @@ const (
 // to the intended field value.
 //
 // For more information, visit: https://igdb.github.io/api/references/filters/
-func OptFilter(field string, op operator, val string) FuncOption {
+func SetFilter(field string, op operator, val string) FuncOption {
 	return func(o *options) error {
 		if op == OpExists || op == OpNotExists {
 			val = "1"
@@ -267,9 +267,9 @@ func OptFilter(field string, op operator, val string) FuncOption {
 	}
 }
 
-// optSearch is a functional option used to search the IGDB using the
+// setSearch is a functional option used to search the IGDB using the
 // provided query.
-func optSearch(qry string) FuncOption {
+func setSearch(qry string) FuncOption {
 	return func(o *options) error {
 		if qry == "" {
 			return ErrEmptyQuery

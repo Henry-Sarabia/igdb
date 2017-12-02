@@ -19,7 +19,7 @@ type Theme struct {
 }
 
 // Get returns a single Theme identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Themes, an error is returned.
 func (ts *ThemeService) Get(id int, opts ...FuncOption) (*Theme, error) {
 	url, err := ts.client.singleURL(ThemeEndpoint, id, opts...)
@@ -78,7 +78,7 @@ func (ts *ThemeService) Search(qry string, opts ...FuncOption) ([]*Theme, error)
 }
 
 // Count returns the number of Themes available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Themes to count.
 func (ts *ThemeService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ts.client.getEndpointCount(ThemeEndpoint, opts...)

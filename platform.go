@@ -68,7 +68,7 @@ type PlatformCompany struct {
 }
 
 // Get returns a single Platform identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Platforms, an error is returned.
 func (ps *PlatformService) Get(id int, opts ...FuncOption) (*Platform, error) {
 	url, err := ps.client.singleURL(PlatformEndpoint, id, opts...)
@@ -127,7 +127,7 @@ func (ps *PlatformService) Search(qry string, opts ...FuncOption) ([]*Platform, 
 }
 
 // Count returns the number of Platforms available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Platforms to count.
 func (ps *PlatformService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PlatformEndpoint, opts...)

@@ -19,7 +19,7 @@ type Collection struct {
 }
 
 // Get returns a single Collection identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Collections, an error is returned.
 func (cs *CollectionService) Get(id int, opts ...FuncOption) (*Collection, error) {
 	url, err := cs.client.singleURL(CollectionEndpoint, id, opts...)
@@ -78,7 +78,7 @@ func (cs *CollectionService) Search(qry string, opts ...FuncOption) ([]*Collecti
 }
 
 // Count returns the number of Collections available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Collections to count.
 func (cs *CollectionService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CollectionEndpoint, opts...)

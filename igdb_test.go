@@ -58,13 +58,13 @@ func TestSingleURL(t *testing.T) {
 		ExpErr error
 	}{
 		{"Positive ID with no options", 1234, nil, igdbURL + string(testEndpoint) + "1234", nil},
-		{"Positive ID with limit and offset", 55, []FuncOption{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "55?limit=20&offset=15", nil},
-		{"Positive ID with fields and order", 100, []FuncOption{OptFields("name", "rating"), OptOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
-		{"Positive ID with filters", 55555, []FuncOption{OptFilter("rating", OpGreaterThan, "80"), OptFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
+		{"Positive ID with limit and offset", 55, []FuncOption{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "55?limit=20&offset=15", nil},
+		{"Positive ID with fields and order", 100, []FuncOption{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
+		{"Positive ID with filters", 55555, []FuncOption{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
 		{"Negative ID with no options", -1234, nil, "", ErrNegativeID},
-		{"Negative ID with options", -55555, []FuncOption{OptLimit(20), OptOffset(15)}, "", ErrNegativeID},
-		{"Positive ID with invalid option", 100, []FuncOption{OptLimit(999)}, "", ErrOutOfRange},
-		{"Negative ID with invalid option", -100, []FuncOption{OptLimit(999)}, "", ErrNegativeID},
+		{"Negative ID with options", -55555, []FuncOption{SetLimit(20), SetOffset(15)}, "", ErrNegativeID},
+		{"Positive ID with invalid option", 100, []FuncOption{SetLimit(999)}, "", ErrOutOfRange},
+		{"Negative ID with invalid option", -100, []FuncOption{SetLimit(999)}, "", ErrNegativeID},
 	}
 	for _, st := range singleTests {
 		t.Run(st.Name, func(t *testing.T) {
@@ -92,19 +92,19 @@ func TestMultiURL(t *testing.T) {
 	}{
 		{"Positive ID with no options", []int{1234}, nil, igdbURL + string(testEndpoint) + "1234", nil},
 		{"Positive IDs with no options", []int{1, 2, 3, 4}, nil, igdbURL + string(testEndpoint) + "1,2,3,4", nil},
-		{"Positive IDs with limit and offset", []int{55, 110}, []FuncOption{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "55,110?limit=20&offset=15", nil},
-		{"Positive IDs with fields and order", []int{100}, []FuncOption{OptFields("name", "rating"), OptOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
-		{"Positive IDs with filters", []int{55555}, []FuncOption{OptFilter("rating", OpGreaterThan, "80"), OptFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
+		{"Positive IDs with limit and offset", []int{55, 110}, []FuncOption{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "55,110?limit=20&offset=15", nil},
+		{"Positive IDs with fields and order", []int{100}, []FuncOption{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
+		{"Positive IDs with filters", []int{55555}, []FuncOption{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
 		{"Negative ID with no options", []int{-1234}, nil, "", ErrNegativeID},
 		{"Negative IDs with no options", []int{-1, -2, -3, -4}, nil, "", ErrNegativeID},
-		{"Negative IDs with options", []int{-55555}, []FuncOption{OptLimit(20), OptOffset(15)}, "", ErrNegativeID},
-		{"Mixed IDs with options", []int{100, -200, 300, -400}, []FuncOption{OptLimit(5), OptOffset(20)}, "", ErrNegativeID},
+		{"Negative IDs with options", []int{-55555}, []FuncOption{SetLimit(20), SetOffset(15)}, "", ErrNegativeID},
+		{"Mixed IDs with options", []int{100, -200, 300, -400}, []FuncOption{SetLimit(5), SetOffset(20)}, "", ErrNegativeID},
 		{"Mixed IDs with no options", []int{-1, 2, -3, 4}, nil, "", ErrNegativeID},
 		{"No IDs with no options", nil, nil, igdbURL + string(testEndpoint), nil},
-		{"No IDs with options", nil, []FuncOption{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15", nil},
-		{"Positive IDs with invalid option", []int{100, 200}, []FuncOption{OptLimit(999)}, "", ErrOutOfRange},
-		{"Negative IDs with invalid option", []int{-100, -200}, []FuncOption{OptLimit(999)}, "", ErrNegativeID},
-		{"Mixed IDs with invalid option", []int{100, -200}, []FuncOption{(OptLimit(999))}, "", ErrNegativeID},
+		{"No IDs with options", nil, []FuncOption{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15", nil},
+		{"Positive IDs with invalid option", []int{100, 200}, []FuncOption{SetLimit(999)}, "", ErrOutOfRange},
+		{"Negative IDs with invalid option", []int{-100, -200}, []FuncOption{SetLimit(999)}, "", ErrNegativeID},
+		{"Mixed IDs with invalid option", []int{100, -200}, []FuncOption{(SetLimit(999))}, "", ErrNegativeID},
 	}
 	for _, mt := range multiTests {
 		t.Run(mt.Name, func(t *testing.T) {
@@ -131,16 +131,16 @@ func TestSearchURL(t *testing.T) {
 		ExpErr error
 	}{
 		{"Non-empty query with no options", "zelda", nil, igdbURL + string(testEndpoint) + "?search=zelda", nil},
-		{"Non-empty query with limit and offset", "zelda", []FuncOption{OptLimit(20), OptOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15&search=zelda", nil},
-		{"Non-empty query with fields and order", "zelda", []FuncOption{OptFields("name", "rating"), OptOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "?fields=name%2Crating&order=rating%3Adesc&search=zelda", nil},
-		{"Non-empty query with filters", "zelda", []FuncOption{OptFilter("rating", OpGreaterThan, "80"), OptFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80&search=zelda", nil},
+		{"Non-empty query with limit and offset", "zelda", []FuncOption{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15&search=zelda", nil},
+		{"Non-empty query with fields and order", "zelda", []FuncOption{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "?fields=name%2Crating&order=rating%3Adesc&search=zelda", nil},
+		{"Non-empty query with filters", "zelda", []FuncOption{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80&search=zelda", nil},
 		{"Empty query with no options", "", nil, "", ErrEmptyQuery},
-		{"Empty query with options", "", []FuncOption{OptLimit(50), OptFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
+		{"Empty query with options", "", []FuncOption{SetLimit(50), SetFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
 		{"Space query with no options", "   ", nil, "", ErrEmptyQuery},
-		{"Space query with options", "   ", []FuncOption{OptLimit(50), OptFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
-		{"Non-empty query with invalid option", "zelda", []FuncOption{OptOffset(-999)}, "", ErrOutOfRange},
-		{"Empty query with invalid option", "", []FuncOption{OptOffset(-999)}, "", ErrEmptyQuery},
-		{"Space query with invalid option", "   ", []FuncOption{OptOffset(-999)}, "", ErrEmptyQuery},
+		{"Space query with options", "   ", []FuncOption{SetLimit(50), SetFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
+		{"Non-empty query with invalid option", "zelda", []FuncOption{SetOffset(-999)}, "", ErrOutOfRange},
+		{"Empty query with invalid option", "", []FuncOption{SetOffset(-999)}, "", ErrEmptyQuery},
+		{"Space query with invalid option", "   ", []FuncOption{SetOffset(-999)}, "", ErrEmptyQuery},
 	}
 
 	for _, st := range searchTests {

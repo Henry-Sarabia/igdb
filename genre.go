@@ -19,7 +19,7 @@ type Genre struct {
 }
 
 // Get returns a single Genre identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Genres, an error is returned.
 func (gs *GenreService) Get(id int, opts ...FuncOption) (*Genre, error) {
 	url, err := gs.client.singleURL(GenreEndpoint, id, opts...)
@@ -78,7 +78,7 @@ func (gs *GenreService) Search(qry string, opts ...FuncOption) ([]*Genre, error)
 }
 
 // Count returns the number of Genres available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Genres to count.
 func (gs *GenreService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gs.client.getEndpointCount(GenreEndpoint, opts...)

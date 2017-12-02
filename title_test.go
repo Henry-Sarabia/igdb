@@ -69,11 +69,11 @@ func TestTitlesList(t *testing.T) {
 		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/titles_list.txt", []int{7839, 25381}, []FuncOption{OptLimit(5)}, ""},
+		{"Happy path", "test_data/titles_list.txt", []int{7839, 25381}, []FuncOption{SetLimit(5)}, ""},
 		{"Zero IDs", "test_data/titles_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-25000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{7839, 25381}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{7839, 25381}, []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{7839, 25381}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range titleTests {
@@ -134,10 +134,10 @@ func TestTitlesSearch(t *testing.T) {
 		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/titles_search.txt", "graphic", []FuncOption{OptLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Happy path", "test_data/titles_search.txt", "graphic", []FuncOption{SetLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "graphic", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "graphic", []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "graphic", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range titleTests {
@@ -208,9 +208,9 @@ func TestTitlesCount(t *testing.T) {
 		ExpCount int
 		ExpErr   string
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
 		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
 		{"No results", "[]", nil, 0, ErrNoResults.Error()},
 	}
 

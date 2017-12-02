@@ -46,7 +46,7 @@ type Page struct {
 }
 
 // Get returns a single Page identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Pages, an error is returned.
 func (ps *PageService) Get(id int, opts ...FuncOption) (*Page, error) {
 	url, err := ps.client.singleURL(PageEndpoint, id, opts...)
@@ -105,7 +105,7 @@ func (ps *PageService) Search(qry string, opts ...FuncOption) ([]*Page, error) {
 }
 
 // Count returns the number of Pages available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Pages to count.
 func (ps *PageService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PageEndpoint, opts...)

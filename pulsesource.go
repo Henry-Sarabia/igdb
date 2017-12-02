@@ -16,7 +16,7 @@ type PulseSource struct {
 }
 
 // Get returns a single PulseSource identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PulseSources, an error is returned.
 func (pss *PulseSourceService) Get(id int, opts ...FuncOption) (*PulseSource, error) {
 	url, err := pss.client.singleURL(PulseSourceEndpoint, id, opts...)
@@ -75,7 +75,7 @@ func (pss *PulseSourceService) Search(qry string, opts ...FuncOption) ([]*PulseS
 }
 
 // Count returns the number of PulseSources available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which PulseSources to count.
 func (pss *PulseSourceService) Count(opts ...FuncOption) (int, error) {
 	ct, err := pss.client.getEndpointCount(PulseSourceEndpoint, opts...)

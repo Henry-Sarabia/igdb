@@ -32,7 +32,7 @@ type Review struct {
 }
 
 // Get returns a single Review identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Reviews, an error is returned.
 func (rs *ReviewService) Get(id int, opts ...FuncOption) (*Review, error) {
 	url, err := rs.client.singleURL(ReviewEndpoint, id, opts...)
@@ -91,7 +91,7 @@ func (rs *ReviewService) Search(qry string, opts ...FuncOption) ([]*Review, erro
 }
 
 // Count returns the number of Reviews available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Reviews to count.
 func (rs *ReviewService) Count(opts ...FuncOption) (int, error) {
 	ct, err := rs.client.getEndpointCount(ReviewEndpoint, opts...)

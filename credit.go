@@ -30,7 +30,7 @@ type Credit struct {
 }
 
 // Get returns a single Credit identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Credits, an error is returned.
 func (cs *CreditService) Get(id int, opts ...FuncOption) (*Credit, error) {
 	url, err := cs.client.singleURL(CreditEndpoint, id, opts...)
@@ -89,7 +89,7 @@ func (cs *CreditService) Search(qry string, opts ...FuncOption) ([]*Credit, erro
 }
 
 // Count returns the number of Credits available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Credits to count.
 func (cs *CreditService) Count(opts ...FuncOption) (int, error) {
 	ct, err := cs.client.getEndpointCount(CreditEndpoint, opts...)

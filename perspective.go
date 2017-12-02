@@ -19,7 +19,7 @@ type Perspective struct {
 }
 
 // Get returns a single Perspective identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Perspectives, an error is returned.
 func (ps *PerspectiveService) Get(id int, opts ...FuncOption) (*Perspective, error) {
 	url, err := ps.client.singleURL(PerspectiveEndpoint, id, opts...)
@@ -78,7 +78,7 @@ func (ps *PerspectiveService) Search(qry string, opts ...FuncOption) ([]*Perspec
 }
 
 // Count returns the number of Perspectives available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Perspectives to count.
 func (ps *PerspectiveService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getEndpointCount(PerspectiveEndpoint, opts...)

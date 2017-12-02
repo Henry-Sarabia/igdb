@@ -206,7 +206,7 @@ func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string
 		return "", ErrEmptyQuery
 	}
 
-	opts = append(opts, optSearch(qry))
+	opts = append(opts, setSearch(qry))
 	opt, err := newOpt(opts...)
 	if err != nil {
 		return "", err

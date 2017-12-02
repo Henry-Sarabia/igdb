@@ -12,10 +12,10 @@ func TestComposeOptions(t *testing.T) {
 		FuncOpts []FuncOption
 	}{
 		{"Zero options", nil},
-		{"Single option", []FuncOption{OptLimit(20)}},
-		{"Multiple options", []FuncOption{OptLimit(20), OptFields("name", "id"), OptFilter("popularity", OpLessThan, "50")}},
-		{"Single invalid option", []FuncOption{OptOffset(-500)}},
-		{"Multiple invalid options", []FuncOption{OptOffset(-500), OptLimit(999)}},
+		{"Single option", []FuncOption{SetLimit(20)}},
+		{"Multiple options", []FuncOption{SetLimit(20), SetFields("name", "id"), SetFilter("popularity", OpLessThan, "50")}},
+		{"Single invalid option", []FuncOption{SetOffset(-500)}},
+		{"Multiple invalid options", []FuncOption{SetOffset(-500), SetLimit(999)}},
 	}
 
 	for _, tt := range optTests {
@@ -42,9 +42,9 @@ func TestNewOpt(t *testing.T) {
 		ExpErr   error
 	}{
 		{"Empty option", []FuncOption{}, 0, nil},
-		{"Single option", []FuncOption{OptLimit(4)}, 1, nil},
-		{"Multiple options", []FuncOption{OptOffset(10), OptLimit(50), OptFields("id", "rating"), OptFilter("rating", OpLessThan, "40"), OptOrder("rating", OrderAscending)}, 5, nil},
-		{"Multiple filter options", []FuncOption{OptFilter("popularity", OpLessThan, "50"), OptFilter("rating", OpGreaterThan, "50")}, 2, nil},
+		{"Single option", []FuncOption{SetLimit(4)}, 1, nil},
+		{"Multiple options", []FuncOption{SetOffset(10), SetLimit(50), SetFields("id", "rating"), SetFilter("rating", OpLessThan, "40"), SetOrder("rating", OrderAscending)}, 5, nil},
+		{"Multiple filter options", []FuncOption{SetFilter("popularity", OpLessThan, "50"), SetFilter("rating", OpGreaterThan, "50")}, 2, nil},
 	}
 
 	for _, ot := range optTests {
@@ -62,7 +62,7 @@ func TestNewOpt(t *testing.T) {
 	}
 }
 
-func TestOptOrder(t *testing.T) {
+func TestSetOrder(t *testing.T) {
 	var orderTests = []struct {
 		Name   string
 		Field  string
@@ -85,7 +85,7 @@ func TestOptOrder(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := OptOrder(ot.Field, ot.Order, ot.Sub...)
+			funcOpt := SetOrder(ot.Field, ot.Order, ot.Sub...)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
@@ -100,7 +100,7 @@ func TestOptOrder(t *testing.T) {
 	}
 }
 
-func TestOptLimit(t *testing.T) {
+func TestSetLimit(t *testing.T) {
 	var limitTests = []struct {
 		Name   string
 		Limit  int
@@ -119,7 +119,7 @@ func TestOptLimit(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := OptLimit(lt.Limit)
+			funcOpt := SetLimit(lt.Limit)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, lt.ExpErr) {
@@ -134,7 +134,7 @@ func TestOptLimit(t *testing.T) {
 	}
 }
 
-func TestOptOffset(t *testing.T) {
+func TestSetOffset(t *testing.T) {
 	var offsetTests = []struct {
 		Name   string
 		Offset int
@@ -153,7 +153,7 @@ func TestOptOffset(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := OptOffset(ot.Offset)
+			funcOpt := SetOffset(ot.Offset)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ot.ExpErr) {
@@ -168,7 +168,7 @@ func TestOptOffset(t *testing.T) {
 	}
 }
 
-func TestOptFields(t *testing.T) {
+func TestSetFields(t *testing.T) {
 	var fieldsTests = []struct {
 		Name      string
 		Fields    []string
@@ -189,7 +189,7 @@ func TestOptFields(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := OptFields(ft.Fields...)
+			funcOpt := SetFields(ft.Fields...)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ft.ExpErr) {
@@ -204,7 +204,7 @@ func TestOptFields(t *testing.T) {
 	}
 }
 
-func TestOptFilter(t *testing.T) {
+func TestSetFilter(t *testing.T) {
 	var filterTests = []struct {
 		Name      string
 		Field     string
@@ -225,7 +225,7 @@ func TestOptFilter(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := OptFilter(ft.Field, ft.Op, ft.Val)
+			funcOpt := SetFilter(ft.Field, ft.Op, ft.Val)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ft.ExpErr) {
@@ -240,7 +240,7 @@ func TestOptFilter(t *testing.T) {
 	}
 }
 
-func TestOptSearch(t *testing.T) {
+func TestSetSearch(t *testing.T) {
 	var searchTests = []struct {
 		Name   string
 		Qry    string
@@ -258,7 +258,7 @@ func TestOptSearch(t *testing.T) {
 			if err != nil {
 				t.Fatalf(err.Error())
 			}
-			funcOpt := optSearch(st.Qry)
+			funcOpt := setSearch(st.Qry)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, st.ExpErr) {
@@ -279,12 +279,12 @@ func TestOptOverlap(t *testing.T) {
 		FuncOpts []FuncOption
 		ExpErr   error
 	}{
-		{"OptOrder overlap", []FuncOption{OptOrder("popularity", OrderDescending), OptOrder("rating", OrderAscending)}, ErrOptionSet},
-		{"OptLimit overlap", []FuncOption{OptLimit(5), OptLimit(40)}, ErrOptionSet},
-		{"OptOffset overlap", []FuncOption{OptOffset(0), OptOffset(25)}, ErrOptionSet},
-		{"OptFields overlap", []FuncOption{OptFields("id"), OptFields("name")}, ErrOptionSet},
-		{"OptFilter overlap", []FuncOption{OptFilter("rating", OpLessThan, "50"), OptFilter("popularity", OpGreaterThan, "50")}, nil},
-		{"OptSearch overlap", []FuncOption{optSearch("zelda"), optSearch("link")}, ErrOptionSet},
+		{"SetOrder overlap", []FuncOption{SetOrder("popularity", OrderDescending), SetOrder("rating", OrderAscending)}, ErrOptionSet},
+		{"SetLimit overlap", []FuncOption{SetLimit(5), SetLimit(40)}, ErrOptionSet},
+		{"SetOffset overlap", []FuncOption{SetOffset(0), SetOffset(25)}, ErrOptionSet},
+		{"SetFields overlap", []FuncOption{SetFields("id"), SetFields("name")}, ErrOptionSet},
+		{"SetFilter overlap", []FuncOption{SetFilter("rating", OpLessThan, "50"), SetFilter("popularity", OpGreaterThan, "50")}, nil},
+		{"SetSearch overlap", []FuncOption{setSearch("zelda"), setSearch("link")}, ErrOptionSet},
 	}
 
 	for _, ot := range overlapTests {

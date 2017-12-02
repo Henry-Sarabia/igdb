@@ -80,11 +80,11 @@ func TestGamesList(t *testing.T) {
 		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/games_list.txt", []int{1721, 2777}, []FuncOption{OptLimit(5)}, ""},
+		{"Happy path", "test_data/games_list.txt", []int{1721, 2777}, []FuncOption{SetLimit(5)}, ""},
 		{"Zero IDs", "test_data/games_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{1721, 2777}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{1721, 2777}, []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{1721, 2777}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range gameTests {
@@ -143,10 +143,10 @@ func TestGamesSearch(t *testing.T) {
 		Opts   []FuncOption
 		ExpErr string
 	}{
-		{"Happy path", "test_data/games_search.txt", "mario", []FuncOption{OptLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{OptLimit(50)}, ErrEmptyQuery.Error()},
+		{"Happy path", "test_data/games_search.txt", "mario", []FuncOption{SetLimit(50)}, ""},
+		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "mario", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "mario", []FuncOption{OptOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "mario", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range gameTests {
@@ -217,9 +217,9 @@ func TestGamesCount(t *testing.T) {
 		ExpCount int
 		ExpErr   string
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{OptFilter("popularity", OpGreaterThan, "75")}, 100, ""},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
 		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{OptLimit(100)}, 0, ErrOutOfRange.Error()},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
 		{"No results", "[]", nil, 0, ErrNoResults.Error()},
 	}
 
@@ -274,7 +274,7 @@ func TestGamesListFields(t *testing.T) {
 func ExampleGameService_Get() {
 	c := NewClient(APIkey, nil)
 
-	g, err := c.Games.Get(7346, OptFields("name", "url", "summary", "storyline", "rating", "popularity", "cover"))
+	g, err := c.Games.Get(7346, SetFields("name", "url", "summary", "storyline", "rating", "popularity", "cover"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -302,10 +302,10 @@ func ExampleGameService_Search() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.Search("mario",
-		OptFields("*"),
-		OptFilter("rating", OpGreaterThanEqual, "80"),
-		OptOrder("rating", OrderDescending),
-		OptLimit(3))
+		SetFields("*"),
+		SetFilter("rating", OpGreaterThanEqual, "80"),
+		SetOrder("rating", OrderDescending),
+		SetLimit(3))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -320,7 +320,7 @@ func ExampleGameService_Search() {
 func ExampleGameService_Count() {
 	c := NewClient("YOUR_API_KEY", nil)
 
-	ct, err := c.Games.Count(OptFilter("release_dates.date", OpGreaterThan, "1993-12-15"))
+	ct, err := c.Games.Count(SetFilter("release_dates.date", OpGreaterThan, "1993-12-15"))
 	if err != nil {
 		fmt.Println(err)
 		return

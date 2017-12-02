@@ -20,7 +20,7 @@ type Keyword struct {
 }
 
 // Get returns a single Keyword identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Keywords, an error is returned.
 func (ks *KeywordService) Get(id int, opts ...FuncOption) (*Keyword, error) {
 	url, err := ks.client.singleURL(KeywordEndpoint, id, opts...)
@@ -79,7 +79,7 @@ func (ks *KeywordService) Search(qry string, opts ...FuncOption) ([]*Keyword, er
 }
 
 // Count returns the number of Keywords available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which Keywords to count.
 func (ks *KeywordService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ks.client.getEndpointCount(KeywordEndpoint, opts...)

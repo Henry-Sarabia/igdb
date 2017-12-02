@@ -23,7 +23,7 @@ type PulseGroup struct {
 }
 
 // Get returns a single PulseGroup identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PulseGroups, an error is returned.
 func (pgs *PulseGroupService) Get(id int, opts ...FuncOption) (*PulseGroup, error) {
 	url, err := pgs.client.singleURL(PulseGroupEndpoint, id, opts...)
@@ -82,7 +82,7 @@ func (pgs *PulseGroupService) Search(qry string, opts ...FuncOption) ([]*PulseGr
 }
 
 // Count returns the number of PulseGroups available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which PulseGroups to count.
 func (pgs *PulseGroupService) Count(opts ...FuncOption) (int, error) {
 	ct, err := pgs.client.getEndpointCount(PulseGroupEndpoint, opts...)

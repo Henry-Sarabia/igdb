@@ -19,7 +19,7 @@ type GameMode struct {
 }
 
 // Get returns a single GameMode identified by the provided IGDB ID. Provide
-// the OptFields functional option if you need to specify which fields to
+// the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameModes, an error is returned.
 func (gms *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
 	url, err := gms.client.singleURL(GameModeEndpoint, id, opts...)
@@ -78,7 +78,7 @@ func (gms *GameModeService) Search(qry string, opts ...FuncOption) ([]*GameMode,
 }
 
 // Count returns the number of GameModes available in the IGDB.
-// Provide the OptFilter functional option if you need to filter
+// Provide the SetFilter functional option if you need to filter
 // which GameModes to count.
 func (gms *GameModeService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gms.client.getEndpointCount(GameModeEndpoint, opts...)
