@@ -6,6 +6,34 @@ import (
 	"testing"
 )
 
+func TestComposeOptions(t *testing.T) {
+	var optTests = []struct {
+		Name     string
+		OptFuncs []OptionFunc
+	}{
+		{"Zero options", nil},
+		{"Single option", []OptionFunc{OptLimit(20)}},
+		{"Multiple options", []OptionFunc{OptLimit(20), OptFields("name", "id"), OptFilter("popularity", OpLessThan, "50")}},
+		{"Single invalid option", []OptionFunc{OptOffset(-500)}},
+		{"Multiple invalid options", []OptionFunc{OptOffset(-500), OptLimit(999)}},
+	}
+
+	for _, tt := range optTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			comp := ComposeOptions(tt.OptFuncs...)
+
+			expOpt, expErr := newOpt(tt.OptFuncs...)
+			actOpt, actErr := newOpt(comp)
+			if !reflect.DeepEqual(actErr, expErr) {
+				t.Fatalf("Expected error '%v', got '%v'", expErr, actErr)
+			}
+			if !reflect.DeepEqual(actOpt, expOpt) {
+				t.Fatalf("Expected options '%v', got '%v'", expOpt, actOpt)
+			}
+		})
+	}
+}
+
 func TestNewOpt(t *testing.T) {
 	var optTests = []struct {
 		Name     string

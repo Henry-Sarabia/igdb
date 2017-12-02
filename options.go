@@ -57,6 +57,20 @@ func newOpt(ofs ...OptionFunc) (*options, error) {
 	return opt, nil
 }
 
+// ComposeOptions allows you to compose several functional options into one.
+// This is primarily used to create a single functional option that will be
+// used repeatedly between different API calls.
+func ComposeOptions(opts ...OptionFunc) OptionFunc {
+	return func(o *options) error {
+		for _, opt := range opts {
+			if err := opt(o); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
 // order specifies the order in which to organize the results from an API call.
 // There are three orders in which results are organized: relevance, ascending,
 // and descending. Relevance is only available as a default and cannot be
