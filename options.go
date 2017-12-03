@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Errors returned by an FuncOption when setting options for an API call.
+// Errors returned by a FuncOption when setting options for an API call.
 var (
 	// ErrOptionSet occurs when the same option is used multiple times in a single API call.
 	ErrOptionSet = errors.New("igdb.FuncOption: option already set")
@@ -26,7 +26,7 @@ var (
 
 // options contains a value map that stores the optional parameters for
 // the various IGDB API calls. The options type is not accessed directly,
-// but instead mutated using the functional options that return an FuncOption.
+// but instead mutated using the functional options that return a FuncOption.
 type options struct {
 	Values url.Values
 }
@@ -57,9 +57,9 @@ func newOpt(funcOpts ...FuncOption) (*options, error) {
 	return opt, nil
 }
 
-// ComposeOptions allows you to compose several functional options into one.
-// This is primarily used to create a single functional option that will be
-// used repeatedly between different API calls.
+// ComposeOptions composes multiple functional options into a single FuncOption.
+// This is primarily used to conveniently create a single functional option that
+// can be used repeatedly across different API calls.
 func ComposeOptions(opts ...FuncOption) FuncOption {
 	return func(o *options) error {
 		for _, opt := range opts {
@@ -87,8 +87,8 @@ const (
 	OrderDescending order = ":desc"
 )
 
-// subfilter specifies which type of filter you want to apply to the associated
-// IGDB object's array field when using SetOrder's optional subfiltering
+// subfilter specifies which type of filter to apply to the associated IGDB
+// object's array field when using SetOrder's optional subfiltering
 // functionality.
 type subfilter string
 
