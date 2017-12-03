@@ -71,7 +71,7 @@ type WebsiteCategory int
 
 // CreditCategory implements the Stringer interface by matching its code with
 // the IGDBs enumerated type Credit Category and returns the category as a
-// string. Codes with no match will return "Undefined".
+// string. Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/credit-category/
 func (c CreditCategory) String() string {
@@ -95,7 +95,7 @@ func (c CreditCategory) String() string {
 
 // DateCategory implements the Stringer interface by matching its code with
 // the IGDBs enumerated type Date Category and returns the category as a
-// string. Codes with no match will return "Undefined".
+// string. Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/date-category/
 func (d DateCategory) String() string {
@@ -123,7 +123,7 @@ func (d DateCategory) String() string {
 
 // ESRBCode implements the Stringer interface by matching its code with the
 // IGDBs enumerated type ESRB Rating and returns the rating as a string.
-// Codes with no match will return "Undefined".
+// Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/esrb-rating/
 func (e ESRBCode) String() string {
@@ -149,7 +149,7 @@ func (e ESRBCode) String() string {
 
 // FeatureCategory implements the Stringer interface by matching its code with
 // the IGDB's enumerated type Feature Category and returned the category as a
-// string. Codes with no match will return "Undefined".
+// string. Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/endpoints/versions/
 func (f FeatureCategory) String() string {
@@ -167,7 +167,7 @@ func (f FeatureCategory) String() string {
 
 // FeedCategory implements the Stringer interface by matching its code with
 // the IGDBs enumerated type Feed Item Category and returns the category as
-// a string. Codes with no match will return "Undefined".
+// a string. Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/feed-item-category/
 func (f FeedCategory) String() string {
@@ -191,7 +191,7 @@ func (f FeedCategory) String() string {
 
 // GameCategory implements the stringer interface by matching its code with the
 // IGDBs enumerated type Game Category and returns the category as a string.
-// Codes with no match will return "Undefined".
+// Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-category/
 func (g GameCategory) String() string {
@@ -213,7 +213,7 @@ func (g GameCategory) String() string {
 
 // GameStatus implements the Stringer interface by matching its code with the
 // IGDBs enumerated Game Status type and returns the status as a string.
-// Codes with no match return "Undefined".
+// Codes without a match return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-status/
 func (g GameStatus) String() string {
@@ -255,7 +255,7 @@ func (g GenderCode) String() string {
 
 // PEGICode implements the Stringer interface by matching its code with the
 // IGDBs enumerated type PEGI Rating and returns the value as a string.
-// Codes with no match will return "Undefined".
+// Codes without a match will return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/pegi-rating/
 func (p PEGICode) String() string {
@@ -328,7 +328,7 @@ func (s SpeciesCode) String() string {
 
 // WebsiteCategory implements the Stringer interface by matching its code with
 // the IGDBs enumerated Website Category and returns the value as a string.
-// Codes with no match return "Undefined".
+// Codes without a match return "Undefined".
 //
 // For the list of codes, visit: https://igdb.github.io/api/enum-fields/website-category/
 func (w WebsiteCategory) String() string {
