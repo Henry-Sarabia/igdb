@@ -144,7 +144,7 @@ func TestSetOffset(t *testing.T) {
 		{"Offset within range", 20, "20", nil},
 		{"Zero offset", 0, "0", nil},
 		{"Offset below range", -15, "", ErrOutOfRange},
-		{"Offset above range", 100, "", ErrOutOfRange},
+		{"Offset above range", 10001, "", ErrOutOfRange},
 	}
 
 	for _, ot := range offsetTests {

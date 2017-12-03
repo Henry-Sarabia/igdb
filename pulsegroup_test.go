@@ -71,7 +71,7 @@ func TestPulseGroupsList(t *testing.T) {
 		{"Zero IDs", "test_data/pulsegroups_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-1000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range pulseGroupTests {
@@ -135,7 +135,7 @@ func TestPulseGroupsSearch(t *testing.T) {
 		{"Happy path", "test_data/pulsegroups_search.txt", "League of Legends", []FuncOption{SetLimit(50)}, ""},
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "League of Legends", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "League of Legends", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "League of Legends", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range pulseGroupTests {

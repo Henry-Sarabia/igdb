@@ -165,7 +165,7 @@ func SetLimit(lim int) FuncOption {
 // For more information, visit: https://igdb.github.io/api/references/pagination/
 func SetOffset(off int) FuncOption {
 	return func(o *options) error {
-		if off < 0 || off > 50 {
+		if off < 0 || off > 10000 {
 			return ErrOutOfRange
 		}
 		if o.Values.Get("offset") != "" {

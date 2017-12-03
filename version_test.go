@@ -64,7 +64,7 @@ func TestVersionsList(t *testing.T) {
 		{"Zero IDs", "test_data/versions_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{100, 200}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{100, 200}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{100, 200}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{100, 200}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range versionTests {

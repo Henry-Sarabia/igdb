@@ -73,7 +73,7 @@ func TestThemesList(t *testing.T) {
 		{"Zero IDs", "test_data/themes_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-50}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{20, 23}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{20, 23}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{20, 23}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range themeTests {
@@ -137,7 +137,7 @@ func TestThemesSearch(t *testing.T) {
 		{"Happy path", "test_data/themes_search.txt", "horror", []FuncOption{SetLimit(50)}, ""},
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "horror", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "horror", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "horror", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range themeTests {

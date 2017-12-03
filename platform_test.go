@@ -79,7 +79,7 @@ func TestPlatformsList(t *testing.T) {
 		{"Zero IDs", "test_data/platforms_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{23, 130}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{23, 130}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{23, 130}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range platformTests {
@@ -155,7 +155,7 @@ func TestPlatformsSearch(t *testing.T) {
 		{"Happy path", "test_data/platforms_search.txt", "xbox", []FuncOption{SetLimit(50)}, ""},
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "xbox", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "xbox", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "xbox", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range platformTests {

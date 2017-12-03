@@ -65,7 +65,7 @@ func TestReleaseDatesList(t *testing.T) {
 		{"Zero IDs", "test_data/releasedates_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{62566, 32350, 1077}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{62566, 32350, 1077}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{62566, 32350, 1077}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range releaseDateTests {

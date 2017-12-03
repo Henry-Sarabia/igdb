@@ -73,7 +73,7 @@ func TestPeopleList(t *testing.T) {
 		{"Zero IDs", "test_data/people_list.txt", nil, nil, ""},
 		{"Invalid ID", "test_data/empty.txt", []int{-50000}, nil, ErrNegativeID.Error()},
 		{"Empty response", "test_data/empty.txt", []int{52302, 84908}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{52302, 84908}, []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", []int{52302, 84908}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
 	}
 	for _, tt := range personTests {
@@ -137,7 +137,7 @@ func TestSearchPersons(t *testing.T) {
 		{"Happy path", "test_data/people_search.txt", "hideokojima", []FuncOption{SetLimit(50)}, ""},
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "hideokojima", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "hideokojima", []FuncOption{SetOffset(9999)}, ErrOutOfRange.Error()},
+		{"Invalid option", "test_data/empty.txt", "hideokojima", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
 		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range personTests {
