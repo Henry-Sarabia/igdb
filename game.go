@@ -138,7 +138,7 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 }
 
 // List returns a list of Games identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Games based solely on the provided
 // options. Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
@@ -159,7 +159,7 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 }
 
 // Search returns a list of Games found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no Games are found using the provided query, an error is returned.
 func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	url, err := gs.client.searchURL(GameEndpoint, qry, opts...)

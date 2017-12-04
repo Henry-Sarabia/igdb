@@ -65,7 +65,7 @@ func (ps *PageService) Get(id int, opts ...FuncOption) (*Page, error) {
 }
 
 // List returns a list of Pages identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Pages based solely on the provided
 // options. Any ID that does not match a Page is ignored. If none of the IDs
 // match a Page, an error is returned.
@@ -86,7 +86,7 @@ func (ps *PageService) List(ids []int, opts ...FuncOption) ([]*Page, error) {
 }
 
 // Search returns a list of Pages found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no Pages are found using the provided query, an error is returned.
 func (ps *PageService) Search(qry string, opts ...FuncOption) ([]*Page, error) {
 	url, err := ps.client.searchURL(PageEndpoint, qry, opts...)

@@ -59,7 +59,7 @@ func (ps *PersonService) Get(id int, opts ...FuncOption) (*Person, error) {
 }
 
 // List returns a list of People identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of People based solely on the provided
 // options. Any ID that does not match a Person is ignored. If none of the IDs
 // match a Person, an error is returned.
@@ -80,7 +80,7 @@ func (ps *PersonService) List(ids []int, opts ...FuncOption) ([]*Person, error) 
 }
 
 // Search returns a list of People found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no People are found using the provided query, an error is returned.
 func (ps *PersonService) Search(qry string, opts ...FuncOption) ([]*Person, error) {
 	url, err := ps.client.searchURL(PersonEndpoint, qry, opts...)

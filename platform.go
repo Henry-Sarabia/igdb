@@ -87,7 +87,7 @@ func (ps *PlatformService) Get(id int, opts ...FuncOption) (*Platform, error) {
 }
 
 // List returns a list of Platforms identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Platforms based solely on the provided
 // options. Any ID that does not match a Platform is ignored. If none of the IDs
 // match a Platform, an error is returned.
@@ -108,7 +108,7 @@ func (ps *PlatformService) List(ids []int, opts ...FuncOption) ([]*Platform, err
 }
 
 // Search returns a list of Platforms found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no Platforms are found using the provided query, an error is returned.
 func (ps *PlatformService) Search(qry string, opts ...FuncOption) ([]*Platform, error) {
 	url, err := ps.client.searchURL(PlatformEndpoint, qry, opts...)

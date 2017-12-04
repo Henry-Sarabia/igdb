@@ -38,7 +38,7 @@ func (cs *CollectionService) Get(id int, opts ...FuncOption) (*Collection, error
 }
 
 // List returns a list of Collections identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Collections based solely on the provided
 // options. Any ID that does not match a Collection is ignored. If none of the IDs
 // match a Collection, an error is returned.
@@ -59,7 +59,7 @@ func (cs *CollectionService) List(ids []int, opts ...FuncOption) ([]*Collection,
 }
 
 // Search returns a list of Collections found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no Collections are found using the provided query, an error is returned.
 func (cs *CollectionService) Search(qry string, opts ...FuncOption) ([]*Collection, error) {
 	url, err := cs.client.searchURL(CollectionEndpoint, qry, opts...)

@@ -43,7 +43,7 @@ func (rds *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, er
 }
 
 // List returns a list of ReleaseDates identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of ReleaseDates based solely on the provided
 // options. Any ID that does not match a ReleaseDate is ignored. If none of the IDs
 // match a ReleaseDate, an error is returned.

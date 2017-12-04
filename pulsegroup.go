@@ -42,7 +42,7 @@ func (pgs *PulseGroupService) Get(id int, opts ...FuncOption) (*PulseGroup, erro
 }
 
 // List returns a list of PulseGroups identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of PulseGroups based solely on the provided
 // options. Any ID that does not match a PulseGroup is ignored. If none of the IDs
 // match a PulseGroup, an error is returned.
@@ -63,7 +63,7 @@ func (pgs *PulseGroupService) List(ids []int, opts ...FuncOption) ([]*PulseGroup
 }
 
 // Search returns a list of PulseGroups found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no PulseGroups are found using the provided query, an error is returned.
 func (pgs *PulseGroupService) Search(qry string, opts ...FuncOption) ([]*PulseGroup, error) {
 	url, err := pgs.client.searchURL(PulseGroupEndpoint, qry, opts...)

@@ -38,7 +38,7 @@ func (fs *FranchiseService) Get(id int, opts ...FuncOption) (*Franchise, error) 
 }
 
 // List returns a list of Franchises identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Franchises based solely on the provided
 // options. Any ID that does not match a Franchise is ignored. If none of the IDs
 // match a Franchise, an error is returned.
@@ -59,7 +59,7 @@ func (fs *FranchiseService) List(ids []int, opts ...FuncOption) ([]*Franchise, e
 }
 
 // Search returns a list of Franchises found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no Franchises are found using the provided query, an error is returned.
 func (fs *FranchiseService) Search(qry string, opts ...FuncOption) ([]*Franchise, error) {
 	url, err := fs.client.searchURL(FranchiseEndpoint, qry, opts...)

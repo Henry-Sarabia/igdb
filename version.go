@@ -54,7 +54,7 @@ func (vs *VersionService) Get(id int, opts ...FuncOption) (*Version, error) {
 }
 
 // List returns a list of Versions identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of Versions based solely on the provided
 // options. Any ID that does not match a Version is ignored. If none of the IDs
 // match a Version, an error is returned.

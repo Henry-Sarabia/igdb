@@ -35,7 +35,7 @@ func (pss *PulseSourceService) Get(id int, opts ...FuncOption) (*PulseSource, er
 }
 
 // List returns a list of PulseSources identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate  the results. Omitting
+// Provide functional options to sort, filter, and paginate the results. Omitting
 // IDs will instead retrieve an index of PulseSources based solely on the provided
 // options. Any ID that does not match a PulseSource is ignored. If none of the IDs
 // match a PulseSource, an error is returned.
@@ -56,7 +56,7 @@ func (pss *PulseSourceService) List(ids []int, opts ...FuncOption) ([]*PulseSour
 }
 
 // Search returns a list of PulseSources found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate  the results. If
+// query. Provide functional options to sort, filter, and paginate the results. If
 // no PulseSources are found using the provided query, an error is returned.
 func (pss *PulseSourceService) Search(qry string, opts ...FuncOption) ([]*PulseSource, error) {
 	url, err := pss.client.searchURL(PulseSourceEndpoint, qry, opts...)
