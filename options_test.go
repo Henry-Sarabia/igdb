@@ -300,15 +300,23 @@ func TestOptOverlap(t *testing.T) {
 func ExampleComposeOptions() {
 	c := NewClient("YOUR_API_KEY", nil)
 
-	// Options set to filter out unpopular results
-	popularOpts := ComposeOptions(
+	// Composing FuncOptions to filter out unpopular results
+	composedOpts := ComposeOptions(
 		SetFields("title", "username", "game", "likes", "content"),
 		SetFilter("likes", OpGreaterThanEqual, "10"),
 		SetFilter("views", OpGreaterThanEqual, "200"),
 		SetLimit(50),
 	)
 
-	mario, err := c.Reviews.Search("mario", popularOpts)
+	// Using composed FuncOptions
+	mario, err := c.Reviews.Search("mario", composedOpts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Reusing composed FuncOptions
+	sonic, err := c.Reviews.Search("sonic", composedOpts)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -317,12 +325,6 @@ func ExampleComposeOptions() {
 	fmt.Println("Popular reviews related to Mario")
 	for _, v := range mario {
 		fmt.Println(*v)
-	}
-
-	sonic, err := c.Reviews.Search("sonic", popularOpts)
-	if err != nil {
-		fmt.Println(err)
-		return
 	}
 
 	fmt.Println("Popular reviews related to Sonic")
