@@ -296,3 +296,37 @@ func TestOptOverlap(t *testing.T) {
 		})
 	}
 }
+
+func ExampleComposeOptions() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Options set to filter out unpopular results
+	popularOpts := ComposeOptions(
+		SetFields("title", "username", "game", "likes", "content"),
+		SetFilter("likes", OpGreaterThanEqual, "10"),
+		SetFilter("views", OpGreaterThanEqual, "200"),
+		SetLimit(50),
+	)
+
+	mario, err := c.Reviews.Search("mario", popularOpts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Popular reviews related to Mario")
+	for _, v := range mario {
+		fmt.Println(*v)
+	}
+
+	sonic, err := c.Reviews.Search("sonic", popularOpts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Popular reviews related to Sonic")
+	for _, v := range sonic {
+		fmt.Println(*v)
+	}
+}
