@@ -272,7 +272,7 @@ func TestGamesListFields(t *testing.T) {
 }
 
 func ExampleGameService_Get() {
-	c := NewClient(APIkey, nil)
+	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.Get(7346, SetFields("name", "url", "summary", "storyline", "rating", "popularity", "cover"))
 	if err != nil {
@@ -284,7 +284,7 @@ func ExampleGameService_Get() {
 }
 
 func ExampleGameService_List() {
-	c := NewClient(APIkey, nil)
+	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.List([]int{1721, 2777, 1074})
 	if err != nil {
