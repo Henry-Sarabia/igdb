@@ -83,7 +83,7 @@ func TestSetOrder(t *testing.T) {
 		t.Run(ot.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
 			funcOpt := SetOrder(ot.Field, ot.Order, ot.Sub...)
 
@@ -117,7 +117,7 @@ func TestSetLimit(t *testing.T) {
 		t.Run(lt.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
 			funcOpt := SetLimit(lt.Limit)
 
@@ -151,7 +151,7 @@ func TestSetOffset(t *testing.T) {
 		t.Run(ot.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
 			funcOpt := SetOffset(ot.Offset)
 
@@ -187,7 +187,7 @@ func TestSetFields(t *testing.T) {
 		t.Run(ft.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
 			funcOpt := SetFields(ft.Fields...)
 
@@ -198,7 +198,7 @@ func TestSetFields(t *testing.T) {
 
 			actFields := opt.Values.Get("fields")
 			if actFields != ft.ExpFields {
-				t.Fatalf("Expected order '%s', got '%s'", ft.ExpFields, actFields)
+				t.Fatalf("Expected fields '%s', got '%s'", ft.ExpFields, actFields)
 			}
 		})
 	}
@@ -209,32 +209,50 @@ func TestSetFilter(t *testing.T) {
 		Name      string
 		Field     string
 		Op        operator
-		Val       string
+		Vals      []string
 		ExpFilter string
 		ExpErr    error
 	}{
-		{"Non-empty field and non-empty value", "rating", OpGreaterThanEqual, "60", "", nil},
-		{"Non-empty field and empty value", "name", OpPrefix, "", "", ErrEmptyField},
-		{"Empty field and non-empty value", "", OpEquals, "Megaman X1", "", ErrEmptyField},
-		{"Empty field and empty value", "", OpIn, "", "", ErrEmptyField},
+		{"Non-empty field and non-empty value", "rating", OpGreaterThanEqual, []string{"60"}, "60", nil},
+		{"Non-empty field and non-empty values", "rating", OpGreaterThanEqual, []string{"60", "80"}, "", ErrTooManyArgs},
+		{"Non-empty field and empty value", "name", OpPrefix, []string{""}, "", ErrEmptyField},
+		{"Non-empty field and empty values", "name", OpPrefix, []string{"", ""}, "", ErrEmptyField},
+		{"Non-empty field and no values", "rating", OpGreaterThanEqual, nil, "", ErrEmptyField},
+		{"Empty field and non-empty value", "", OpEquals, []string{"Megaman X1"}, "", ErrEmptyField},
+		{"Empty field and empty value", "", OpEquals, []string{""}, "", ErrEmptyField},
+		{"Empty field and no values", "", OpEquals, nil, "", ErrEmptyField},
+		{"OpExists, non-empty field, and non-empty value", "version_parent", OpExists, []string{"not empty"}, "", ErrTooManyArgs},
+		{"OpExists, non-empty field, and non-empty values", "version_parent", OpExists, []string{"not", "empty"}, "", ErrTooManyArgs},
+		{"OpExists, non-empty field, and empty value", "version_parent", OpExists, []string{""}, "", ErrTooManyArgs},
+		{"OpExists, non-empty field, and no values", "version_parent", OpExists, nil, "1", nil},
+		{"OpExists, empty field, and non-empty value", "", OpExists, []string{"not empty"}, "", ErrEmptyField},
+		{"OpExists, empty field, and empty value", "", OpExists, []string{""}, "", ErrEmptyField},
+		{"OpExists, empty field, and no values", "", OpExists, nil, "", ErrEmptyField},
+		{"OpIn, non-empty field, and non-empty value", "platforms", OpIn, []string{""}, "", ErrEmptyField},
+		{"OpIn, non-empty field, and non-empty values", "platforms", OpIn, []string{"not", "empty"}, "not,empty", nil},
+		{"OpIn, non-empty field, and empty value", "platforms", OpIn, []string{""}, "", ErrEmptyField},
+		{"OpIn, non-empty field, and no values", "platforms", OpIn, nil, "", ErrEmptyField},
+		{"OpIn, empty field, and non-empty value", "", OpIn, []string{"not empty"}, "", ErrEmptyField},
+		{"OpIn, empty field, and empty value", "", OpIn, []string{""}, "", ErrEmptyField},
+		{"OpIn, empty field, and no values", "", OpIn, nil, "", ErrEmptyField},
 	}
 
 	for _, ft := range filterTests {
 		t.Run(ft.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
-			funcOpt := SetFilter(ft.Field, ft.Op, ft.Val)
+			funcOpt := SetFilter(ft.Field, ft.Op, ft.Vals...)
 
 			err = funcOpt(opt)
 			if !reflect.DeepEqual(err, ft.ExpErr) {
 				t.Fatalf("Expected error '%v', got '%v'", ft.ExpErr, err)
 			}
 
-			actFilter := opt.Values.Get(fmt.Sprintf("[%s][%s]", ft.Field, ft.Op))
+			actFilter := opt.Values.Get(fmt.Sprintf("filter[%s][%s]", ft.Field, ft.Op))
 			if actFilter != ft.ExpFilter {
-				t.Fatalf("Expected order '%s', got '%s'", ft.ExpFilter, actFilter)
+				t.Fatalf("Expected filter '%s', got '%s'", ft.ExpFilter, actFilter)
 			}
 		})
 	}
@@ -256,7 +274,7 @@ func TestSetSearch(t *testing.T) {
 		t.Run(st.Name, func(t *testing.T) {
 			opt, err := newOpt()
 			if err != nil {
-				t.Fatalf(err.Error())
+				t.Fatal(err)
 			}
 			funcOpt := setSearch(st.Qry)
 
@@ -267,13 +285,13 @@ func TestSetSearch(t *testing.T) {
 
 			actQry := opt.Values.Get("search")
 			if actQry != st.ExpQry {
-				t.Fatalf("Expected offset '%s', got '%s'", st.ExpQry, actQry)
+				t.Fatalf("Expected query '%s', got '%s'", st.ExpQry, actQry)
 			}
 		})
 	}
 }
 
-func TestOptOverlap(t *testing.T) {
+func TestSetOverlap(t *testing.T) {
 	var overlapTests = []struct {
 		Name     string
 		FuncOpts []FuncOption

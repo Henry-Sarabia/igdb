@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 // Errors returned by a FuncOption when setting options for an API call.
@@ -192,10 +193,8 @@ func SetFields(fields ...string) FuncOption {
 		if len(fields) == 0 {
 			return ErrEmptySlice
 		}
-		for _, f := range fields {
-			if strings.TrimSpace(f) == "" {
-				return ErrEmptyField
-			}
+		if hasBlankElem(fields) {
+			return ErrEmptyField
 		}
 		if o.Values.Get("fields") != "" {
 			return ErrOptionSet
@@ -232,19 +231,24 @@ const (
 	OpExists operator = "exists"
 	// OpNotExists checks if a field value is a null value. Does not need a provided value.
 	OpNotExists operator = "not_exists"
-	// OpIn checks if the field contains all of the given comma separated values.
+	// OpIn checks if the field contains all of the given values. Can provide multiple values.
 	OpIn operator = "in"
-	// OpNotIn checks if the field does not contain any of the given comma separated values.
+	// OpNotIn checks if the field does not contain any of the given values. Can provide multiple values.
 	OpNotIn operator = "not_in"
-	// OpAny checks if the field contains any of the given comma separated values.
+	// OpAny checks if the field contains any of the given values. Can provide multiple values.
 	OpAny operator = "any"
 )
 
 // SetFilter is a functional option used to filter the results from an API
 // call. Most filtering operations need three different arguments: an operator
-// and 2 operands. The provided field and val strings act as the operands
-// for the provided operator. SetFilter is the only option allowed to be set
-// multiple times in a single API call. By default, results are unfiltered.
+// and 2 operands. The provided field and val string act as the operands
+// for the provided operator. If multiple values are provided, they will be
+// concatenated into a comma separated list. If no values are provided, an
+// error is returned. The only exception to this rule is if one of the provided
+// operators is OpExists or OpNotExists, which do not need a provided value.
+
+// SetFilter is the only option allowed to be set multiple times in a single
+// API call. By default, results are unfiltered.
 //
 // Note that the ID field cannot be used for filtering except when paired with
 // the OpNotIn operator to filter away specific results. Also note that when
@@ -253,16 +257,36 @@ const (
 // to the intended field value.
 //
 // For more information, visit: https://igdb.github.io/api/references/filters/
-func SetFilter(field string, op operator, val string) FuncOption {
+func SetFilter(field string, op operator, val ...string) FuncOption {
 	return func(o *options) error {
-		if op == OpExists || op == OpNotExists {
-			val = "1"
-		}
-		if field == "" || val == "" {
+		field = strings.TrimSpace(field)
+		if field == "" {
 			return ErrEmptyField
 		}
+
+		if len(val) == 0 && (op != OpExists && op != OpNotExists) {
+			return ErrEmptyField
+		}
+
+		if hasBlankElem(val) && (op != OpExists && op != OpNotExists) {
+			return ErrEmptyField
+		}
+
+		if len(val) > 0 && (op == OpExists || op == OpNotExists) {
+			return ErrTooManyArgs
+		}
+
+		if len(val) > 1 && (op != OpIn && op != OpNotIn && op != OpAny) {
+			return ErrTooManyArgs
+		}
+
+		joined := strings.Join(val, ",")
+		if op == OpExists || op == OpNotExists {
+			joined = "1"
+		}
+
 		s := fmt.Sprintf("filter[%s][%s]", field, string(op))
-		o.Values.Set(s, val)
+		o.Values.Set(s, joined)
 		return nil
 	}
 }
@@ -280,4 +304,26 @@ func setSearch(qry string) FuncOption {
 		o.Values.Set("search", qry)
 		return nil
 	}
+}
+
+// removeSpaces returns s with all spaces removed.
+func removeSpaces(s string) string {
+	return strings.Map(func(r rune) rune {
+		if unicode.IsSpace(r) {
+			return -1
+		}
+		return r
+	}, s)
+}
+
+// hasBlankElem returns true if the slice of strings contains a blank string
+// element, either an empty string or a string of space characters. Otherwise,
+// return false.
+func hasBlankElem(s []string) bool {
+	for _, v := range s {
+		if strings.TrimSpace(v) == "" {
+			return true
+		}
+	}
+	return false
 }
