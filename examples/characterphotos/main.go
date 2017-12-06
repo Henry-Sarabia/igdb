@@ -35,7 +35,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("The 20 Newest Character Photos:")
+	fmt.Print("The 20 Newest Character Photos:\n\n")
 	for _, v := range ch {
 		img, err := v.Mugshot.SizedURL(igdb.Size1080p, 1) // resize to largest image available
 		if err != nil {
