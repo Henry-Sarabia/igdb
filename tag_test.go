@@ -31,3 +31,27 @@ func TestGenerateTag(t *testing.T) {
 		})
 	}
 }
+
+func TestTagString(t *testing.T) {
+	var tagTests = []struct {
+		Name      string
+		Tag       Tag
+		ExpString string
+	}{
+		{"Zero Tag", 0, "0"},
+		{"One Tag", 1, "1"},
+		{"Million Tag", 1000000, "1000000"},
+		{"Billion Tag", 1000000000, "1000000000"},
+		{"Trillion Tag", 1000000000000, "1000000000000"},
+		{"Negative Tag", -1234, "-1234"},
+	}
+
+	for _, tt := range tagTests {
+		t.Run(tt.Name, func(t *testing.T) {
+			actString := tt.Tag.String()
+			if actString != tt.ExpString {
+				t.Fatalf("Expected tag string '%s', got '%s'", tt.ExpString, actString)
+			}
+		})
+	}
+}

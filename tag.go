@@ -1,5 +1,7 @@
 package igdb
 
+import "strconv"
+
 // Tag is a generated number that represents a specific IGDB object. Tag
 // provides a quick and compact way to do complex filtering on the IGDB API.
 type Tag int
@@ -31,4 +33,9 @@ func GenerateTag(typeID tagType, objectID int) (Tag, error) {
 	tag |= objectID
 
 	return Tag(tag), nil
+}
+
+// String returns the provided Tag as a string.
+func (t Tag) String() string {
+	return strconv.Itoa(int(t))
 }
