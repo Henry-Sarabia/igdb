@@ -17,7 +17,7 @@ func TestGetEndpointFieldList(t *testing.T) {
 		{"OK status with empty response", http.StatusOK, "", nil, errEndOfJSON.Error()},
 		{"OK status with dot response", http.StatusOK, `["mugshot.width","name", "company.id"]`, []string{"company.id", "name", "mugshot.width"}, ""},
 		{"OK status with asterisk response", http.StatusOK, `["*"]`, []string{"*"}, ""},
-		{"Bad status with empty response", http.StatusBadRequest, "", nil, errEndOfJSON.Error()},
+		{"Bad status with empty response", http.StatusBadRequest, "", nil, ErrBadRequest.Error()},
 		{"Not found status with error response", http.StatusNotFound, testErrNotFound, nil, "Status 404 - status not found"},
 	}
 
@@ -51,7 +51,7 @@ func TestGetEndpointCount(t *testing.T) {
 		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, ""},
 		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, ""},
 		{"OK status with empty response", http.StatusOK, "", 0, errEndOfJSON.Error()},
-		{"Bad status with empty response", http.StatusBadRequest, "", 0, errEndOfJSON.Error()},
+		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest.Error()},
 		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, "Status 404 - status not found"},
 	}
 

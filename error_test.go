@@ -21,9 +21,12 @@ func TestCheckResponse(t *testing.T) {
 		Body string
 		Exp  string
 	}{
-		{"empty response", http.StatusBadRequest, "", "unexpected end of JSON input"},
-		{"404 response", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
-		{"200 response", http.StatusOK, "", ""},
+		{"Status OK", http.StatusOK, "", ""},
+		{"Status Bad Request", http.StatusBadRequest, "", ErrBadRequest.Error()},
+		{"Status Unauthorized", http.StatusUnauthorized, "", ErrAuthFailed.Error()},
+		{"Status Forbidden", http.StatusForbidden, "", ErrAuthFailed.Error()},
+		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError.Error()},
+		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
 	}
 
 	for _, et := range errTests {
