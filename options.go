@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
 // Errors returned by a FuncOption when setting options for an API call.
@@ -304,16 +303,6 @@ func setSearch(qry string) FuncOption {
 		o.Values.Set("search", qry)
 		return nil
 	}
-}
-
-// removeSpaces returns s with all spaces removed.
-func removeSpaces(s string) string {
-	return strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return -1
-		}
-		return r
-	}, s)
 }
 
 // hasBlankElem returns true if the slice of strings contains a blank string
