@@ -52,13 +52,15 @@ func main() {
 		return
 	}
 
-	fmt.Println("Top 5 PS4 Games")
+	fmt.Println("Top 5 PS4 Games:")
 	for _, v := range PS4 {
 		fmt.Println(v.Name)
 	}
 
-	fmt.Println("\nTop 5 XBOX Games")
+	fmt.Println("\nTop 5 XBOX Games:")
 	for _, v := range XBOX {
 		fmt.Println(v.Name)
 	}
+
+	return
 }
