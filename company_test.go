@@ -132,7 +132,7 @@ func TestCompaniesSearch(t *testing.T) {
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "toby fox", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "toby fox", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range companyTests {
 		t.Run(tt.Name, func(t *testing.T) {

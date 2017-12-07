@@ -134,7 +134,7 @@ func TestCreditsSearch(t *testing.T) {
 		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
 		{"Empty response", "test_data/empty.txt", "jim", nil, errEndOfJSON.Error()},
 		{"Invalid option", "test_data/empty.txt", "jim", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existant entry", nil, ErrNoResults.Error()},
+		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
 	}
 	for _, tt := range creditTests {
 		t.Run(tt.Name, func(t *testing.T) {
