@@ -113,4 +113,4 @@ in and by what criteria. Here, SetOrder will retrieve the results with the
 most views first.
 
 The rest of the functional options are not unlike the examples we covered and 
-are further described in the [documentation](https://godoc.org/github.com/Henry-Sarabia/igdb).
+are further described in the [documentation](https://godoc.org/github.com/Henry-Sarabia/igdb#FuncOption).
