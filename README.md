@@ -1,6 +1,6 @@
 # IGDB 
 
-[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb) 
+[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb)
 
 <img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/igdbicon.png ">
 
@@ -89,7 +89,7 @@ Let's walk through a few different functional option examples.
 To set the limit of the amount of results returned from an API call, pass 
 SetLimit to the service function.
 ```go
-revs, err := client.Reviews.Search("mario", SetLimit(25))
+revs, err := client.Reviews.Search("megaman", SetLimit(25))
 ```
 As you can see, you simply need to pass the functional option as an argument 
 to the service function.
@@ -97,20 +97,108 @@ to the service function.
 To offset the results returned from an API call, pass SetOffset to the service
 function.
 ```go
-revs, err := client.Reviews.Search("mario", SetOffset(10))
+revs, err := client.Reviews.Search("megaman", SetOffset(10))
 ```
 SetOffset is used to iterate through a large set of results that cannot be 
 retrieved in a single API call. In this case, the first 10 results are ignored
-so we effectively iterated through to the next several results by 10.
+so we effectively iterated through to the next set of results by 10.
 
 To set the order of the results returned from an API call, pass SetOrder much
 in the same way as the previous examples.
 ```go
-revs, err := client.Reviews.Search("mario", SetOrder("views", igdb.OrderDescending))
+revs, err := client.Reviews.Search("megaman", SetOrder("views", igdb.OrderDescending))
 ```
-SetOrder is used to specify in what order we want the results to be retrieved 
+SetOrder is used to specify in what order you want the results to be retrieved 
 in and by what criteria. Here, SetOrder will retrieve the results with the 
 most views first.
 
-The rest of the functional options are not unlike the examples we covered and 
+The remaining functional options are not unlike the examples we covered and 
 are further described in the [documentation](https://godoc.org/github.com/Henry-Sarabia/igdb#FuncOption).
+
+### Functional Option Composition
+
+More often than not you will need to set more than one option for an API call.
+Fortunately, this functionality is supported through variadic functions and
+functional option composition.
+
+First, service functions are variadic so you can pass in any number of 
+functional options.
+```go
+chars, err := client.Characters.Search(
+    "mario",
+    SetFields("id", "name", "games"),
+    SetFilter("gender", "0"),
+    SetLimit(5), 
+    )
+```
+This API call will search the Characters endpoint using the query "mario",
+filter out any character that does not have a gender code of 0 (which in this
+case represents male), retrieve only the id, name, and games fields, and return
+only up to 5 of these results.
+
+Second, the `igdb` package provides a `ComposeOptions` function which takes any 
+number of functional options as its parameters, composes them into a single
+functional option, and returns that composed functional option.
+```go
+popularOpt := igdb.ComposeOptions(
+    igdb.SetLimit(5),
+    igdb.SetFields("name"),
+	igdb.SetOrder("popularity", igdb.OrderDescending),
+)
+```
+This call to ComposeOptions creates a single functional option that will allow
+you to retrieve the names of the top 5 most popular games if passed to the
+appropriate service function.
+
+Functional option composition allows you to create custom functional options
+that can be reused in different API calls.
+
+Taking the previous example, this can be done in the following way.
+```go
+PS4, err := c.Games.List(
+		nil,
+		popularOpt,
+		igdb.SetFilter("platforms", igdb.OpIn, "48"),    // filter out games not on PS4
+    )
+    
+XBOX, err := c.Games.List(
+		nil,
+		popularOpt, 
+		igdb.SetFilter("platforms", igdb.OpIn, "49"),    // filter out games not on XB1
+    )
+```
+This example has two service function calls that each utilize the previously
+composed functional option in the same way but for different platforms. The 
+first function retrieves the top 5 most popular PS4 games while the second
+function retrieves the top 5 most popular XB1 games.
+
+Functional option composition reduces duplicate code and helps keep your code
+DRY. You can even compose newly composed functional options for even more
+finely grained control over similar API calls.
+
+## Examples
+
+The documentation contains several example mini-applications that demonstrate
+how one might use the `igdb` package.
+
+* [igdb Examples](https://godoc.org/github.com/Henry-Sarabia/igdb#pkg-examples)
+
+If you have used the `igdb` package for a project and would like to have it
+featured here as a reference for new users, please submit an issue and I'll be
+sure to add it.
+
+## Contributions
+
+If you would like to contribute to this project, please adhere to the following
+guidelines.
+
+* Fork the repo and add your contribution.
+* Make sure to run go fmt, go vet, and golint
+* Prefer idiomatic Go over non-idiomatic code.
+* Follow the basic Go conventions found [here](https://github.com/golang/go/wiki/CodeReviewComments).
+* If in doubt, try to match your code to the current codebase.
+* Create a pull request with a description of your changes.
+
+Again, contributions are greatly appreciated!
+
+Let's Go Open Source!
