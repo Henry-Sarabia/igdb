@@ -301,7 +301,8 @@ func ExampleGameService_List() {
 func ExampleGameService_Search() {
 	c := NewClient("YOUR_API_KEY", nil)
 
-	g, err := c.Games.Search("mario",
+	g, err := c.Games.Search(
+		"mario",
 		SetFields("*"),
 		SetFilter("rating", OpGreaterThanEqual, "80"),
 		SetOrder("rating", OrderDescending),

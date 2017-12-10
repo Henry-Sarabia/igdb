@@ -23,7 +23,8 @@ func main() {
 	c := igdb.NewClient(key, nil)
 
 	// Retrieve human character photos
-	ch, err := c.Characters.List(nil,
+	ch, err := c.Characters.List(
+		nil,
 		igdb.SetLimit(20),
 		igdb.SetFields("name", "mug_shot"),
 		igdb.SetFilter("species", igdb.OpEquals, "1"),     // only humans

@@ -23,7 +23,8 @@ func main() {
 	c := igdb.NewClient(key, nil)
 
 	// Search for Zelda reviews
-	rev, err := c.Reviews.Search("zelda", // zelda query
+	rev, err := c.Reviews.Search(
+		"zelda", // zelda query
 		igdb.SetOrder("likes", igdb.OrderDescending), // ordered by most liked
 		igdb.SetFields("title", "game", "positive_points", "negative_points"),
 	)

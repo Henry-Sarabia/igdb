@@ -31,7 +31,8 @@ func main() {
 	)
 
 	// Retrieve PS4 inter-console exclusives
-	PS4, err := c.Games.List(nil,
+	PS4, err := c.Games.List(
+		nil,
 		byPop, // top 5 popular results
 		igdb.SetFilter("platforms", igdb.OpIn, "48"),    // only PS4 games
 		igdb.SetFilter("platforms", igdb.OpNotIn, "49"), // filter out XB1
@@ -42,7 +43,8 @@ func main() {
 	}
 
 	// Retrieve XB1 inter-console exclusives
-	XBOX, err := c.Games.List(nil,
+	XBOX, err := c.Games.List(
+		nil,
 		byPop, // top 5 popular results
 		igdb.SetFilter("platforms", igdb.OpIn, "49"),    // only XB1 games
 		igdb.SetFilter("platforms", igdb.OpNotIn, "48"), // filter out PS4
