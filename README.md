@@ -207,4 +207,4 @@ Let's Go Open Source!
 
 Thanks for your interest!
 
-<img align="center" src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
+<img src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
