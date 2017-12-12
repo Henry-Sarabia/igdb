@@ -214,6 +214,4 @@ Again, contributions are greatly appreciated!
 on functional options
 * The [Awesome Go](https://github.com/avelino/awesome-go) project for inspiration
 * The awesome people in the IGDB community who were always open to my questions
-
-
 <img align="right" src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
