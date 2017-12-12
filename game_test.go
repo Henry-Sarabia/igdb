@@ -283,7 +283,7 @@ func ExampleGameService_Get() {
 	fmt.Println("IGDB entry for The Legend of Zelda: Breath of the Wild\n", *g)
 }
 
-func ExampleGameService_List() {
+func ExampleGameService_List_iDs() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.List([]int{1721, 2777, 1074})
@@ -293,6 +293,36 @@ func ExampleGameService_List() {
 	}
 
 	fmt.Println("IGDB entries for Megaman 8, Kirby Air Ride, and Super Mario 64")
+	for _, v := range g {
+		fmt.Println(*v)
+	}
+
+	index, err := c.Games.List(nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Unfiltered index of Game entries")
+	for _, v := range index {
+		fmt.Println(*v)
+	}
+}
+
+func ExampleGameService_List_index() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	g, err := c.Games.List(
+		nil,
+		SetLimit(5),
+		SetFilter("popularity", OpGreaterThan, "80"),
+	)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("IGDB entries for 5 Games with popularity above 80")
 	for _, v := range g {
 		fmt.Println(*v)
 	}
