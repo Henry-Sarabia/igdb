@@ -16,7 +16,7 @@ func init() {
 
 func main() {
 	if key == "" {
-		fmt.Println("No key provided. Please run: topgames -k YOUR_API_KEY")
+		fmt.Println("No key provided. Please run: zeldareviews -k YOUR_API_KEY")
 		return
 	}
 
