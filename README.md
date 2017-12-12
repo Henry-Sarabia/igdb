@@ -5,7 +5,7 @@
 <img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/gopherigdb.png">
 
 Communicate with the [Internet Game Database API](https://api.igdb.com/) quickly and easily
-with the `igdb` [Go](https://golang.org/) package. With the `igdb` package, you can retrieve
+with the `igdb` [Go](https://golang.org/) package. With the `igdb` client, you can retrieve
 extensive information on any number of video games, characters, companies, reviews, media,
 and [much more](https://igdb.github.io/api/endpoints/). Every IGDB API endpoint is supported!
 
@@ -71,7 +71,8 @@ games, err := client.Games.List([]int{7346, 1721, 2777})
 ```
 
 The rest of the service functions work much the same way; they are concise and
-function as you would expect.
+behave as you would expect. The [documentation](https://godoc.org/github.com/Henry-Sarabia/igdb#pkg-examples)
+contains several examples on how to use each service function.
 
 Service functions by themselves allow you to retrieve a considerable amount of
 information from the IGDB but sometimes you need more control over the results
@@ -178,10 +179,11 @@ finely grained control over similar API calls.
 
 ## Examples
 
-The documentation contains several example mini-applications that demonstrate
+The repository contains several example mini-applications that demonstrate
 how one might use the `igdb` package.
 
-* [igdb Examples](https://godoc.org/github.com/Henry-Sarabia/igdb#pkg-examples)
+* [Mini Applications](https://github.com/Henry-Sarabia/igdb/tree/master/examples)
+* [Documentation Examples](https://godoc.org/github.com/Henry-Sarabia/igdb#pkg-examples)
 
 If you have used the `igdb` package for a project and would like to have it
 featured here as a reference for new users, please submit an issue and I'll be
@@ -192,18 +194,16 @@ sure to add it.
 If you would like to contribute to this project, please adhere to the following
 guidelines.
 
-* Submit an issue 
+* Submit an issue describing the problem.
 * Fork the repo and add your contribution.
-* Don't forget to add appropriate tests.
-* Make sure to run go fmt, go vet, and golint.
+* Add appropriate tests.
+* Run go fmt, go vet, and golint.
 * Prefer idiomatic Go over non-idiomatic code.
 * Follow the basic Go conventions found [here](https://github.com/golang/go/wiki/CodeReviewComments).
 * If in doubt, try to match your code to the current codebase.
 * Create a pull request with a description of your changes.
 
 Again, contributions are greatly appreciated!
-
-Let's Go Open Source!
 
 ## Special Thanks
 
