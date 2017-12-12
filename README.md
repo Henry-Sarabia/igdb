@@ -208,6 +208,7 @@ Again, contributions are greatly appreciated!
 ## Special Thanks
 
 <img align="right" src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
+
 * You for your interest
 * John for the IGDB Gopher
 * Peter for the "Thank You" Gopher
