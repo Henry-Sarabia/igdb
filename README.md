@@ -2,7 +2,7 @@
 
 [![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb)
 
-<img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/igdbicon.png ">
+<img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/gopherigdb.png">
 
 Communicate with the [Internet Game Database API](https://api.igdb.com/) quickly and easily
 with the `igdb` [Go](https://golang.org/) package. With the `igdb` package, you can retrieve
@@ -192,8 +192,10 @@ sure to add it.
 If you would like to contribute to this project, please adhere to the following
 guidelines.
 
+* Submit an issue 
 * Fork the repo and add your contribution.
-* Make sure to run go fmt, go vet, and golint
+* Don't forget to add appropriate tests.
+* Make sure to run go fmt, go vet, and golint.
 * Prefer idiomatic Go over non-idiomatic code.
 * Follow the basic Go conventions found [here](https://github.com/golang/go/wiki/CodeReviewComments).
 * If in doubt, try to match your code to the current codebase.
@@ -203,8 +205,15 @@ Again, contributions are greatly appreciated!
 
 Let's Go Open Source!
 
-## Thank You
+## Special Thanks
 
-Thanks for your interest!
+* You for your interest
+* John for the IGDB Gopher
+* Peter for the "Thank You" Gopher
+* Dave Cheney for his [article](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
+on functional options
+* The [Awesome Go](https://github.com/avelino/awesome-go) project for inspiration
+* The awesome people in the IGDB community who were always open to my questions
+
 
 <img src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
