@@ -216,4 +216,4 @@ on functional options
 * The awesome people in the IGDB community who were always open to my questions
 
 
-<img src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
+<img align="right" src="https://github.com/Henry-Sarabia/igdb/blob/master/img/gopherthanks.png">
