@@ -1,6 +1,6 @@
 # IGDB 
 
-[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb)
+[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb) [![Build Status](https://travis-ci.org/Henry-Sarabia/igdb.svg?branch=master)](https://travis-ci.org/Henry-Sarabia/igdb)
 
 <img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/gopherigdb.png">
 
