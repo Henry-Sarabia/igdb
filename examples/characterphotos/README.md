@@ -15,13 +15,14 @@ If you do not have Go installed yet, you can find installation instructions
 [here](https://golang.org/doc/install).
 
 To build this example, navigate to the containing directory and use the Go 
-build tool like follows.
+build tool as follows.
 
 ```
 go build
 ```
 
-This command will have built the example into an executable and can now be run.
+This command will have built the example into an executable and can now be run
+from the command line.
 
 ### Usage
 To run this example you will need a valid IGDB API key. If you do not have one
