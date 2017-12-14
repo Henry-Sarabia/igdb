@@ -4,13 +4,13 @@ This example makes use of the igdb client's Games service to retrieve the
 top 5 most popular inter-console exclusive games and their respective cover 
 art for the PS4 and the Xbox One. The example demonstrates the use of the
 following key functions:
-* ComposeOptions()
-* Games.List()
-* SetLimit()
-* SetFields()
-* SetOrder()
-* SetFilter()
-* SizedURL()
+* ComposeOptions
+* Games.List
+* SetLimit
+* SetFields
+* SetOrder
+* SetFilter
+* SizedURL
 
 ### Installation
 If you do not have Go installed yet, you can find installation instructions 

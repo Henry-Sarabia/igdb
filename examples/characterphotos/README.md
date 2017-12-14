@@ -3,12 +3,12 @@
 This example makes use of the igdb client's Character service to retrieve 
 images of the 20 most recently added characters from the IGDB. The example
 demonstrates the use of the following key functions:
-* Characters.List()
-* SetLimit()
-* SetFields()
-* SetFilter()
-* SetOrder()
-* SizedURL()
+* Characters.List
+* SetLimit
+* SetFields
+* SetFilter
+* SetOrder
+* SizedURL
 
 ### Installation
 If you do not have Go installed yet, you can find installation instructions 

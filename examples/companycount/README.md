@@ -3,8 +3,8 @@
 This example makes use of the igdb client's Company service to count the number
 of video game Companies based in the US, UK, and Japan. The example demonstrates 
 the use of the following key functions:
-* Companies.Count()
-* SetFilter()
+* Companies.Count
+* SetFilter
 
 ### Installation
 If you do not have Go installed yet, you can find installation instructions 
