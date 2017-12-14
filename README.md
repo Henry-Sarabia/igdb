@@ -214,5 +214,8 @@ Again, contributions are greatly appreciated!
 * Peter for the "Thank You" Gopher
 * Dave Cheney for his [article](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
 on functional options
-* The [Awesome Go](https://github.com/avelino/awesome-go) project for inspiration
+* The [DiscordGo](https://github.com/bwmarrin/discordgo) and Go [Spotify](https://github.com/zmb3/spotify)
+projects for inspiring me to create my own open source package for others to enjoy
+* The [Awesome Go](https://github.com/avelino/awesome-go) project for so many
+references to admire
 * The awesome people in the IGDB community who were always open to my questions
