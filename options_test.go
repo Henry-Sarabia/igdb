@@ -438,8 +438,11 @@ func ExampleSetFilter() {
 	// Retrieve games released on PS4 (platform ID of 48)
 	c.Games.List(nil, SetFilter("platforms", OpIn, "48"))
 
-	// Retrieve games not released on Xbox One (platform ID of 49)
-	c.Games.List(nil, SetFilter("platforms", OpNotIn, "49"))
+	// Retrieve games whose ID is not 1234
+	// (This is a special case where ID can be used for filtering,
+	// as it is not normally allowed except for filtering out a
+	// specific entry)
+	c.Games.List(nil, SetFilter("id", OpNotIn, "1234"))
 
 	// Retrieve games whose name does not match "Horizon: Zero Dawn"
 	c.Games.List(nil, SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"))
@@ -453,7 +456,7 @@ func ExampleSetFilter() {
 		SetFilter("popularity", OpGreaterThan, "50"),
 		SetFilter("cover", OpExists),
 		SetFilter("platforms", OpIn, "48"),
-		SetFilter("platforms", OpNotIn, "49"),
+		SetFilter("id", OpNotIn, "1234"),
 		SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"),
 		SetFilter("esrb.synopsis", OpPrefix, "Contains adult themes"),
 	)
