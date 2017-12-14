@@ -350,3 +350,111 @@ func ExampleComposeOptions() {
 		fmt.Println(*v)
 	}
 }
+
+func ExampleSetOrder() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve most relevant reviews - default
+	c.Reviews.Search("zelda")
+
+	// Retrieve most viewed reviews
+	c.Reviews.Search("zelda", SetOrder("views", OrderDescending))
+
+	// Retrieve least liked reviews
+	c.Reviews.Search("zelda", SetOrder("likes", OrderAscending))
+
+	// Retrieve arliest released games by their initial release version
+	c.Games.List(nil, SetOrder("release_dates.date", OrderDescending, SubMin))
+}
+
+func ExampleSetLimit() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve up to 10 results - default
+	c.Characters.Search("snake")
+
+	// Retrieve up to 50 results
+	c.Characters.Search("snake", SetLimit(50))
+
+	// Retrieve up to 1 result
+	c.Characters.Search("snake", SetLimit(1))
+}
+
+func ExampleSetOffset() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	batchLimit := SetLimit(50)
+
+	// Retrieve first batch of results - default
+	c.People.List(nil, batchLimit)
+
+	// Retrieve second batch of results
+	c.People.List(nil, batchLimit, SetOffset(50))
+
+	// Retrieve third batch of results
+	c.People.List(nil, batchLimit, SetOffset(100))
+
+	// Retrieve fourth batch of results
+	c.People.List(nil, batchLimit, SetOffset(150))
+}
+
+func ExampleSetFields() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve name field
+	c.Characters.Search("mario", SetFields("name"))
+
+	// Retrieve gender field
+	c.Characters.Search("mario", SetFields("gender"))
+
+	// Retrieve both name and gender field
+	c.Characters.Search("mario", SetFields("name", "gender"))
+
+	// Retrieve whole mug_shot field
+	c.Characters.Search("mario", SetFields("mug_shot"))
+
+	// Retrieve only mug_shot.width field
+	c.Characters.Search("mario", SetFields("mug_shot.width"))
+
+	// Retrieve any number of fields
+	c.Characters.Search("mario", SetFields("name", "gender", "url", "species", "games", "mug_shot.width", "mug_shot.height"))
+
+	// Retrieve all available fields
+	c.Characters.Search("mario", SetFields("*"))
+}
+
+func ExampleSetFilter() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve unfiltered games - default
+	c.Games.List(nil)
+
+	// Retrieve games with popularity above 50
+	c.Games.List(nil, SetFilter("popularity", OpGreaterThan, "50"))
+
+	// Retrieve games with cover art
+	c.Games.List(nil, SetFilter("cover", OpExists))
+
+	// Retrieve games released on PS4 (platform ID of 48)
+	c.Games.List(nil, SetFilter("platforms", OpIn, "48"))
+
+	// Retrieve games not released on Xbox One (platform ID of 49)
+	c.Games.List(nil, SetFilter("platforms", OpNotIn, "49"))
+
+	// Retrieve games whose name does not match "Horizon: Zero Dawn"
+	c.Games.List(nil, SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"))
+
+	// Retrieve games whose ESRB synopsis begins with "Contains adult themes"
+	c.Games.List(nil, SetFilter("esrb.synopsis", OpPrefix, "Contains adult themes"))
+
+	// Retrieve games that meet all the previous requirements
+	c.Games.List(
+		nil,
+		SetFilter("popularity", OpGreaterThan, "50"),
+		SetFilter("cover", OpExists),
+		SetFilter("platforms", OpIn, "48"),
+		SetFilter("platforms", OpNotIn, "49"),
+		SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"),
+		SetFilter("esrb.synopsis", OpPrefix, "Contains adult themes"),
+	)
+}
