@@ -46,7 +46,7 @@ type Game struct {
 	AlternativeNames     []AltName      `json:"alternative_names"`
 	Screenshots          []Image        `json:"screenshots"`
 	Videos               []YoutubeVideo `json:"videos"`
-	Covers               Image          `json:"cover"`
+	Cover                Image          `json:"cover"`
 	ESRB                 ESRB           `json:"esrb"`
 	PEGI                 PEGI           `json:"pegi"`
 	Websites             []Website      `json:"websites"`

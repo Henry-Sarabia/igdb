@@ -52,7 +52,7 @@ func TestGamesGet(t *testing.T) {
 			}
 
 			ew := 2709
-			aw := g.Covers.Width
+			aw := g.Cover.Width
 			if aw != ew {
 				t.Errorf("Expected width of %d, got %d\n", ew, aw)
 			}
@@ -127,7 +127,7 @@ func TestGamesList(t *testing.T) {
 			}
 
 			eID := "etjab1sgankzyq6p6qgf"
-			aID := g[1].Covers.ID
+			aID := g[1].Cover.ID
 			if aID != eID {
 				t.Errorf("Expected cloudinary ID '%s', got '%s'", eID, aID)
 			}
@@ -201,7 +201,7 @@ func TestGamesSearch(t *testing.T) {
 			}
 
 			eURL := URL("//images.igdb.com/igdb/image/upload/t_thumb/clmh270eov5rimiggwrk.jpg")
-			aURL := g[2].Covers.URL
+			aURL := g[2].Cover.URL
 			if aURL != eURL {
 				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
 			}
