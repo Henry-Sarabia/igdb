@@ -1,8 +1,8 @@
 # Company Count Example
 
 This example makes use of the igdb client's Company service to count the number
-of Companies based in the US, UK, and Japan. The example demonstrates the use
-of the following key functions:
+of video game Companies based in the US, UK, and Japan. The example demonstrates 
+the use of the following key functions:
 * Companies.Count()
 * SetFilter()
 
