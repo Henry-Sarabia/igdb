@@ -25,7 +25,7 @@ func main() {
 	// Composing options set to retrieve top 5 popular results
 	byPop := igdb.ComposeOptions(
 		igdb.SetLimit(5),
-		igdb.SetFields("name"),
+		igdb.SetFields("name", "cover"),
 		igdb.SetOrder("popularity", igdb.OrderDescending),
 		igdb.SetFilter("version_parent", igdb.OpNotExists),
 	)
@@ -56,12 +56,22 @@ func main() {
 
 	fmt.Println("Top 5 PS4 Games:")
 	for _, v := range PS4 {
-		fmt.Println(v.Name)
+		img, err := v.Cover.SizedURL(igdb.Size1080p, 1) // resize to largest image available
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("%s - %s\n", v.Name, img)
 	}
 
 	fmt.Println("\nTop 5 XBOX Games:")
 	for _, v := range XBOX {
-		fmt.Println(v.Name)
+		img, err := v.Cover.SizedURL(igdb.Size1080p, 1) // resize to largest image available
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("%s - %s\n", v.Name, img)
 	}
 
 	return
