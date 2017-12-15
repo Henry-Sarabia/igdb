@@ -135,8 +135,8 @@ chars, err := client.Characters.Search(
 ```
 This API call will search the Characters endpoint using the query "mario",
 filter out any character that does not have a gender code of 0 (which in this
-case represents male), retrieve only the id, name, and games fields, and return
-only up to 5 of these results.
+case represents male), retrieve the id, name, and games fields, and return
+up to 5 of these results.
 
 Second, the `igdb` package provides a `ComposeOptions` function which takes any 
 number of functional options as its parameters, composes them into a single
