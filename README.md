@@ -8,7 +8,7 @@ Communicate with the [Internet Game Database API](https://api.igdb.com/) quickly
 with the `igdb` [Go](https://golang.org/) package. With the `igdb` client, you can retrieve
 extensive information on any number of video games, characters, companies, reviews, media,
 and [much more](https://api.igdb.com/features). Every IGDB API endpoint is supported! You can
-go [here](https://igdb.github.io/api/endpoints/) for the full list of ednpoints.
+go [here](https://igdb.github.io/api/endpoints/) for the full list of endpoints.
 
 If you would like to help the Go `igdb` project, please submit a pull request - it's always
 greatly appreciated.
