@@ -16,8 +16,8 @@ greatly appreciated.
 ## Installation
 
 If you do not have Go installed yet, you can find installation instructions 
-[here](https://golang.org/doc/install). Please note that the package is written
-using features from Go version 1.9.
+[here](https://golang.org/doc/install). Please note that the package requires Go version
+1.9 or later.
 
 To pull the most recent version of `igdb`, use `go get`.
 
