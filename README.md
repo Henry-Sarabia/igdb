@@ -1,6 +1,6 @@
 # IGDB 
 
-[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb) [![Build Status](https://travis-ci.org/Henry-Sarabia/igdb.svg?branch=master)](https://travis-ci.org/Henry-Sarabia/igdb) [![Coverage Status](https://coveralls.io/repos/github/Henry-Sarabia/igdb/badge.svg?branch=master)](https://coveralls.io/github/Henry-Sarabia/igdb?branch=master)
+[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Build Status](https://travis-ci.org/Henry-Sarabia/igdb.svg?branch=master)](https://travis-ci.org/Henry-Sarabia/igdb) [![Coverage Status](https://coveralls.io/repos/github/Henry-Sarabia/igdb/badge.svg?branch=master)](https://coveralls.io/github/Henry-Sarabia/igdb?branch=master)
 
 <img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/gopherigdb.png">
 
@@ -136,7 +136,7 @@ chars, err := client.Characters.Search(
 This API call will search the Characters endpoint using the query "mario",
 filter out any character that does not have a gender code of 0 (which in this
 case represents male), retrieve the id, name, and games fields, and return
-up to 5 of these results.
+only up to 5 of these results.
 
 Second, the `igdb` package provides a `ComposeOptions` function which takes any 
 number of functional options as its parameters, composes them into a single
