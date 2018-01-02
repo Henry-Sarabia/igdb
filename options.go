@@ -13,11 +13,13 @@ var (
 	// ErrOptionSet occurs when the same option is used multiple times in a single API call.
 	ErrOptionSet = errors.New("igdb.FuncOption: option already set")
 	// ErrEmptyField occurs when an empty string is used as a field name.
-	ErrEmptyField = errors.New("igdb.FuncOption: field value empty")
+	ErrEmptyField = errors.New("igdb.FuncOption: field empty")
 	// ErrEmptySlice occurs when an empty slice is used as an argument in a variadic function.
 	ErrEmptySlice = errors.New("igdb.FuncOption: slice empty")
 	// ErrEmptyQuery occurs when an empty string is used as a query value.
 	ErrEmptyQuery = errors.New("igdb.FuncOption: query value empty")
+	// ErrEmptyFilterValue occurs when an empty string is used as a filter value.
+	ErrEmptyFilterValue = errors.New("igdb.FuncOption: filter value empty")
 	// ErrOutOfRange occurs when a provided number value is out of valid range.
 	ErrOutOfRange = errors.New("igdb.FuncOption: value out of range")
 	// ErrTooManyArgs occurs when too many arguments are provided in a variadic function.
@@ -261,37 +263,76 @@ const (
 //
 // For more information, visit: https://igdb.github.io/api/references/filters/
 func SetFilter(field string, op operator, val ...string) FuncOption {
+	switch op {
+	case OpExists, OpNotExists:
+		return zeroValueFilter(field, op, val...)
+	case OpIn, OpNotIn, OpAny:
+		return multiValueFilter(field, op, val...)
+	default:
+		return singleValueFilter(field, op, val...)
+	}
+}
+
+// zeroValueFilter handles the SetFilter functional option when the filter does
+// not need a value. A placeholder value, "1", will be used instead.
+func zeroValueFilter(field string, op operator, val ...string) FuncOption {
 	return func(o *options) error {
-		field = strings.TrimSpace(field)
 		if field == "" {
 			return ErrEmptyField
 		}
-
-		if len(val) == 0 && (op != OpExists && op != OpNotExists) {
-			return ErrEmptyField
-		}
-
-		if hasBlankElem(val) && (op != OpExists && op != OpNotExists) {
-			return ErrEmptyField
-		}
-
-		if len(val) > 0 && (op == OpExists || op == OpNotExists) {
+		if len(val) > 0 {
 			return ErrTooManyArgs
 		}
 
-		if len(val) > 1 && (op != OpIn && op != OpNotIn && op != OpAny) {
-			return ErrTooManyArgs
+		o.setFilterValue(field, op, "1") // 1 is just a placeholder for the required field value
+
+		return nil
+	}
+}
+
+// multiValueFilter handles the SetFilter functional option when the filter
+// accepts multiple values. The values will be concatenated into a comma
+// separated string.
+func multiValueFilter(field string, op operator, val ...string) FuncOption {
+	return func(o *options) error {
+		if field == "" {
+			return ErrEmptyField
+		}
+		if len(val) == 0 || hasBlankElem(val) {
+			return ErrEmptyFilterValue
 		}
 
 		joined := strings.Join(val, ",")
-		if op == OpExists || op == OpNotExists {
-			joined = "1"
-		}
+		o.setFilterValue(field, op, joined)
 
-		s := fmt.Sprintf("filter[%s][%s]", field, string(op))
-		o.Values.Set(s, joined)
 		return nil
 	}
+}
+
+// singleValueFilter handles the SetFilter functional option when the filter only
+// accepts a single value. The value will be used as is.
+func singleValueFilter(field string, op operator, val ...string) FuncOption {
+	return func(o *options) error {
+		if field == "" {
+			return ErrEmptyField
+		}
+		if len(val) == 0 || hasBlankElem(val) {
+			return ErrEmptyFilterValue
+		}
+		if len(val) > 1 {
+			return ErrTooManyArgs
+		}
+
+		o.setFilterValue(field, op, val[0])
+
+		return nil
+	}
+}
+
+// setFilterValue sets the filter value in the options object.
+func (o *options) setFilterValue(field string, op operator, val string) {
+	s := fmt.Sprintf("filter[%s][%s]", field, string(op))
+	o.Values.Set(s, val)
 }
 
 // setSearch is a functional option used to search the IGDB using the
