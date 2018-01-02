@@ -139,11 +139,9 @@ func (c *Client) get(url string, result interface{}) error {
 		return err
 	}
 
-	if err = json.Unmarshal(b, &result); err != nil {
-		return err
-	}
+	err = json.Unmarshal(b, &result)
 
-	return nil
+	return err
 }
 
 // newRequest configures a new request for the provided URL and

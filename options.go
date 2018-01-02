@@ -96,12 +96,16 @@ type subfilter string
 const (
 	// SubMax filters based on the maximum element in the array.
 	SubMax subfilter = ":max"
+
 	// SubMin filters based on the minimum element in the array.
 	SubMin subfilter = ":min"
+
 	// SubSum filters based on the sum of the elements in the array.
 	SubSum subfilter = ":sum"
+
 	// SubAverage filters based on the average of the elements in the array.
 	SubAverage subfilter = ":avg"
+
 	// SubMedian filters based on the median element in the array.
 	SubMedian subfilter = ":median"
 )
