@@ -252,9 +252,10 @@ func checkResults(r []byte) error {
 	return nil
 }
 
-// intsToStrings is a helper function that converts a slice of ints to a
-// slice of strings.
-func intsToStrings(ints []int) []string {
+// IntsToStrings is a helper function that converts a slice of ints to a
+// slice of strings. Useful for functions that require a variadic number
+// of strings instead of ints such as SetFilter.
+func IntsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
 		str = append(str, strconv.Itoa(i))
@@ -265,6 +266,6 @@ func intsToStrings(ints []int) []string {
 // intsToCommaString is a helper function that returns a comma separated
 // list of ints as a single string.
 func intsToCommaString(ints []int) string {
-	s := intsToStrings(ints)
+	s := IntsToStrings(ints)
 	return strings.Join(s, ",")
 }

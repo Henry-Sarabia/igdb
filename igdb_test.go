@@ -176,7 +176,7 @@ func TestIntsToStrings(t *testing.T) {
 
 	for _, tt := range tableTests {
 		t.Run(tt.Name, func(t *testing.T) {
-			s := intsToStrings(tt.Ints)
+			s := IntsToStrings(tt.Ints)
 
 			ok, err := equalSlice(s, tt.ExpStrings)
 			if err != nil {
