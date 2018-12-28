@@ -10,7 +10,7 @@ import (
 )
 
 // igdbURL is the base URL for the IGDB API.
-const igdbURL string = "https://api-2445582011268.apicast.io/"
+const igdbURL string = "https://api-v3.igdb.com/"
 
 // Errors returned when creating URLs for API calls.
 var (
