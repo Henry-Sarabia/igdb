@@ -1,16 +1,14 @@
 package igdb
 
 import (
-	"errors"
 	"fmt"
 	"github.com/Henry-Sarabia/apicalypse"
+	"github.com/pkg/errors"
 	"strings"
 )
 
 // Errors returned by a FuncOption when setting options for an API call.
 var (
-	// ErrEmptyField occurs when an empty string is used as a field name.
-	ErrEmptyField = errors.New("igdb.FuncOption: field empty")
 	// ErrEmptyQuery occurs when an empty string is used as a query value.
 	ErrEmptyQuery = errors.New("igdb.FuncOption: query value empty")
 	// ErrEmptyFilterValue occurs when an empty string is used as a filter value.
@@ -25,6 +23,18 @@ var (
 // function is then passed into a service's Get, List, Search, or
 // Count function.
 type FuncOption func() (apicalypse.FuncOption, error)
+
+func unwrapOptions(opts ...FuncOption) ([]apicalypse.FuncOption, error) {
+	unwrapped := make([]apicalypse.FuncOption, len(opts))
+	for i, opt := range opts {
+		var err error
+		if unwrapped[i], err = opt(); err != nil {
+			return nil, errors.Wrap(err, "cannot unwrap invalid option")
+		}
+	}
+
+	return unwrapped, nil
+}
 
 // order specifies the order in which to organize the results from an API call.
 // There are three orders in which results are organized: relevance, ascending,
