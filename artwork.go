@@ -17,7 +17,7 @@ type Artwork struct {
 	Width        int    `json:"width,omitempty"`
 }
 
-func (c *Client) Get(opts ...FuncOption) ([]Artwork, error) {
+func (c *Client) GetArtwork(opts ...FuncOption) ([]Artwork, error) {
 	req, err := c.request(GameEndpoint, opts...)
 	if err != nil {
 		return nil, err

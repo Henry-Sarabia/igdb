@@ -2,7 +2,7 @@ package igdb
 
 import (
 	"encoding/json"
-	"errors"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -16,8 +16,6 @@ const igdbURL string = "https://api-v3.igdb.com/"
 var (
 	// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
 	ErrNegativeID = errors.New("igdb.Client: negative ID")
-	// ErrEmptyIDs occurs when an empty slice of IDs is used as an argument in an API call.
-	ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
 	// ErrNoResults occurs when the IGDB returns no results
 	ErrNoResults = errors.New("igdb.Client: no results")
 )
@@ -43,29 +41,7 @@ type Client struct {
 	common service
 
 	// Services
-	Characters   *CharacterService
-	Collections  *CollectionService
-	Companies    *CompanyService
-	Credits      *CreditService
-	Engines      *EngineService
-	Feeds        *FeedService
-	Franchises   *FranchiseService
-	Games        *GameService
-	GameModes    *GameModeService
-	Genres       *GenreService
-	Keywords     *KeywordService
-	Pages        *PageService
-	People       *PersonService
-	Perspectives *PerspectiveService
-	Platforms    *PlatformService
-	Pulses       *PulseService
-	PulseGroups  *PulseGroupService
-	PulseSources *PulseSourceService
-	ReleaseDates *ReleaseDateService
-	Reviews      *ReviewService
-	Themes       *ThemeService
-	Titles       *TitleService
-	Versions     *VersionService
+	Games *GameService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -84,29 +60,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.rootURL = igdbURL
 
 	c.common.client = c
-	c.Characters = (*CharacterService)(&c.common)
-	c.Collections = (*CollectionService)(&c.common)
-	c.Companies = (*CompanyService)(&c.common)
-	c.Credits = (*CreditService)(&c.common)
-	c.Engines = (*EngineService)(&c.common)
-	c.Feeds = (*FeedService)(&c.common)
-	c.Franchises = (*FranchiseService)(&c.common)
 	c.Games = (*GameService)(&c.common)
-	c.GameModes = (*GameModeService)(&c.common)
-	c.Genres = (*GenreService)(&c.common)
-	c.Keywords = (*KeywordService)(&c.common)
-	c.Pages = (*PageService)(&c.common)
-	c.People = (*PersonService)(&c.common)
-	c.Perspectives = (*PerspectiveService)(&c.common)
-	c.Platforms = (*PlatformService)(&c.common)
-	c.Pulses = (*PulseService)(&c.common)
-	c.PulseGroups = (*PulseGroupService)(&c.common)
-	c.PulseSources = (*PulseSourceService)(&c.common)
-	c.ReleaseDates = (*ReleaseDateService)(&c.common)
-	c.Reviews = (*ReviewService)(&c.common)
-	c.Themes = (*ThemeService)(&c.common)
-	c.Titles = (*TitleService)(&c.common)
-	c.Versions = (*VersionService)(&c.common)
 
 	return c
 }
@@ -114,15 +68,10 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 // get sends a GET request to the provided url and stores
 // the response in the provided result empty interface.
 // The response will be checked and return any errors.
-func (c *Client) get(url string, result interface{}) error {
-	req, err := c.newRequest(url)
-	if err != nil {
-		return err
-	}
-
+func (c *Client) get(req *http.Request, result interface{}) error {
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "http client cannot send request")
 	}
 	defer resp.Body.Close()
 
@@ -132,7 +81,7 @@ func (c *Client) get(url string, result interface{}) error {
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "cannot read response body")
 	}
 
 	if err = checkResults(b); err != nil {
@@ -146,89 +95,50 @@ func (c *Client) get(url string, result interface{}) error {
 
 // newRequest configures a new request for the provided URL and
 // adds the necesarry headers to communicate with the IGDB.
-func (c *Client) newRequest(url string) (*http.Request, error) {
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("user-key", c.key)
-	req.Header.Add("Accept", "application/json")
-
-	return req, nil
-}
-
-// singleURL creates a URL configured to request a single IGDB object identified by
-// its unique IGDB ID using the provided endpoint and options.
-func (c *Client) singleURL(end endpoint, ID int, opts ...FuncOption) (string, error) {
-	if ID < 0 {
-		return "", ErrNegativeID
-	}
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + strconv.Itoa(ID)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
-
-// multiURL creates a URL configured to request multiple IGDB objects identified
-// by their unique IGDB IDs using the provided endpoint and options. An empty slice
-// of IDs creates a URL configured to retrieve an index of IGDB objects from the given
-// endpoint based solely on the provided options.
-func (c *Client) multiURL(end endpoint, IDs []int, opts ...FuncOption) (string, error) {
-	for _, ID := range IDs {
-		if ID < 0 {
-			return "", ErrNegativeID
-		}
-	}
-
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + intsToCommaString(IDs)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
+//func (c *Client) newRequest(url string) (*http.Request, error) {
+//	req, err := http.NewRequest("GET", url, nil)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	req.Header.Add("user-key", c.key)
+//	req.Header.Add("Accept", "application/json")
+//
+//	return req, nil
+//}
 
 // searchURL creates a URL configured to search the IGDB based on the given query using
 // the provided endpoint and options.
-func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string, error) {
-	if strings.TrimSpace(qry) == "" {
-		return "", ErrEmptyQuery
-	}
-
-	opts = append(opts, setSearch(qry))
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
+//func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string, error) {
+//	if strings.TrimSpace(qry) == "" {
+//		return "", ErrEmptyQuery
+//	}
+//
+//	opts = append(opts, setSearch(qry))
+//	opt, err := newOpt(opts...)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	url := c.rootURL + string(end)
+//	url = encodeURL(&opt.Values, url)
+//
+//	return url, nil
+//}
 
 // countURL creates a URL configured to retrieve the count of IGDB objects
 // using the provided endpoint and options.
-func (c *Client) countURL(end endpoint, opts ...FuncOption) (string, error) {
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + "count"
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
+//func (c *Client) countURL(end endpoint, opts ...FuncOption) (string, error) {
+//	opt, err := newOpt(opts...)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	url := c.rootURL + string(end) + "count"
+//	url = encodeURL(&opt.Values, url)
+//
+//	return url, nil
+//}
 
 // Byte representations of ASCII characters. Used for empty result checks.
 const (

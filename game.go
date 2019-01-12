@@ -1,5 +1,7 @@
 package igdb
 
+import "github.com/pkg/errors"
+
 // GameService handles all the API
 // calls for the IGDB Game endpoint.
 type GameService service
@@ -42,7 +44,6 @@ type Game struct {
 	Genres               []int          `json:"genres,omitempty"`
 	FirstReleaseDate     int            `json:"first_release_date,omitempty"` // Unix time in milliseconds
 	Status               GameStatus     `json:"status,omitempty"`
-	ReleaseDates         []ReleaseDate  `json:"release_dates,omitempty"`
 	AlternativeNames     []AltName      `json:"alternative_names,omitempty"`
 	Screenshots          []Image        `json:"screenshots,omitempty"`
 	Videos               []YoutubeVideo `json:"videos,omitempty"`
@@ -122,19 +123,19 @@ type Website struct {
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
-	url, err := gs.client.singleURL(GameEndpoint, id, opts...)
+	req, err := gs.client.request(GameEndpoint, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var g []Game
 
-	err = gs.client.get(url, &g)
+	err = gs.client.get(req, &g)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot make request")
 	}
 
-	return &g[0], nil
+	return g, nil
 }
 
 // List returns a list of Games identified by the provided list of IGDB IDs.
