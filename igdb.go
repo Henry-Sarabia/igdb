@@ -2,11 +2,10 @@ package igdb
 
 import (
 	"encoding/json"
+	"github.com/Henry-Sarabia/apicalypse"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
-	"strconv"
-	"strings"
 )
 
 // igdbURL is the base URL for the IGDB API.
@@ -65,10 +64,28 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	return c
 }
 
-// get sends a GET request to the provided url and stores
-// the response in the provided result empty interface.
+// newRequest configures a new request for the provided URL and
+// adds the necesarry headers to communicate with the IGDB.
+func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error) {
+	unwrapped, err := unwrapOptions(opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot create request with invalid options")
+	}
+
+	req, err := apicalypse.NewRequest("GET", c.rootURL+string(end), unwrapped...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot make request for '%s' endpoint", end)
+	}
+
+	req.Header.Add("user-key", c.key)
+	req.Header.Add("Accept", "application/json")
+
+	return req, nil
+}
+
+// send sends the provided request and stores the response in the value pointed to by result.
 // The response will be checked and return any errors.
-func (c *Client) get(req *http.Request, result interface{}) error {
+func (c *Client) send(req *http.Request, result interface{}) error {
 	resp, err := c.http.Do(req)
 	if err != nil {
 		return errors.Wrap(err, "http client cannot send request")
@@ -93,89 +110,18 @@ func (c *Client) get(req *http.Request, result interface{}) error {
 	return err
 }
 
-// newRequest configures a new request for the provided URL and
-// adds the necesarry headers to communicate with the IGDB.
-//func (c *Client) newRequest(url string) (*http.Request, error) {
-//	req, err := http.NewRequest("GET", url, nil)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	req.Header.Add("user-key", c.key)
-//	req.Header.Add("Accept", "application/json")
-//
-//	return req, nil
-//}
-
-// searchURL creates a URL configured to search the IGDB based on the given query using
-// the provided endpoint and options.
-//func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string, error) {
-//	if strings.TrimSpace(qry) == "" {
-//		return "", ErrEmptyQuery
-//	}
-//
-//	opts = append(opts, setSearch(qry))
-//	opt, err := newOpt(opts...)
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	url := c.rootURL + string(end)
-//	url = encodeURL(&opt.Values, url)
-//
-//	return url, nil
-//}
-
-// countURL creates a URL configured to retrieve the count of IGDB objects
-// using the provided endpoint and options.
-//func (c *Client) countURL(end endpoint, opts ...FuncOption) (string, error) {
-//	opt, err := newOpt(opts...)
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	url := c.rootURL + string(end) + "count"
-//	url = encodeURL(&opt.Values, url)
-//
-//	return url, nil
-//}
-
-// Byte representations of ASCII characters. Used for empty result checks.
-const (
-	// openBracketASCII represents the ASCII code for an open bracket.
-	openBracketASCII = 91
-	// closedBracketASCII represents the ASCII code for a closed bracket.
-	closedBracketASCII = 93
-)
-
-// checkResults checks if the results of an API call are an empty array.
-// If they are, an error is returned. Otherwise, nil is returned.
-func checkResults(r []byte) error {
-	if len(r) != 2 {
-		return nil
+// get sends a GET request to the provided endpoint with the provided options and
+// stores the results in the value pointed to by result.
+func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error {
+	req, err := c.request(GameEndpoint, opts...)
+	if err != nil {
+		return err
 	}
 
-	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
-		return ErrNoResults
+	err = c.send(req, result)
+	if err != nil {
+		return errors.Wrap(err, "cannot make request")
 	}
 
 	return nil
-}
-
-// IntsToStrings is a helper function that converts a slice of ints to a
-// slice of strings. Useful for functions that require a variadic number
-// of strings instead of ints such as SetFilter.
-func IntsToStrings(ints []int) []string {
-	var str []string
-	for _, i := range ints {
-		str = append(str, strconv.Itoa(i))
-	}
-	return str
-}
-
-// intsToCommaString is a helper function that returns a comma separated
-// list of ints as a single string.
-func intsToCommaString(ints []int) string {
-	s := IntsToStrings(ints)
-	return strings.Join(s, ",")
 }

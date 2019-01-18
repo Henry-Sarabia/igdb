@@ -38,12 +38,14 @@ type Count struct {
 // getEndpointFieldList returns a list of fields that represent the
 // model of the data available at the given IGDB endpoint.
 func (c *Client) getEndpointFieldList(end endpoint) ([]string, error) {
-	url := c.rootURL + string(end) + "meta"
+	req, err := c.request(end + "meta")
+	if err != nil {
+		return nil, err
+	}
 
 	var f []string
 
-	err := c.get(url, &f)
-	if err != nil && err != ErrNoResults {
+	if err = c.send(req, &f); err != nil && err != ErrNoResults {
 		return nil, err
 	}
 
@@ -52,14 +54,14 @@ func (c *Client) getEndpointFieldList(end endpoint) ([]string, error) {
 
 // getEndpointCount returns the count of entities available for the given IGDB endpoint.
 func (c *Client) getEndpointCount(end endpoint, opts ...FuncOption) (int, error) {
-	url, err := c.countURL(end, opts...)
+	req, err := c.request(end+"count", opts...)
 	if err != nil {
 		return 0, err
 	}
 
 	var ct Count
 
-	err = c.get(url, &ct)
+	err = c.send(req, &ct)
 	if err != nil {
 		return 0, err
 	}

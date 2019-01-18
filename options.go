@@ -164,7 +164,7 @@ func SetFilter(field string, op operator, val ...string) FuncOption {
 // provided query.
 func setSearch(qry string) FuncOption {
 	return func() (apicalypse.FuncOption, error) {
-		return apicalypse.Search(qry), nil
+		return apicalypse.Search("", qry), nil
 	}
 }
 

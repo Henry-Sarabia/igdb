@@ -1,6 +1,8 @@
 package igdb
 
-import "github.com/pkg/errors"
+import (
+	"strconv"
+)
 
 // GameService handles all the API
 // calls for the IGDB Game endpoint.
@@ -122,20 +124,32 @@ type Website struct {
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
+//func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
+//	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+//	req, err := gs.client.request(GameEndpoint, opts...)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	var g []*Game
+//
+//	err = gs.client.send(req, &g)
+//	if err != nil {
+//		return nil, errors.Wrap(err, "cannot make request")
+//	}
+//
+//	return g[0], nil
+//}
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
-	req, err := gs.client.request(GameEndpoint, opts...)
+	var g []*Game
+
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
 		return nil, err
 	}
 
-	var g []Game
-
-	err = gs.client.get(req, &g)
-	if err != nil {
-		return nil, errors.Wrap(err, "cannot make request")
-	}
-
-	return g, nil
+	return g[0], nil
 }
 
 // List returns a list of Games identified by the provided list of IGDB IDs.
@@ -144,14 +158,14 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 // options. Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
 func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
-	url, err := gs.client.multiURL(GameEndpoint, ids, opts...)
+	req, err := gs.client.request(GameEndpoint, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var g []*Game
 
-	err = gs.client.get(url, &g)
+	err = gs.client.send(req, &g)
 	if err != nil {
 		return nil, err
 	}
@@ -162,15 +176,17 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 // Search returns a list of Games found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Games are found using the provided query, an error is returned.
+//TODO: remember that Search also has its own endpoint
 func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
-	url, err := gs.client.searchURL(GameEndpoint, qry, opts...)
+	opts = append(opts, setSearch(qry))
+	req, err := gs.client.request(GameEndpoint, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var g []*Game
 
-	err = gs.client.get(url, &g)
+	err = gs.client.send(req, &g)
 	if err != nil {
 		return nil, err
 	}

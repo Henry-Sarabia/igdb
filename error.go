@@ -15,10 +15,9 @@ var errEndOfJSON = errors.New("unexpected end of JSON input")
 //
 // For more information, visit: https://igdb.github.io/api/references/response-codes/
 var (
-	ErrAuthFailed       = errors.New("IGDB: authentication failed - need valid API key in user-key header")
-	ErrBadRequest       = errors.New("IGDB: bad request - check query parameters")
-	ErrInternalError    = errors.New("IGDB: internal error - report bug")
-	ErrUnexpectedStatus = errors.New("IGDB: unexpected status code")
+	ErrAuthFailed    = errors.New("IGDB: authentication failed - need valid API key in user-key header")
+	ErrBadRequest    = errors.New("IGDB: bad request - check query parameters")
+	ErrInternalError = errors.New("IGDB: internal error - report bug")
 )
 
 // Error contains information on an
@@ -59,4 +58,26 @@ func checkResponse(resp *http.Response) error {
 		msg += fmt.Sprintf(" - %v", e.Message)
 	}
 	return errors.New(msg)
+}
+
+// Byte representations of ASCII characters. Used for empty result checks.
+const (
+	// openBracketASCII represents the ASCII code for an open bracket.
+	openBracketASCII = 91
+	// closedBracketASCII represents the ASCII code for a closed bracket.
+	closedBracketASCII = 93
+)
+
+// checkResults checks if the results of an API call are an empty array.
+// If they are, an error is returned. Otherwise, nil is returned.
+func checkResults(r []byte) error {
+	if len(r) != 2 {
+		return nil
+	}
+
+	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
+		return ErrNoResults
+	}
+
+	return nil
 }
