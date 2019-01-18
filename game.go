@@ -124,22 +124,6 @@ type Website struct {
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
-//func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
-//	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-//	req, err := gs.client.request(GameEndpoint, opts...)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	var g []*Game
-//
-//	err = gs.client.send(req, &g)
-//	if err != nil {
-//		return nil, errors.Wrap(err, "cannot make request")
-//	}
-//
-//	return g[0], nil
-//}
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 	var g []*Game
 
@@ -158,14 +142,9 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 // options. Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
 func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
-	req, err := gs.client.request(GameEndpoint, opts...)
-	if err != nil {
-		return nil, err
-	}
-
 	var g []*Game
 
-	err = gs.client.send(req, &g)
+	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -178,15 +157,10 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 // no Games are found using the provided query, an error is returned.
 //TODO: remember that Search also has its own endpoint
 func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
-	opts = append(opts, setSearch(qry))
-	req, err := gs.client.request(GameEndpoint, opts...)
-	if err != nil {
-		return nil, err
-	}
-
 	var g []*Game
 
-	err = gs.client.send(req, &g)
+	opts = append(opts, setSearch(qry))
+	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
 		return nil, err
 	}
