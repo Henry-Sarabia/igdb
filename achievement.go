@@ -5,7 +5,7 @@ package igdb
 // Achievement data for specific games for specific platforms
 // (currently limited to achievements from Steam, Playstation,
 // and XBox).
-// For more information please visit: https://api-docs.igdb.com/#achievement
+// For more information visit: https://api-docs.igdb.com/#achievement
 type Achievement struct {
 	AchievementIcon  int                 `json:"achievement_icon"`
 	Category         AchievementCategory `json:"category"`

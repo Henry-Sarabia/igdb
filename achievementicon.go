@@ -3,7 +3,7 @@ package igdb
 //go:generate gomodifytags -file $GOFILE -struct AchievementIcon -add-tags json -w
 
 // AchievementIcon is an icon for a specific achievement.
-// For more information please visit: https://api-docs.igdb.com/#achievement-icon
+// For more information visit: https://api-docs.igdb.com/#achievement-icon
 type AchievementIcon struct {
 	AlphaChannel bool   `json:"alpha_channel"`
 	Animated     bool   `json:"animated"`

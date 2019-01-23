@@ -13,7 +13,7 @@ type GameService service
 
 // Game contains information on an IGDB entry for a particular video game.
 //
-// For more information, visit: https://api-docs.igdb.com/#game
+// For more information visit: https://api-docs.igdb.com/#game
 type Game struct {
 	AgeRatings            []int        `json:"age_ratings"`
 	AggregatedRating      float64      `json:"aggregated_rating"`
@@ -84,27 +84,11 @@ type CompletionTime struct {
 	Completely int `json:"completely"`
 }
 
-// ESRB contains the rating and synopsis
-// for a particular video game given by
-// the Entertainment Software Rating Board.
-type ESRB struct {
-	Rating   ESRBCode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
-}
-
 // External contains information for
 // connecting external service IDs to
 // the IGDB for a particular object.
 type External struct {
 	Steam string `json:"steam"`
-}
-
-// PEGI contains the rating and synopsis
-// for a particular video game given by
-// the Pan European Game Information organization.
-type PEGI struct {
-	Rating   PEGICode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
 }
 
 // YoutubeVideo contains the name and
