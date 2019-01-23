@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/pkg/errors"
 	"strconv"
 )
 
@@ -10,7 +11,7 @@ type GameService service
 
 // Game contains information on an IGDB entry for a particular video game.
 //
-// For more information, visit: https://igdb.github.io/api/endpoints/game/
+// For more information, visit: https://api-docs.igdb.com/#game
 type Game struct {
 	ID                   int            `json:"id,omitempty"`
 	Name                 string         `json:"name,omitempty"`
@@ -130,7 +131,7 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
 	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Game with ID %v", id)
 	}
 
 	return g[0], nil
@@ -146,7 +147,7 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 
 	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot list Games with IDs %v", ids)
 	}
 
 	return g, nil
@@ -162,7 +163,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	opts = append(opts, setSearch(qry))
 	err := gs.client.get(GameEndpoint, &g, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot search for Game with query %s", qry)
 	}
 
 	return g, nil
@@ -174,7 +175,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gs.client.getEndpointCount(GameEndpoint, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count Games")
 	}
 
 	return ct, nil
@@ -185,7 +186,7 @@ func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 func (gs *GameService) ListFields() ([]string, error) {
 	fl, err := gs.client.getEndpointFieldList(GameEndpoint)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot list Game fields")
 	}
 
 	return fl, nil

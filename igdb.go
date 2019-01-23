@@ -120,7 +120,7 @@ func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error
 
 	err = c.send(req, result)
 	if err != nil {
-		return errors.Wrap(err, "cannot make request")
+		return errors.Wrap(err, "cannot make GET request")
 	}
 
 	return nil
