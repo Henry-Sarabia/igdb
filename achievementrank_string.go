@@ -16,9 +16,9 @@ func (i AchievementRank) String() string {
 	return _AchievementRank_name[_AchievementRank_index[i]:_AchievementRank_index[i+1]]
 }
 
-const _AchievementCategory_name = "PlaystationXboxSteam"
+const _AchievementCategory_name = "AchievementPlaystationAchievementXboxAchievementSteam"
 
-var _AchievementCategory_index = [...]uint8{0, 11, 15, 20}
+var _AchievementCategory_index = [...]uint8{0, 22, 37, 53}
 
 func (i AchievementCategory) String() string {
 	i -= 1
@@ -28,9 +28,9 @@ func (i AchievementCategory) String() string {
 	return _AchievementCategory_name[_AchievementCategory_index[i]:_AchievementCategory_index[i+1]]
 }
 
-const _AchievementLanguage_name = "EuropeNorthAmericaAustraliaNewZealandJapanChinaAsiaWorldwideHongKongSouthKorea"
+const _AchievementLanguage_name = "LanguageEuropeLanguageNorthAmericaLanguageAustraliaLanguageNewZealandLanguageJapanLanguageChinaLanguageAsiaLanguageWorldwideLanguageHongKongLanguageSouthKorea"
 
-var _AchievementLanguage_index = [...]uint8{0, 6, 18, 27, 37, 42, 47, 51, 60, 68, 78}
+var _AchievementLanguage_index = [...]uint8{0, 14, 34, 51, 69, 82, 95, 107, 124, 140, 158}
 
 func (i AchievementLanguage) String() string {
 	i -= 1

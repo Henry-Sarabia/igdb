@@ -124,35 +124,6 @@ func (f FeatureCategory) String() string {
 	}
 }
 
-// FeedCategory represents the IGDB enumerated type Feed Item Category which
-// describes the type of a feed item in a specific feed. Use the Stringer
-// interface to access the corresponding Feed Item Category values as strings.
-type FeedCategory int
-
-// FeedCategory implements the Stringer interface by matching its code with
-// the IGDBs enumerated type Feed Item Category and returns the category as
-// a string. Codes without a match will return "Undefined".
-//
-// For the list of codes, visit: https://igdb.github.io/api/enum-fields/feed-item-category/
-func (f FeedCategory) String() string {
-	switch f {
-	case 1:
-		return "Pulse Article"
-	case 2:
-		return "Coming Soon"
-	case 3:
-		return "New Trailer"
-	case 5:
-		return "User Contributed Item"
-	case 6:
-		return "User Contributions Item"
-	case 7:
-		return "Page Contributed Item"
-	default:
-		return "Undefined"
-	}
-}
-
 // GameCategory represents the IGDB enumerated type Game Category which
 // describes a type of game content. Use the Stringer interface to access
 // the corresponding Game Category values as strings.

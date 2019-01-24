@@ -113,7 +113,7 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 // get sends a GET request to the provided endpoint with the provided options and
 // stores the results in the value pointed to by result.
 func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error {
-	req, err := c.request(GameEndpoint, opts...)
+	req, err := c.request(end, opts...)
 	if err != nil {
 		return err
 	}

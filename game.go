@@ -84,13 +84,6 @@ type CompletionTime struct {
 	Completely int `json:"completely"`
 }
 
-// External contains information for
-// connecting external service IDs to
-// the IGDB for a particular object.
-type External struct {
-	Steam string `json:"steam"`
-}
-
 // YoutubeVideo contains the name and
 // ID of a  Youtube video.
 type YoutubeVideo struct {

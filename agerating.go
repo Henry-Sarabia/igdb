@@ -17,23 +17,23 @@ type AgeRating struct {
 type AgeRatingCategory int
 
 const (
-	ESRB AgeRatingCategory = iota + 1
-	PEGI
+	AgeRatingESRB AgeRatingCategory = iota + 1
+	AgeRatingPEGI
 )
 
 type AgeRatingEnum int
 
 const (
-	Three AgeRatingEnum = iota + 1
-	Seven
-	Twelve
-	Sixteen
-	Eighteen
-	RP
-	EC
-	E
-	E10
-	T
-	M
-	AO
+	RatingThree AgeRatingEnum = iota + 1
+	RatingSeven
+	RatingTwelve
+	RatingSixteen
+	RatingEighteen
+	RatingRP
+	RatingEC
+	RatingE
+	RatingE10
+	RatingT
+	RatingM
+	RatingAO
 )

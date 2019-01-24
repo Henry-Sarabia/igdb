@@ -27,31 +27,31 @@ type Achievement struct {
 type AchievementRank int
 
 const (
-	Bronze AchievementRank = iota + 1
-	Silver
-	Gold
-	Platinum
+	RankBronze AchievementRank = iota + 1
+	RankSilver
+	RankGold
+	RankPlatinum
 )
 
 type AchievementCategory int
 
 const (
-	Playstation AchievementCategory = iota + 1
-	Xbox
-	Steam
+	AchievementPlaystation AchievementCategory = iota + 1
+	AchievementXbox
+	AchievementSteam
 )
 
 type AchievementLanguage int
 
 const (
-	Europe AchievementLanguage = iota + 1
-	NorthAmerica
-	Australia
-	NewZealand
-	Japan
-	China
-	Asia
-	Worldwide
-	HongKong
-	SouthKorea
+	LanguageEurope AchievementLanguage = iota + 1
+	LanguageNorthAmerica
+	LanguageAustralia
+	LanguageNewZealand
+	LanguageJapan
+	LanguageChina
+	LanguageAsia
+	LanguageWorldwide
+	LanguageHongKong
+	LanguageSouthKorea
 )
