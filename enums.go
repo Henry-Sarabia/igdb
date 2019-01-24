@@ -124,62 +124,6 @@ func (f FeatureCategory) String() string {
 	}
 }
 
-// GameCategory represents the IGDB enumerated type Game Category which
-// describes a type of game content. Use the Stringer interface to access
-// the corresponding Game Category values as strings.
-type GameCategory int
-
-// GameCategory implements the stringer interface by matching its code with the
-// IGDBs enumerated type Game Category and returns the category as a string.
-// Codes without a match will return "Undefined".
-//
-// For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-category/
-func (g GameCategory) String() string {
-	switch g {
-	case 0:
-		return "Main Game"
-	case 1:
-		return "DLC / Addon"
-	case 2:
-		return "Expansion"
-	case 3:
-		return "Bundle"
-	case 4:
-		return "Standalone Expansion"
-	default:
-		return "Undefined"
-	}
-}
-
-// GameStatus represents the IGDB enumerated type Game Status which describes
-// the release status of a specific game. Use the Stringer interface to access
-// the corresponding Game Status values as strings.
-type GameStatus int
-
-// GameStatus implements the Stringer interface by matching its code with the
-// IGDBs enumerated Game Status type and returns the status as a string.
-// Codes without a match return "Undefined".
-//
-// For the list of codes, visit: https://igdb.github.io/api/enum-fields/game-status/
-func (g GameStatus) String() string {
-	switch g {
-	case 0:
-		return "Released"
-	case 2:
-		return "Alpha"
-	case 3:
-		return "Beta"
-	case 4:
-		return "Early Access"
-	case 5:
-		return "Offline"
-	case 6:
-		return "Cancelled"
-	default:
-		return "Undefined"
-	}
-}
-
 // GenderCode represents the IGDB enumerated type Gender which describes the
 // gender of a specific entity. Use the Stringer interface to access the
 // corresponding Gender values as strings.

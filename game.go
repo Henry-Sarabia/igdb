@@ -12,7 +12,6 @@ import (
 type GameService service
 
 // Game contains information on an IGDB entry for a particular video game.
-//
 // For more information visit: https://api-docs.igdb.com/#game
 type Game struct {
 	AgeRatings            []int        `json:"age_ratings"`
@@ -68,36 +67,35 @@ type Game struct {
 	Websites              []int        `json:"websites"`
 }
 
-// AltName contains information on an
-// alternative name for an IGDB object.
-type AltName struct {
-	Name    string `json:"name"`
-	Comment string `json:"comment"`
-}
+//go:generate stringer -type=GameCategory,GameStatus
 
-// CompletionTime contains the time to complete
-// a particular video game. This time is measured
-// in seconds.
-type CompletionTime struct {
-	Hastly     int `json:"hastly"`
-	Normally   int `json:"normally"`
-	Completely int `json:"completely"`
-}
+// GameCategory represents the IGDB enumerated type Game Category which
+// describes a type of game content. Use the Stringer interface to access
+// the corresponding Game Category values as strings.
+type GameCategory int
 
-// YoutubeVideo contains the name and
-// ID of a  Youtube video.
-type YoutubeVideo struct {
-	Name string `json:"name"`
-	ID   string `json:"video_id"` // Youtube slug
-}
+const (
+	MainGame GameCategory = iota
+	DLCAddon
+	Expansion
+	Bundle
+	StandaloneExpansion
+)
 
-// Website contains address and category
-// information on a website referenced
-// in the IGDB.
-type Website struct {
-	Category WebsiteCategory `json:"category"`
-	URL      URL             `json:"url"`
-}
+// GameStatus represents the IGDB enumerated type Game Status which describes
+// the release status of a specific game. Use the Stringer interface to access
+// the corresponding Game Status values as strings.
+type GameStatus int
+
+const (
+	StatusReleased GameStatus = iota
+	_
+	StatusAlpha
+	StatusBeta
+	StatusEarlyAccess
+	StatusOffline
+	StatusCancelled
+)
 
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
