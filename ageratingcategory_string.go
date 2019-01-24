@@ -4,9 +4,9 @@ package igdb
 
 import "strconv"
 
-const _AgeRatingCategory_name = "ESRBPEGI"
+const _AgeRatingCategory_name = "AgeRatingESRBAgeRatingPEGI"
 
-var _AgeRatingCategory_index = [...]uint8{0, 4, 8}
+var _AgeRatingCategory_index = [...]uint8{0, 13, 26}
 
 func (i AgeRatingCategory) String() string {
 	i -= 1

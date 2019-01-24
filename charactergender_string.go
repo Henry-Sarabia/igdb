@@ -4,9 +4,9 @@ package igdb
 
 import "strconv"
 
-const _CharacterGender_name = "MaleFemaleOther"
+const _CharacterGender_name = "GenderMaleGenderFemaleGenderOther"
 
-var _CharacterGender_index = [...]uint8{0, 4, 10, 15}
+var _CharacterGender_index = [...]uint8{0, 10, 22, 33}
 
 func (i CharacterGender) String() string {
 	i -= 1

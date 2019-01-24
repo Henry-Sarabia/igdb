@@ -21,7 +21,7 @@ type ExternalGame struct {
 type ExternalGameCategory int
 
 const (
-	ExternalSteam = iota + 1
+	ExternalSteam ExternalGameCategory = iota + 1
 	_
 	_
 	_

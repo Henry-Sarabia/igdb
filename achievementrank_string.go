@@ -4,9 +4,9 @@ package igdb
 
 import "strconv"
 
-const _AchievementRank_name = "BronzeSilverGoldPlatinum"
+const _AchievementRank_name = "RankBronzeRankSilverRankGoldRankPlatinum"
 
-var _AchievementRank_index = [...]uint8{0, 6, 12, 16, 24}
+var _AchievementRank_index = [...]uint8{0, 10, 20, 28, 40}
 
 func (i AchievementRank) String() string {
 	i -= 1
