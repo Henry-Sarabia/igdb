@@ -16,9 +16,9 @@ func (i AgeRatingCategory) String() string {
 	return _AgeRatingCategory_name[_AgeRatingCategory_index[i]:_AgeRatingCategory_index[i+1]]
 }
 
-const _AgeRatingEnum_name = "RatingThreeRatingSevenRatingTwelveRatingSixteenRatingEighteenRatingRPRatingECRatingERatingE10RatingTRatingMRatingAO"
+const _AgeRatingEnum_name = "AgeRatingThreeAgeRatingSevenAgeRatingTwelveAgeRatingSixteenAgeRatingEighteenAgeRatingRPAgeRatingECAgeRatingEAgeRatingE10AgeRatingTAgeRatingMAgeRatingAO"
 
-var _AgeRatingEnum_index = [...]uint8{0, 11, 22, 34, 47, 61, 69, 77, 84, 93, 100, 107, 115}
+var _AgeRatingEnum_index = [...]uint8{0, 14, 28, 43, 59, 76, 87, 98, 108, 120, 130, 140, 151}
 
 func (i AgeRatingEnum) String() string {
 	i -= 1

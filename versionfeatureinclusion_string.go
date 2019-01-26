@@ -4,9 +4,9 @@ package igdb
 
 import "strconv"
 
-const _VersionFeatureInclusion_name = "NotIncludedIncludedPreOrderOnly"
+const _VersionFeatureInclusion_name = "VersionFeatureNotIncludedVersionFeatureIncludedVersionFeaturePreOrderOnly"
 
-var _VersionFeatureInclusion_index = [...]uint8{0, 11, 19, 31}
+var _VersionFeatureInclusion_index = [...]uint8{0, 25, 47, 73}
 
 func (i VersionFeatureInclusion) String() string {
 	if i < 0 || i >= VersionFeatureInclusion(len(_VersionFeatureInclusion_index)-1) {

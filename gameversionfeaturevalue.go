@@ -16,7 +16,7 @@ type GameVersionFeatureValue struct {
 type VersionFeatureInclusion int
 
 const (
-	NotIncluded VersionFeatureInclusion = iota
-	Included
-	PreOrderOnly
+	VersionFeatureNotIncluded VersionFeatureInclusion = iota
+	VersionFeatureIncluded
+	VersionFeaturePreOrderOnly
 )

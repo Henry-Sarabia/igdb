@@ -24,16 +24,16 @@ const (
 type AgeRatingEnum int
 
 const (
-	RatingThree AgeRatingEnum = iota + 1
-	RatingSeven
-	RatingTwelve
-	RatingSixteen
-	RatingEighteen
-	RatingRP
-	RatingEC
-	RatingE
-	RatingE10
-	RatingT
-	RatingM
-	RatingAO
+	AgeRatingThree AgeRatingEnum = iota + 1
+	AgeRatingSeven
+	AgeRatingTwelve
+	AgeRatingSixteen
+	AgeRatingEighteen
+	AgeRatingRP
+	AgeRatingEC
+	AgeRatingE
+	AgeRatingE10
+	AgeRatingT
+	AgeRatingM
+	AgeRatingAO
 )
