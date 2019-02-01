@@ -19,9 +19,6 @@ var (
 	ErrNoResults = errors.New("igdb.Client: no results")
 )
 
-// URL represents a URL as a string.
-type URL string
-
 // service is the underlying struct that handles
 // all API calls for different IGDB endpoints.
 type service struct {
@@ -64,7 +61,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	return c
 }
 
-// newRequest configures a new request for the provided URL and
+// Request configures a new request for the provided URL and
 // adds the necesarry headers to communicate with the IGDB.
 func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error) {
 	unwrapped, err := unwrapOptions(opts...)
@@ -83,7 +80,7 @@ func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error
 	return req, nil
 }
 
-// send sends the provided request and stores the response in the value pointed to by result.
+// Send sends the provided request and stores the response in the value pointed to by result.
 // The response will be checked and return any errors.
 func (c *Client) send(req *http.Request, result interface{}) error {
 	resp, err := c.http.Do(req)
@@ -110,7 +107,7 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 	return err
 }
 
-// get sends a GET request to the provided endpoint with the provided options and
+// Get sends a GET request to the provided endpoint with the provided options and
 // stores the results in the value pointed to by result.
 func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error {
 	req, err := c.request(end, opts...)
