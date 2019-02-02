@@ -23,6 +23,7 @@ var (
 // all API calls for different IGDB endpoints.
 type service struct {
 	client *Client
+	end    endpoint
 }
 
 // Client wraps an HTTP Client used to communicate with the IGDB,
@@ -33,8 +34,6 @@ type Client struct {
 	http    *http.Client
 	rootURL string
 	key     string
-
-	common service
 
 	// Services
 	Games *GameService
@@ -55,8 +54,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.key = apiKey
 	c.rootURL = igdbURL
 
-	c.common.client = c
-	c.Games = (*GameService)(&c.common)
+	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
 }

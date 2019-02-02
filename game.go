@@ -104,7 +104,7 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 	var g []*Game
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(EndpointGame, &g, opts...)
+	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Game with ID %v", id)
 	}
@@ -120,7 +120,7 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 	var g []*Game
 
-	err := gs.client.get(EndpointGame, &g, opts...)
+	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot list Games with IDs %v", ids)
 	}
@@ -135,7 +135,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	var g []*Game
 
 	opts = append(opts, setSearch(qry))
-	err := gs.client.get(EndpointGame, &g, opts...)
+	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot search for Game with query %s", qry)
 	}
@@ -143,11 +143,11 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	return g, nil
 }
 
-// Count returns the number of Games available in the IGDB.
-// Provide the SetFilter functional option if you need to filter
-// which Games to count.
+//Count returns the number of Games available in the IGDB.
+//Provide the SetFilter functional option if you need to filter
+//which Games to count.
 func (gs *GameService) Count(opts ...FuncOption) (int, error) {
-	ct, err := gs.client.getEndpointCount(EndpointGame, opts...)
+	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Games")
 	}
@@ -155,10 +155,10 @@ func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB Game object.
-func (gs *GameService) ListFields() ([]string, error) {
-	fl, err := gs.client.getEndpointFieldList(EndpointGame)
+func (gs *GameService) Fields() ([]string, error) {
+	fl, err := gs.client.getFields(gs.end)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot list Game fields")
 	}

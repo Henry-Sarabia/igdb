@@ -63,9 +63,9 @@ type Count struct {
 	Count int `json:"count"`
 }
 
-// getEndpointFieldList returns a list of fields that represent the
+// getFields returns a list of fields that represent the
 // model of the data available at the given IGDB endpoint.
-func (c *Client) getEndpointFieldList(end endpoint) ([]string, error) {
+func (c *Client) getFields(end endpoint) ([]string, error) {
 	req, err := c.request(end + "meta")
 	if err != nil {
 		return nil, err
@@ -80,8 +80,8 @@ func (c *Client) getEndpointFieldList(end endpoint) ([]string, error) {
 	return f, nil
 }
 
-// getEndpointCount returns the count of entities available for the given IGDB endpoint.
-func (c *Client) getEndpointCount(end endpoint, opts ...FuncOption) (int, error) {
+// getCount returns the count of entities available for the given IGDB endpoint.
+func (c *Client) getCount(end endpoint, opts ...FuncOption) (int, error) {
 	req, err := c.request(end+"count", opts...)
 	if err != nil {
 		return 0, err
