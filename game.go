@@ -53,7 +53,7 @@ type Game struct {
 	StandaloneExpansions  []int        `json:"standalone_expansions"`
 	Status                GameStatus   `json:"status"`
 	Storyline             string       `json:"storyline"`
-	Summmary              string       `json:"summmary"`
+	Summary               string       `json:"summary"`
 	Tags                  []Tag        `json:"tags"`
 	Themes                []int        `json:"themes"`
 	TimeToBeat            int          `json:"time_to_beat"`

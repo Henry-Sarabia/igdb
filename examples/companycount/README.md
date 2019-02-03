@@ -31,7 +31,7 @@ command with your API key.
 companycount -k YOUR_API_KEY
 ```
 
-If your API key is valid and no unforseen errors occur, you should see some
+If your API key is valid and no unforeseen errors occur, you should see some
 output that resembles the following:
 
 ```

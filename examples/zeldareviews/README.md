@@ -1,6 +1,6 @@
 # Zelda Reviews Example
 
-This example makes use of the igdb cleint's Reviews service to search the IGDB
+This example makes use of the igdb client's Reviews service to search the IGDB
 for the most liked reviews that match the "zelda" search query. The example
 demonstrates the use of the following key functions:
 * Reviews.Search
@@ -33,7 +33,7 @@ command with your API key.
 zeldareviews -k YOUR_API_KEY
 ```
 
-If your API key is valid and no unforseen errors occur, you should see some
+If your API key is valid and no unforeseen errors occur, you should see some
 output that resembles the following:
 
 ```

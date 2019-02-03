@@ -122,15 +122,15 @@ const (
 	OpLessThan operator = "%s < %s"
 	// OpLessThanEqual checks if a field value is less than or equal to a given value. Only works on numbers.
 	OpLessThanEqual operator = "%s <= %s"
-	// OpPrefix checks if a field value contains the given prefix value. Only works on strings.
+	// OpContainsAll checks if the given value exists in within the array.
 	OpContainsAll operator = "%s = [%s]"
-	// OpExists checks if a field value is a non-null value. Does not need a provided value.
+	// OpNotContainsAll checks if the given value does not exist in within the array.
 	OpNotContainsAll operator = "%s != [%s]"
-	// OpNotExists checks if a field value is a null value. Does not need a provided value.
+	// OpContainsAtLeast checks if any of the given values exist within the array.
 	OpContainsAtLeast operator = "%s = (%s)"
-	// OpIn checks if the field contains all of the given values. Can provide multiple values.
+	// OpNotContainsAtLeast checks if any of the given values do not exist within the array.
 	OpNotContainsAtLeast operator = "%s != (%s)"
-	// OpNotIn checks if the field does not contain any of the given values. Can provide multiple values.
+	// OpContainsExactly checks if the the given values exactly match the array.
 	OpContainsExactly operator = "%s = {%s}"
 )
 

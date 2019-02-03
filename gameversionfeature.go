@@ -19,5 +19,5 @@ type VersionFeatureCategory int
 
 const (
 	VersionFeatureBoolean VersionFeatureCategory = iota
-	VerstionFeatureDescription
+	VersionFeatureDescription
 )

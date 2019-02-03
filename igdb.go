@@ -60,7 +60,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 }
 
 // Request configures a new request for the provided URL and
-// adds the necesarry headers to communicate with the IGDB.
+// adds the necessary headers to communicate with the IGDB.
 func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error) {
 	unwrapped, err := unwrapOptions(opts...)
 	if err != nil {
