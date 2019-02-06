@@ -132,7 +132,7 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 
 	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
-		return nil, errors.Wrapf(err, "cannot list Games with IDs %v", ids)
+		return nil, errors.Wrapf(err, "cannot get Games with IDs %v", ids)
 	}
 
 	return g, nil
@@ -147,7 +147,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	opts = append(opts, setSearch(qry))
 	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
-		return nil, errors.Wrapf(err, "cannot search for Game with query %s", qry)
+		return nil, errors.Wrapf(err, "cannot get Game with query %s", qry)
 	}
 
 	return g, nil
@@ -170,7 +170,7 @@ func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 func (gs *GameService) Fields() ([]string, error) {
 	fl, err := gs.client.getFields(gs.end)
 	if err != nil {
-		return nil, errors.Wrap(err, "cannot list Game fields")
+		return nil, errors.Wrap(err, "cannot get Game fields")
 	}
 
 	return fl, nil
