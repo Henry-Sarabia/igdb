@@ -11,14 +11,6 @@ import (
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-v3.igdb.com/"
 
-// Errors returned when creating URLs for API calls.
-var (
-	// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
-	ErrNegativeID = errors.New("igdb.Client: negative ID")
-	// ErrNoResults occurs when the IGDB returns no results
-	ErrNoResults = errors.New("igdb.Client: no results")
-)
-
 // service is the underlying struct that handles
 // all API calls for different IGDB endpoints.
 type service struct {
@@ -101,8 +93,11 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 	}
 
 	err = json.Unmarshal(b, &result)
+	if err != nil {
+		return errEndOfJSON
+	}
 
-	return err
+	return nil
 }
 
 // Get sends a GET request to the provided endpoint with the provided options and

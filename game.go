@@ -101,6 +101,10 @@ const (
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
+	if id < 0 {
+		return nil, ErrNegativeID
+	}
+
 	var g []*Game
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
@@ -118,6 +122,12 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 // options. Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
 func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
+	}
+
 	var g []*Game
 
 	err := gs.client.get(gs.end, &g, opts...)
@@ -143,9 +153,9 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 	return g, nil
 }
 
-//Count returns the number of Games available in the IGDB.
-//Provide the SetFilter functional option if you need to filter
-//which Games to count.
+// Count returns the number of Games available in the IGDB.
+// Provide the SetFilter functional option if you need to filter
+// which Games to count.
 func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {

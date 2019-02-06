@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Henry-Sarabia/apicalypse"
 	"github.com/pkg/errors"
+	"regexp"
 	"strings"
 )
 
@@ -164,6 +165,9 @@ func SetFilter(field string, op operator, val ...string) FuncOption {
 // provided query.
 func setSearch(qry string) FuncOption {
 	return func() (apicalypse.FuncOption, error) {
+		if isBlank(qry) {
+			return nil, ErrEmptyQuery
+		}
 		return apicalypse.Search("", qry), nil
 	}
 }
@@ -178,4 +182,21 @@ func hasBlankElem(s []string) bool {
 		}
 	}
 	return false
+}
+
+// isBlank returns true if the provided string is empty or only consists of whitespace.
+// Returns false otherwise.
+func isBlank(s string) bool {
+	if removeWhitespace(s) == "" {
+		return true
+	}
+
+	return false
+}
+
+// removeWhitespace returns the provided string with all of the whitespace removed.
+// This includes spaces, tabs, newlines, returns, and form feeds.
+func removeWhitespace(s string) string {
+	space := regexp.MustCompile(`\s+`)
+	return space.ReplaceAllString(s, "")
 }

@@ -60,6 +60,9 @@ func checkResponse(resp *http.Response) error {
 	return errors.New(msg)
 }
 
+// ErrNoResults occurs when the IGDB returns no results
+var ErrNoResults = errors.New("results are empty")
+
 // Byte representations of ASCII characters. Used for empty result checks.
 const (
 	// openBracketASCII represents the ASCII code for an open bracket.
