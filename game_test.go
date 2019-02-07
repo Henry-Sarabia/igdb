@@ -10,8 +10,14 @@ import (
 	"testing"
 )
 
-func TestGamesGet(t *testing.T) {
-	f, err := ioutil.ReadFile("test_data/games_get.txt")
+const (
+	testGameServiceGet    string = "test_data/game_service_get.json"
+	testGameServiceList   string = "test_data/game_service_list.json"
+	testGameServiceSearch string = "test_data/game_service_search.json"
+)
+
+func TestGameService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testGameServiceGet)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,19 +25,19 @@ func TestGamesGet(t *testing.T) {
 	init := make([]*Game, 1)
 	json.Unmarshal(f, &init)
 
-	var gameTests = []struct {
+	var tests = []struct {
 		name     string
 		file     string
 		id       int
 		wantGame *Game
 		wantErr  error
 	}{
-		{"Valid response", "test_data/games_get.txt", 7346, init[0], nil},
-		{"Invalid ID", "test_data/empty.txt", -1, nil, ErrNegativeID},
-		{"Empty response", "test_data/empty.txt", 7346, nil, errEndOfJSON},
-		{"No results", "test_data/empty_array.txt", 0, nil, ErrNoResults},
+		{"Valid response", testGameServiceGet, 7346, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 7346, nil, errEndOfJSON},
+		{"No results", testFileEmptyArray, 0, nil, ErrNoResults},
 	}
-	for _, test := range gameTests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
@@ -51,8 +57,8 @@ func TestGamesGet(t *testing.T) {
 	}
 }
 
-func TestGamesList(t *testing.T) {
-	f, err := ioutil.ReadFile("test_data/games_list.txt")
+func TestGameService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testGameServiceList)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +66,7 @@ func TestGamesList(t *testing.T) {
 	init := make([]*Game, 0)
 	json.Unmarshal(f, &init)
 
-	var gameTests = []struct {
+	var tests = []struct {
 		name      string
 		file      string
 		ids       []int
@@ -68,14 +74,14 @@ func TestGamesList(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", "test_data/games_list.txt", []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
-		{"Zero IDs", "test_data/games_list.txt", nil, nil, init, nil},
-		{"Invalid ID", "test_data/empty.txt", []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", "test_data/empty.txt", []int{1721, 2777}, nil, nil, errEndOfJSON},
-		{"Invalid option", "test_data/empty.txt", []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
-		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, nil, ErrNoResults},
+		{"Valid response", testGameServiceList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testGameServiceList, nil, nil, init, nil},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errEndOfJSON},
+		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
-	for _, test := range gameTests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
@@ -95,8 +101,8 @@ func TestGamesList(t *testing.T) {
 	}
 }
 
-func TestGamesSearch(t *testing.T) {
-	f, err := ioutil.ReadFile("test_data/games_search.txt")
+func TestGameservice_Search(t *testing.T) {
+	f, err := ioutil.ReadFile(testGameServiceSearch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -104,7 +110,7 @@ func TestGamesSearch(t *testing.T) {
 	init := make([]*Game, 0)
 	json.Unmarshal(f, &init)
 
-	var gameTests = []struct {
+	var tests = []struct {
 		name      string
 		file      string
 		qry       string
@@ -112,13 +118,13 @@ func TestGamesSearch(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", "test_data/games_search.txt", "mario", []FuncOption{SetLimit(50)}, init, nil},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
-		{"Empty response", "test_data/empty.txt", "mario", nil, nil, errEndOfJSON},
-		{"Invalid option", "test_data/empty.txt", "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
-		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, nil, ErrNoResults},
+		{"Valid response", testGameServiceSearch, "mario", []FuncOption{SetLimit(50)}, init, nil},
+		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
+		{"Empty response", testFileEmpty, "mario", nil, nil, errEndOfJSON},
+		{"Invalid option", testFileEmpty, "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
-	for _, test := range gameTests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
@@ -138,8 +144,8 @@ func TestGamesSearch(t *testing.T) {
 	}
 }
 
-func TestGamesCount(t *testing.T) {
-	var countTests = []struct {
+func TestGameService_Count(t *testing.T) {
+	var tests = []struct {
 		name      string
 		resp      string
 		opts      []FuncOption
@@ -152,7 +158,7 @@ func TestGamesCount(t *testing.T) {
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
-	for _, test := range countTests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
@@ -169,8 +175,8 @@ func TestGamesCount(t *testing.T) {
 	}
 }
 
-func TestGamesFields(t *testing.T) {
-	var fieldTests = []struct {
+func TestGameService_Fields(t *testing.T) {
+	var tests = []struct {
 		name       string
 		resp       string
 		wantFields []string
@@ -183,7 +189,7 @@ func TestGamesFields(t *testing.T) {
 		{"No results", "[]", nil, nil},
 	}
 
-	for _, test := range fieldTests {
+	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
@@ -217,7 +223,7 @@ func ExampleGameService_Get() {
 	fmt.Println("IGDB entry for The Legend of Zelda: Breath of the Wild\n", *g)
 }
 
-func ExampleGameService_List_iDs() {
+func ExampleGameService_List_IDs() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.List([]int{1721, 2777, 1074})
@@ -243,7 +249,7 @@ func ExampleGameService_List_iDs() {
 	}
 }
 
-func ExampleGameService_List_index() {
+func ExampleGameService_List_Index() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.List(
@@ -294,7 +300,7 @@ func ExampleGameService_Count() {
 	fmt.Println("Number of games released after December 15, 1993: ", ct)
 }
 
-func ExampleGameService_ListFields() {
+func ExampleGameService_Fields() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	fl, err := c.Games.Fields()

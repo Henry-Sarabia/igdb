@@ -11,16 +11,17 @@ import (
 	"testing"
 )
 
-// testKey mocks an IGDB API key.
-const testKey = "notarealkey"
-
-// Errors returned when performing type validation.
-var (
-	// errNotStruct occurs when a non-struct type is provided to a function expecting a struct.
-	errNotStruct = errors.New("igdb: not a struct")
-	// errNotSlice occurs when a non-slice type is provided to a function expecting a slice.
-	errNotSlice = errors.New("igdb: not a slice")
+const (
+	// testKey mocks an IGDB API key.
+	testKey = "notarealkey"
+	// testFileEmpty is an empty file used for testing input.
+	testFileEmpty string = "test_data/empty.json"
+	// testFileEmptyArray is an empty array file used for testing input.
+	testFileEmptyArray string = "test_data/empty_array.json"
 )
+
+// errNotSlice occurs when a non-slice type is provided to a function expecting a slice.
+var errNotSlice = errors.New("igdb: not a slice")
 
 // testHeader mocks a single HTTP header entry with a key and value field.
 type testHeader struct {

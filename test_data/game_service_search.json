@@ -1,195 +1,196 @@
-[{
-     "id": 1074,
-     "age_ratings": [
-       3897,
-       19927
-     ],
-     "aggregated_rating": 89.0,
-     "aggregated_rating_count": 1,
-     "alternative_names": [
-       7694
-     ],
-     "category": 0,
-     "collection": 240,
-     "cover": 1060,
-     "created_at": 1339200000,
-     "external_games": [
-       190048,
-       245191
-     ],
-     "first_release_date": 835488000,
-     "franchise": 24,
-     "franchises": [
-       24
-     ],
-     "game_modes": [
-       1
-     ],
-     "genres": [
-       8,
-       31
-     ],
-     "hypes": 1,
-     "involved_companies": [
-       2598,
-       2599
-     ],
-     "keywords": [
-       296,
-       535,
-       1027,
-       1057,
-       1435,
-       2049,
-       3061,
-       4263,
-       4381,
-       4480,
-       4711,
-       4907,
-       4918,
-       4940,
-       5598,
-       6130,
-       6137,
-       6138,
-       6139,
-       6140,
-       6142,
-       6143,
-       6154,
-       6159,
-       6163,
-       6178,
-       6184,
-       6192,
-       6470,
-       6522,
-       6649,
-       6777,
-       6802,
-       7230,
-       7243,
-       7552,
-       8267,
-       8867,
-       9225,
-       9429,
-       11187,
-       15091,
-       15795
-     ],
-     "name": "Super Mario 64",
-     "platforms": [
-       4,
-       5,
-       41,
-       47
-     ],
-     "player_perspectives": [
-       2
-     ],
-     "popularity": 27.88752567620977,
-     "rating": 89.8580071135652,
-     "rating_count": 606,
-     "release_dates": [
-       131774,
-       131775,
-       131776,
-       131777,
-       131778,
-       131779,
-       143741,
-       143742,
-       143743,
-       143744,
-       143745
-     ],
-     "screenshots": [
-       14170,
-       14171,
-       14172,
-       14173,
-       14174
-     ],
-     "similar_games": [
-       1068,
-       1077,
-       2933,
-       19150,
-       20342,
-       24426,
-       26758,
-       28309,
-       33269,
-       56033
-     ],
-     "slug": "super-mario-64",
-     "summary": "Mario is invited by Princess Peach to her castle, but once he arrives he finds out that Bowser has kidnapped her. Mario has to overcome many challenges and collect Power Stars hidden in the castle\u0027s paintings and walls to defeat Bowser and rescue Peach in this seminal 3D platformer.",
-     "tags": [
-       1,
-       268435464,
-       268435487,
-       536871208,
-       536871447,
-       536871939,
-       536871969,
-       536872347,
-       536872961,
-       536873973,
-       536875175,
-       536875293,
-       536875392,
-       536875623,
-       536875819,
-       536875830,
-       536875852,
-       536876510,
-       536877042,
-       536877049,
-       536877050,
-       536877051,
-       536877052,
-       536877054,
-       536877055,
-       536877066,
-       536877071,
-       536877075,
-       536877090,
-       536877096,
-       536877104,
-       536877382,
-       536877434,
-       536877561,
-       536877689,
-       536877714,
-       536878142,
-       536878155,
-       536878464,
-       536879179,
-       536879779,
-       536880137,
-       536880341,
-       536882099,
-       536886003,
-       536886707
-     ],
-     "themes": [
-       1
-     ],
-     "total_rating": 89.42900355678259,
-     "total_rating_count": 607,
-     "updated_at": 1549324800,
-     "url": "https://www.igdb.com/games/super-mario-64",
-     "videos": [
-       21802
-     ],
-     "websites": [
-       15059,
-       15060
-     ]
-   },
-{
+[
+  {
+    "id": 1074,
+    "age_ratings": [
+      3897,
+      19927
+    ],
+    "aggregated_rating": 89.0,
+    "aggregated_rating_count": 1,
+    "alternative_names": [
+      7694
+    ],
+    "category": 0,
+    "collection": 240,
+    "cover": 1060,
+    "created_at": 1339200000,
+    "external_games": [
+      190048,
+      245191
+    ],
+    "first_release_date": 835488000,
+    "franchise": 24,
+    "franchises": [
+      24
+    ],
+    "game_modes": [
+      1
+    ],
+    "genres": [
+      8,
+      31
+    ],
+    "hypes": 1,
+    "involved_companies": [
+      2598,
+      2599
+    ],
+    "keywords": [
+      296,
+      535,
+      1027,
+      1057,
+      1435,
+      2049,
+      3061,
+      4263,
+      4381,
+      4480,
+      4711,
+      4907,
+      4918,
+      4940,
+      5598,
+      6130,
+      6137,
+      6138,
+      6139,
+      6140,
+      6142,
+      6143,
+      6154,
+      6159,
+      6163,
+      6178,
+      6184,
+      6192,
+      6470,
+      6522,
+      6649,
+      6777,
+      6802,
+      7230,
+      7243,
+      7552,
+      8267,
+      8867,
+      9225,
+      9429,
+      11187,
+      15091,
+      15795
+    ],
+    "name": "Super Mario 64",
+    "platforms": [
+      4,
+      5,
+      41,
+      47
+    ],
+    "player_perspectives": [
+      2
+    ],
+    "popularity": 27.88752567620977,
+    "rating": 89.8580071135652,
+    "rating_count": 606,
+    "release_dates": [
+      131774,
+      131775,
+      131776,
+      131777,
+      131778,
+      131779,
+      143741,
+      143742,
+      143743,
+      143744,
+      143745
+    ],
+    "screenshots": [
+      14170,
+      14171,
+      14172,
+      14173,
+      14174
+    ],
+    "similar_games": [
+      1068,
+      1077,
+      2933,
+      19150,
+      20342,
+      24426,
+      26758,
+      28309,
+      33269,
+      56033
+    ],
+    "slug": "super-mario-64",
+    "summary": "Mario is invited by Princess Peach to her castle, but once he arrives he finds out that Bowser has kidnapped her. Mario has to overcome many challenges and collect Power Stars hidden in the castle\u0027s paintings and walls to defeat Bowser and rescue Peach in this seminal 3D platformer.",
+    "tags": [
+      1,
+      268435464,
+      268435487,
+      536871208,
+      536871447,
+      536871939,
+      536871969,
+      536872347,
+      536872961,
+      536873973,
+      536875175,
+      536875293,
+      536875392,
+      536875623,
+      536875819,
+      536875830,
+      536875852,
+      536876510,
+      536877042,
+      536877049,
+      536877050,
+      536877051,
+      536877052,
+      536877054,
+      536877055,
+      536877066,
+      536877071,
+      536877075,
+      536877090,
+      536877096,
+      536877104,
+      536877382,
+      536877434,
+      536877561,
+      536877689,
+      536877714,
+      536878142,
+      536878155,
+      536878464,
+      536879179,
+      536879779,
+      536880137,
+      536880341,
+      536882099,
+      536886003,
+      536886707
+    ],
+    "themes": [
+      1
+    ],
+    "total_rating": 89.42900355678259,
+    "total_rating_count": 607,
+    "updated_at": 1549324800,
+    "url": "https://www.igdb.com/games/super-mario-64",
+    "videos": [
+      21802
+    ],
+    "websites": [
+      15059,
+      15060
+    ]
+  },
+  {
     "id": 2350,
     "age_ratings": [
       16112,
