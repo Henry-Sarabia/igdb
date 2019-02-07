@@ -25,10 +25,10 @@ func TestSizedImageURL(t *testing.T) {
 	}{
 		{"Non-empty ID and valid single ratio", testImageID, SizeScreenshotMed, 1, testImageURL, nil},
 		{"Non-empty ID and valid double ratio", testImageID, SizeScreenshotMed, 2, testImageURL2x, nil},
-		{"Empty ID and valid ratio", "", Size1080p, 1, "", ErrEmptyID},
+		{"Empty ID and valid ratio", "", Size1080p, 1, "", ErrBlankID},
 		{"Non-empty ID and invalid negative ratio", testImageID, SizeScreenshotHuge, -1, "", ErrPixelRatio},
 		{"Non-empty ID and invalid triple ratio", testImageID, SizeScreenshotBig, 3, "", ErrPixelRatio},
-		{"Empty ID and invalid 0 ratio", "", SizeMicro, 0, "", ErrEmptyID},
+		{"Empty ID and invalid 0 ratio", "", SizeMicro, 0, "", ErrBlankID},
 	}
 
 	for _, it := range imageTests {

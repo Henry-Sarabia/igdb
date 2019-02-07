@@ -8,8 +8,11 @@ import (
 	"net/http"
 )
 
-// errEndOfJSON occurs when encountering an unexpected end of JSON input.
-var errEndOfJSON = errors.New("unexpected end of JSON input")
+var (
+	// errEndOfJSON occurs when encountering an unexpected end of JSON input.
+	errEndOfJSON = errors.New("unexpected end of JSON input")
+	ErrEmptyIDs  = errors.New("IDs argument empty")
+)
 
 // Errors returned when the IGDB responds with a problematic status code.
 //

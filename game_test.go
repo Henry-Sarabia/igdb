@@ -29,13 +29,15 @@ func TestGameService_Get(t *testing.T) {
 		name     string
 		file     string
 		id       int
+		opts     []FuncOption
 		wantGame *Game
 		wantErr  error
 	}{
-		{"Valid response", testGameServiceGet, 7346, init[0], nil},
-		{"Invalid ID", testFileEmpty, -1, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, errEndOfJSON},
-		{"No results", testFileEmptyArray, 0, nil, ErrNoResults},
+		{"Valid response", testGameServiceGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 7346, nil, nil, errEndOfJSON},
+		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -45,7 +47,7 @@ func TestGameService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.Games.Get(test.id)
+			g, err := c.Games.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
@@ -75,7 +77,7 @@ func TestGameService_List(t *testing.T) {
 		wantErr   error
 	}{
 		{"Valid response", testGameServiceList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
-		{"Zero IDs", testGameServiceList, nil, nil, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errEndOfJSON},
 		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
@@ -101,7 +103,48 @@ func TestGameService_List(t *testing.T) {
 	}
 }
 
-func TestGameservice_Search(t *testing.T) {
+func TestGameService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testGameServiceList)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Game, 0)
+	json.Unmarshal(f, &init)
+
+	tests := []struct {
+		name      string
+		file      string
+		opts      []FuncOption
+		wantGames []*Game
+		wantErr   error
+	}{
+		{"Valid response", testGameServiceList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errEndOfJSON},
+		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			g, err := c.Games.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(g, test.wantGames) {
+				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantGames)
+			}
+		})
+	}
+}
+
+func TestGameService_Search(t *testing.T) {
 	f, err := ioutil.ReadFile(testGameServiceSearch)
 	if err != nil {
 		t.Fatal(err)
@@ -223,7 +266,7 @@ func ExampleGameService_Get() {
 	fmt.Println("IGDB entry for The Legend of Zelda: Breath of the Wild\n", *g)
 }
 
-func ExampleGameService_List_IDs() {
+func ExampleGameService_List() {
 	c := NewClient("YOUR_API_KEY", nil)
 
 	g, err := c.Games.List([]int{1721, 2777, 1074})
@@ -236,24 +279,12 @@ func ExampleGameService_List_IDs() {
 	for _, v := range g {
 		fmt.Println(*v)
 	}
-
-	index, err := c.Games.List(nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Println("Unfiltered index of Game entries")
-	for _, v := range index {
-		fmt.Println(*v)
-	}
 }
 
-func ExampleGameService_List_Index() {
+func ExampleGameService_Index() {
 	c := NewClient("YOUR_API_KEY", nil)
 
-	g, err := c.Games.List(
-		nil,
+	g, err := c.Games.Index(
 		SetLimit(5),
 		SetFilter("popularity", OpGreaterThan, "80"),
 	)

@@ -117,11 +117,14 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 }
 
 // List returns a list of Games identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of Games based solely on the provided
-// options. Any ID that does not match a Game is ignored. If none of the IDs
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
 func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
+	}
+
 	for _, id := range ids {
 		if id < 0 {
 			return nil, ErrNegativeID
@@ -130,9 +133,24 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 
 	var g []*Game
 
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
 	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Games with IDs %v", ids)
+	}
+
+	return g, nil
+}
+
+// Index returns an index of Games based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no Games can
+// be found using the provided options, an error is returned.
+func (gs *GameService) Index(opts ...FuncOption) ([]*Game, error) {
+	var g []*Game
+
+	err := gs.client.get(gs.end, &g, opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get index of Games")
 	}
 
 	return g, nil

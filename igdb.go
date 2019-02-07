@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // igdbURL is the base URL for the IGDB API.
@@ -28,7 +29,8 @@ type Client struct {
 	key     string
 
 	// Services
-	Games *GameService
+	Achievements *AchievementService
+	Games        *GameService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -46,6 +48,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.key = apiKey
 	c.rootURL = igdbURL
 
+	c.Achievements = &AchievementService{client: c, end: EndpointAchievement}
 	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
@@ -114,4 +117,14 @@ func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error
 	}
 
 	return nil
+}
+
+// intsToStrings is a helper function that converts a slice of ints to a
+// slice of strings.
+func intsToStrings(ints []int) []string {
+	var str []string
+	for _, i := range ints {
+		str = append(str, strconv.Itoa(i))
+	}
+	return str
 }
