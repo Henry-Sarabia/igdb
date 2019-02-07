@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	// errEndOfJSON occurs when encountering an unexpected end of JSON input.
-	errEndOfJSON = errors.New("unexpected end of JSON input")
-	ErrEmptyIDs  = errors.New("IDs argument empty")
+	// errInvalidJSON occurs when encountering an unexpected end of JSON input.
+	errInvalidJSON = errors.New("invalid JSON")
+	ErrEmptyIDs    = errors.New("IDs argument empty")
 )
 
 // Errors returned when the IGDB responds with a problematic status code.

@@ -1,0 +1,30 @@
+[
+  {
+    "achievement_icon": 1111,
+    "category": 2,
+    "created_at": 1492752468377,
+    "description": "This is a fake achievement",
+    "external_id": "2222",
+    "game": 3333,
+    "language": 2,
+    "name": "some_achievement",
+    "owners_percentage": 1.00,
+    "rank": 4,
+    "slug": "some-achievement",
+    "updated_at": 1492754718998
+  },
+  {
+    "achievement_icon": 9999,
+    "category": 3,
+    "created_at": 1492752468378,
+    "description": "This is another fake achievement",
+    "external_id": "7777",
+    "game": 8888,
+    "language": 1,
+    "name": "another_achievement",
+    "owners_percentage": 0.99,
+    "rank": 2,
+    "slug": "another-achievement",
+    "updated_at": 1492754718999
+  }
+]

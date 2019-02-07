@@ -11,13 +11,13 @@ import (
 )
 
 const (
-	testGameServiceGet    string = "test_data/game_service_get.json"
-	testGameServiceList   string = "test_data/game_service_list.json"
-	testGameServiceSearch string = "test_data/game_service_search.json"
+	testGameGet    string = "test_data/game_get.json"
+	testGameList   string = "test_data/game_list.json"
+	testGameSearch string = "test_data/game_search.json"
 )
 
 func TestGameService_Get(t *testing.T) {
-	f, err := ioutil.ReadFile(testGameServiceGet)
+	f, err := ioutil.ReadFile(testGameGet)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,9 +33,9 @@ func TestGameService_Get(t *testing.T) {
 		wantGame *Game
 		wantErr  error
 	}{
-		{"Valid response", testGameServiceGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testGameGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, nil, errEndOfJSON},
+		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
@@ -60,7 +60,7 @@ func TestGameService_Get(t *testing.T) {
 }
 
 func TestGameService_List(t *testing.T) {
-	f, err := ioutil.ReadFile(testGameServiceList)
+	f, err := ioutil.ReadFile(testGameList)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -76,10 +76,10 @@ func TestGameService_List(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameServiceList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testGameList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errEndOfJSON},
+		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
@@ -104,7 +104,7 @@ func TestGameService_List(t *testing.T) {
 }
 
 func TestGameService_Index(t *testing.T) {
-	f, err := ioutil.ReadFile(testGameServiceList)
+	f, err := ioutil.ReadFile(testGameList)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,8 +119,8 @@ func TestGameService_Index(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameServiceList, []FuncOption{SetLimit(5)}, init, nil},
-		{"Empty response", testFileEmpty, nil, nil, errEndOfJSON},
+		{"Valid response", testGameList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
@@ -145,7 +145,7 @@ func TestGameService_Index(t *testing.T) {
 }
 
 func TestGameService_Search(t *testing.T) {
-	f, err := ioutil.ReadFile(testGameServiceSearch)
+	f, err := ioutil.ReadFile(testGameSearch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -161,9 +161,9 @@ func TestGameService_Search(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameServiceSearch, "mario", []FuncOption{SetLimit(50)}, init, nil},
+		{"Valid response", testGameSearch, "mario", []FuncOption{SetLimit(50)}, init, nil},
 		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
-		{"Empty response", testFileEmpty, "mario", nil, nil, errEndOfJSON},
+		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
@@ -196,7 +196,7 @@ func TestGameService_Count(t *testing.T) {
 		wantErr   error
 	}{
 		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
-		{"Empty response", "", nil, 0, errEndOfJSON},
+		{"Empty response", "", nil, 0, errInvalidJSON},
 		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
@@ -228,7 +228,7 @@ func TestGameService_Fields(t *testing.T) {
 		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
 		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, nil},
 		{"Asterisk", `["*"]`, []string{"*"}, nil},
-		{"Empty response", "", nil, errEndOfJSON},
+		{"Empty response", "", nil, errInvalidJSON},
 		{"No results", "[]", nil, nil},
 	}
 

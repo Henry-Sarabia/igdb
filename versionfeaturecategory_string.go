@@ -4,9 +4,9 @@ package igdb
 
 import "strconv"
 
-const _VersionFeatureCategory_name = "VersionFeatureBooleanVerstionFeatureDescription"
+const _VersionFeatureCategory_name = "VersionFeatureBooleanVersionFeatureDescription"
 
-var _VersionFeatureCategory_index = [...]uint8{0, 21, 47}
+var _VersionFeatureCategory_index = [...]uint8{0, 21, 46}
 
 func (i VersionFeatureCategory) String() string {
 	if i < 0 || i >= VersionFeatureCategory(len(_VersionFeatureCategory_index)-1) {

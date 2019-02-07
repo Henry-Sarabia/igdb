@@ -30,8 +30,8 @@ func TestGet(t *testing.T) {
 		ExpErr  string
 	}{
 		{"OK request with valid response", http.StatusOK, testGetResp, string(testEndpoint), "value", ""},
-		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errEndOfJSON.Error()},
-		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errEndOfJSON.Error()},
+		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errInvalidJSON.Error()},
+		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errInvalidJSON.Error()},
 		{"Bad request with error response", http.StatusNotFound, testErrNotFound, "badURL", "", "Status 404 - status not found"},
 	}
 

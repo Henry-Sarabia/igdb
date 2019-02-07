@@ -186,10 +186,10 @@ func (gs *GameService) Count(opts ...FuncOption) (int, error) {
 // Fields returns the up-to-date list of fields in an
 // IGDB Game object.
 func (gs *GameService) Fields() ([]string, error) {
-	fl, err := gs.client.getFields(gs.end)
+	f, err := gs.client.getFields(gs.end)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get Game fields")
 	}
 
-	return fl, nil
+	return f, nil
 }

@@ -97,7 +97,7 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 
 	err = json.Unmarshal(b, &result)
 	if err != nil {
-		return errEndOfJSON
+		return errors.Wrap(errInvalidJSON, err.Error())
 	}
 
 	return nil
