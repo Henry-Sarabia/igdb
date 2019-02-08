@@ -1,6 +1,15 @@
 package igdb
 
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
+
 //go:generate gomodifytags -file $GOFILE -struct ExternalGame -add-tags json -w
+
+// ExternalGameService handles all the API calls for the IGDB ExternalGame endpoint.
+// This endpoint is only available for the IGDB Pro tier or above.
+type ExternalGameService service
 
 // ExternalGame contains the ID and other metadata for a game
 // on a third party service.
@@ -37,3 +46,85 @@ const (
 	ExternalTwitch
 	ExternalAndroid
 )
+
+// Get returns a single ExternalGame identified by the provided IGDB ID. Provide
+// the SetFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any ExternalGames, an error is returned.
+func (es *ExternalGameService) Get(id int, opts ...FuncOption) (*ExternalGame, error) {
+	if id < 0 {
+		return nil, ErrNegativeID
+	}
+
+	var ext []*ExternalGame
+
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := es.client.get(es.end, &ext, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get ExternalGame with ID %v", id)
+	}
+
+	return ext[0], nil
+}
+
+// List returns a list of ExternalGames identified by the provided list of IGDB IDs.
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a ExternalGame is ignored. If none of the IDs
+// match a ExternalGame, an error is returned.
+func (es *ExternalGameService) List(ids []int, opts ...FuncOption) ([]*ExternalGame, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
+	}
+
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
+	}
+
+	var ext []*ExternalGame
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := es.client.get(es.end, &ext, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get ExternalGames with IDs %v", ids)
+	}
+
+	return ext, nil
+}
+
+// Index returns an index of ExternalGames based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no ExternalGames can
+// be found using the provided options, an error is returned.
+func (es *ExternalGameService) Index(opts ...FuncOption) ([]*ExternalGame, error) {
+	var ext []*ExternalGame
+
+	err := es.client.get(es.end, &ext, opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get index of ExternalGames")
+	}
+
+	return ext, nil
+}
+
+// Count returns the number of ExternalGames available in the IGDB.
+// Provide the SetFilter functional option if you need to filter
+// which ExternalGames to count.
+func (es *ExternalGameService) Count(opts ...FuncOption) (int, error) {
+	ct, err := es.client.getCount(es.end, opts...)
+	if err != nil {
+		return 0, errors.Wrap(err, "cannot count ExternalGames")
+	}
+
+	return ct, nil
+}
+
+// Fields returns the up-to-date list of fields in an
+// IGDB ExternalGame object.
+func (es *ExternalGameService) Fields() ([]string, error) {
+	f, err := es.client.getFields(es.end)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get ExternalGame fields")
+	}
+
+	return f, nil
+}
