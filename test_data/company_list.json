@@ -1,0 +1,73 @@
+[
+  {
+    "id": 10815,
+    "change_date_category": 7,
+    "created_at": 1472688000,
+    "developed": [
+      22276,
+      24410
+    ],
+    "name": "Big Daddy's Creations",
+    "published": [
+      24410
+    ],
+    "slug": "big-daddys-creations",
+    "start_date_category": 7,
+    "updated_at": 1474675200,
+    "url": "https://www.igdb.com/companies/big-daddys-creations"
+  },
+  {
+    "id": 16954,
+    "change_date_category": 7,
+    "created_at": 1542585600,
+    "developed": [
+      112421
+    ],
+    "name": "iMancha Studios",
+    "slug": "imancha-studios",
+    "start_date_category": 7,
+    "updated_at": 1542585600,
+    "url": "https://www.igdb.com/companies/imancha-studios"
+  },
+  {
+    "id": 8199,
+    "change_date_category": 7,
+    "created_at": 1453334400,
+    "developed": [
+      16654,
+      86458
+    ],
+    "name": "FullPowerSideAttack.com",
+    "slug": "fullpowersideattack-dot-com",
+    "start_date_category": 7,
+    "updated_at": 1517961600,
+    "url": "https://www.igdb.com/companies/fullpowersideattack-dot-com"
+  },
+  {
+    "id": 14672,
+    "change_date_category": 7,
+    "created_at": 1517011200,
+    "name": "Keiji Honda",
+    "slug": "keiji-honda",
+    "start_date_category": 7,
+    "updated_at": 1517011200,
+    "url": "https://www.igdb.com/companies/keiji-honda"
+  },
+  {
+    "id": 13535,
+    "change_date_category": 7,
+    "created_at": 1506556800,
+    "developed": [
+      12610,
+      70140
+    ],
+    "name": "Arcana Software Limited",
+    "published": [
+      70140
+    ],
+    "slug": "arcana-software-limited",
+    "start_date_category": 7,
+    "updated_at": 1509926400,
+    "url": "https://www.igdb.com/companies/arcana-software-limited"
+  }
+]
