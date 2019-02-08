@@ -4,4 +4,5 @@ package igdb
 // For more information visit: https://api-docs.igdb.com/#cover
 type Cover struct {
 	Image
+	Game int `json:"game"`
 }

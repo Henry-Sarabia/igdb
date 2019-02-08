@@ -5,5 +5,6 @@ package igdb
 // Screenshot represents a screenshot of a particular game.
 // For more information visit: https://api-docs.igdb.com/#screenshot
 type Screenshot struct {
-	Image `json:"image"`
+	Image
+	Game int `json:"game"`
 }

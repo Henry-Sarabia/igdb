@@ -5,4 +5,5 @@ package igdb
 // For more information visit: https://api-docs.igdb.com/#artwork
 type Artwork struct {
 	Image
+	Game int `json:"game"`
 }
