@@ -31,10 +31,10 @@ func TestCharacterMugshotService_Get(t *testing.T) {
 		wantCharacterMugshot *CharacterMugshot
 		wantErr              error
 	}{
-		{"Valid response", testCharacterMugshotGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testCharacterMugshotGet, 3600, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 3600, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 3600, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestCharacterMugshotService_List(t *testing.T) {
 		wantCharacterMugshots []*CharacterMugshot
 		wantErr               error
 	}{
-		{"Valid response", testCharacterMugshotList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testCharacterMugshotList, []int{3649, 3687, 3823, 3863, 3631}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{3649, 3687, 3823, 3863, 3631}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{3649, 3687, 3823, 3863, 3631}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

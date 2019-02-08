@@ -74,11 +74,11 @@ func TestAlternativeNameService_List(t *testing.T) {
 		wantAlternativeNames []*AlternativeName
 		wantErr              error
 	}{
-		{"Valid response", testAlternativeNameList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testAlternativeNameList, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

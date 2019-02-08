@@ -32,10 +32,10 @@ func TestCharacterService_Get(t *testing.T) {
 		wantCharacter *Character
 		wantErr       error
 	}{
-		{"Valid response", testCharacterGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testCharacterGet, 12690, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 12690, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 12690, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -75,11 +75,11 @@ func TestCharacterService_List(t *testing.T) {
 		wantCharacters []*Character
 		wantErr        error
 	}{
-		{"Valid response", testCharacterList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testCharacterList, []int{11079, 799, 11563, 7337, 11576}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{11079, 799, 11563, 7337, 11576}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{11079, 799, 11563, 7337, 11576}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -160,10 +160,10 @@ func TestCharacterService_Search(t *testing.T) {
 		wantCharacters []*Character
 		wantErr        error
 	}{
-		{"Valid response", testCharacterSearch, "mario", []FuncOption{SetLimit(50)}, init, nil},
+		{"Valid response", testCharacterSearch, "super", []FuncOption{SetLimit(50)}, init, nil},
 		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
-		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, "super", nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, "super", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

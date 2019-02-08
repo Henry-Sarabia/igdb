@@ -74,11 +74,11 @@ func TestArtworkService_List(t *testing.T) {
 		wantArtworks []*Artwork
 		wantErr      error
 	}{
-		{"Valid response", testArtworkList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testArtworkList, []int{5058, 114, 115, 19, 6, 4, 3550, 26, 1321, 1336}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{5058, 114, 115, 19, 6, 4, 3550, 26, 1321, 1336}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{5058, 114, 115, 19, 6, 4, 3550, 26, 1321, 1336}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

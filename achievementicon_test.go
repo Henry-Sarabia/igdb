@@ -31,10 +31,10 @@ func TestAchievementIconService_Get(t *testing.T) {
 		wantAchievementIcon *AchievementIcon
 		wantErr             error
 	}{
-		{"Valid response", testAchievementIconGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testAchievementIconGet, 1111, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 1111, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 1111, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -45,13 +45,13 @@ func TestAchievementIconService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AchievementIcons.Get(test.id, test.opts...)
+			ach, err := c.AchievementIcons.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAchievementIcon) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAchievementIcon)
+			if !reflect.DeepEqual(ach, test.wantAchievementIcon) {
+				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcon)
 			}
 		})
 	}
@@ -74,11 +74,11 @@ func TestAchievementIconService_List(t *testing.T) {
 		wantAchievementIcons []*AchievementIcon
 		wantErr              error
 	}{
-		{"Valid response", testAchievementIconList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testAchievementIconList, []int{1111, 2222}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1111, 2222}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1111, 2222}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -89,13 +89,13 @@ func TestAchievementIconService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AchievementIcons.List(test.ids, test.opts...)
+			ach, err := c.AchievementIcons.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAchievementIcons) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAchievementIcons)
+			if !reflect.DeepEqual(ach, test.wantAchievementIcons) {
+				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcons)
 			}
 		})
 	}
@@ -130,13 +130,13 @@ func TestAchievementIconService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AchievementIcons.Index(test.opts...)
+			ach, err := c.AchievementIcons.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAchievementIcons) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAchievementIcons)
+			if !reflect.DeepEqual(ach, test.wantAchievementIcons) {
+				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcons)
 			}
 		})
 	}

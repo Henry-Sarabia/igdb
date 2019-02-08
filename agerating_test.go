@@ -31,10 +31,10 @@ func TestAgeRatingService_Get(t *testing.T) {
 		wantAgeRating *AgeRating
 		wantErr       error
 	}{
-		{"Valid response", testAgeRatingGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testAgeRatingGet, 9644, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 9644, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 9644, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestAgeRatingService_List(t *testing.T) {
 		wantAgeRatings []*AgeRating
 		wantErr        error
 	}{
-		{"Valid response", testAgeRatingList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testAgeRatingList, []int{9644, 40}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{9644, 40}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{9644, 40}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
