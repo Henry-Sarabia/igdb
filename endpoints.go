@@ -11,7 +11,7 @@ const (
 	EndpointAlternativeName            endpoint = "alternative_names/"
 	EndpointArtwork                    endpoint = "artworks/"
 	EndpointCharacter                  endpoint = "characters/"
-	EndpointCharacterMugShot           endpoint = "character_mug_shots/"
+	EndpointCharacterMugshot           endpoint = "character_mug_shots/"
 	EndpointCollection                 endpoint = "collections/"
 	EndpointCompany                    endpoint = "companies/"
 	EndpointCompanyLogo                endpoint = "company_logos/"
