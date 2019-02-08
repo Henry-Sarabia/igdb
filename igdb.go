@@ -33,6 +33,7 @@ type Client struct {
 	AchievementIcons  *AchievementIconService
 	AgeRatings        *AgeRatingService
 	AgeRatingContents *AgeRatingContentService
+	AlternativeNames  *AlternativeNameService
 	Games             *GameService
 }
 
@@ -55,6 +56,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.AchievementIcons = &AchievementIconService{client: c, end: EndpointAchievementIcon}
 	c.AgeRatings = &AgeRatingService{client: c, end: EndpointAgeRating}
 	c.AgeRatingContents = &AgeRatingContentService{client: c, end: EndpointAgeRatingContent}
+	c.AlternativeNames = &AlternativeNameService{client: c, end: EndpointAlternativeName}
 	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
