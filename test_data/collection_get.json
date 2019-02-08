@@ -1,0 +1,28 @@
+[
+  {
+    "id": 286,
+    "created_at": 1347408000,
+    "games": [
+      1289,
+      1770,
+      1773,
+      1790,
+      1791,
+      1792,
+      1793,
+      1794,
+      1795,
+      1796,
+      1797,
+      2589,
+      11065,
+      19994,
+      45276,
+      65418
+    ],
+    "name": "Ratchet & Clank",
+    "slug": "ratchet-clank",
+    "updated_at": 1388534400,
+    "url": "https://www.igdb.com/collections/ratchet-clank"
+  }
+]

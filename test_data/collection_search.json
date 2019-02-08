@@ -1,0 +1,69 @@
+[
+  {
+    "id": 3624,
+    "created_at": 1507766400,
+    "games": [
+      41753,
+      41754,
+      45625,
+      47524
+    ],
+    "name": "Super Boy",
+    "slug": "super-boy",
+    "updated_at": 1507766400,
+    "url": "https://www.igdb.com/collections/super-boy"
+  },
+  {
+    "id": 2747,
+    "created_at": 1496188800,
+    "games": [
+      12244,
+      36581,
+      46917,
+      70256,
+      74844
+    ],
+    "name": "Super Huey",
+    "slug": "super-huey",
+    "updated_at": 1496188800,
+    "url": "https://www.igdb.com/collections/super-huey"
+  },
+  {
+    "id": 3492,
+    "created_at": 1507507200,
+    "games": [
+      42223,
+      42224,
+      42225
+    ],
+    "name": "Super Shogi",
+    "slug": "super-shogi",
+    "updated_at": 1507507200,
+    "url": "https://www.igdb.com/collections/super-shogi"
+  },
+  {
+    "id": 1626,
+    "created_at": 1441238400,
+    "games": [
+      12226,
+      12227,
+      12480
+    ],
+    "name": "Super Cars",
+    "slug": "super-cars",
+    "updated_at": 1441238400,
+    "url": "https://www.igdb.com/collections/super-cars"
+  },
+  {
+    "id": 5522,
+    "created_at": 1542326400,
+    "games": [
+      76397,
+      103232
+    ],
+    "name": "Super Seducer",
+    "slug": "super-seducer",
+    "updated_at": 1542326400,
+    "url": "https://www.igdb.com/collections/super-seducer"
+  }
+]

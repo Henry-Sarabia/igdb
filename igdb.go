@@ -37,6 +37,7 @@ type Client struct {
 	Artworks          *ArtworkService
 	Characters        *CharacterService
 	CharacterMugshots *CharacterMugshotService
+	Collections       *CollectionService
 	Games             *GameService
 }
 
@@ -63,6 +64,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Artworks = &ArtworkService{client: c, end: EndpointArtwork}
 	c.Characters = &CharacterService{client: c, end: EndpointCharacter}
 	c.CharacterMugshots = &CharacterMugshotService{client: c, end: EndpointCharacterMugshot}
+	c.Collections = &CollectionService{client: c, end: EndpointCollection}
 	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
