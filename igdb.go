@@ -29,10 +29,11 @@ type Client struct {
 	key     string
 
 	// Services
-	Achievements     *AchievementService
-	AchievementIcons *AchievementIconService
-	AgeRatings       *AgeRatingService
-	Games            *GameService
+	Achievements      *AchievementService
+	AchievementIcons  *AchievementIconService
+	AgeRatings        *AgeRatingService
+	AgeRatingContents *AgeRatingContentService
+	Games             *GameService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -53,6 +54,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Achievements = &AchievementService{client: c, end: EndpointAchievement}
 	c.AchievementIcons = &AchievementIconService{client: c, end: EndpointAchievementIcon}
 	c.AgeRatings = &AgeRatingService{client: c, end: EndpointAgeRating}
+	c.AgeRatingContents = &AgeRatingContentService{client: c, end: EndpointAgeRatingContent}
 	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
