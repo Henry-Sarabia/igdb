@@ -1,0 +1,69 @@
+[
+  {
+    "id": 11079,
+    "created_at": 1510099200,
+    "games": [
+      207
+    ],
+    "name": "Ludger Brink",
+    "people": [
+      154231
+    ],
+    "slug": "ludger-brink",
+    "updated_at": 1510099200,
+    "url": "https://www.igdb.com/characters/ludger-brink"
+  },
+  {
+    "id": 799,
+    "created_at": 1408752000,
+    "games": [
+      895
+    ],
+    "name": "Old Woman",
+    "people": [
+      11873
+    ],
+    "slug": "old-woman",
+    "updated_at": 1417219200,
+    "url": "https://www.igdb.com/characters/old-woman"
+  },
+  {
+    "id": 11563,
+    "created_at": 1520812800,
+    "games": [
+      68461
+    ],
+    "name": "Oda Nobunaga",
+    "people": [
+      162315
+    ],
+    "slug": "oda-nobunaga",
+    "updated_at": 1520812800,
+    "url": "https://www.igdb.com/characters/oda-nobunaga"
+  },
+  {
+    "id": 7337,
+    "created_at": 1456185600,
+    "games": [
+      11367
+    ],
+    "name": "Executioner",
+    "people": [
+      58816
+    ],
+    "slug": "executioner",
+    "updated_at": 1476662400,
+    "url": "https://www.igdb.com/characters/executioner"
+  },
+  {
+    "id": 11576,
+    "created_at": 1524873600,
+    "name": "Avra",
+    "people": [
+      150939
+    ],
+    "slug": "avra",
+    "updated_at": 1524873600,
+    "url": "https://www.igdb.com/characters/avra"
+  }
+]
