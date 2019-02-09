@@ -1,0 +1,111 @@
+[
+  {
+    "id": 61,
+    "created_at": 1372550400,
+    "games": [
+      2326
+    ],
+    "name": "Spartacus",
+    "slug": "spartacus",
+    "updated_at": 1372550400,
+    "url": "https://www.igdb.com/franchises/spartacus"
+  },
+  {
+    "id": 133,
+    "created_at": 1381708800,
+    "games": [
+      341,
+      3011,
+      3149,
+      3150,
+      3941,
+      3942,
+      3943,
+      3944,
+      4904,
+      4905,
+      4906,
+      22191,
+      25083,
+      25099,
+      75563,
+      77631
+    ],
+    "name": "Harry Potter",
+    "slug": "harry-potter",
+    "updated_at": 1381708800,
+    "url": "https://www.igdb.com/franchises/harry-potter"
+  },
+  {
+    "id": 237,
+    "created_at": 1390521600,
+    "games": [
+      4099
+    ],
+    "name": "Shamu",
+    "slug": "shamu",
+    "updated_at": 1390521600,
+    "url": "https://www.igdb.com/franchises/shamu"
+  },
+  {
+    "id": 9,
+    "created_at": 1317772800,
+    "games": [
+      562,
+      874,
+      908,
+      909,
+      910,
+      911,
+      984,
+      1853,
+      2114,
+      7360,
+      11171,
+      14382,
+      20573,
+      28173,
+      77978,
+      90689,
+      91311
+    ],
+    "name": "Tom Clancy",
+    "slug": "tom-clancy",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/franchises/tom-clancy"
+  },
+  {
+    "id": 10,
+    "created_at": 1317772800,
+    "games": [
+      293,
+      310,
+      633,
+      634,
+      635,
+      863,
+      864,
+      865,
+      866,
+      867,
+      868,
+      869,
+      3271,
+      3272,
+      6038,
+      8787,
+      9021,
+      9022,
+      9197,
+      10743,
+      10831,
+      15819,
+      19130,
+      52159
+    ],
+    "name": "Sid Meier",
+    "slug": "sid-meier",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/franchises/sid-meier"
+  }
+]
