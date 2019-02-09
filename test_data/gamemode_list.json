@@ -1,0 +1,42 @@
+[
+  {
+    "id": 3,
+    "created_at": 1298937600,
+    "name": "Co-operative",
+    "slug": "co-operative",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/game_modes/co-operative"
+  },
+  {
+    "id": 1,
+    "created_at": 1298937600,
+    "name": "Single player",
+    "slug": "single-player",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/game_modes/single-player"
+  },
+  {
+    "id": 2,
+    "created_at": 1298937600,
+    "name": "Multiplayer",
+    "slug": "multiplayer",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/game_modes/multiplayer"
+  },
+  {
+    "id": 5,
+    "created_at": 1298937600,
+    "name": "Massively Multiplayer Online (MMO)",
+    "slug": "massively-multiplayer-online-mmo",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/game_modes/massively-multiplayer-online-mmo"
+  },
+  {
+    "id": 4,
+    "created_at": 1298937600,
+    "name": "Split screen",
+    "slug": "split-screen",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/game_modes/split-screen"
+  }
+]

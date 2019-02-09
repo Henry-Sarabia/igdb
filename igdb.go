@@ -44,9 +44,10 @@ type Client struct {
 	ExternalGames     *ExternalGameService
 	Feeds             *FeedService
 	Franchises        *FranchiseService
-	GameEngines       *GameEngineService
 	Games             *GameService
+	GameEngines       *GameEngineService
 	GameEngineLogos   *GameEngineLogoService
+	GameModes         *GameModeService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -79,9 +80,10 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.ExternalGames = &ExternalGameService{client: c, end: EndpointExternalGame}
 	c.Feeds = &FeedService{client: c, end: EndpointFeed}
 	c.Franchises = &FranchiseService{client: c, end: EndpointFranchise}
+	c.Games = &GameService{client: c, end: EndpointGame}
 	c.GameEngines = &GameEngineService{client: c, end: EndpointGameEngine}
 	c.GameEngineLogos = &GameEngineLogoService{client: c, end: EndpointGameEngineLogo}
-	c.Games = &GameService{client: c, end: EndpointGame}
+	c.GameModes = &GameModeService{client: c, end: EndpointGameMode}
 
 	return c
 }
