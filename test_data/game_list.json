@@ -1,372 +1,200 @@
 [
   {
-    "id": 1721,
-    "age_ratings": [
-      5882
-    ],
-    "aggregated_rating": 68.5,
-    "aggregated_rating_count": 2,
-    "alternative_names": [
-      3457,
-      15602
-    ],
+    "id": 105842,
     "category": 0,
-    "collection": 337,
-    "cover": 1744,
-    "created_at": 1351987200,
+    "created_at": 1532044800,
     "external_games": [
-      245504
+      1272033
     ],
-    "first_release_date": 850780800,
-    "franchise": 38,
-    "franchises": [
-      38
+    "name": "Robots Vs Zombies: Transform To Race And Fight",
+    "popularity": 2.94367655490673,
+    "slug": "robots-vs-zombies-transform-to-race-and-fight",
+    "updated_at": 1532044800,
+    "url": "https://www.igdb.com/games/robots-vs-zombies-transform-to-race-and-fight"
+  },
+  {
+    "id": 32478,
+    "category": 0,
+    "cover": 35593,
+    "created_at": 1495670400,
+    "external_games": [
+      4632,
+      321569
+    ],
+    "first_release_date": 1465948800,
+    "game_modes": [
+      1
+    ],
+    "genres": [
+      9,
+      13,
+      32
+    ],
+    "keywords": [
+      1120,
+      1148,
+      1961,
+      2875
+    ],
+    "name": "Welcome to the Game",
+    "platforms": [
+      6,
+      14
+    ],
+    "popularity": 2.29578436993782,
+    "rating": 80,
+    "rating_count": 2,
+    "release_dates": [
+      76576,
+      76577
+    ],
+    "screenshots": [
+      54475,
+      54476,
+      54477,
+      54478,
+      54479
+    ],
+    "similar_games": [
+      18011,
+      18020,
+      25646,
+      27266,
+      27744,
+      28465,
+      43097,
+      51991,
+      56033,
+      68049
+    ],
+    "slug": "welcome-to-the-game",
+    "summary": "Welcome to the Game is a creepy horror/puzzle game that takes you into the world of the Deep Web. Explore the Deep Web with the sole purpose of trying to find a Red Room, an online service / website that allows you to see and participate in interactive torture and murder.",
+    "tags": [
+      19,
+      42,
+      268435465,
+      268435469,
+      268435488,
+      536872032,
+      536872060,
+      536872873,
+      536873787
+    ],
+    "themes": [
+      19,
+      42
+    ],
+    "total_rating": 80,
+    "total_rating_count": 2,
+    "updated_at": 1542412800,
+    "url": "https://www.igdb.com/games/welcome-to-the-game",
+    "websites": [
+      32223,
+      32224
+    ]
+  },
+  {
+    "id": 98774,
+    "category": 0,
+    "created_at": 1524614400,
+    "external_games": [
+      390825
     ],
     "game_modes": [
       1
     ],
     "genres": [
-      5,
-      8,
-      31
+      15,
+      32
     ],
-    "involved_companies": [
-      21057,
-      21058
-    ],
-    "keywords": [
-      78,
-      163,
-      288,
-      301,
-      386,
-      558,
-      575,
-      923,
-      943,
-      970,
-      1025,
-      1027,
-      1059,
-      1597,
-      1705,
-      2049,
-      2109,
-      2152,
-      3297,
-      3486,
-      3831,
-      3833,
-      4161,
-      4163,
-      4165,
-      4169,
-      4192,
-      4267,
-      4287,
-      4289,
-      4294,
-      4297,
-      4301,
-      4405,
-      4552,
-      4705,
-      4777,
-      4822,
-      4836,
-      4940,
-      5022,
-      5171,
-      5441,
-      5479,
-      5587,
-      5721,
-      5722,
-      5966,
-      6318,
-      6585,
-      6695,
-      6696,
-      8784,
-      9160,
-      9478,
-      9529,
-      10006,
-      10251,
-      12168,
-      17215
-    ],
-    "name": "Mega Man 8",
-    "platforms": [
-      7,
-      32,
-      45
-    ],
-    "player_perspectives": [
-      4
-    ],
-    "popularity": 1.64789218496891,
-    "rating": 71.8465665928865,
-    "rating_count": 15,
-    "release_dates": [
-      25316,
-      25317,
-      25318,
-      25319,
-      25320,
-      25321
-    ],
+    "name": "Whitevale Defender",
+    "popularity": 1,
     "screenshots": [
-      140111,
-      140112
+      232990,
+      232991,
+      232992,
+      232993,
+      232994
     ],
     "similar_games": [
-      1714,
-      1716,
-      1720,
-      1742,
-      1744,
-      1745,
-      2933,
-      3186,
-      3222,
-      23852
+      25311,
+      25640,
+      33603,
+      34919,
+      37419,
+      55077,
+      65827,
+      76127,
+      109438,
+      113161
     ],
-    "slug": "mega-man-8",
-    "summary": "A gigantic space explosion sends two strange meteors crashing to Earth. The call goes out and Mega Man speeds to the site. There he sees his arch-rival, Dr. Wiley, fleeing the scene, clutching one of the mysterious metallic meteors. Now Mega Man must uncover the secret of the second meteor in a race to stay one step ahead of Dr. Wiley and his new deadly breed of super-powered robots. \n \n• Battle across 14 huge stages to face eight devious new enemies. \n• Multiple upgrades for Mega Man - customize to your specifications every game. \n• Intense Japanese anime intros, cut scenes and cinema screens. \n• Incredibly fluid animation and highly detailed backgrounds.",
+    "slug": "whitevale-defender",
+    "summary": "Help King Theodore save Whitevale from hordes of war machines in this handcrafted, retro strategy defense game.",
     "tags": [
       1,
-      18,
-      268435461,
-      268435464,
-      268435487,
-      536870990,
-      536871075,
-      536871200,
-      536871213,
-      536871298,
-      536871470,
-      536871487,
-      536871835,
-      536871855,
-      536871882,
-      536871937,
-      536871939,
-      536871971,
-      536872509,
-      536872617,
-      536872961,
-      536873021,
-      536873064,
-      536874209,
-      536874398,
-      536874743,
-      536874745,
-      536875073,
-      536875075,
-      536875077,
-      536875081,
-      536875104,
-      536875179,
-      536875199,
-      536875201,
-      536875206,
-      536875209,
-      536875213,
-      536875317,
-      536875464,
-      536875617,
-      536875689,
-      536875734,
-      536875748,
-      536875852,
-      536875934,
-      536876083,
-      536876353,
-      536876391,
-      536876499,
-      536876633,
-      536876634,
-      536876878,
-      536877230,
-      536877497,
-      536877607,
-      536877608,
-      536879696,
-      536880072,
-      536880390,
-      536880441,
-      536880918,
-      536881163,
-      536883080,
-      536888127
+      268435471,
+      268435488
     ],
     "themes": [
-      1,
-      18
+      1
     ],
-    "total_rating": 70.17328329644326,
-    "total_rating_count": 17,
-    "updated_at": 1543017600,
-    "url": "https://www.igdb.com/games/mega-man-8"
+    "updated_at": 1534204800,
+    "url": "https://www.igdb.com/games/whitevale-defender",
+    "websites": [
+      84921,
+      84922
+    ]
   },
   {
-    "id": 2777,
-    "age_ratings": [
-      730
-    ],
-    "alternative_names": [
-      4095,
-      16206,
-      16207
-    ],
+    "id": 104945,
     "category": 0,
-    "collection": 244,
-    "cover": 2742,
-    "created_at": 1374883200,
+    "created_at": 1530662400,
     "external_games": [
-      311304
+      1170663
     ],
-    "first_release_date": 1060560000,
     "game_modes": [
       1,
-      4
+      3
     ],
     "genres": [
-      10
+      32
     ],
-    "involved_companies": [
-      6667,
-      6668
-    ],
-    "keywords": [
-      274,
-      296,
-      1330,
-      4157,
-      4169,
-      4194,
-      4216,
-      4297,
-      4328,
-      4694,
-      4803,
-      4839,
-      5043,
-      5638,
-      5876,
-      6048,
-      6185,
-      6596,
-      8245,
-      8309,
-      8681,
-      8682,
-      8683,
-      9476,
-      9477,
-      9478,
-      9479,
-      9481,
-      9482,
-      9529,
-      10078,
-      10489,
-      13115,
-      13121,
-      13491
-    ],
-    "name": "Kirby Air Ride",
-    "platforms": [
-      21
-    ],
-    "player_perspectives": [
-      2
-    ],
-    "popularity": 2.29578436993782,
-    "rating": 84.4543513324143,
-    "rating_count": 24,
-    "release_dates": [
-      5914,
-      140511,
-      140512,
-      140513
-    ],
+    "name": "Woodpunk",
+    "popularity": 2.619730462422275,
+    "rating": 70,
+    "rating_count": 0,
     "screenshots": [
-      24441,
-      24442,
-      24443,
-      24444,
-      24445,
-      162854,
-      162855,
-      162856,
-      162857,
-      162858,
-      162859,
-      162860
+      224545,
+      224546,
+      224547,
+      224548,
+      224549,
+      224550,
+      224551,
+      224552
     ],
-    "similar_games": [
-      1193,
-      1936,
-      2933,
-      3717,
-      3719,
-      3726,
-      5440,
-      27378,
-      37137,
-      57187
+    "slug": "woodpunk",
+    "summary": "Woodpunk is an exhiliarating rogue-like experience in a medieval Woodpunk universe, where the primary energy resource is WOOD.",
+    "themes": [
+      1
     ],
-    "slug": "kirby-air-ride",
-    "summary": "Kirby Air Ride is a 2003 racing game video game developed by HAL Laboratory and published by Nintendo for the Nintendo GameCube video game console. The game has the players and computer-controlled racers ride on Air Ride Machines. The game supports up to four players, and was the first GameCube title to support LAN play using broadband adapters and up to four GameCube systems. Players take control of Kirby or any of his multicolored counterparts to compete in races or other minigames. The game consists of three different game modes: Air Ride, Top Ride, and City Trial.",
-    "tags": [
-      268435466,
-      536871186,
-      536871208,
-      536872242,
-      536875069,
-      536875081,
-      536875106,
-      536875128,
-      536875209,
-      536875240,
-      536875606,
-      536875715,
-      536875751,
-      536875955,
-      536876550,
-      536876788,
-      536876960,
-      536877097,
-      536877508,
-      536879157,
-      536879221,
-      536879593,
-      536879594,
-      536879595,
-      536880388,
-      536880389,
-      536880390,
-      536880391,
-      536880393,
-      536880394,
-      536880441,
-      536880990,
-      536881401,
-      536884027,
-      536884033,
-      536884403
-    ],
-    "total_rating": 84.4543513324143,
-    "total_rating_count": 24,
-    "updated_at": 1543363200,
-    "url": "https://www.igdb.com/games/kirby-air-ride",
-    "videos": [
-      2159
-    ],
+    "total_rating": 70,
+    "total_rating_count": 0,
+    "updated_at": 1533081600,
+    "url": "https://www.igdb.com/games/woodpunk",
     "websites": [
-      7565
+      83212,
+      83213
     ]
+  },
+  {
+    "id": 69530,
+    "category": 0,
+    "created_at": 1506556800,
+    "name": "Dai Senryaku VII: Modern Military Tactics",
+    "popularity": 2.29578436993782,
+    "slug": "dai-senryaku-vii-modern-military-tactics",
+    "updated_at": 1506556800,
+    "url": "https://www.igdb.com/games/dai-senryaku-vii-modern-military-tactics"
   }
 ]

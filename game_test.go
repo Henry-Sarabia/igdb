@@ -76,11 +76,11 @@ func TestGameService_List(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameList, []int{1721, 2777}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testGameList, []int{105842, 32478, 98774, 104945, 69530}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1721, 2777}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1721, 2777}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{105842, 32478, 98774, 104945, 69530}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{105842, 32478, 98774, 104945, 69530}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -161,8 +161,8 @@ func TestGameService_Search(t *testing.T) {
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameSearch, "mario", []FuncOption{SetLimit(50)}, init, nil},
-		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
+		{"Valid response", testGameSearch, "mario", []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(5)}, nil, ErrEmptyQuery},
 		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
