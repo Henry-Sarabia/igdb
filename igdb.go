@@ -44,6 +44,7 @@ type Client struct {
 	ExternalGames     *ExternalGameService
 	Feeds             *FeedService
 	Franchises        *FranchiseService
+	GameEngines       *GameEngineService
 	Games             *GameService
 }
 
@@ -77,6 +78,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.ExternalGames = &ExternalGameService{client: c, end: EndpointExternalGame}
 	c.Feeds = &FeedService{client: c, end: EndpointFeed}
 	c.Franchises = &FranchiseService{client: c, end: EndpointFranchise}
+	c.GameEngines = &GameEngineService{client: c, end: EndpointGameEngine}
 	c.Games = &GameService{client: c, end: EndpointGame}
 
 	return c
