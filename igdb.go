@@ -53,6 +53,7 @@ type Client struct {
 	GameVersionFeatureValues *GameVersionFeatureValueService
 	GameVideos               *GameVideoService
 	Genres                   *GenreService
+	InvolvedCompanies        *InvolvedCompanyService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -94,6 +95,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.GameVersionFeatureValues = &GameVersionFeatureValueService{client: c, end: EndpointGameVersionFeatureValue}
 	c.GameVideos = &GameVideoService{client: c, end: EndpointGameVideo}
 	c.Genres = &GenreService{client: c, end: EndpointGenre}
+	c.InvolvedCompanies = &InvolvedCompanyService{client: c, end: EndpointInvolvedCompany}
 
 	return c
 }
