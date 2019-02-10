@@ -29,27 +29,28 @@ type Client struct {
 	key     string
 
 	// Services
-	Achievements        *AchievementService
-	AchievementIcons    *AchievementIconService
-	AgeRatings          *AgeRatingService
-	AgeRatingContents   *AgeRatingContentService
-	AlternativeNames    *AlternativeNameService
-	Artworks            *ArtworkService
-	Characters          *CharacterService
-	CharacterMugshots   *CharacterMugshotService
-	Collections         *CollectionService
-	Companies           *CompanyService
-	CompanyLogos        *CompanyLogoService
-	Covers              *CoverService
-	ExternalGames       *ExternalGameService
-	Feeds               *FeedService
-	Franchises          *FranchiseService
-	Games               *GameService
-	GameEngines         *GameEngineService
-	GameEngineLogos     *GameEngineLogoService
-	GameModes           *GameModeService
-	GameVersions        *GameVersionService
-	GameVersionFeatures *GameVersionFeatureService
+	Achievements             *AchievementService
+	AchievementIcons         *AchievementIconService
+	AgeRatings               *AgeRatingService
+	AgeRatingContents        *AgeRatingContentService
+	AlternativeNames         *AlternativeNameService
+	Artworks                 *ArtworkService
+	Characters               *CharacterService
+	CharacterMugshots        *CharacterMugshotService
+	Collections              *CollectionService
+	Companies                *CompanyService
+	CompanyLogos             *CompanyLogoService
+	Covers                   *CoverService
+	ExternalGames            *ExternalGameService
+	Feeds                    *FeedService
+	Franchises               *FranchiseService
+	Games                    *GameService
+	GameEngines              *GameEngineService
+	GameEngineLogos          *GameEngineLogoService
+	GameModes                *GameModeService
+	GameVersions             *GameVersionService
+	GameVersionFeatures      *GameVersionFeatureService
+	GameVersionFeatureValues *GameVersionFeatureValueService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -88,6 +89,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.GameModes = &GameModeService{client: c, end: EndpointGameMode}
 	c.GameVersions = &GameVersionService{client: c, end: EndpointGameVersion}
 	c.GameVersionFeatures = &GameVersionFeatureService{client: c, end: EndpointGameVersionFeature}
+	c.GameVersionFeatureValues = &GameVersionFeatureValueService{client: c, end: EndpointGameVersionFeatureValue}
 
 	return c
 }
