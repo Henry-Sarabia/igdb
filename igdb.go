@@ -59,6 +59,7 @@ type Client struct {
 	Pages                    *PageService
 	PageBackgrounds          *PageBackgroundService
 	PageLogos                *PageLogoService
+	PageWebsites             *PageWebsiteService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -106,6 +107,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Pages = &PageService{client: c, end: EndpointPage}
 	c.PageBackgrounds = &PageBackgroundService{client: c, end: EndpointPageBackground}
 	c.PageLogos = &PageLogoService{client: c, end: EndpointPageLogo}
+	c.PageWebsites = &PageWebsiteService{client: c, end: EndpointPageWebsite}
 
 	return c
 }
