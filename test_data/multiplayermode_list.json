@@ -1,0 +1,67 @@
+[
+  {
+    "id": 4907,
+    "campaigncoop": true,
+    "dropin": false,
+    "lancoop": false,
+    "offlinecoop": false,
+    "offlinecoopmax": 0,
+    "offlinemax": 0,
+    "onlinecoop": true,
+    "onlinecoopmax": 4,
+    "onlinemax": 0,
+    "platform": 6,
+    "splitscreen": false
+  },
+  {
+    "id": 8632,
+    "campaigncoop": false,
+    "dropin": false,
+    "game": 82392,
+    "lancoop": false,
+    "offlinecoop": true,
+    "offlinecoopmax": 0,
+    "offlinemax": 2,
+    "onlinecoop": false,
+    "onlinecoopmax": 0,
+    "onlinemax": 0,
+    "platform": 49,
+    "splitscreen": false
+  },
+  {
+    "id": 8678,
+    "campaigncoop": false,
+    "dropin": false,
+    "game": 97251,
+    "lancoop": false,
+    "offlinecoop": false,
+    "offlinemax": 1,
+    "onlinecoop": false,
+    "platform": 6,
+    "splitscreen": false
+  },
+  {
+    "id": 8687,
+    "campaigncoop": true,
+    "dropin": false,
+    "game": 44616,
+    "lancoop": false,
+    "offlinecoop": false,
+    "onlinecoop": true,
+    "onlinecoopmax": 4,
+    "onlinemax": 4,
+    "platform": 46,
+    "splitscreen": false
+  },
+  {
+    "id": 34,
+    "campaigncoop": false,
+    "dropin": false,
+    "game": 51693,
+    "lancoop": false,
+    "offlinecoop": false,
+    "onlinecoop": false,
+    "platform": 49,
+    "splitscreen": false
+  }
+]
