@@ -57,6 +57,7 @@ type Client struct {
 	Keywords                 *KeywordService
 	MultiplayerModes         *MultiplayerModeService
 	Pages                    *PageService
+	PageBackgrounds          *PageBackgroundService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -102,6 +103,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Keywords = &KeywordService{client: c, end: EndpointKeyword}
 	c.MultiplayerModes = &MultiplayerModeService{client: c, end: EndpointMultiplayerMode}
 	c.Pages = &PageService{client: c, end: EndpointPage}
+	c.PageBackgrounds = &PageBackgroundService{client: c, end: EndpointPageBackground}
 
 	return c
 }

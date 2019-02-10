@@ -33,7 +33,7 @@ const (
 	EndpointKeyword                    endpoint = "keywords/"
 	EndpointMultiplayerMode            endpoint = "multiplayer_modes/"
 	EndpointPage                       endpoint = "pages/"
-	EndpointPackBackground             endpoint = "page_backgrounds/"
+	EndpointPageBackground             endpoint = "page_backgrounds/"
 	EndpointPageLogo                   endpoint = "page_logos/"
 	EndpointPageWebsite                endpoint = "page_websites/"
 	EndpointPlatform                   endpoint = "platforms/"
