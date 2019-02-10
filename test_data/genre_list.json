@@ -1,0 +1,42 @@
+[
+  {
+    "id": 24,
+    "created_at": 1300924800,
+    "name": "Tactical",
+    "slug": "tactical",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/genres/tactical"
+  },
+  {
+    "id": 26,
+    "created_at": 1301961600,
+    "name": "Quiz/Trivia",
+    "slug": "quiz-trivia",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/genres/quiz-trivia"
+  },
+  {
+    "id": 4,
+    "created_at": 1297555200,
+    "name": "Fighting",
+    "slug": "fighting",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/genres/fighting"
+  },
+  {
+    "id": 15,
+    "created_at": 1297555200,
+    "name": "Strategy",
+    "slug": "strategy",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/genres/strategy"
+  },
+  {
+    "id": 31,
+    "created_at": 1323561600,
+    "name": "Adventure",
+    "slug": "adventure",
+    "updated_at": 1323561600,
+    "url": "https://www.igdb.com/genres/adventure"
+  }
+]
