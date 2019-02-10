@@ -10,6 +10,7 @@ import (
 // PlatformVersionCompany represents a platform developer.
 // For more information visit: https://api-docs.igdb.com/#platform-version-company
 type PlatformVersionCompany struct {
+	ID           int    `json:"id"`
 	Comment      string `json:"comment"`
 	Company      int    `json:"company"`
 	Developer    bool   `json:"developer"`
@@ -21,7 +22,7 @@ type PlatformVersionCompanyService service
 
 // Get returns a single PlatformVersionCompany identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
-// retrieve. If the ID does not match any PlatformVersionCompanys, an error is returned.
+// retrieve. If the ID does not match any PlatformVersionCompanies, an error is returned.
 func (ps *PlatformVersionCompanyService) Get(id int, opts ...FuncOption) (*PlatformVersionCompany, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
@@ -38,7 +39,7 @@ func (ps *PlatformVersionCompanyService) Get(id int, opts ...FuncOption) (*Platf
 	return com[0], nil
 }
 
-// List returns a list of PlatformVersionCompanys identified by the provided list of IGDB IDs.
+// List returns a list of PlatformVersionCompanies identified by the provided list of IGDB IDs.
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformVersionCompany is ignored. If none of the IDs
 // match a PlatformVersionCompany, an error is returned.
@@ -58,33 +59,33 @@ func (ps *PlatformVersionCompanyService) List(ids []int, opts ...FuncOption) ([]
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
 	err := ps.client.get(ps.end, &com, opts...)
 	if err != nil {
-		return nil, errors.Wrapf(err, "cannot get PlatformVersionCompanys with IDs %v", ids)
+		return nil, errors.Wrapf(err, "cannot get PlatformVersionCompanies with IDs %v", ids)
 	}
 
 	return com, nil
 }
 
-// Index returns an index of PlatformVersionCompanys based solely on the provided functional
-// options used to sort, filter, and paginate the results. If no PlatformVersionCompanys can
+// Index returns an index of PlatformVersionCompanies based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no PlatformVersionCompanies can
 // be found using the provided options, an error is returned.
 func (ps *PlatformVersionCompanyService) Index(opts ...FuncOption) ([]*PlatformVersionCompany, error) {
 	var com []*PlatformVersionCompany
 
 	err := ps.client.get(ps.end, &com, opts...)
 	if err != nil {
-		return nil, errors.Wrap(err, "cannot get index of PlatformVersionCompanys")
+		return nil, errors.Wrap(err, "cannot get index of PlatformVersionCompanies")
 	}
 
 	return com, nil
 }
 
-// Count returns the number of PlatformVersionCompanys available in the IGDB.
+// Count returns the number of PlatformVersionCompanies available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
-// which PlatformVersionCompanys to count.
+// which PlatformVersionCompanies to count.
 func (ps *PlatformVersionCompanyService) Count(opts ...FuncOption) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
-		return 0, errors.Wrap(err, "cannot count PlatformVersionCompanys")
+		return 0, errors.Wrap(err, "cannot count PlatformVersionCompanies")
 	}
 
 	return ct, nil

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 152,
+    "company": 70,
+    "developer": true,
+    "manufacturer": true
+  },
+  {
+    "id": 159,
+    "company": 4639,
+    "developer": false,
+    "manufacturer": true
+  },
+  {
+    "id": 117,
+    "company": 70,
+    "developer": true,
+    "manufacturer": true
+  },
+  {
+    "id": 162,
+    "company": 70,
+    "developer": true,
+    "manufacturer": true
+  },
+  {
+    "id": 87,
+    "company": 70,
+    "developer": true,
+    "manufacturer": false
+  }
+]
