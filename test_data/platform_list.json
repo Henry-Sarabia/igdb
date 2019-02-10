@@ -1,0 +1,81 @@
+[
+  {
+    "id": 96,
+    "abbreviation": "pdp10",
+    "category": 6,
+    "created_at": 1418515200,
+    "name": "PDP-10",
+    "slug": "pdp10",
+    "updated_at": 1418515200,
+    "url": "https://www.igdb.com/platforms/pdp10",
+    "versions": [
+      116
+    ]
+  },
+  {
+    "id": 74,
+    "abbreviation": "winphone",
+    "category": 4,
+    "created_at": 1384387200,
+    "name": "Windows Phone",
+    "platform_logo": 145,
+    "slug": "winphone",
+    "updated_at": 1392076800,
+    "url": "https://www.igdb.com/platforms/winphone",
+    "versions": [
+      224,
+      225,
+      226,
+      227
+    ]
+  },
+  {
+    "id": 133,
+    "alternative_name": "Magnavox Odyssey²",
+    "category": 6,
+    "created_at": 1477267200,
+    "name": "Philips Videopac G7000",
+    "platform_logo": 112,
+    "slug": "philips-videopac-g7000",
+    "updated_at": 1477267200,
+    "url": "https://www.igdb.com/platforms/philips-videopac-g7000",
+    "versions": [
+      183
+    ]
+  },
+  {
+    "id": 44,
+    "abbreviation": "zod",
+    "category": 5,
+    "created_at": 1317686400,
+    "name": "Tapwave Zodiac",
+    "platform_logo": 46,
+    "slug": "zod",
+    "updated_at": 1392076800,
+    "url": "https://www.igdb.com/platforms/zod",
+    "versions": [
+      69
+    ]
+  },
+  {
+    "id": 19,
+    "abbreviation": "snes",
+    "alternative_name": "SNES, Super Nintendo",
+    "category": 1,
+    "created_at": 1297900800,
+    "generation": 4,
+    "name": "Super Nintendo Entertainment System (SNES)",
+    "platform_logo": 106,
+    "product_family": 5,
+    "slug": "snes--1",
+    "updated_at": 1439164800,
+    "url": "https://www.igdb.com/platforms/snes--1",
+    "versions": [
+      68,
+      95,
+      97,
+      139,
+      177
+    ]
+  }
+]
