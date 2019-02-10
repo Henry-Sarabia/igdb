@@ -1,0 +1,42 @@
+[
+  {
+    "id": 31,
+    "created_at": 1320537600,
+    "name": "ah-64 apache",
+    "slug": "ah-64-apache",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/categories/ah-64-apache"
+  },
+  {
+    "id": 18534,
+    "created_at": 1528848000,
+    "name": "mafia iii",
+    "slug": "mafia-iii",
+    "updated_at": 1528848000,
+    "url": "https://www.igdb.com/categories/mafia-iii"
+  },
+  {
+    "id": 12071,
+    "created_at": 1512691200,
+    "name": "bugbear",
+    "slug": "bugbear",
+    "updated_at": 1512691200,
+    "url": "https://www.igdb.com/categories/bugbear"
+  },
+  {
+    "id": 6939,
+    "created_at": 1507248000,
+    "name": "sword rack",
+    "slug": "sword-rack",
+    "updated_at": 1507248000,
+    "url": "https://www.igdb.com/categories/sword-rack"
+  },
+  {
+    "id": 7281,
+    "created_at": 1507248000,
+    "name": "music video",
+    "slug": "music-video",
+    "updated_at": 1507248000,
+    "url": "https://www.igdb.com/categories/music-video"
+  }
+]
