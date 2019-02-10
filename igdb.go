@@ -48,6 +48,7 @@ type Client struct {
 	GameEngines       *GameEngineService
 	GameEngineLogos   *GameEngineLogoService
 	GameModes         *GameModeService
+	GameVersions      *GameVersionService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -84,6 +85,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.GameEngines = &GameEngineService{client: c, end: EndpointGameEngine}
 	c.GameEngineLogos = &GameEngineLogoService{client: c, end: EndpointGameEngineLogo}
 	c.GameModes = &GameModeService{client: c, end: EndpointGameMode}
+	c.GameVersions = &GameVersionService{client: c, end: EndpointGameVersion}
 
 	return c
 }
