@@ -1,0 +1,42 @@
+[
+  {
+    "id": 29,
+    "category": 0,
+    "human": "2012-Feb-22",
+    "m": 2,
+    "region": 3,
+    "y": 2012
+  },
+  {
+    "id": 37,
+    "category": 0,
+    "human": "1996-Sep-29",
+    "m": 9,
+    "region": 2,
+    "y": 1996
+  },
+  {
+    "id": 40,
+    "category": 0,
+    "human": "2012-Nov-18",
+    "m": 11,
+    "region": 2,
+    "y": 2012
+  },
+  {
+    "id": 48,
+    "category": 0,
+    "human": "2001-Sep-14",
+    "m": 9,
+    "region": 5,
+    "y": 2001
+  },
+  {
+    "id": 81,
+    "category": 0,
+    "human": "2001-Jun-11",
+    "m": 6,
+    "region": 2,
+    "y": 2001
+  }
+]

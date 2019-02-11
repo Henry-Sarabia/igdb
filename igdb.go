@@ -29,41 +29,42 @@ type Client struct {
 	key     string
 
 	// Services
-	Achievements             *AchievementService
-	AchievementIcons         *AchievementIconService
-	AgeRatings               *AgeRatingService
-	AgeRatingContents        *AgeRatingContentService
-	AlternativeNames         *AlternativeNameService
-	Artworks                 *ArtworkService
-	Characters               *CharacterService
-	CharacterMugshots        *CharacterMugshotService
-	Collections              *CollectionService
-	Companies                *CompanyService
-	CompanyLogos             *CompanyLogoService
-	Covers                   *CoverService
-	ExternalGames            *ExternalGameService
-	Feeds                    *FeedService
-	Franchises               *FranchiseService
-	Games                    *GameService
-	GameEngines              *GameEngineService
-	GameEngineLogos          *GameEngineLogoService
-	GameModes                *GameModeService
-	GameVersions             *GameVersionService
-	GameVersionFeatures      *GameVersionFeatureService
-	GameVersionFeatureValues *GameVersionFeatureValueService
-	GameVideos               *GameVideoService
-	Genres                   *GenreService
-	InvolvedCompanies        *InvolvedCompanyService
-	Keywords                 *KeywordService
-	MultiplayerModes         *MultiplayerModeService
-	Pages                    *PageService
-	PageBackgrounds          *PageBackgroundService
-	PageLogos                *PageLogoService
-	PageWebsites             *PageWebsiteService
-	Platforms                *PlatformService
-	PlatformLogos            *PlatformLogoService
-	PlatformVersions         *PlatformVersionService
-	PlatformVersionCompanies *PlatformVersionCompanyService
+	Achievements                *AchievementService
+	AchievementIcons            *AchievementIconService
+	AgeRatings                  *AgeRatingService
+	AgeRatingContents           *AgeRatingContentService
+	AlternativeNames            *AlternativeNameService
+	Artworks                    *ArtworkService
+	Characters                  *CharacterService
+	CharacterMugshots           *CharacterMugshotService
+	Collections                 *CollectionService
+	Companies                   *CompanyService
+	CompanyLogos                *CompanyLogoService
+	Covers                      *CoverService
+	ExternalGames               *ExternalGameService
+	Feeds                       *FeedService
+	Franchises                  *FranchiseService
+	Games                       *GameService
+	GameEngines                 *GameEngineService
+	GameEngineLogos             *GameEngineLogoService
+	GameModes                   *GameModeService
+	GameVersions                *GameVersionService
+	GameVersionFeatures         *GameVersionFeatureService
+	GameVersionFeatureValues    *GameVersionFeatureValueService
+	GameVideos                  *GameVideoService
+	Genres                      *GenreService
+	InvolvedCompanies           *InvolvedCompanyService
+	Keywords                    *KeywordService
+	MultiplayerModes            *MultiplayerModeService
+	Pages                       *PageService
+	PageBackgrounds             *PageBackgroundService
+	PageLogos                   *PageLogoService
+	PageWebsites                *PageWebsiteService
+	Platforms                   *PlatformService
+	PlatformLogos               *PlatformLogoService
+	PlatformVersions            *PlatformVersionService
+	PlatformVersionCompanies    *PlatformVersionCompanyService
+	PlatformVersionReleaseDates *PlatformVersionReleaseDateService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -116,6 +117,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlatformLogos = &PlatformLogoService{client: c, end: EndpointPlatformLogo}
 	c.PlatformVersions = &PlatformVersionService{client: c, end: EndpointPlatformVersion}
 	c.PlatformVersionCompanies = &PlatformVersionCompanyService{client: c, end: EndpointPlatformVersionCompany}
+	c.PlatformVersionReleaseDates = &PlatformVersionReleaseDateService{client: c, end: EndpointPlatformVersionReleaseDate}
 
 	return c
 }
