@@ -1,0 +1,42 @@
+[
+  {
+    "id": 2,
+    "created_at": 1298937600,
+    "name": "Third person",
+    "slug": "third-person",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/player_perspectives/third-person"
+  },
+  {
+    "id": 5,
+    "created_at": 1321228800,
+    "name": "Text",
+    "slug": "text",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/player_perspectives/text"
+  },
+  {
+    "id": 7,
+    "created_at": 1462233600,
+    "name": "Virtual Reality",
+    "slug": "virtual-reality",
+    "updated_at": 1462233600,
+    "url": "https://www.igdb.com/player_perspectives/virtual-reality"
+  },
+  {
+    "id": 1,
+    "created_at": 1298937600,
+    "name": "First person",
+    "slug": "first-person",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/player_perspectives/first-person"
+  },
+  {
+    "id": 3,
+    "created_at": 1298937600,
+    "name": "Bird view",
+    "slug": "bird-view",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/player_perspectives/bird-view"
+  }
+]
