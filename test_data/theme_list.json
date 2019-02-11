@@ -1,0 +1,42 @@
+[
+  {
+    "id": 19,
+    "created_at": 1322524800,
+    "name": "Horror",
+    "slug": "horror",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/themes/horror"
+  },
+  {
+    "id": 39,
+    "created_at": 1345420800,
+    "name": "Warfare",
+    "slug": "warfare",
+    "updated_at": 1345420800,
+    "url": "https://www.igdb.com/themes/warfare"
+  },
+  {
+    "id": 32,
+    "created_at": 1323561600,
+    "name": "Non-fiction",
+    "slug": "non-fiction",
+    "updated_at": 1323561600,
+    "url": "https://www.igdb.com/themes/non-fiction"
+  },
+  {
+    "id": 1,
+    "created_at": 1322524800,
+    "name": "Action",
+    "slug": "action",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/themes/action"
+  },
+  {
+    "id": 18,
+    "created_at": 1322524800,
+    "name": "Science fiction",
+    "slug": "science-fiction",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/themes/science-fiction"
+  }
+]

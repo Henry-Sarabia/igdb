@@ -69,6 +69,7 @@ type Client struct {
 	PlayerPerspectives          *PlayerPerspectiveService
 	ReleaseDates                *ReleaseDateService
 	Screenshots                 *ScreenshotService
+	Themes                      *ThemeService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -126,6 +127,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlayerPerspectives = &PlayerPerspectiveService{client: c, end: EndpointPlayerPerspective}
 	c.ReleaseDates = &ReleaseDateService{client: c, end: EndpointReleaseDate}
 	c.Screenshots = &ScreenshotService{client: c, end: EndpointScreenshot}
+	c.Themes = &ThemeService{client: c, end: EndpointTheme}
 
 	return c
 }
