@@ -65,6 +65,7 @@ type Client struct {
 	PlatformVersions            *PlatformVersionService
 	PlatformVersionCompanies    *PlatformVersionCompanyService
 	PlatformVersionReleaseDates *PlatformVersionReleaseDateService
+	PlatformWebsites            *PlatformWebsiteService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -118,6 +119,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlatformVersions = &PlatformVersionService{client: c, end: EndpointPlatformVersion}
 	c.PlatformVersionCompanies = &PlatformVersionCompanyService{client: c, end: EndpointPlatformVersionCompany}
 	c.PlatformVersionReleaseDates = &PlatformVersionReleaseDateService{client: c, end: EndpointPlatformVersionReleaseDate}
+	c.PlatformWebsites = &PlatformWebsiteService{client: c, end: EndpointPlatformWebsite}
 
 	return c
 }
