@@ -1,0 +1,57 @@
+[
+  {
+    "id": 20271,
+    "created_at": 1442707200,
+    "games": [
+      7320
+    ],
+    "name": "OP Theme Vocals",
+    "slug": "op-theme-vocals",
+    "updated_at": 1442707200,
+    "url": "https://www.igdb.com/titles/op-theme-vocals"
+  },
+  {
+    "id": 14303,
+    "created_at": 1431302400,
+    "games": [
+      1981
+    ],
+    "name": "Talent and Production Coordinator",
+    "slug": "talent-and-production-coordinator",
+    "updated_at": 1431302400,
+    "url": "https://www.igdb.com/titles/talent-and-production-coordinator"
+  },
+  {
+    "id": 20279,
+    "created_at": 1442707200,
+    "games": [
+      7316
+    ],
+    "name": "TRC Test Leads",
+    "slug": "trc-test-leads",
+    "updated_at": 1442707200,
+    "url": "https://www.igdb.com/titles/trc-test-leads"
+  },
+  {
+    "id": 20315,
+    "created_at": 1442707200,
+    "games": [
+      7316
+    ],
+    "name": "Staff Software Quality Assurance Engineer",
+    "slug": "staff-software-quality-assurance-engineer",
+    "updated_at": 1442707200,
+    "url": "https://www.igdb.com/titles/staff-software-quality-assurance-engineer"
+  },
+  {
+    "id": 20320,
+    "created_at": 1442707200,
+    "games": [
+      7316
+    ],
+    "name": "Staff Application Integration Engineer",
+    "slug": "staff-application-integration-engineer",
+    "updated_at": 1442707200,
+    "url": "https://www.igdb.com/titles/staff-application-integration-engineer"
+  }
+]
