@@ -9,6 +9,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#platform-website
 type PlatformWebsite struct {
 	Website
+	ID int `json:"id"`
 }
 
 // PlatformWebsiteService handles all the API calls for the IGDB PlatformWebsite endpoint.

@@ -31,10 +31,10 @@ func TestPlatformWebsiteService_Get(t *testing.T) {
 		wantPlatformWebsite *PlatformWebsite
 		wantErr             error
 	}{
-		{"Valid response", testPlatformWebsiteGet, 777777, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testPlatformWebsiteGet, 16, []FuncOption{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 777777, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 777777, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 16, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 16, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestPlatformWebsiteService_List(t *testing.T) {
 		wantPlatformWebsites []*PlatformWebsite
 		wantErr              error
 	}{
-		{"Valid response", testPlatformWebsiteList, []int{1111}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testPlatformWebsiteList, []int{1, 18, 32, 6, 29}, []FuncOption{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1111}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1111}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1, 18, 32, 6, 29}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1, 18, 32, 6, 29}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
