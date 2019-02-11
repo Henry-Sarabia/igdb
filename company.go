@@ -7,13 +7,11 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Company -add-tags json -w
 
-// CompanyService handles all the API calls for the IGDB Company endpoint.
-type CompanyService service
-
 // Company represents a video game company.
 // This includes both publishers and developers.
 // For more information visit: https://api-docs.igdb.com/#company
 type Company struct {
+	ID                 int          `json:"id"`
 	ChangeDate         int          `json:"change_date"`
 	ChangeDateCategory DateCategory `json:"change_date_category"`
 	ChangedCompanyID   int          `json:"changed_company_id"`
@@ -32,6 +30,9 @@ type Company struct {
 	URL                string       `json:"url"`
 	Websites           []int        `json:"websites"`
 }
+
+// CompanyService handles all the API calls for the IGDB Company endpoint.
+type CompanyService service
 
 // Get returns a single Company identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

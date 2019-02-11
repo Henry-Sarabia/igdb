@@ -7,23 +7,24 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct AgeRatingContent -add-tags json -w
 
-// AgeRatingContentService handles all the API calls for the IGDB AgeRatingContent endpoint.
-type AgeRatingContentService service
-
 // AgeRatingContent is the organization behind a specific rating.
 type AgeRatingContent struct {
+	ID          int                      `json:"id"`
 	Category    AgeRatingContentCategory `json:"category"`
 	Description string                   `json:"description"`
 }
 
-//go:generate stringer -type=AgeRatingContentCategory
-
 type AgeRatingContentCategory int
+
+//go:generate stringer -type=AgeRatingContentCategory
 
 const (
 	AgeRatingContentPEGI AgeRatingContentCategory = iota + 1
 	AgeRatingContentESRB
 )
+
+// AgeRatingContentService handles all the API calls for the IGDB AgeRatingContent endpoint.
+type AgeRatingContentService service
 
 // Get returns a single AgeRatingContent identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
@@ -33,15 +34,15 @@ func (as *AgeRatingContentService) Get(id int, opts ...FuncOption) (*AgeRatingCo
 		return nil, ErrNegativeID
 	}
 
-	var age []*AgeRatingContent
+	var cont []*AgeRatingContent
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.get(as.end, &cont, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AgeRatingContent with ID %v", id)
 	}
 
-	return age[0], nil
+	return cont[0], nil
 }
 
 // List returns a list of AgeRatingContents identified by the provided list of IGDB IDs.
@@ -59,29 +60,29 @@ func (as *AgeRatingContentService) List(ids []int, opts ...FuncOption) ([]*AgeRa
 		}
 	}
 
-	var age []*AgeRatingContent
+	var cont []*AgeRatingContent
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.get(as.end, &cont, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AgeRatingContents with IDs %v", ids)
 	}
 
-	return age, nil
+	return cont, nil
 }
 
 // Index returns an index of AgeRatingContents based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AgeRatingContents can
 // be found using the provided options, an error is returned.
 func (as *AgeRatingContentService) Index(opts ...FuncOption) ([]*AgeRatingContent, error) {
-	var age []*AgeRatingContent
+	var cont []*AgeRatingContent
 
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.get(as.end, &cont, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of AgeRatingContents")
 	}
 
-	return age, nil
+	return cont, nil
 }
 
 // Count returns the number of AgeRatingContents available in the IGDB.

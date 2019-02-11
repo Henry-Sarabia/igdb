@@ -12,6 +12,7 @@ type CharacterMugshotService service
 // For more information visit: https://api-docs.igdb.com/#character-mug-shot
 type CharacterMugshot struct {
 	Image
+	ID int `json:"id"`
 }
 
 // Get returns a single CharacterMugshot identified by the provided IGDB ID. Provide
@@ -22,15 +23,15 @@ func (cs *CharacterMugshotService) Get(id int, opts ...FuncOption) (*CharacterMu
 		return nil, ErrNegativeID
 	}
 
-	var ch []*CharacterMugshot
+	var mug []*CharacterMugshot
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.get(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CharacterMugshot with ID %v", id)
 	}
 
-	return ch[0], nil
+	return mug[0], nil
 }
 
 // List returns a list of CharacterMugshots identified by the provided list of IGDB IDs.
@@ -48,29 +49,29 @@ func (cs *CharacterMugshotService) List(ids []int, opts ...FuncOption) ([]*Chara
 		}
 	}
 
-	var ch []*CharacterMugshot
+	var mug []*CharacterMugshot
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.get(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CharacterMugshots with IDs %v", ids)
 	}
 
-	return ch, nil
+	return mug, nil
 }
 
 // Index returns an index of CharacterMugshots based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no CharacterMugshots can
 // be found using the provided options, an error is returned.
 func (cs *CharacterMugshotService) Index(opts ...FuncOption) ([]*CharacterMugshot, error) {
-	var ch []*CharacterMugshot
+	var mug []*CharacterMugshot
 
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.get(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of CharacterMugshots")
 	}
 
-	return ch, nil
+	return mug, nil
 }
 
 // Count returns the number of CharacterMugshots available in the IGDB.

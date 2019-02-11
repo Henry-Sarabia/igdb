@@ -5,15 +5,16 @@ import (
 	"strconv"
 )
 
-// CoverService handles all the API calls for the IGDB Cover endpoint.
-type CoverService service
-
 // Cover represents the cover art for a specific video game.
 // For more information visit: https://api-docs.igdb.com/#cover
 type Cover struct {
 	Image
+	ID   int `json:"id"`
 	Game int `json:"game"`
 }
+
+// CoverService handles all the API calls for the IGDB Cover endpoint.
+type CoverService service
 
 // Get returns a single Cover identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

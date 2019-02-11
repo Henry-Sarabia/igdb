@@ -45,13 +45,13 @@ func TestCharacterMugshotService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.CharacterMugshots.Get(test.id, test.opts...)
+			mug, err := c.CharacterMugshots.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ch, test.wantCharacterMugshot) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ch, test.wantCharacterMugshot)
+			if !reflect.DeepEqual(mug, test.wantCharacterMugshot) {
+				t.Errorf("got: <%v>, \nwant: <%v>", mug, test.wantCharacterMugshot)
 			}
 		})
 	}
@@ -89,13 +89,13 @@ func TestCharacterMugshotService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.CharacterMugshots.List(test.ids, test.opts...)
+			mug, err := c.CharacterMugshots.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ch, test.wantCharacterMugshots) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ch, test.wantCharacterMugshots)
+			if !reflect.DeepEqual(mug, test.wantCharacterMugshots) {
+				t.Errorf("got: <%v>, \nwant: <%v>", mug, test.wantCharacterMugshots)
 			}
 		})
 	}
@@ -130,13 +130,13 @@ func TestCharacterMugshotService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ch, err := c.CharacterMugshots.Index(test.opts...)
+			mug, err := c.CharacterMugshots.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ch, test.wantCharacterMugshots) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ch, test.wantCharacterMugshots)
+			if !reflect.DeepEqual(mug, test.wantCharacterMugshots) {
+				t.Errorf("got: <%v>, \nwant: <%v>", mug, test.wantCharacterMugshots)
 			}
 		})
 	}

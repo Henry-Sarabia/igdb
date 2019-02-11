@@ -7,12 +7,10 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Character -add-tags json -w
 
-// CharacterService handles all the API calls for the IGDB Character endpoint.
-type CharacterService service
-
 // Character represents a video game character.
 // For more information visit: https://api-docs.igdb.com/#character
 type Character struct {
+	ID          int              `json:"ID"`
 	AKAS        []string         `json:"akas"`
 	CountryName string           `json:"country_name"`
 	CreatedAt   int              `json:"created_at"`
@@ -28,9 +26,9 @@ type Character struct {
 	URL         string           `json:"url"`
 }
 
-//go:generate stringer -type=CharacterGender,CharacterSpecies
-
 type CharacterGender int
+
+//go:generate stringer -type=CharacterGender,CharacterSpecies
 
 const (
 	GenderMale CharacterGender = iota + 1
@@ -47,6 +45,9 @@ const (
 	SpeciesAndroid
 	SpeciesUnknown
 )
+
+// CharacterService handles all the API calls for the IGDB Character endpoint.
+type CharacterService service
 
 // Get returns a single Character identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

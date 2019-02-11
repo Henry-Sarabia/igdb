@@ -7,18 +7,19 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Collection -add-tags json -w
 
-// CollectionService handles all the API calls for the IGDB Collection endpoint.
-type CollectionService service
-
 // Collection represents a video game series.
 // For more information visit: https://api-docs.igdb.com/#collection
 type Collection struct {
+	ID        int    `json:"id"`
 	CreatedAt int    `json:"created_at"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
 	UpdatedAt int    `json:"updated_at"`
 	URL       string `json:"url"`
 }
+
+// CollectionService handles all the API calls for the IGDB Collection endpoint.
+type CollectionService service
 
 // Get returns a single Collection identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

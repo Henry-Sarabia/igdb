@@ -5,15 +5,15 @@ import (
 	"strconv"
 )
 
-// CompanyLogoService handles all the API calls for the IGDB CompanyLogo endpoint.
-type CompanyLogoService service
-
 // CompanyLogo represents the logo of a developer or publisher.
 // For more information visit: https://api-docs.igdb.com/#company-logo
 type CompanyLogo struct {
 	Image
 	ID int `json:"id"`
 }
+
+// CompanyLogoService handles all the API calls for the IGDB CompanyLogo endpoint.
+type CompanyLogoService service
 
 // Get returns a single CompanyLogo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

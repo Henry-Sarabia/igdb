@@ -45,13 +45,13 @@ func TestGameEngineService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.GameEngines.Get(test.id, test.opts...)
+			eng, err := c.GameEngines.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantGameEngine) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantGameEngine)
+			if !reflect.DeepEqual(eng, test.wantGameEngine) {
+				t.Errorf("got: <%v>, \nwant: <%v>", eng, test.wantGameEngine)
 			}
 		})
 	}
@@ -89,13 +89,13 @@ func TestGameEngineService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.GameEngines.List(test.ids, test.opts...)
+			eng, err := c.GameEngines.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantGameEngines) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantGameEngines)
+			if !reflect.DeepEqual(eng, test.wantGameEngines) {
+				t.Errorf("got: <%v>, \nwant: <%v>", eng, test.wantGameEngines)
 			}
 		})
 	}
@@ -130,13 +130,13 @@ func TestGameEngineService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.GameEngines.Index(test.opts...)
+			eng, err := c.GameEngines.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantGameEngines) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantGameEngines)
+			if !reflect.DeepEqual(eng, test.wantGameEngines) {
+				t.Errorf("got: <%v>, \nwant: <%v>", eng, test.wantGameEngines)
 			}
 		})
 	}

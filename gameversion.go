@@ -29,15 +29,15 @@ func (gs *GameVersionService) Get(id int, opts ...FuncOption) (*GameVersion, err
 		return nil, ErrNegativeID
 	}
 
-	var gv []*GameVersion
+	var ver []*GameVersion
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &gv, opts...)
+	err := gs.client.get(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersion with ID %v", id)
 	}
 
-	return gv[0], nil
+	return ver[0], nil
 }
 
 // List returns a list of GameVersions identified by the provided list of IGDB IDs.
@@ -55,29 +55,29 @@ func (gs *GameVersionService) List(ids []int, opts ...FuncOption) ([]*GameVersio
 		}
 	}
 
-	var gv []*GameVersion
+	var ver []*GameVersion
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
-	err := gs.client.get(gs.end, &gv, opts...)
+	err := gs.client.get(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersions with IDs %v", ids)
 	}
 
-	return gv, nil
+	return ver, nil
 }
 
 // Index returns an index of GameVersions based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameVersions can
 // be found using the provided options, an error is returned.
 func (gs *GameVersionService) Index(opts ...FuncOption) ([]*GameVersion, error) {
-	var gv []*GameVersion
+	var ver []*GameVersion
 
-	err := gs.client.get(gs.end, &gv, opts...)
+	err := gs.client.get(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameVersions")
 	}
 
-	return gv, nil
+	return ver, nil
 }
 
 // Count returns the number of GameVersions available in the IGDB.

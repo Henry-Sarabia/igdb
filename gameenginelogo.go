@@ -5,14 +5,15 @@ import (
 	"strconv"
 )
 
-// GameEngineLogoService handles all the API calls for the IGDB GameEngineLogo endpoint.
-type GameEngineLogoService service
-
 // GameEngineLogo represents the logo of a particular game engine.
 // For more information visit: https://api-docs.igdb.com/#game-engine-logo
 type GameEngineLogo struct {
 	Image
+	ID int `json:"id"`
 }
+
+// GameEngineLogoService handles all the API calls for the IGDB GameEngineLogo endpoint.
+type GameEngineLogoService service
 
 // Get returns a single GameEngineLogo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

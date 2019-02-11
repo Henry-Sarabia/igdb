@@ -7,9 +7,6 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Franchise -add-tags json -w
 
-// FranchiseService handles all the API calls for the IGDB Franchise endpoint.
-type FranchiseService service
-
 // Franchise is a list of video game franchises such as Star Wars.
 // For more information visit: https://api-docs.igdb.com/#franchise
 type Franchise struct {
@@ -20,6 +17,9 @@ type Franchise struct {
 	UpdatedAt int    `json:"updated_at"`
 	Url       string `json:"url"`
 }
+
+// FranchiseService handles all the API calls for the IGDB Franchise endpoint.
+type FranchiseService service
 
 // Get returns a single Franchise identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

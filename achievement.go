@@ -2,19 +2,16 @@ package igdb
 
 import (
 	"github.com/pkg/errors"
+	"strconv"
 )
 
 //go:generate gomodifytags -file $GOFILE -struct Achievement -add-tags json -w
-
-// AchievementService handles all the API calls for the IGDB
-// Achievement endpoint.
-// This endpoint is only available for the IGDB Pro tier or above.
-type AchievementService service
 
 // Achievement data for specific games for specific platforms
 // (currently limited to achievements from Steam, Playstation, and XBox).
 // For more information visit: https://api-docs.igdb.com/#achievement
 type Achievement struct {
+	ID               int                 `json:"id"`
 	AchievementIcon  int                 `json:"achievement_icon"`
 	Category         AchievementCategory `json:"category"`
 	CreatedAt        int                 `json:"created_at"`
@@ -30,11 +27,11 @@ type Achievement struct {
 	UpdatedAt        int                 `json:"updated_at"`
 }
 
-//go:generate stringer -type=AchievementRank,AchievementCategory,AchievementLanguage
-
 // AchievementRank specifies an achievement's rank ranging
 // from bronze to platinum.
 type AchievementRank int
+
+//go:generate stringer -type=AchievementRank,AchievementCategory,AchievementLanguage
 
 const (
 	RankBronze AchievementRank = iota + 1
@@ -67,6 +64,56 @@ const (
 	LanguageHongKong
 	LanguageSouthKorea
 )
+
+// AchievementService handles all the API calls for the IGDB
+// Achievement endpoint.
+// This endpoint is only available for the IGDB Pro tier or above.
+type AchievementService service
+
+// Get returns a single Achievement identified by the provided IGDB ID. Provide
+// the SetFields functional option if you need to specify which fields to
+// retrieve. If the ID does not match any Achievements, an error is returned.
+func (as *AchievementService) Get(id int, opts ...FuncOption) (*Achievement, error) {
+	if id < 0 {
+		return nil, ErrNegativeID
+	}
+
+	var ach []*Achievement
+
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := as.client.get(as.end, &ach, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Achievement with ID %v", id)
+	}
+
+	return ach[0], nil
+}
+
+// List returns a list of Achievements identified by the provided list of IGDB IDs.
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a Achievement is ignored. If none of the IDs
+// match a Achievement, an error is returned.
+func (as *AchievementService) List(ids []int, opts ...FuncOption) ([]*Achievement, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
+	}
+
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
+	}
+
+	var ach []*Achievement
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := as.client.get(as.end, &ach, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Achievements with IDs %v", ids)
+	}
+
+	return ach, nil
+}
 
 // Index returns an index of Achievements based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Achievements can

@@ -45,13 +45,13 @@ func TestAgeRatingContentService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AgeRatingContents.Get(test.id, test.opts...)
+			cont, err := c.AgeRatingContents.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAgeRatingContent) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAgeRatingContent)
+			if !reflect.DeepEqual(cont, test.wantAgeRatingContent) {
+				t.Errorf("got: <%v>, \nwant: <%v>", cont, test.wantAgeRatingContent)
 			}
 		})
 	}
@@ -89,13 +89,13 @@ func TestAgeRatingContentService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AgeRatingContents.List(test.ids, test.opts...)
+			cont, err := c.AgeRatingContents.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAgeRatingContents) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAgeRatingContents)
+			if !reflect.DeepEqual(cont, test.wantAgeRatingContents) {
+				t.Errorf("got: <%v>, \nwant: <%v>", cont, test.wantAgeRatingContents)
 			}
 		})
 	}
@@ -130,13 +130,13 @@ func TestAgeRatingContentService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			g, err := c.AgeRatingContents.Index(test.opts...)
+			cont, err := c.AgeRatingContents.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(g, test.wantAgeRatingContents) {
-				t.Errorf("got: <%v>, \nwant: <%v>", g, test.wantAgeRatingContents)
+			if !reflect.DeepEqual(cont, test.wantAgeRatingContents) {
+				t.Errorf("got: <%v>, \nwant: <%v>", cont, test.wantAgeRatingContents)
 			}
 		})
 	}

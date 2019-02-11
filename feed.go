@@ -7,9 +7,6 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Feed -add-tags json -w
 
-// FeedService handles all the API calls for the IGDB Feed endpoint.
-type FeedService service
-
 // Feed items are a social feed of status updates, media, and news articles.
 // For more information visit: https://api-docs.igdb.com/#feed
 type Feed struct {
@@ -31,9 +28,9 @@ type Feed struct {
 	User           int          `json:"user"`
 }
 
-//go:generate stringer -type=FeedCategory
-
 type FeedCategory int
+
+//go:generate stringer -type=FeedCategory
 
 const (
 	FeedPulseArticle FeedCategory = iota + 1
@@ -44,6 +41,9 @@ const (
 	FeedUserContributionsItem
 	FeedPageContributedItem
 )
+
+// FeedService handles all the API calls for the IGDB Feed endpoint.
+type FeedService service
 
 // Get returns a single Feed identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

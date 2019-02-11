@@ -7,15 +7,15 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct AlternativeName -add-tags json -w
 
-// AlternativeNameService handles all the API calls for the IGDB AlternativeName endpoint.
-type AlternativeNameService service
-
 type AlternativeName struct {
 	ID      int    `json:"id"`
 	Comment string `json:"comment"`
 	Game    int    `json:"game"`
 	Name    string `json:"name"`
 }
+
+// AlternativeNameService handles all the API calls for the IGDB AlternativeName endpoint.
+type AlternativeNameService service
 
 // Get returns a single AlternativeName identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

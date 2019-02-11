@@ -7,13 +7,10 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Game -add-tags json -w
 
-// GameService handles all the API
-// calls for the IGDB Game endpoint.
-type GameService service
-
 // Game contains information on an IGDB entry for a particular video game.
 // For more information visit: https://api-docs.igdb.com/#game
 type Game struct {
+	ID                    int          `json:"id"`
 	AgeRatings            []int        `json:"age_ratings"`
 	AggregatedRating      float64      `json:"aggregated_rating"`
 	AggregatedRatingCount int          `json:"aggregated_rating_count"`
@@ -67,12 +64,12 @@ type Game struct {
 	Websites              []int        `json:"websites"`
 }
 
-//go:generate stringer -type=GameCategory,GameStatus
-
 // GameCategory represents the IGDB enumerated type Game Category which
 // describes a type of game content. Use the Stringer interface to access
 // the corresponding Game Category values as strings.
 type GameCategory int
+
+//go:generate stringer -type=GameCategory,GameStatus
 
 const (
 	MainGame GameCategory = iota
@@ -96,6 +93,10 @@ const (
 	StatusOffline
 	StatusCancelled
 )
+
+// GameService handles all the API
+// calls for the IGDB Game endpoint.
+type GameService service
 
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

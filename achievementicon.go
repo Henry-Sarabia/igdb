@@ -5,16 +5,17 @@ import (
 	"strconv"
 )
 
-// AchievementIconService handles all the API calls for the IGDB
-// AchievementIcon endpoint.
-// This endpoint is only available for the IGDB Pro tier or above.
-type AchievementIconService service
-
 // AchievementIcon is an icon for a specific achievement.
 // For more information visit: https://api-docs.igdb.com/#achievement-icon
 type AchievementIcon struct {
 	Image
+	ID int `json:"id"`
 }
+
+// AchievementIconService handles all the API calls for the IGDB
+// AchievementIcon endpoint.
+// This endpoint is only available for the IGDB Pro tier or above.
+type AchievementIconService service
 
 // Get returns a single AchievementIcon identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
@@ -24,15 +25,15 @@ func (as *AchievementIconService) Get(id int, opts ...FuncOption) (*AchievementI
 		return nil, ErrNegativeID
 	}
 
-	var ai []*AchievementIcon
+	var icon []*AchievementIcon
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := as.client.get(as.end, &ai, opts...)
+	err := as.client.get(as.end, &icon, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AchievementIcon with ID %v", id)
 	}
 
-	return ai[0], nil
+	return icon[0], nil
 }
 
 // List returns a list of AchievementIcons identified by the provided list of IGDB IDs.
@@ -50,29 +51,29 @@ func (as *AchievementIconService) List(ids []int, opts ...FuncOption) ([]*Achiev
 		}
 	}
 
-	var ai []*AchievementIcon
+	var icon []*AchievementIcon
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
-	err := as.client.get(as.end, &ai, opts...)
+	err := as.client.get(as.end, &icon, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AchievementIcons with IDs %v", ids)
 	}
 
-	return ai, nil
+	return icon, nil
 }
 
 // Index returns an index of AchievementIcons based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AchievementIcons can
 // be found using the provided options, an error is returned.
 func (as *AchievementIconService) Index(opts ...FuncOption) ([]*AchievementIcon, error) {
-	var ai []*AchievementIcon
+	var icon []*AchievementIcon
 
-	err := as.client.get(as.end, &ai, opts...)
+	err := as.client.get(as.end, &icon, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of AchievementIcons")
 	}
 
-	return ai, nil
+	return icon, nil
 }
 
 // Count returns the number of AchievementIcons available in the IGDB.

@@ -10,11 +10,99 @@ import (
 )
 
 const (
-	testAchievementIndex string = "test_data/achievement_index.json"
+	testAchievementGet  string = "test_data/achievement_get.json"
+	testAchievementList string = "test_data/achievement_list.json"
 )
 
+func TestAchievementService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testAchievementGet)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Achievement, 1)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name            string
+		file            string
+		id              int
+		opts            []FuncOption
+		wantAchievement *Achievement
+		wantErr         error
+	}{
+		{"Valid response", testAchievementGet, 123, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 123, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 123, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			ach, err := c.Achievements.Get(test.id, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(ach, test.wantAchievement) {
+				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievement)
+			}
+		})
+	}
+}
+
+func TestAchievementService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testAchievementList)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Achievement, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name             string
+		file             string
+		ids              []int
+		opts             []FuncOption
+		wantAchievements []*Achievement
+		wantErr          error
+	}{
+		{"Valid response", testAchievementList, []int{123, 456}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{123, 456}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{123, 456}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			ach, err := c.Achievements.List(test.ids, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(ach, test.wantAchievements) {
+				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievements)
+			}
+		})
+	}
+}
+
 func TestAchievementService_Index(t *testing.T) {
-	f, err := ioutil.ReadFile(testAchievementIndex)
+	f, err := ioutil.ReadFile(testAchievementList)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,7 +117,7 @@ func TestAchievementService_Index(t *testing.T) {
 		wantAchievements []*Achievement
 		wantErr          error
 	}{
-		{"Valid response", testAchievementIndex, nil, init, nil},
+		{"Valid response", testAchievementList, nil, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},

@@ -7,9 +7,6 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct GameEngine -add-tags json -w
 
-// GameEngineService handles all the API calls for the IGDB GameEngine endpoint.
-type GameEngineService service
-
 // GameEngine represents a video game engine such as Unreal Engine.
 // For more information visit: https://api-docs.igdb.com/#game-engine
 type GameEngine struct {
@@ -25,6 +22,9 @@ type GameEngine struct {
 	URL         string `json:"url"`
 }
 
+// GameEngineService handles all the API calls for the IGDB GameEngine endpoint.
+type GameEngineService service
+
 // Get returns a single GameEngine identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameEngines, an error is returned.
@@ -33,15 +33,15 @@ func (gs *GameEngineService) Get(id int, opts ...FuncOption) (*GameEngine, error
 		return nil, ErrNegativeID
 	}
 
-	var ge []*GameEngine
+	var eng []*GameEngine
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &ge, opts...)
+	err := gs.client.get(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngine with ID %v", id)
 	}
 
-	return ge[0], nil
+	return eng[0], nil
 }
 
 // List returns a list of GameEngines identified by the provided list of IGDB IDs.
@@ -59,29 +59,29 @@ func (gs *GameEngineService) List(ids []int, opts ...FuncOption) ([]*GameEngine,
 		}
 	}
 
-	var ge []*GameEngine
+	var eng []*GameEngine
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
-	err := gs.client.get(gs.end, &ge, opts...)
+	err := gs.client.get(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngines with IDs %v", ids)
 	}
 
-	return ge, nil
+	return eng, nil
 }
 
 // Index returns an index of GameEngines based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameEngines can
 // be found using the provided options, an error is returned.
 func (gs *GameEngineService) Index(opts ...FuncOption) ([]*GameEngine, error) {
-	var ge []*GameEngine
+	var eng []*GameEngine
 
-	err := gs.client.get(gs.end, &ge, opts...)
+	err := gs.client.get(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameEngines")
 	}
 
-	return ge, nil
+	return eng, nil
 }
 
 // Count returns the number of GameEngines available in the IGDB.

@@ -7,12 +7,10 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct AgeRating -add-tags json -w
 
-// AgeRatingService handles all the API calls for the IGDB AgeRating endpoint.
-type AgeRatingService service
-
 // AgeRating describes an age rating according to various organizations.
 // For more information visit: https://api-docs.igdb.com/#age-rating
 type AgeRating struct {
+	ID                  int               `json:"id"`
 	Category            AgeRatingCategory `json:"category"`
 	ContentDescriptions []int             `json:"content_descriptions"`
 	Rating              AgeRatingEnum     `json:"rating"`
@@ -20,9 +18,9 @@ type AgeRating struct {
 	Synopsis            string            `json:"synopsis"`
 }
 
-//go:generate stringer -type=AgeRatingCategory,AgeRatingEnum
-
 type AgeRatingCategory int
+
+//go:generate stringer -type=AgeRatingCategory,AgeRatingEnum
 
 const (
 	AgeRatingESRB AgeRatingCategory = iota + 1
@@ -45,6 +43,9 @@ const (
 	AgeRatingM
 	AgeRatingAO
 )
+
+// AgeRatingService handles all the API calls for the IGDB AgeRating endpoint.
+type AgeRatingService service
 
 // Get returns a single AgeRating identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

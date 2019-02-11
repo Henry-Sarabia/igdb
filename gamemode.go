@@ -7,9 +7,6 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct GameMode -add-tags json -w
 
-// GameModeService handles all the API calls for the IGDB GameMode endpoint.
-type GameModeService service
-
 // GameMode represents a video game mode such as single or multi player.
 // For more information visit: https://api-docs.igdb.com/#game-mode
 type GameMode struct {
@@ -19,6 +16,9 @@ type GameMode struct {
 	UpdatedAt int    `json:"updated_at"`
 	URL       string `json:"url"`
 }
+
+// GameModeService handles all the API calls for the IGDB GameMode endpoint.
+type GameModeService service
 
 // Get returns a single GameMode identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to

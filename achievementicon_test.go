@@ -45,13 +45,13 @@ func TestAchievementIconService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ach, err := c.AchievementIcons.Get(test.id, test.opts...)
+			icon, err := c.AchievementIcons.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ach, test.wantAchievementIcon) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcon)
+			if !reflect.DeepEqual(icon, test.wantAchievementIcon) {
+				t.Errorf("got: <%v>, \nwant: <%v>", icon, test.wantAchievementIcon)
 			}
 		})
 	}
@@ -89,13 +89,13 @@ func TestAchievementIconService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ach, err := c.AchievementIcons.List(test.ids, test.opts...)
+			icon, err := c.AchievementIcons.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ach, test.wantAchievementIcons) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcons)
+			if !reflect.DeepEqual(icon, test.wantAchievementIcons) {
+				t.Errorf("got: <%v>, \nwant: <%v>", icon, test.wantAchievementIcons)
 			}
 		})
 	}
@@ -130,13 +130,13 @@ func TestAchievementIconService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			ach, err := c.AchievementIcons.Index(test.opts...)
+			icon, err := c.AchievementIcons.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(ach, test.wantAchievementIcons) {
-				t.Errorf("got: <%v>, \nwant: <%v>", ach, test.wantAchievementIcons)
+			if !reflect.DeepEqual(icon, test.wantAchievementIcons) {
+				t.Errorf("got: <%v>, \nwant: <%v>", icon, test.wantAchievementIcons)
 			}
 		})
 	}

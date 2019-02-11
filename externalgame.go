@@ -7,14 +7,11 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct ExternalGame -add-tags json -w
 
-// ExternalGameService handles all the API calls for the IGDB ExternalGame endpoint.
-// This endpoint is only available for the IGDB Pro tier or above.
-type ExternalGameService service
-
 // ExternalGame contains the ID and other metadata for a game
 // on a third party service.
 // For more information visit: https://api-docs.igdb.com/#external-game
 type ExternalGame struct {
+	ID        int                  `json:"id"`
 	Category  ExternalGameCategory `json:"category"`
 	CreatedAt int                  `json:"created_at"`
 	Game      int                  `json:"game"`
@@ -25,9 +22,9 @@ type ExternalGame struct {
 	Year      int                  `json:"year"`
 }
 
-//go:generate stringer -type=ExternalGameCategory
-
 type ExternalGameCategory int
+
+//go:generate stringer -type=ExternalGameCategory
 
 const (
 	ExternalSteam ExternalGameCategory = iota + 1
@@ -46,6 +43,10 @@ const (
 	ExternalTwitch
 	ExternalAndroid
 )
+
+// ExternalGameService handles all the API calls for the IGDB ExternalGame endpoint.
+// This endpoint is only available for the IGDB Pro tier or above.
+type ExternalGameService service
 
 // Get returns a single ExternalGame identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
