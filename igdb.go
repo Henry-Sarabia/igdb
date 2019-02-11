@@ -72,6 +72,7 @@ type Client struct {
 	Themes                      *ThemeService
 	TimeToBeats                 *TimeToBeatService
 	Titles                      *TitleService
+	Websites                    *WebsiteService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -132,6 +133,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
 	c.TimeToBeats = &TimeToBeatService{client: c, end: EndpointTimeToBeat}
 	c.Titles = &TitleService{client: c, end: EndpointTitle}
+	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
 	return c
 }

@@ -8,8 +8,10 @@ import (
 // PlatformWebsite represents the main website for a particular platform.
 // For more information visit: https://api-docs.igdb.com/#platform-website
 type PlatformWebsite struct {
-	Website
-	ID int `json:"id"`
+	ID       int             `json:"id"`
+	Category WebsiteCategory `json:"category"`
+	Trusted  bool            `json:"trusted"`
+	URL      string          `json:"url"`
 }
 
 // PlatformWebsiteService handles all the API calls for the IGDB PlatformWebsite endpoint.
