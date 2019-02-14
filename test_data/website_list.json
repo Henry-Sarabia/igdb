@@ -1,0 +1,37 @@
+[
+  {
+    "id": 95440,
+    "category": 5,
+    "game": 26472,
+    "trusted": true,
+    "url": "https://twitter.com/studioZAUM"
+  },
+  {
+    "id": 94413,
+    "category": 13,
+    "game": 112021,
+    "trusted": true,
+    "url": "https://store.steampowered.com/app/979300"
+  },
+  {
+    "id": 90071,
+    "category": 5,
+    "game": 75926,
+    "trusted": true,
+    "url": "https://twitter.com/apparitionouija"
+  },
+  {
+    "id": 20460,
+    "category": 2,
+    "game": 6773,
+    "trusted": false,
+    "url": "http://en.wikipedia.org/wiki/Aero_Fighters_2"
+  },
+  {
+    "id": 83935,
+    "category": 13,
+    "game": 102365,
+    "trusted": true,
+    "url": "https://store.steampowered.com/app/861510"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": 13710,
+    "change_date_category": 7,
+    "country": 752,
+    "created_at": 1508976000,
+    "description": "Tomolo Games develope fun and simple mobile games!",
+    "developed": [
+      74974,
+      74975,
+      74977
+    ],
+    "logo": 1396,
+    "name": "Tomolo Games",
+    "slug": "tomolo-games",
+    "start_date": 1494547200,
+    "start_date_category": 0,
+    "updated_at": 1508976000,
+    "url": "https://www.igdb.com/companies/tomolo-games",
+    "websites": [
+      1089
+    ]
+  }
+]

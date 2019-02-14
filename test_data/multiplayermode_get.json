@@ -1,0 +1,15 @@
+[
+  {
+    "id": 4905,
+    "campaigncoop": false,
+    "dropin": false,
+    "lancoop": false,
+    "offlinecoop": false,
+    "offlinecoopmax": 0,
+    "offlinemax": 0,
+    "onlinecoop": true,
+    "onlinecoopmax": 0,
+    "onlinemax": 0,
+    "splitscreen": false
+  }
+]

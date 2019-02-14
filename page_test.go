@@ -1,258 +1,209 @@
 package igdb
 
 import (
+	"encoding/json"
+	"github.com/pkg/errors"
+	"io/ioutil"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
-func TestPagesGet(t *testing.T) {
-	var pageTests = []struct {
-		Name   string
-		Resp   string
-		ID     int
-		ExpErr string
-	}{
-		{"Happy path", "test_data/pages_get.txt", 8, ""},
-		{"Invalid ID", "test_data/empty.txt", -10, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", 8, errEndOfJSON.Error()},
-		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
+const (
+	testPageGet  string = "test_data/page_get.json"
+	testPageList string = "test_data/page_list.json"
+)
+
+func TestPageService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testPageGet)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range pageTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Page, 1)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name     string
+		file     string
+		id       int
+		opts     []FuncOption
+		wantPage *Page
+		wantErr  error
+	}{
+		{"Valid response", testPageGet, 34, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 34, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 34, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			pg, err := c.Pages.Get(tt.ID)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			pg, err := c.Pages.Get(test.id, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			en := "IGN"
-			an := pg.Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			ep := 2
-			ap := pg.PageFollowCount
-			if ap != ep {
-				t.Errorf("Expected ID %d, got %d", ep, ap)
-			}
-
-			eyt := "https://www.youtube.com/ign"
-			ayt := pg.Youtube
-			if ayt != eyt {
-				t.Errorf("Expected URL '%s', got '%s'", eyt, ayt)
-			}
-
-			ew := 1920
-			aw := pg.Background.Width
-			if aw != ew {
-				t.Errorf("Expected width of %d, got %d", ew, aw)
+			if !reflect.DeepEqual(pg, test.wantPage) {
+				t.Errorf("got: <%v>, \nwant: <%v>", pg, test.wantPage)
 			}
 		})
 	}
 }
 
-func TestPagesList(t *testing.T) {
-	var pageTests = []struct {
-		Name   string
-		Resp   string
-		IDs    []int
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/pages_list.txt", []int{36, 215}, []FuncOption{SetLimit(5)}, ""},
-		{"Zero IDs", "test_data/pages_list.txt", nil, nil, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-50}, nil, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", []int{36, 215}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{36, 215}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
+func TestPageService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testPageList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range pageTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Page, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name      string
+		file      string
+		ids       []int
+		opts      []FuncOption
+		wantPages []*Page
+		wantErr   error
+	}{
+		{"Valid response", testPageList, []int{7, 90, 23, 154, 386}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{7, 90, 23, 154, 386}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{7, 90, 23, 154, 386}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			pg, err := c.Pages.List(tt.IDs, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			pg, err := c.Pages.List(test.ids, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(pg)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			en := "TotalBiscuit, The Cynical Brit"
-			an := pg[0].Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			eyt := "https://www.youtube.com/user/TotalHalibut"
-			ayt := pg[0].Youtube
-			if ayt != eyt {
-				t.Errorf("Expected URL '%s', got '%s'", eyt, ayt)
-			}
-
-			eu := 1488287514804
-			au := pg[1].UpdatedAt
-			if au != eu {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-			}
-
-			eh := 240
-			ah := pg[1].Logo.Height
-			if ah != eh {
-				t.Errorf("Expected height of %d, got %d", eh, ah)
+			if !reflect.DeepEqual(pg, test.wantPages) {
+				t.Errorf("got: <%v>, \nwant: <%v>", pg, test.wantPages)
 			}
 		})
 	}
 }
 
-func TestPagesSearch(t *testing.T) {
-	var pageTests = []struct {
-		Name   string
-		Resp   string
-		Qry    string
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/pages_search.txt", "PC", []FuncOption{SetLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
-		{"Empty response", "test_data/empty.txt", "PC", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "PC", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
+func TestPageService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testPageList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range pageTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Page, 0)
+	json.Unmarshal(f, &init)
+
+	tests := []struct {
+		name      string
+		file      string
+		opts      []FuncOption
+		wantPages []*Page
+		wantErr   error
+	}{
+		{"Valid response", testPageList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			pg, err := c.Pages.Search(tt.Qry, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			pg, err := c.Pages.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(pg)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			eID := 133
-			aID := pg[0].ID
-			if aID != eID {
-				t.Errorf("Expected ID %d, got %d", eID, aID)
-			}
-
-			ec := CountryCode(826)
-			ac := pg[0].Country
-			if ac != ec {
-				t.Errorf("Expected country code %d, got %d", ec, ac)
-			}
-
-			efb := "https://www.facebook.com/Frankieonpcin1080p"
-			afb := pg[0].Facebook
-			if afb != efb {
-				t.Errorf("Expected Facebook info '%s', got '%s'", efb, afb)
-			}
-
-			eCat := 2
-			aCat := pg[1].Category
-			if aCat != eCat {
-				t.Errorf("Expected category %d, got %d", eCat, aCat)
-			}
-
-			ed := "The global authority on PC games. "
-			ad := pg[1].Description
-			if ad != ed {
-				t.Errorf("Expected description '%s', got '%s'", ed, ad)
-			}
-
-			etw := "https://twitter.com/pcgamer"
-			atw := pg[1].Twitter
-			if atw != etw {
-				t.Errorf("Expected Twitter info '%s', got '%s'", etw, atw)
+			if !reflect.DeepEqual(pg, test.wantPages) {
+				t.Errorf("got: <%v>, \nwant: <%v>", pg, test.wantPages)
 			}
 		})
 	}
 }
 
-func TestPagesCount(t *testing.T) {
-	var countTests = []struct {
-		Name     string
-		Resp     string
-		Opts     []FuncOption
-		ExpCount int
-		ExpErr   string
+func TestPageService_Count(t *testing.T) {
+	var tests = []struct {
+		name      string
+		resp      string
+		opts      []FuncOption
+		wantCount int
+		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
-		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
-		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Empty response", "", nil, 0, errInvalidJSON},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
-	for _, tt := range countTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.Pages.Count(tt.Opts...)
-			assertError(t, err, tt.ExpErr)
+			count, err := c.Pages.Count(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			if count != tt.ExpCount {
-				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			if count != test.wantCount {
+				t.Fatalf("got: <%v>, want: <%v>", count, test.wantCount)
+
 			}
 		})
 	}
 }
 
-func TestPagesListFields(t *testing.T) {
-	var fieldTests = []struct {
-		Name      string
-		Resp      string
-		ExpFields []string
-		ExpErr    string
+func TestPageService_Fields(t *testing.T) {
+	var tests = []struct {
+		name       string
+		resp       string
+		wantFields []string
+		wantErr    error
 	}{
-		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
-		{"Asterisk", `["*"]`, []string{"*"}, ""},
-		{"Empty response", "", nil, errEndOfJSON.Error()},
-		{"No results", "[]", nil, ""},
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
+		{"Asterisk", `["*"]`, []string{"*"}, nil},
+		{"Empty response", "", nil, errInvalidJSON},
+		{"No results", "[]", nil, nil},
 	}
 
-	for _, tt := range fieldTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.Pages.ListFields()
-			assertError(t, err, tt.ExpErr)
+			fields, err := c.Pages.Fields()
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			ok, err := equalSlice(fields, tt.ExpFields)
+			ok, err := equalSlice(fields, test.wantFields)
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
+				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
 			}
 		})
 	}

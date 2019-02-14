@@ -1,0 +1,77 @@
+[
+  {
+    "id": 301,
+    "created_at": 1349568000,
+    "games": [
+      1420,
+      1421,
+      1422,
+      1423,
+      80387
+    ],
+    "name": "Kengo",
+    "slug": "kengo",
+    "updated_at": 1349568000,
+    "url": "https://www.igdb.com/collections/kengo"
+  },
+  {
+    "id": 4010,
+    "created_at": 1507852800,
+    "games": [
+      62387,
+      62388,
+      78078
+    ],
+    "name": "Net Versus",
+    "slug": "net-versus",
+    "updated_at": 1507852800,
+    "url": "https://www.igdb.com/collections/net-versus"
+  },
+  {
+    "id": 364,
+    "created_at": 1361664000,
+    "games": [
+      1956,
+      1957,
+      1958,
+      1959,
+      1960,
+      7716,
+      21303,
+      51346
+    ],
+    "name": "Alone in the Dark",
+    "slug": "alone-in-the-dark",
+    "updated_at": 1361664000,
+    "url": "https://www.igdb.com/collections/alone-in-the-dark"
+  },
+  {
+    "id": 457,
+    "created_at": 1372377600,
+    "games": [
+      2572,
+      2573,
+      2574,
+      2575
+    ],
+    "name": "Dragon Ball Z: Budokai Tenkaichi",
+    "slug": "dragon-ball-z-budokai-tenkaichi",
+    "updated_at": 1372377600,
+    "url": "https://www.igdb.com/collections/dragon-ball-z-budokai-tenkaichi"
+  },
+  {
+    "id": 719,
+    "created_at": 1391299200,
+    "games": [
+      2661,
+      4802,
+      6755,
+      20696,
+      20699
+    ],
+    "name": "Deca Sports",
+    "slug": "deca-sports",
+    "updated_at": 1391299200,
+    "url": "https://www.igdb.com/collections/deca-sports"
+  }
+]

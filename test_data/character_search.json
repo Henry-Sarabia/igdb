@@ -1,0 +1,88 @@
+[
+  {
+    "id": 2928,
+    "created_at": 1418428800,
+    "games": [
+      2583
+    ],
+    "name": "Super Buu",
+    "people": [
+      36264,
+      45777
+    ],
+    "slug": "super-buu",
+    "updated_at": 1418428800,
+    "url": "https://www.igdb.com/characters/super-buu"
+  },
+  {
+    "id": 2431,
+    "created_at": 1414454400,
+    "games": [
+      2031,
+      9192
+    ],
+    "name": "Super Soldier",
+    "people": [
+      9163,
+      26573,
+      36290
+    ],
+    "slug": "super-soldier",
+    "updated_at": 1467244800,
+    "url": "https://www.igdb.com/characters/super-soldier"
+  },
+  {
+    "id": 703,
+    "created_at": 1407110400,
+    "games": [
+      16,
+      9630
+    ],
+    "name": "Super Mutants",
+    "people": [
+      447,
+      11228,
+      11229,
+      33902,
+      45005
+    ],
+    "slug": "super-mutants",
+    "updated_at": 1533513600,
+    "url": "https://www.igdb.com/characters/super-mutants"
+  },
+  {
+    "id": 10282,
+    "created_at": 1476403200,
+    "games": [
+      6914
+    ],
+    "name": "Joseph \"Super Joe\" Gibson",
+    "people": [
+      1423
+    ],
+    "slug": "joseph-super-joe-gibson",
+    "updated_at": 1476403200,
+    "url": "https://www.igdb.com/characters/joseph-super-joe-gibson"
+  },
+  {
+    "id": 3726,
+    "akas": [
+      "Super Mario"
+    ],
+    "created_at": 1428796800,
+    "games": [
+      1074
+    ],
+    "gender": 0,
+    "mug_shot": 3580,
+    "name": "Mario",
+    "people": [
+      28769,
+      132118
+    ],
+    "slug": "mario",
+    "species": 1,
+    "updated_at": 1468540800,
+    "url": "https://www.igdb.com/characters/mario"
+  }
+]

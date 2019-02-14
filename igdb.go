@@ -2,33 +2,21 @@ package igdb
 
 import (
 	"encoding/json"
-	"errors"
+	"github.com/Henry-Sarabia/apicalypse"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 // igdbURL is the base URL for the IGDB API.
 const igdbURL string = "https://api-v3.igdb.com/"
 
-// Errors returned when creating URLs for API calls.
-var (
-	// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
-	ErrNegativeID = errors.New("igdb.Client: negative ID")
-	// ErrEmptyIDs occurs when an empty slice of IDs is used as an argument in an API call.
-	ErrEmptyIDs = errors.New("igdb.Client: empty IDs")
-	// ErrNoResults occurs when the IGDB returns no results
-	ErrNoResults = errors.New("igdb.Client: no results")
-)
-
-// URL represents a URL as a string.
-type URL string
-
 // service is the underlying struct that handles
 // all API calls for different IGDB endpoints.
 type service struct {
 	client *Client
+	end    endpoint
 }
 
 // Client wraps an HTTP Client used to communicate with the IGDB,
@@ -40,32 +28,52 @@ type Client struct {
 	rootURL string
 	key     string
 
-	common service
-
 	// Services
-	Characters   *CharacterService
-	Collections  *CollectionService
-	Companies    *CompanyService
-	Credits      *CreditService
-	Engines      *EngineService
-	Feeds        *FeedService
-	Franchises   *FranchiseService
-	Games        *GameService
-	GameModes    *GameModeService
-	Genres       *GenreService
-	Keywords     *KeywordService
-	Pages        *PageService
-	People       *PersonService
-	Perspectives *PerspectiveService
-	Platforms    *PlatformService
-	Pulses       *PulseService
-	PulseGroups  *PulseGroupService
-	PulseSources *PulseSourceService
-	ReleaseDates *ReleaseDateService
-	Reviews      *ReviewService
-	Themes       *ThemeService
-	Titles       *TitleService
-	Versions     *VersionService
+	Achievements                *AchievementService
+	AchievementIcons            *AchievementIconService
+	AgeRatings                  *AgeRatingService
+	AgeRatingContents           *AgeRatingContentService
+	AlternativeNames            *AlternativeNameService
+	Artworks                    *ArtworkService
+	Characters                  *CharacterService
+	CharacterMugshots           *CharacterMugshotService
+	Collections                 *CollectionService
+	Companies                   *CompanyService
+	CompanyLogos                *CompanyLogoService
+	CompanyWebsites             *CompanyWebsiteService
+	Covers                      *CoverService
+	ExternalGames               *ExternalGameService
+	Feeds                       *FeedService
+	Franchises                  *FranchiseService
+	Games                       *GameService
+	GameEngines                 *GameEngineService
+	GameEngineLogos             *GameEngineLogoService
+	GameModes                   *GameModeService
+	GameVersions                *GameVersionService
+	GameVersionFeatures         *GameVersionFeatureService
+	GameVersionFeatureValues    *GameVersionFeatureValueService
+	GameVideos                  *GameVideoService
+	Genres                      *GenreService
+	InvolvedCompanies           *InvolvedCompanyService
+	Keywords                    *KeywordService
+	MultiplayerModes            *MultiplayerModeService
+	Pages                       *PageService
+	PageBackgrounds             *PageBackgroundService
+	PageLogos                   *PageLogoService
+	PageWebsites                *PageWebsiteService
+	Platforms                   *PlatformService
+	PlatformLogos               *PlatformLogoService
+	PlatformVersions            *PlatformVersionService
+	PlatformVersionCompanies    *PlatformVersionCompanyService
+	PlatformVersionReleaseDates *PlatformVersionReleaseDateService
+	PlatformWebsites            *PlatformWebsiteService
+	PlayerPerspectives          *PlayerPerspectiveService
+	ReleaseDates                *ReleaseDateService
+	Screenshots                 *ScreenshotService
+	Themes                      *ThemeService
+	TimeToBeats                 *TimeToBeatService
+	Titles                      *TitleService
+	Websites                    *WebsiteService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -83,46 +91,80 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.key = apiKey
 	c.rootURL = igdbURL
 
-	c.common.client = c
-	c.Characters = (*CharacterService)(&c.common)
-	c.Collections = (*CollectionService)(&c.common)
-	c.Companies = (*CompanyService)(&c.common)
-	c.Credits = (*CreditService)(&c.common)
-	c.Engines = (*EngineService)(&c.common)
-	c.Feeds = (*FeedService)(&c.common)
-	c.Franchises = (*FranchiseService)(&c.common)
-	c.Games = (*GameService)(&c.common)
-	c.GameModes = (*GameModeService)(&c.common)
-	c.Genres = (*GenreService)(&c.common)
-	c.Keywords = (*KeywordService)(&c.common)
-	c.Pages = (*PageService)(&c.common)
-	c.People = (*PersonService)(&c.common)
-	c.Perspectives = (*PerspectiveService)(&c.common)
-	c.Platforms = (*PlatformService)(&c.common)
-	c.Pulses = (*PulseService)(&c.common)
-	c.PulseGroups = (*PulseGroupService)(&c.common)
-	c.PulseSources = (*PulseSourceService)(&c.common)
-	c.ReleaseDates = (*ReleaseDateService)(&c.common)
-	c.Reviews = (*ReviewService)(&c.common)
-	c.Themes = (*ThemeService)(&c.common)
-	c.Titles = (*TitleService)(&c.common)
-	c.Versions = (*VersionService)(&c.common)
+	c.Achievements = &AchievementService{client: c, end: EndpointAchievement}
+	c.AchievementIcons = &AchievementIconService{client: c, end: EndpointAchievementIcon}
+	c.AgeRatings = &AgeRatingService{client: c, end: EndpointAgeRating}
+	c.AgeRatingContents = &AgeRatingContentService{client: c, end: EndpointAgeRatingContent}
+	c.AlternativeNames = &AlternativeNameService{client: c, end: EndpointAlternativeName}
+	c.Artworks = &ArtworkService{client: c, end: EndpointArtwork}
+	c.Characters = &CharacterService{client: c, end: EndpointCharacter}
+	c.CharacterMugshots = &CharacterMugshotService{client: c, end: EndpointCharacterMugshot}
+	c.Collections = &CollectionService{client: c, end: EndpointCollection}
+	c.Companies = &CompanyService{client: c, end: EndpointCompany}
+	c.CompanyLogos = &CompanyLogoService{client: c, end: EndpointCompanyLogo}
+	c.CompanyWebsites = &CompanyWebsiteService{client: c, end: EndpointCompanyWebsite}
+	c.Covers = &CoverService{client: c, end: EndpointCover}
+	c.ExternalGames = &ExternalGameService{client: c, end: EndpointExternalGame}
+	c.Feeds = &FeedService{client: c, end: EndpointFeed}
+	c.Franchises = &FranchiseService{client: c, end: EndpointFranchise}
+	c.Games = &GameService{client: c, end: EndpointGame}
+	c.GameEngines = &GameEngineService{client: c, end: EndpointGameEngine}
+	c.GameEngineLogos = &GameEngineLogoService{client: c, end: EndpointGameEngineLogo}
+	c.GameModes = &GameModeService{client: c, end: EndpointGameMode}
+	c.GameVersions = &GameVersionService{client: c, end: EndpointGameVersion}
+	c.GameVersionFeatures = &GameVersionFeatureService{client: c, end: EndpointGameVersionFeature}
+	c.GameVersionFeatureValues = &GameVersionFeatureValueService{client: c, end: EndpointGameVersionFeatureValue}
+	c.GameVideos = &GameVideoService{client: c, end: EndpointGameVideo}
+	c.Genres = &GenreService{client: c, end: EndpointGenre}
+	c.InvolvedCompanies = &InvolvedCompanyService{client: c, end: EndpointInvolvedCompany}
+	c.Keywords = &KeywordService{client: c, end: EndpointKeyword}
+	c.MultiplayerModes = &MultiplayerModeService{client: c, end: EndpointMultiplayerMode}
+	c.Pages = &PageService{client: c, end: EndpointPage}
+	c.PageBackgrounds = &PageBackgroundService{client: c, end: EndpointPageBackground}
+	c.PageLogos = &PageLogoService{client: c, end: EndpointPageLogo}
+	c.PageWebsites = &PageWebsiteService{client: c, end: EndpointPageWebsite}
+	c.Platforms = &PlatformService{client: c, end: EndpointPlatform}
+	c.PlatformLogos = &PlatformLogoService{client: c, end: EndpointPlatformLogo}
+	c.PlatformVersions = &PlatformVersionService{client: c, end: EndpointPlatformVersion}
+	c.PlatformVersionCompanies = &PlatformVersionCompanyService{client: c, end: EndpointPlatformVersionCompany}
+	c.PlatformVersionReleaseDates = &PlatformVersionReleaseDateService{client: c, end: EndpointPlatformVersionReleaseDate}
+	c.PlatformWebsites = &PlatformWebsiteService{client: c, end: EndpointPlatformWebsite}
+	c.PlayerPerspectives = &PlayerPerspectiveService{client: c, end: EndpointPlayerPerspective}
+	c.ReleaseDates = &ReleaseDateService{client: c, end: EndpointReleaseDate}
+	c.Screenshots = &ScreenshotService{client: c, end: EndpointScreenshot}
+	c.Themes = &ThemeService{client: c, end: EndpointTheme}
+	c.TimeToBeats = &TimeToBeatService{client: c, end: EndpointTimeToBeat}
+	c.Titles = &TitleService{client: c, end: EndpointTitle}
+	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
 	return c
 }
 
-// get sends a GET request to the provided url and stores
-// the response in the provided result empty interface.
-// The response will be checked and return any errors.
-func (c *Client) get(url string, result interface{}) error {
-	req, err := c.newRequest(url)
+// Request configures a new request for the provided URL and
+// adds the necessary headers to communicate with the IGDB.
+func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error) {
+	unwrapped, err := unwrapOptions(opts...)
 	if err != nil {
-		return err
+		return nil, errors.Wrap(err, "cannot create request with invalid options")
 	}
 
+	req, err := apicalypse.NewRequest("GET", c.rootURL+string(end), unwrapped...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot make request for '%s' endpoint", end)
+	}
+
+	req.Header.Add("user-key", c.key)
+	req.Header.Add("Accept", "application/json")
+
+	return req, nil
+}
+
+// Send sends the provided request and stores the response in the value pointed to by result.
+// The response will be checked and return any errors.
+func (c *Client) send(req *http.Request, result interface{}) error {
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "http client cannot send request")
 	}
 	defer resp.Body.Close()
 
@@ -132,7 +174,7 @@ func (c *Client) get(url string, result interface{}) error {
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "cannot read response body")
 	}
 
 	if err = checkResults(b); err != nil {
@@ -140,132 +182,35 @@ func (c *Client) get(url string, result interface{}) error {
 	}
 
 	err = json.Unmarshal(b, &result)
-
-	return err
-}
-
-// newRequest configures a new request for the provided URL and
-// adds the necesarry headers to communicate with the IGDB.
-func (c *Client) newRequest(url string) (*http.Request, error) {
-	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("user-key", c.key)
-	req.Header.Add("Accept", "application/json")
-
-	return req, nil
-}
-
-// singleURL creates a URL configured to request a single IGDB object identified by
-// its unique IGDB ID using the provided endpoint and options.
-func (c *Client) singleURL(end endpoint, ID int, opts ...FuncOption) (string, error) {
-	if ID < 0 {
-		return "", ErrNegativeID
-	}
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + strconv.Itoa(ID)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
-
-// multiURL creates a URL configured to request multiple IGDB objects identified
-// by their unique IGDB IDs using the provided endpoint and options. An empty slice
-// of IDs creates a URL configured to retrieve an index of IGDB objects from the given
-// endpoint based solely on the provided options.
-func (c *Client) multiURL(end endpoint, IDs []int, opts ...FuncOption) (string, error) {
-	for _, ID := range IDs {
-		if ID < 0 {
-			return "", ErrNegativeID
-		}
-	}
-
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + intsToCommaString(IDs)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
-
-// searchURL creates a URL configured to search the IGDB based on the given query using
-// the provided endpoint and options.
-func (c *Client) searchURL(end endpoint, qry string, opts ...FuncOption) (string, error) {
-	if strings.TrimSpace(qry) == "" {
-		return "", ErrEmptyQuery
-	}
-
-	opts = append(opts, setSearch(qry))
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end)
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
-
-// countURL creates a URL configured to retrieve the count of IGDB objects
-// using the provided endpoint and options.
-func (c *Client) countURL(end endpoint, opts ...FuncOption) (string, error) {
-	opt, err := newOpt(opts...)
-	if err != nil {
-		return "", err
-	}
-
-	url := c.rootURL + string(end) + "count"
-	url = encodeURL(&opt.Values, url)
-
-	return url, nil
-}
-
-// Byte representations of ASCII characters. Used for empty result checks.
-const (
-	// openBracketASCII represents the ASCII code for an open bracket.
-	openBracketASCII = 91
-	// closedBracketASCII represents the ASCII code for a closed bracket.
-	closedBracketASCII = 93
-)
-
-// checkResults checks if the results of an API call are an empty array.
-// If they are, an error is returned. Otherwise, nil is returned.
-func checkResults(r []byte) error {
-	if len(r) != 2 {
-		return nil
-	}
-
-	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
-		return ErrNoResults
+		return errors.Wrap(errInvalidJSON, err.Error())
 	}
 
 	return nil
 }
 
-// IntsToStrings is a helper function that converts a slice of ints to a
-// slice of strings. Useful for functions that require a variadic number
-// of strings instead of ints such as SetFilter.
-func IntsToStrings(ints []int) []string {
+// Get sends a GET request to the provided endpoint with the provided options and
+// stores the results in the value pointed to by result.
+func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error {
+	req, err := c.request(end, opts...)
+	if err != nil {
+		return err
+	}
+
+	err = c.send(req, result)
+	if err != nil {
+		return errors.Wrap(err, "cannot make GET request")
+	}
+
+	return nil
+}
+
+// intsToStrings is a helper function that converts a slice of ints to a
+// slice of strings.
+func intsToStrings(ints []int) []string {
 	var str []string
 	for _, i := range ints {
 		str = append(str, strconv.Itoa(i))
 	}
 	return str
-}
-
-// intsToCommaString is a helper function that returns a comma separated
-// list of ints as a single string.
-func intsToCommaString(ints []int) string {
-	s := IntsToStrings(ints)
-	return strings.Join(s, ",")
 }

@@ -1,158 +1,157 @@
 package igdb
 
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
+
+//go:generate gomodifytags -file $GOFILE -struct Game -add-tags json -w
+
+// Game contains information on an IGDB entry for a particular video game.
+// For more information visit: https://api-docs.igdb.com/#game
+type Game struct {
+	ID                    int          `json:"id"`
+	AgeRatings            []int        `json:"age_ratings"`
+	AggregatedRating      float64      `json:"aggregated_rating"`
+	AggregatedRatingCount int          `json:"aggregated_rating_count"`
+	AlternativeNames      []int        `json:"alternative_names"`
+	Artworks              []int        `json:"artworks"`
+	Bundles               []int        `json:"bundles"`
+	Category              GameCategory `json:"category"`
+	Collection            int          `json:"collection"`
+	Cover                 int          `json:"cover"`
+	CreatedAt             int          `json:"created_at"`
+	DLCS                  []int        `json:"dlcs"`
+	Expansions            []int        `json:"expansions"`
+	ExternalGames         []int        `json:"external_games"`
+	FirstReleaseDate      int          `json:"first_release_date"`
+	Follows               int          `json:"follows"`
+	Franchise             int          `json:"franchise"`
+	Franchises            []int        `json:"franchises"`
+	GameEngines           []int        `json:"game_engines"`
+	GameModes             []int        `json:"game_modes"`
+	Genres                []int        `json:"genres"`
+	Hypes                 int          `json:"hypes"`
+	InvolvedCompanies     []int        `json:"involved_companies"`
+	Keywords              []int        `json:"keywords"`
+	MultiplayerModes      []int        `json:"multiplayer_modes"`
+	Name                  string       `json:"name"`
+	ParentGame            int          `json:"parent_game"`
+	Platforms             []int        `json:"platforms"`
+	PlayerPerspectives    []int        `json:"player_perspectives"`
+	Popularity            float64      `json:"popularity"`
+	PulseCount            int          `json:"pulse_count"`
+	Rating                float64      `json:"rating"`
+	RatingCount           int          `json:"rating_count"`
+	ReleaseDates          []int        `json:"release_dates"`
+	Screenshots           []int        `json:"screenshots"`
+	SimilarGames          []int        `json:"similar_games"`
+	Slug                  string       `json:"slug"`
+	StandaloneExpansions  []int        `json:"standalone_expansions"`
+	Status                GameStatus   `json:"status"`
+	Storyline             string       `json:"storyline"`
+	Summary               string       `json:"summary"`
+	Tags                  []Tag        `json:"tags"`
+	Themes                []int        `json:"themes"`
+	TimeToBeat            int          `json:"time_to_beat"`
+	TotalRating           float64      `json:"total_rating"`
+	TotalRatingCount      int          `json:"total_rating_count"`
+	UpdatedAt             int          `json:"updated_at"`
+	URL                   string       `json:"url"`
+	VersionParent         int          `json:"version_parent"`
+	VersionTitle          int          `json:"version_title"`
+	Videos                []int        `json:"videos"`
+	Websites              []int        `json:"websites"`
+}
+
+// GameCategory represents the IGDB enumerated type Game Category which
+// describes a type of game content. Use the Stringer interface to access
+// the corresponding Game Category values as strings.
+type GameCategory int
+
+//go:generate stringer -type=GameCategory,GameStatus
+
+const (
+	MainGame GameCategory = iota
+	DLCAddon
+	Expansion
+	Bundle
+	StandaloneExpansion
+)
+
+// GameStatus represents the IGDB enumerated type Game Status which describes
+// the release status of a specific game. Use the Stringer interface to access
+// the corresponding Game Status values as strings.
+type GameStatus int
+
+const (
+	StatusReleased GameStatus = iota
+	_
+	StatusAlpha
+	StatusBeta
+	StatusEarlyAccess
+	StatusOffline
+	StatusCancelled
+)
+
 // GameService handles all the API
 // calls for the IGDB Game endpoint.
 type GameService service
-
-// Game contains information on an IGDB entry for a particular video game.
-//
-// For more information, visit: https://igdb.github.io/api/endpoints/game/
-type Game struct {
-	ID                   int            `json:"id,omitempty"`
-	Name                 string         `json:"name,omitempty"`
-	Slug                 string         `json:"slug,omitempty"`
-	URL                  URL            `json:"url,omitempty"`
-	CreatedAt            int            `json:"created_at,omitempty"` // Unix time in milliseconds
-	UpdatedAt            int            `json:"updated_at,omitempty"` // Unix time in milliseconds
-	Summary              string         `json:"summary,omitempty"`
-	Storyline            string         `json:"storyline,omitempty"`
-	Collection           int            `json:"collection,omitempty"`
-	Franchise            int            `json:"franchise,omitempty"`
-	Hypes                int            `json:"hypes,omitempty"`
-	Popularity           float64        `json:"popularity,omitempty"`
-	Rating               float64        `json:"rating,omitempty"`
-	RatingCount          int            `json:"rating_count,omitempty"`
-	AggregateRating      float64        `json:"aggregated_rating,omitempty"`
-	AggregateRatingCount int            `json:"aggregated_rating_count,omitempty"`
-	TotalRating          float64        `json:"total_rating,omitempty"`
-	TotalRatingCount     int            `json:"total_rating_count,omitempty"`
-	WeightedRating       float64        `json:"weighted_rating,omitempty"`
-	Game                 int            `json:"game,omitempty"`
-	VersionParent        int            `json:"version_parent,omitempty"`
-	VersionTitle         interface{}    `json:"version_title,omitempty"`
-	Developers           []int          `json:"developers,omitempty"`
-	Publishers           []int          `json:"publishers,omitempty"`
-	Engines              []int          `json:"game_engines,omitempty"`
-	Category             GameCategory   `json:"category,omitempty"`
-	TimeToBeat           CompletionTime `json:"time_to_beat,omitempty"`
-	PlayerPerspectives   []int          `json:"player_perspectives,omitempty"`
-	GameModes            []int          `json:"game_modes,omitempty"`
-	Keywords             []int          `json:"keywords,omitempty"`
-	Themes               []int          `json:"themes,omitempty"`
-	Genres               []int          `json:"genres,omitempty"`
-	FirstReleaseDate     int            `json:"first_release_date,omitempty"` // Unix time in milliseconds
-	Status               GameStatus     `json:"status,omitempty"`
-	ReleaseDates         []ReleaseDate  `json:"release_dates,omitempty"`
-	AlternativeNames     []AltName      `json:"alternative_names,omitempty"`
-	Screenshots          []Image        `json:"screenshots,omitempty"`
-	Videos               []YoutubeVideo `json:"videos,omitempty"`
-	Cover                Image          `json:"cover,omitempty"`
-	ESRB                 ESRB           `json:"esrb,omitempty"`
-	PEGI                 PEGI           `json:"pegi,omitempty"`
-	Websites             []Website      `json:"websites,omitempty"`
-	Tags                 []Tag          `json:"tags,omitempty"`
-	DLCs                 []int          `json:"dlcs,omitempty"`
-	Expansions           []int          `json:"expansions,omitempty"`
-	Standalone           []int          `json:"standalone_expansions,omitempty"`
-	Bundles              []int          `json:"bundles,omitempty"`
-	SimilarGames         []int          `json:"games,omitempty"`
-	Follows              interface{}    `json:"follows,omitempty"`
-	PulseCount           interface{}    `json:"pulse_count,omitempty"`
-	External             External       `json:"external,omitempty"`
-	MultiplayerModes     interface{}    `json:"multiplayer_modes,omitempty"`
-	Franchises           []int          `json:"franchises,omitempty"`
-	Platforms            []int          `json:"platforms,omitempty"`
-}
-
-// AltName contains information on an
-// alternative name for an IGDB object.
-type AltName struct {
-	Name    string `json:"name"`
-	Comment string `json:"comment"`
-}
-
-// CompletionTime contains the time to complete
-// a particular video game. This time is measured
-// in seconds.
-type CompletionTime struct {
-	Hastly     int `json:"hastly"`
-	Normally   int `json:"normally"`
-	Completely int `json:"completely"`
-}
-
-// ESRB contains the rating and synopsis
-// for a particular video game given by
-// the Entertainment Software Rating Board.
-type ESRB struct {
-	Rating   ESRBCode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
-}
-
-// External contains information for
-// connecting external service IDs to
-// the IGDB for a particular object.
-type External struct {
-	Steam string `json:"steam"`
-}
-
-// PEGI contains the rating and synopsis
-// for a particular video game given by
-// the Pan European Game Information organization.
-type PEGI struct {
-	Rating   PEGICode `json:"rating"`
-	Synopsis string   `json:"synopsis"`
-}
-
-// YoutubeVideo contains the name and
-// ID of a  Youtube video.
-type YoutubeVideo struct {
-	Name string `json:"name"`
-	ID   string `json:"video_id"` // Youtube slug
-}
-
-// Website contains address and category
-// information on a website referenced
-// in the IGDB.
-type Website struct {
-	Category WebsiteCategory `json:"category"`
-	URL      URL             `json:"url"`
-}
 
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
 func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
-	url, err := gs.client.singleURL(GameEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
-	}
-
-	var g []Game
-
-	err = gs.client.get(url, &g)
-	if err != nil {
-		return nil, err
-	}
-
-	return &g[0], nil
-}
-
-// List returns a list of Games identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of Games based solely on the provided
-// options. Any ID that does not match a Game is ignored. If none of the IDs
-// match a Game, an error is returned.
-func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
-	url, err := gs.client.multiURL(GameEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
+	if id < 0 {
+		return nil, ErrNegativeID
 	}
 
 	var g []*Game
 
-	err = gs.client.get(url, &g)
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Game with ID %v", id)
+	}
+
+	return g[0], nil
+}
+
+// List returns a list of Games identified by the provided list of IGDB IDs.
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a Game is ignored. If none of the IDs
+// match a Game, an error is returned.
+func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
+	}
+
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
+	}
+
+	var g []*Game
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := gs.client.get(gs.end, &g, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Games with IDs %v", ids)
+	}
+
+	return g, nil
+}
+
+// Index returns an index of Games based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no Games can
+// be found using the provided options, an error is returned.
+func (gs *GameService) Index(opts ...FuncOption) ([]*Game, error) {
+	var g []*Game
+
+	err := gs.client.get(gs.end, &g, opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get index of Games")
 	}
 
 	return g, nil
@@ -162,16 +161,12 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Games are found using the provided query, an error is returned.
 func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
-	url, err := gs.client.searchURL(GameEndpoint, qry, opts...)
-	if err != nil {
-		return nil, err
-	}
-
 	var g []*Game
 
-	err = gs.client.get(url, &g)
+	opts = append(opts, setSearch(qry))
+	err := gs.client.get(gs.end, &g, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Game with query %s", qry)
 	}
 
 	return g, nil
@@ -181,21 +176,21 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 // Provide the SetFilter functional option if you need to filter
 // which Games to count.
 func (gs *GameService) Count(opts ...FuncOption) (int, error) {
-	ct, err := gs.client.getEndpointCount(GameEndpoint, opts...)
+	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count Games")
 	}
 
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB Game object.
-func (gs *GameService) ListFields() ([]string, error) {
-	fl, err := gs.client.getEndpointFieldList(GameEndpoint)
+func (gs *GameService) Fields() ([]string, error) {
+	f, err := gs.client.getFields(gs.end)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get Game fields")
 	}
 
-	return fl, nil
+	return f, nil
 }

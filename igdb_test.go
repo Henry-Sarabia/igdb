@@ -1,3 +1,5 @@
+// +build ignore
+
 package igdb
 
 import (
@@ -28,8 +30,8 @@ func TestGet(t *testing.T) {
 		ExpErr  string
 	}{
 		{"OK request with valid response", http.StatusOK, testGetResp, string(testEndpoint), "value", ""},
-		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errEndOfJSON.Error()},
-		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errEndOfJSON.Error()},
+		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errInvalidJSON.Error()},
+		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errInvalidJSON.Error()},
 		{"Bad request with error response", http.StatusNotFound, testErrNotFound, "badURL", "", "Status 404 - status not found"},
 	}
 
@@ -39,7 +41,7 @@ func TestGet(t *testing.T) {
 			ts, c := testServerString(gt.Status, gt.Resp)
 			defer ts.Close()
 
-			err := c.get(c.rootURL+gt.URL, &testResp)
+			err := c.send(c.rootURL+gt.URL, &testResp)
 			assertError(t, err, gt.ExpErr)
 
 			if testResp.Field != gt.ExpResp {
@@ -154,62 +156,6 @@ func TestSearchURL(t *testing.T) {
 
 			if url != st.ExpURL {
 				t.Fatalf("Expected URL '%s', got '%s'", st.ExpURL, url)
-			}
-		})
-	}
-}
-
-func TestIntsToStrings(t *testing.T) {
-	var tableTests = []struct {
-		Name       string
-		Ints       []int
-		ExpStrings []string
-	}{
-		{"Empty slice", nil, nil},
-		{"Zero int slice", []int{0}, []string{"0"}},
-		{"Single positive int slice", []int{100}, []string{"100"}},
-		{"Single negative int slice", []int{-100}, []string{"-100"}},
-		{"Multiple positive ints slice", []int{100, 5, 999, 123456789}, []string{"100", "5", "999", "123456789"}},
-		{"Multiple negative ints slice", []int{-100, -5, -999, -123456789}, []string{"-100", "-5", "-999", "-123456789"}},
-		{"Mixed ints slice", []int{100, -200, 300, -400}, []string{"100", "-200", "300", "-400"}},
-	}
-
-	for _, tt := range tableTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			s := IntsToStrings(tt.Ints)
-
-			ok, err := equalSlice(s, tt.ExpStrings)
-			if err != nil {
-				t.Error(err)
-			}
-			if !ok {
-				t.Fatalf("Expected strings %v, got %v", tt.ExpStrings, s)
-			}
-		})
-	}
-}
-
-func TestIntsToCommaString(t *testing.T) {
-	var tableTests = []struct {
-		Name      string
-		Ints      []int
-		Expstring string
-	}{
-		{"Empty slice", nil, ""},
-		{"Zero int slice", []int{0}, "0"},
-		{"Single positive int slice", []int{100}, "100"},
-		{"Single negative int slice", []int{-100}, "-100"},
-		{"Multiple positive ints slice", []int{100, 5, 999, 123456789}, "100,5,999,123456789"},
-		{"Multiple negative ints slice", []int{-100, -5, -999, -123456789}, "-100,-5,-999,-123456789"},
-		{"Mixed ints slice", []int{100, -200, 300, -400}, "100,-200,300,-400"},
-	}
-
-	for _, tt := range tableTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			s := intsToCommaString(tt.Ints)
-
-			if s != tt.Expstring {
-				t.Fatalf("Expected string '%s', got '%s'", tt.Expstring, s)
 			}
 		})
 	}

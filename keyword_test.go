@@ -1,264 +1,209 @@
 package igdb
 
 import (
+	"encoding/json"
+	"github.com/pkg/errors"
+	"io/ioutil"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
-func TestKeywordsGet(t *testing.T) {
-	var keywordTests = []struct {
-		Name   string
-		Resp   string
-		ID     int
-		ExpErr string
-	}{
-		{"Happy path", "test_data/keywords_get.txt", 2107, ""},
-		{"Invalid ID", "test_data/empty.txt", -1000, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", 2107, errEndOfJSON.Error()},
-		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
+const (
+	testKeywordGet  string = "test_data/keyword_get.json"
+	testKeywordList string = "test_data/keyword_list.json"
+)
+
+func TestKeywordService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testKeywordGet)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range keywordTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Keyword, 1)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name        string
+		file        string
+		id          int
+		opts        []FuncOption
+		wantKeyword *Keyword
+		wantErr     error
+	}{
+		{"Valid response", testKeywordGet, 19226, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 19226, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 19226, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			kw, err := c.Keywords.Get(tt.ID)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			key, err := c.Keywords.Get(test.id, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			en := "space adventure"
-			an := kw.Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			eID := 2107
-			aID := kw.ID
-			if aID != eID {
-				t.Errorf("Expected ID %d, got %d", eID, aID)
-			}
-
-			eURL := URL("https://www.igdb.com/categories/space-adventure")
-			aURL := kw.URL
-			if eURL != aURL {
-				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-			}
-
-			egID := []int{8506, 26187, 25919, 23905, 23908, 27903, 52205}
-			agID := kw.Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(key, test.wantKeyword) {
+				t.Errorf("got: <%v>, \nwant: <%v>", key, test.wantKeyword)
 			}
 		})
 	}
 }
 
-func TestKeywordsList(t *testing.T) {
-	var keywordTests = []struct {
-		Name   string
-		Resp   string
-		IDs    []int
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/keywords_list.txt", []int{2096, 1108}, []FuncOption{SetLimit(5)}, ""},
-		{"Zero IDs", "test_data/keywords_list.txt", nil, nil, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-2000}, nil, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", []int{2096, 1108}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{2096, 1108}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
+func TestKeywordService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testKeywordList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range keywordTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Keyword, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name         string
+		file         string
+		ids          []int
+		opts         []FuncOption
+		wantKeywords []*Keyword
+		wantErr      error
+	}{
+		{"Valid response", testKeywordList, []int{31, 18534, 12071, 6939, 7281}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{31, 18534, 12071, 6939, 7281}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{31, 18534, 12071, 6939, 7281}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			kw, err := c.Keywords.List(tt.IDs, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			key, err := c.Keywords.List(test.ids, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(kw)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			en := "humor"
-			an := kw[0].Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			eURL := URL("https://www.igdb.com/categories/humor")
-			aURL := kw[0].URL
-			if eURL != aURL {
-				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-			}
-
-			eu := 1403518560769
-			au := kw[1].UpdatedAt
-			if au != eu {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-			}
-
-			egID := []int{6749, 7591, 10666, 14952, 36899}
-			agID := kw[1].Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(key, test.wantKeywords) {
+				t.Errorf("got: <%v>, \nwant: <%v>", key, test.wantKeywords)
 			}
 		})
 	}
 }
 
-func TestKeywordsSearch(t *testing.T) {
-	var keywordTests = []struct {
-		Name   string
-		Resp   string
-		Qry    string
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/keywords_search.txt", "strategy", []FuncOption{SetLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
-		{"Empty response", "test_data/empty.txt", "strategy", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "strategy", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
+func TestKeywordService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testKeywordList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range keywordTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Keyword, 0)
+	json.Unmarshal(f, &init)
+
+	tests := []struct {
+		name         string
+		file         string
+		opts         []FuncOption
+		wantKeywords []*Keyword
+		wantErr      error
+	}{
+		{"Valid response", testKeywordList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			kw, err := c.Keywords.Search(tt.Qry, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			key, err := c.Keywords.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 3
-			al := len(kw)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			eID := 3782
-			aID := kw[0].ID
-			if aID != eID {
-				t.Errorf("Expected ID %d, got %d", eID, aID)
-			}
-
-			en := "strategy"
-			an := kw[0].Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			ec := 1499532005267
-			ac := kw[1].CreatedAt
-			if ac != ec {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-			}
-
-			eURL := URL("https://www.igdb.com/categories/historical-strategy")
-			aURL := kw[1].URL
-			if eURL != aURL {
-				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-			}
-
-			es := "real-time-strategy--1"
-			as := kw[2].Slug
-			if as != es {
-				t.Errorf("Expected slug '%s', got '%s'", es, as)
-			}
-
-			egID := []int{21620, 27254, 21221, 24273, 27448, 54723}
-			agID := kw[2].Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(key, test.wantKeywords) {
+				t.Errorf("got: <%v>, \nwant: <%v>", key, test.wantKeywords)
 			}
 		})
 	}
 }
 
-func TestKeywordsCount(t *testing.T) {
-	var countTests = []struct {
-		Name     string
-		Resp     string
-		Opts     []FuncOption
-		ExpCount int
-		ExpErr   string
+func TestKeywordService_Count(t *testing.T) {
+	var tests = []struct {
+		name      string
+		resp      string
+		opts      []FuncOption
+		wantCount int
+		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
-		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
-		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Empty response", "", nil, 0, errInvalidJSON},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
-	for _, tt := range countTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.Keywords.Count(tt.Opts...)
-			assertError(t, err, tt.ExpErr)
+			count, err := c.Keywords.Count(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			if count != tt.ExpCount {
-				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			if count != test.wantCount {
+				t.Fatalf("got: <%v>, want: <%v>", count, test.wantCount)
+
 			}
 		})
 	}
 }
 
-func TestKeywordsListFields(t *testing.T) {
-	var fieldTests = []struct {
-		Name      string
-		Resp      string
-		ExpFields []string
-		ExpErr    string
+func TestKeywordService_Fields(t *testing.T) {
+	var tests = []struct {
+		name       string
+		resp       string
+		wantFields []string
+		wantErr    error
 	}{
-		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
-		{"Asterisk", `["*"]`, []string{"*"}, ""},
-		{"Empty response", "", nil, errEndOfJSON.Error()},
-		{"No results", "[]", nil, ""},
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
+		{"Asterisk", `["*"]`, []string{"*"}, nil},
+		{"Empty response", "", nil, errInvalidJSON},
+		{"No results", "[]", nil, nil},
 	}
 
-	for _, tt := range fieldTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.Keywords.ListFields()
-			assertError(t, err, tt.ExpErr)
+			fields, err := c.Keywords.Fields()
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			ok, err := equalSlice(fields, tt.ExpFields)
+			ok, err := equalSlice(fields, test.wantFields)
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
+				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
 			}
 		})
 	}

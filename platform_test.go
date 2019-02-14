@@ -1,281 +1,209 @@
 package igdb
 
 import (
+	"encoding/json"
+	"github.com/pkg/errors"
+	"io/ioutil"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
-func TestPlatformsGet(t *testing.T) {
-	var platformTests = []struct {
-		Name   string
-		Resp   string
-		ID     int
-		ExpErr string
-	}{
-		{"Happy path", "test_data/platforms_get.txt", 7, ""},
-		{"Invalid ID", "test_data/empty.txt", -10, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", 7, errEndOfJSON.Error()},
-		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
+const (
+	testPlatformGet  string = "test_data/platform_get.json"
+	testPlatformList string = "test_data/platform_list.json"
+)
+
+func TestPlatformService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testPlatformGet)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range platformTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Platform, 1)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name         string
+		file         string
+		id           int
+		opts         []FuncOption
+		wantPlatform *Platform
+		wantErr      error
+	}{
+		{"Valid response", testPlatformGet, 8, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 8, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 8, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			p, err := c.Platforms.Get(tt.ID)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			plat, err := c.Platforms.Get(test.id, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			en := "PlayStation"
-			an := p.Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			egID := []int{1185, 1186, 1187, 1192, 1195, 1201, 425, 675}
-			agID := p.Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
-			}
-
-			eCPU := "MIPS R3051 @ 33,8688 MHz"
-			aCPU := p.Versions[0].CPU
-			if aCPU != eCPU {
-				t.Errorf("Expected CPU '%s', got '%s'", eCPU, aCPU)
-			}
-
-			el := 4
-			al := len(p.Versions[0].ReleaseDates)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			ed := 810604800000
-			ad := p.Versions[0].ReleaseDates[1].Date
-			if ad != ed {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ed, ad)
+			if !reflect.DeepEqual(plat, test.wantPlatform) {
+				t.Errorf("got: <%v>, \nwant: <%v>", plat, test.wantPlatform)
 			}
 		})
 	}
 }
 
-func TestPlatformsList(t *testing.T) {
-	var platformTests = []struct {
-		Name   string
-		Resp   string
-		IDs    []int
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/platforms_list.txt", []int{23, 130}, []FuncOption{SetLimit(5)}, ""},
-		{"Zero IDs", "test_data/platforms_list.txt", nil, nil, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-123}, nil, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", []int{23, 130}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{23, 130}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
+func TestPlatformService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testPlatformList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range platformTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Platform, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name          string
+		file          string
+		ids           []int
+		opts          []FuncOption
+		wantPlatforms []*Platform
+		wantErr       error
+	}{
+		{"Valid response", testPlatformList, []int{96, 74, 133, 44, 19}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{96, 74, 133, 44, 19}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{96, 74, 133, 44, 19}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			p, err := c.Platforms.List(tt.IDs, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			plat, err := c.Platforms.List(test.ids, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(p)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			en := "Dreamcast"
-			an := p[0].Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			ew := 1024
-			aw := p[0].Logo.Width
-			if aw != ew {
-				t.Errorf("Expected width of %d, got %d", ew, aw)
-			}
-
-			evn := "Initial version"
-			avn := p[0].Versions[0].Name
-			if avn != evn {
-				t.Errorf("Expected name '%s', got '%s'", evn, avn)
-			}
-
-			eWeb := "http://www.nintendo.com/switch"
-			aWeb := p[1].Website
-			if aWeb != eWeb {
-				t.Errorf("Expected website '%s', got '%s'", eWeb, aWeb)
-			}
-
-			eh := 413
-			ah := p[1].Versions[0].Logo.Height
-			if ah != eh {
-				t.Errorf("Expected height of %d, got %d", eh, ah)
-			}
-
-			egID := []int{38983, 10232, 885, 11529, 19081, 19175, 29525, 36846, 27081, 26165}
-			agID := p[1].Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(plat, test.wantPlatforms) {
+				t.Errorf("got: <%v>, \nwant: <%v>", plat, test.wantPlatforms)
 			}
 		})
 	}
 }
 
-func TestPlatformsSearch(t *testing.T) {
-	var platformTests = []struct {
-		Name   string
-		Resp   string
-		Qry    string
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/platforms_search.txt", "xbox", []FuncOption{SetLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
-		{"Empty response", "test_data/empty.txt", "xbox", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "xbox", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
+func TestPlatformService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testPlatformList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range platformTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Platform, 0)
+	json.Unmarshal(f, &init)
+
+	tests := []struct {
+		name          string
+		file          string
+		opts          []FuncOption
+		wantPlatforms []*Platform
+		wantErr       error
+	}{
+		{"Valid response", testPlatformList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			p, err := c.Platforms.Search(tt.Qry, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			plat, err := c.Platforms.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(p)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			eID := 11
-			aID := p[0].ID
-			if aID != eID {
-				t.Errorf("Expected ID %d, got %d", eID, aID)
-			}
-
-			ec := 1297639288000
-			ac := p[0].CreatedAt
-			if ac != ec {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-			}
-
-			eg := 6
-			ag := p[0].Generation
-			if ag != eg {
-				t.Errorf("Expected generation %d, got %d", eg, ag)
-			}
-
-			evl := 3
-			avl := len(p[1].Versions)
-			if avl != evl {
-				t.Errorf("Expected length of %d, got %d", evl, avl)
-			}
-
-			er := "480i, 480p, 720p, 1080i, 1080p"
-			ar := p[1].Versions[1].Resolutions
-			if ar != er {
-				t.Errorf("Expected resolutions '%s', got '%s'", er, ar)
-
-			}
-
-			es := "xbox-360-elite"
-			as := p[1].Versions[2].Slug
-			if as != es {
-				t.Errorf("Expected slug '%s', got '%s'", es, as)
+			if !reflect.DeepEqual(plat, test.wantPlatforms) {
+				t.Errorf("got: <%v>, \nwant: <%v>", plat, test.wantPlatforms)
 			}
 		})
 	}
 }
 
-func TestPlatformsCount(t *testing.T) {
-	var countTests = []struct {
-		Name     string
-		Resp     string
-		Opts     []FuncOption
-		ExpCount int
-		ExpErr   string
+func TestPlatformService_Count(t *testing.T) {
+	var tests = []struct {
+		name      string
+		resp      string
+		opts      []FuncOption
+		wantCount int
+		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
-		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
-		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Empty response", "", nil, 0, errInvalidJSON},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
-	for _, tt := range countTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.Platforms.Count(tt.Opts...)
-			assertError(t, err, tt.ExpErr)
+			count, err := c.Platforms.Count(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			if count != tt.ExpCount {
-				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			if count != test.wantCount {
+				t.Fatalf("got: <%v>, want: <%v>", count, test.wantCount)
+
 			}
 		})
 	}
 }
 
-func TestPlatformsListFields(t *testing.T) {
-	var fieldTests = []struct {
-		Name      string
-		Resp      string
-		ExpFields []string
-		ExpErr    string
+func TestPlatformService_Fields(t *testing.T) {
+	var tests = []struct {
+		name       string
+		resp       string
+		wantFields []string
+		wantErr    error
 	}{
-		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
-		{"Asterisk", `["*"]`, []string{"*"}, ""},
-		{"Empty response", "", nil, errEndOfJSON.Error()},
-		{"No results", "[]", nil, ""},
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
+		{"Asterisk", `["*"]`, []string{"*"}, nil},
+		{"Empty response", "", nil, errInvalidJSON},
+		{"No results", "[]", nil, nil},
 	}
 
-	for _, tt := range fieldTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.Platforms.ListFields()
-			assertError(t, err, tt.ExpErr)
+			fields, err := c.Platforms.Fields()
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			ok, err := equalSlice(fields, tt.ExpFields)
+			ok, err := equalSlice(fields, test.wantFields)
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
+				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
 			}
 		})
 	}

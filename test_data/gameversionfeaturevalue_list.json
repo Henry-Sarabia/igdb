@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1975,
+    "game": 28552,
+    "game_feature": 502,
+    "included_feature": 0
+  },
+  {
+    "id": 1217,
+    "game": 11499,
+    "game_feature": 304,
+    "included_feature": 1
+  },
+  {
+    "id": 1220,
+    "game": 41888,
+    "game_feature": 305,
+    "included_feature": 1
+  },
+  {
+    "id": 1234,
+    "game": 41891,
+    "game_feature": 310,
+    "included_feature": 0
+  },
+  {
+    "id": 1007,
+    "game": 53358,
+    "game_feature": 256,
+    "included_feature": 1
+  }
+]

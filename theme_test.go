@@ -1,250 +1,209 @@
 package igdb
 
 import (
+	"encoding/json"
+	"github.com/pkg/errors"
+	"io/ioutil"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
-func TestThemesGet(t *testing.T) {
-	var themeTests = []struct {
-		Name   string
-		Resp   string
-		ID     int
-		ExpErr string
-	}{
-		{"Happy path", "test_data/themes_get.txt", 17, ""},
-		{"Invalid ID", "test_data/empty.txt", -15, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", 17, errEndOfJSON.Error()},
-		{"No results", "test_data/empty_array.txt", 0, ErrNoResults.Error()},
+const (
+	testThemeGet  string = "test_data/theme_get.json"
+	testThemeList string = "test_data/theme_list.json"
+)
+
+func TestThemeService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testThemeGet)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range themeTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Theme, 1)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name      string
+		file      string
+		id        int
+		opts      []FuncOption
+		wantTheme *Theme
+		wantErr   error
+	}{
+		{"Valid response", testThemeGet, 38, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, 38, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 38, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			th, err := c.Themes.Get(tt.ID)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			th, err := c.Themes.Get(test.id, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			en := "Fantasy"
-			an := th.Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			eID := 17
-			aID := th.ID
-			if aID != eID {
-				t.Errorf("Expected ID %d, got %d", eID, aID)
-			}
-
-			eURL := URL("https://www.igdb.com/themes/fantasy")
-			aURL := th.URL
-			if eURL != aURL {
-				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-			}
-
-			egID := []int{799, 651, 901, 929, 939, 800, 931, 876}
-			agID := th.Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(th, test.wantTheme) {
+				t.Errorf("got: <%v>, \nwant: <%v>", th, test.wantTheme)
 			}
 		})
 	}
 }
 
-func TestThemesList(t *testing.T) {
-	var themeTests = []struct {
-		Name   string
-		Resp   string
-		IDs    []int
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/themes_list.txt", []int{20, 23}, []FuncOption{SetLimit(5)}, ""},
-		{"Zero IDs", "test_data/themes_list.txt", nil, nil, ""},
-		{"Invalid ID", "test_data/empty.txt", []int{-50}, nil, ErrNegativeID.Error()},
-		{"Empty response", "test_data/empty.txt", []int{20, 23}, nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", []int{20, 23}, []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", []int{0, 9999999}, nil, ErrNoResults.Error()},
+func TestThemeService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testThemeList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range themeTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Theme, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name       string
+		file       string
+		ids        []int
+		opts       []FuncOption
+		wantThemes []*Theme
+		wantErr    error
+	}{
+		{"Valid response", testThemeList, []int{19, 39, 32, 1, 18}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
+		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
+		{"Empty response", testFileEmpty, []int{19, 39, 32, 1, 18}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{19, 39, 32, 1, 18}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			th, err := c.Themes.List(tt.IDs, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			th, err := c.Themes.List(test.ids, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 2
-			al := len(th)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			en := "Thriller"
-			an := th[0].Name
-			if an != en {
-				t.Errorf("Expected name '%s', got '%s'", en, an)
-			}
-
-			es := "thriller"
-			as := th[0].Slug
-			if as != es {
-				t.Errorf("Expected slug '%s', got '%s'", es, as)
-			}
-
-			eu := 1323289216000
-			au := th[1].UpdatedAt
-			if au != eu {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", eu, au)
-			}
-
-			egID := []int{4, 820, 43, 500, 501, 433, 250, 377, 375}
-			agID := th[1].Games
-			for i := range agID {
-				if agID[i] != egID[i] {
-					t.Errorf("Expected Game ID %d, got %d\n", egID[i], agID[i])
-				}
+			if !reflect.DeepEqual(th, test.wantThemes) {
+				t.Errorf("got: <%v>, \nwant: <%v>", th, test.wantThemes)
 			}
 		})
 	}
 }
 
-func TestThemesSearch(t *testing.T) {
-	var themeTests = []struct {
-		Name   string
-		Resp   string
-		Qry    string
-		Opts   []FuncOption
-		ExpErr string
-	}{
-		{"Happy path", "test_data/themes_search.txt", "horror", []FuncOption{SetLimit(50)}, ""},
-		{"Empty query", "test_data/empty.txt", "", []FuncOption{SetLimit(50)}, ErrEmptyQuery.Error()},
-		{"Empty response", "test_data/empty.txt", "horror", nil, errEndOfJSON.Error()},
-		{"Invalid option", "test_data/empty.txt", "horror", []FuncOption{SetOffset(99999)}, ErrOutOfRange.Error()},
-		{"No results", "test_data/empty_array.txt", "non-existent entry", nil, ErrNoResults.Error()},
+func TestThemeService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testThemeList)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range themeTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, tt.Resp)
+
+	init := make([]*Theme, 0)
+	json.Unmarshal(f, &init)
+
+	tests := []struct {
+		name       string
+		file       string
+		opts       []FuncOption
+		wantThemes []*Theme
+		wantErr    error
+	}{
+		{"Valid response", testThemeList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer ts.Close()
 
-			th, err := c.Themes.Search(tt.Qry, tt.Opts...)
-			assertError(t, err, tt.ExpErr)
-
-			if tt.ExpErr != "" {
-				return
+			th, err := c.Themes.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			el := 1
-			al := len(th)
-			if al != el {
-				t.Errorf("Expected length of %d, got %d", el, al)
-			}
-
-			ec := 1322605338000
-			ac := th[0].CreatedAt
-			if ac != ec {
-				t.Errorf("Expected Unix time in milliseconds of %d, got %d", ec, ac)
-			}
-
-			eURL := URL("https://www.igdb.com/themes/horror")
-			aURL := th[0].URL
-			if eURL != aURL {
-				t.Errorf("Expected URL '%s', got '%s'", eURL, aURL)
-			}
-
-			es := "horror"
-			as := th[0].Slug
-			if as != es {
-				t.Errorf("Expected slug '%s', got '%s'", es, as)
-			}
-
-			egl := 7
-			agl := len(th[0].Games)
-			if agl != egl {
-				t.Errorf("Expected Games length %d, got %d", egl, agl)
+			if !reflect.DeepEqual(th, test.wantThemes) {
+				t.Errorf("got: <%v>, \nwant: <%v>", th, test.wantThemes)
 			}
 		})
 	}
 }
 
-func TestThemesCount(t *testing.T) {
-	var countTests = []struct {
-		Name     string
-		Resp     string
-		Opts     []FuncOption
-		ExpCount int
-		ExpErr   string
+func TestThemeService_Count(t *testing.T) {
+	var tests = []struct {
+		name      string
+		resp      string
+		opts      []FuncOption
+		wantCount int
+		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, ""},
-		{"Empty response", "", nil, 0, errEndOfJSON.Error()},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange.Error()},
-		{"No results", "[]", nil, 0, ErrNoResults.Error()},
+		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Empty response", "", nil, 0, errInvalidJSON},
+		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
-	for _, tt := range countTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.Themes.Count(tt.Opts...)
-			assertError(t, err, tt.ExpErr)
+			count, err := c.Themes.Count(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			if count != tt.ExpCount {
-				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			if count != test.wantCount {
+				t.Fatalf("got: <%v>, want: <%v>", count, test.wantCount)
+
 			}
 		})
 	}
 }
 
-func TestThemesListFields(t *testing.T) {
-	var fieldTests = []struct {
-		Name      string
-		Resp      string
-		ExpFields []string
-		ExpErr    string
+func TestThemeService_Fields(t *testing.T) {
+	var tests = []struct {
+		name       string
+		resp       string
+		wantFields []string
+		wantErr    error
 	}{
-		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"Dot operator", `["logo.url", "background.id"]`, []string{"background.id", "logo.url"}, ""},
-		{"Asterisk", `["*"]`, []string{"*"}, ""},
-		{"Empty response", "", nil, errEndOfJSON.Error()},
-		{"No results", "[]", nil, ""},
+		{"Happy path", `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
+		{"Asterisk", `["*"]`, []string{"*"}, nil},
+		{"Empty response", "", nil, errInvalidJSON},
+		{"No results", "[]", nil, nil},
 	}
 
-	for _, tt := range fieldTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(http.StatusOK, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.Themes.ListFields()
-			assertError(t, err, tt.ExpErr)
+			fields, err := c.Themes.Fields()
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			ok, err := equalSlice(fields, tt.ExpFields)
+			ok, err := equalSlice(fields, test.wantFields)
 			if err != nil {
 				t.Fatal(err)
 			}
+
 			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
+				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
 			}
 		})
 	}

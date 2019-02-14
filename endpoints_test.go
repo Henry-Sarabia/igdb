@@ -1,3 +1,5 @@
+// +build ignore
+
 package igdb
 
 import (
@@ -14,7 +16,7 @@ func TestGetEndpointFieldList(t *testing.T) {
 		ExpErr    string
 	}{
 		{"OK status with regular response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"OK status with empty response", http.StatusOK, "", nil, errEndOfJSON.Error()},
+		{"OK status with empty response", http.StatusOK, "", nil, errInvalidJSON.Error()},
 		{"OK status with dot response", http.StatusOK, `["mugshot.width","name", "company.id"]`, []string{"company.id", "name", "mugshot.width"}, ""},
 		{"OK status with asterisk response", http.StatusOK, `["*"]`, []string{"*"}, ""},
 		{"Bad status with empty response", http.StatusBadRequest, "", nil, ErrBadRequest.Error()},
@@ -26,7 +28,7 @@ func TestGetEndpointFieldList(t *testing.T) {
 			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
-			fields, err := c.getEndpointFieldList(testEndpoint)
+			fields, err := c.getFields(testEndpoint)
 			assertError(t, err, tt.ExpErr)
 
 			ok, err := equalSlice(fields, tt.ExpFields)
@@ -50,7 +52,7 @@ func TestGetEndpointCount(t *testing.T) {
 	}{
 		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, ""},
 		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, ""},
-		{"OK status with empty response", http.StatusOK, "", 0, errEndOfJSON.Error()},
+		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON.Error()},
 		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest.Error()},
 		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, "Status 404 - status not found"},
 	}
@@ -60,7 +62,7 @@ func TestGetEndpointCount(t *testing.T) {
 			ts, c := testServerString(tt.Status, tt.Resp)
 			defer ts.Close()
 
-			count, err := c.getEndpointCount(testEndpoint)
+			count, err := c.getCount(testEndpoint)
 			assertError(t, err, tt.ExpErr)
 
 			if count != tt.ExpCount {

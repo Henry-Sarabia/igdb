@@ -1,0 +1,56 @@
+[
+  {
+    "id": 10268,
+    "created_at": 1390262400,
+    "developer": true,
+    "game": 3959,
+    "porting": false,
+    "publisher": false,
+    "supporting": false,
+    "updated_at": 1390262400
+  },
+  {
+    "id": 66143,
+    "company": 213,
+    "created_at": 1530835200,
+    "developer": false,
+    "game": 104973,
+    "porting": false,
+    "publisher": true,
+    "supporting": false,
+    "updated_at": 1530835200
+  },
+  {
+    "id": 8,
+    "company": 7,
+    "created_at": 1298937600,
+    "developer": true,
+    "game": 38,
+    "porting": false,
+    "publisher": false,
+    "supporting": false,
+    "updated_at": 1321056000
+  },
+  {
+    "id": 65560,
+    "company": 5257,
+    "created_at": 1528761600,
+    "developer": false,
+    "game": 14580,
+    "porting": false,
+    "publisher": true,
+    "supporting": false,
+    "updated_at": 1528761600
+  },
+  {
+    "id": 67552,
+    "company": 13709,
+    "created_at": 1532476800,
+    "developer": true,
+    "game": 103431,
+    "porting": false,
+    "publisher": true,
+    "supporting": false,
+    "updated_at": 1533081600
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "id": 147,
+    "name": "Lion",
+    "platform_logo": 96,
+    "platform_version_release_dates": [
+      156
+    ],
+    "slug": "lion",
+    "summary": "Mac OS X Lion (version 10.7), marketed as OS X Lion, is the eighth major release of Mac OS X, Apple's desktop and server operating system for Macintosh computers. It brings many developments made in Apple's iOS, such as an easily navigable display of installed applications, to the Mac, and includes support for the Mac App Store, as introduced in Mac OS X Snow Leopard.",
+    "url": "https://www.igdb.com/platforms/mac/version/lion"
+  },
+  {
+    "id": 35,
+    "cpu": "Zilog Z80A @ 3,58 MHz",
+    "media": "Cartridge",
+    "memory": "1 KB",
+    "name": "Initial version",
+    "platform_logo": 50,
+    "platform_version_release_dates": [
+      93
+    ],
+    "slug": "initial-version-8b4019b7-7255-449e-9571-088151f6b335",
+    "sound": "Mono",
+    "storage": "ROM Cartridge 8-32 KB",
+    "url": "https://www.igdb.com/platforms/colecovision/version/initial-version-8b4019b7-7255-449e-9571-088151f6b335"
+  },
+  {
+    "id": 62,
+    "cpu": "Zilog Z80 @ 3.5MHz",
+    "media": "Cartridges",
+    "memory": "8kB",
+    "name": "Initial version",
+    "platform_version_release_dates": [
+      185,
+      186,
+      187,
+      188
+    ],
+    "resolutions": "160x144",
+    "slug": "initial-version-23584cc8-ba5c-4175-86bf-4b784c45ec52",
+    "sound": "Texas Instruments SN76489 PSG",
+    "url": "https://www.igdb.com/platforms/gamegear/version/initial-version-23584cc8-ba5c-4175-86bf-4b784c45ec52"
+  },
+  {
+    "id": 150,
+    "name": "Yosemite",
+    "platform_logo": 99,
+    "platform_version_release_dates": [
+      159
+    ],
+    "slug": "yosemite",
+    "summary": "OS X Yosemite (version 10.10) is the eleventh major release of OS X, Apple Inc.'s desktop and server operating system for Macintosh computers. Yosemite introduced a major overhaul of OS X's user interface. Its graphics replaced skeuomorphism with flat graphic design and blurred translucency effects, following the aesthetic introduced with iOS 7. Many of Yosemite's new features focus on the theme of continuity, increasing its integration with other Apple services and platforms such as iOS and iCloud.",
+    "url": "https://www.igdb.com/platforms/mac/version/yosemite"
+  },
+  {
+    "id": 183,
+    "name": "Initial version",
+    "platform_logo": 112,
+    "platform_version_release_dates": [
+      215,
+      216
+    ],
+    "slug": "initial-version",
+    "summary": "The Videopac used the standard joystick design of the 1970s and early 1980s: the original console had a moderately-sized silver controller, held in one hand, with a square housing for its eight-direction stick that was manipulated with the other hand. Later releases had a similar black controller, with an 8-pointed star-shaped housing for its eight-direction joystick. In the upper corner of the joystick was a single 'Action' button, silver on the original controllers and red on the black controllers. The games, graphics and packaging were designed by Ron Bradford and Steve Lehner.\n\nOne other difference in these controllers is that the earliest releases of the silver joystick were removable. They could be plugged and unplugged from the back of the unit, while all later silver and all black controllers were hardwired into the rear of the unit itself (although the joysticks still can be easily replaced, but not without dismounting the cover deck).\n\nOne of the strongest points of the system was its speech synthesis unit, which was released as an add-on for speech, music, and sound effects enhancement. The area that the Odyssey² may be best remembered for was its pioneering fusion of board and video games: The Master Strategy Series. The first game released was Quest for the Rings!, with gameplay somewhat similar to Dungeons &amp; Dragons, and a storyline reminiscent of J. R. R. Tolkien's The Lord of the Rings. Later, two other games were released in this series, Conquest of the World and The Great Wall Street Fortune Hunt, each with its own gameboard.\n\nIts graphics and few color choices, compared to its biggest competitors at the time—the Atari 2600, Mattel's Intellivision and the Bally Astrocade—were its \"weakest point\". Of these systems, the Odyssey² was listed by Jeff Rovin as being the third in total of sales, and one of the seven major video game suppliers.",
+    "url": "https://www.igdb.com/platforms/philips-videopac-g7000/version/initial-version"
+  }
+]

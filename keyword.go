@@ -1,102 +1,104 @@
 package igdb
 
-// KeywordService handles all the API
-// calls for the IGDB Keyword endpoint.
-type KeywordService service
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
 
-// Keyword contains information on an IGDB entry for a particular keyword.
-// Keywords are words or phrases that get tagged to a game
-// (e.g. "world war 2" or "steampunk").
-//
-// For more information, visit: https://igdb.github.io/api/endpoints/keyword/
+//go:generate gomodifytags -file $GOFILE -struct Keyword -add-tags json -w
+
+// Keyword represents a word or phrase that get tagged to a game
+// such as "World War 2" or "Steampunk".
+// For more information visit: https://api-docs.igdb.com/#keyword
 type Keyword struct {
-	ID        int    `json:"id"`
+	CreatedAt int    `json:"created_at"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
-	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"` // Unix time in milliseconds
-	UpdatedAt int    `json:"updated_at"` // Unix time in milliseconds
-	Games     []int  `json:"games"`
+	UpdatedAt int    `json:"updated_at"`
+	Url       string `json:"url"`
 }
+
+// KeywordService handles all the API calls for the IGDB Keyword endpoint.
+type KeywordService service
 
 // Get returns a single Keyword identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Keywords, an error is returned.
 func (ks *KeywordService) Get(id int, opts ...FuncOption) (*Keyword, error) {
-	url, err := ks.client.singleURL(KeywordEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
+	if id < 0 {
+		return nil, ErrNegativeID
 	}
 
-	var kw []Keyword
+	var key []*Keyword
 
-	err = ks.client.get(url, &kw)
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := ks.client.get(ks.end, &key, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Keyword with ID %v", id)
 	}
 
-	return &kw[0], nil
+	return key[0], nil
 }
 
 // List returns a list of Keywords identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of Keywords based solely on the provided
-// options. Any ID that does not match a Keyword is ignored. If none of the IDs
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a Keyword is ignored. If none of the IDs
 // match a Keyword, an error is returned.
 func (ks *KeywordService) List(ids []int, opts ...FuncOption) ([]*Keyword, error) {
-	url, err := ks.client.multiURL(KeywordEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
 	}
 
-	var kw []*Keyword
-
-	err = ks.client.get(url, &kw)
-	if err != nil {
-		return nil, err
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
 	}
 
-	return kw, nil
+	var key []*Keyword
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := ks.client.get(ks.end, &key, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Keywords with IDs %v", ids)
+	}
+
+	return key, nil
 }
 
-// Search returns a list of Keywords found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate the results. If
-// no Keywords are found using the provided query, an error is returned.
-func (ks *KeywordService) Search(qry string, opts ...FuncOption) ([]*Keyword, error) {
-	url, err := ks.client.searchURL(KeywordEndpoint, qry, opts...)
+// Index returns an index of Keywords based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no Keywords can
+// be found using the provided options, an error is returned.
+func (ks *KeywordService) Index(opts ...FuncOption) ([]*Keyword, error) {
+	var key []*Keyword
+
+	err := ks.client.get(ks.end, &key, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get index of Keywords")
 	}
 
-	var kw []*Keyword
-
-	err = ks.client.get(url, &kw)
-	if err != nil {
-		return nil, err
-	}
-
-	return kw, nil
+	return key, nil
 }
 
 // Count returns the number of Keywords available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Keywords to count.
 func (ks *KeywordService) Count(opts ...FuncOption) (int, error) {
-	ct, err := ks.client.getEndpointCount(KeywordEndpoint, opts...)
+	ct, err := ks.client.getCount(ks.end, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count Keywords")
 	}
 
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB Keyword object.
-func (ks *KeywordService) ListFields() ([]string, error) {
-	fl, err := ks.client.getEndpointFieldList(KeywordEndpoint)
+func (ks *KeywordService) Fields() ([]string, error) {
+	f, err := ks.client.getFields(ks.end)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get Keyword fields")
 	}
 
-	return fl, nil
+	return f, nil
 }

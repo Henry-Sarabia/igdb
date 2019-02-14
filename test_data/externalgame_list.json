@@ -1,0 +1,24 @@
+[
+  {
+    "id": 123,
+    "category": 1,
+    "created_at": 1347408000,
+    "game": 1111,
+    "name": "some-game",
+    "uid": "some-uid",
+    "updated_at": 1347408000,
+    "url": "some-url.com",
+    "year": 2000
+  },
+  {
+    "id": 456,
+    "category": 5,
+    "created_at": 1347408111,
+    "game": 2222,
+    "name": "another-game",
+    "uid": "another-uid",
+    "updated_at": 1347408111,
+    "url": "another-url.com",
+    "year": 2000
+  }
+]

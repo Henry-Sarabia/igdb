@@ -1,58 +1,80 @@
 package igdb
 
-// ThemeService handles all the API
-// calls for the IGDB Theme endpoint.
-type ThemeService service
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
 
-// Theme contains information on an IGDB entry for a
-// particular video game theme (e.g. Fantasy or Horror).
-//
-// For more information, visit: https://igdb.github.io/api/endpoints/theme/
+//go:generate gomodifytags -file $GOFILE -struct Theme -add-tags json -w
+
+// Theme represents a particular video game theme.
+// For more information visit: https://api-docs.igdb.com/#theme
 type Theme struct {
 	ID        int    `json:"id"`
+	CreatedAt int    `json:"created_at"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
-	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"` // Unix time in milliseconds
-	UpdatedAt int    `json:"updated_at"` // Unix time in milliseconds
-	Games     []int  `json:"games"`
+	UpdatedAt int    `json:"updated_at"`
+	URL       string `json:"url"`
 }
+
+// ThemeService handles all the API calls for the IGDB Theme endpoint.
+type ThemeService service
 
 // Get returns a single Theme identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Themes, an error is returned.
 func (ts *ThemeService) Get(id int, opts ...FuncOption) (*Theme, error) {
-	url, err := ts.client.singleURL(ThemeEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
-	}
-
-	var th []Theme
-
-	err = ts.client.get(url, &th)
-	if err != nil {
-		return nil, err
-	}
-
-	return &th[0], nil
-}
-
-// List returns a list of Themes identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of Themes based solely on the provided
-// options. Any ID that does not match a Theme is ignored. If none of the IDs
-// match a Theme, an error is returned.
-func (ts *ThemeService) List(ids []int, opts ...FuncOption) ([]*Theme, error) {
-	url, err := ts.client.multiURL(ThemeEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
+	if id < 0 {
+		return nil, ErrNegativeID
 	}
 
 	var th []*Theme
 
-	err = ts.client.get(url, &th)
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := ts.client.get(ts.end, &th, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Theme with ID %v", id)
+	}
+
+	return th[0], nil
+}
+
+// List returns a list of Themes identified by the provided list of IGDB IDs.
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a Theme is ignored. If none of the IDs
+// match a Theme, an error is returned.
+func (ts *ThemeService) List(ids []int, opts ...FuncOption) ([]*Theme, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
+	}
+
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
+	}
+
+	var th []*Theme
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := ts.client.get(ts.end, &th, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Themes with IDs %v", ids)
+	}
+
+	return th, nil
+}
+
+// Index returns an index of Themes based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no Themes can
+// be found using the provided options, an error is returned.
+func (ts *ThemeService) Index(opts ...FuncOption) ([]*Theme, error) {
+	var th []*Theme
+
+	err := ts.client.get(ts.end, &th, opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get index of Themes")
 	}
 
 	return th, nil
@@ -62,16 +84,12 @@ func (ts *ThemeService) List(ids []int, opts ...FuncOption) ([]*Theme, error) {
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Themes are found using the provided query, an error is returned.
 func (ts *ThemeService) Search(qry string, opts ...FuncOption) ([]*Theme, error) {
-	url, err := ts.client.searchURL(ThemeEndpoint, qry, opts...)
-	if err != nil {
-		return nil, err
-	}
-
 	var th []*Theme
 
-	err = ts.client.get(url, &th)
+	opts = append(opts, setSearch(qry))
+	err := ts.client.get(ts.end, &th, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get Theme with query %s", qry)
 	}
 
 	return th, nil
@@ -81,21 +99,21 @@ func (ts *ThemeService) Search(qry string, opts ...FuncOption) ([]*Theme, error)
 // Provide the SetFilter functional option if you need to filter
 // which Themes to count.
 func (ts *ThemeService) Count(opts ...FuncOption) (int, error) {
-	ct, err := ts.client.getEndpointCount(ThemeEndpoint, opts...)
+	ct, err := ts.client.getCount(ts.end, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count Themes")
 	}
 
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB Theme object.
-func (ts *ThemeService) ListFields() ([]string, error) {
-	fl, err := ts.client.getEndpointFieldList(ThemeEndpoint)
+func (ts *ThemeService) Fields() ([]string, error) {
+	f, err := ts.client.getFields(ts.end)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get Theme fields")
 	}
 
-	return fl, nil
+	return f, nil
 }

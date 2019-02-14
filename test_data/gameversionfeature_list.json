@@ -1,0 +1,58 @@
+[
+  {
+    "id": 375,
+    "category": 0,
+    "description": "Double sided print of the in-game island",
+    "position": 2,
+    "title": "Collectible map",
+    "values": [
+      1519,
+      1520,
+      1521,
+      1522,
+      1523
+    ]
+  },
+  {
+    "id": 47,
+    "description": "",
+    "position": 0,
+    "title": "Deluxe Pack"
+  },
+  {
+    "id": 397,
+    "category": 0,
+    "description": "A 36-page collection of BioWare's concept art for the game.",
+    "position": 1,
+    "title": "Art book: A Future Imagined",
+    "values": [
+      1596,
+      1597
+    ]
+  },
+  {
+    "id": 274,
+    "category": 0,
+    "position": 10,
+    "title": "DLC: Vault-Tec Workshop",
+    "values": [
+      1080,
+      1081,
+      1082,
+      1083
+    ]
+  },
+  {
+    "id": 452,
+    "category": 0,
+    "description": "",
+    "position": 5,
+    "title": "Premium Packaging Box",
+    "values": [
+      1757,
+      1758,
+      1759,
+      1760
+    ]
+  }
+]

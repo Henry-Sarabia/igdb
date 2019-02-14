@@ -7,20 +7,23 @@ import (
 
 // Errors returned when creating Image URLs.
 var (
-	// ErrEmptyID occurs when an empty string is used as an argument in a function.
-	ErrEmptyID = errors.New("igdb: id value empty")
+	// ErrBlankID occurs when an empty string is used as an argument in a function.
+	ErrBlankID = errors.New("igdb: id value empty")
 	// ErrPixelRatio occurs when an unsupported display pixel ratio is used as an argument in a function.
 	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
 )
 
-// Image contains the URL, dimensions, and Cloudinary ID of a particular image.
-//
-// For more information, visit: https://igdb.github.io/api/references/images/
+//go:generate gomodifytags -file $GOFILE -struct Image -add-tags json -w
+
+// Image contains the URL, dimensions, and ID of a particular image.
+// For more information visit: https://api-docs.igdb.com/#images
 type Image struct {
-	URL    URL    `json:"url"`
-	ID     string `json:"cloudinary_id"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
+	AlphaChannel bool   `json:"alpha_channel"`
+	Animated     bool   `json:"animated"`
+	Height       int    `json:"height"`
+	ImageID      string `json:"image_id"`
+	URL          string `json:"url"`
+	Width        int    `json:"width"`
 }
 
 // imageSize is the size of an image from the IGDB API. Note that this is not
@@ -55,9 +58,10 @@ const (
 // SizedImageURL returns the URL of an image identified by the provided imageID,
 // image size, and display pixel ratio. The display pixel ratio only multiplies
 // the resolution of the image. The current available ratios are 1 and 2.
+//TODO: factor out imageID check
 func SizedImageURL(imageID string, size imageSize, ratio int) (string, error) {
 	if imageID == "" {
-		return "", ErrEmptyID
+		return "", ErrBlankID
 	}
 
 	var dpr string
@@ -79,5 +83,5 @@ func SizedImageURL(imageID string, size imageSize, ratio int) (string, error) {
 // and display pixel ratio. The display pixel ratio only multiplies
 // the resolution of the image. The current available ratios are 1 and 2.
 func (i Image) SizedURL(size imageSize, ratio int) (string, error) {
-	return SizedImageURL(i.ID, size, ratio)
+	return SizedImageURL(i.ImageID, size, ratio)
 }

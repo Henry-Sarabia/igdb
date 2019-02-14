@@ -1,87 +1,141 @@
 package igdb
 
-// ReleaseDateService handles all the API
-// calls for the IGDB ReleaseDate endpoint.
-type ReleaseDateService service
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
 
-// ReleaseDate contains information on an IGDB entry for a particular release
-// date. ReleaseDate is used primarily as an extension to the Game endpoint.
-// ReleaseDate does not support the search function.
-//
-// For more information, visit: https://igdb.github.io/api/endpoints/release-date/
+//go:generate gomodifytags -file $GOFILE -struct ReleaseDate -add-tags json -w
+
+// ReleaseDate represents the release date for a particular game.
+// Used to dig deeper into release dates, platforms, and versions.
+// For more information visit: https://api-docs.igdb.com/#release-date
 type ReleaseDate struct {
-	ID        int          `json:"id"`
-	Game      int          `json:"game"`
-	Category  DateCategory `json:"category"`
-	Platform  int          `json:"platform"`
-	Human     string       `json:"human"`
-	UpdatedAt int          `json:"updated_at"` // Unix time in milliseconds
-	CreatedAt int          `json:"created_at"` // Unix time in milliseconds
-	Date      int          `json:"date"`       // Unix time in milliseconds
-	Region    int          `json:"region"`
-	Year      int          `json:"y"`
-	Month     int          `json:"m"`
+	ID        int            `json:"id"`
+	Category  DateCategory   `json:"category"`
+	CreatedAt int            `json:"created_at"`
+	Date      int            `json:"date"`
+	Game      int            `json:"game"`
+	Human     string         `json:"human"`
+	M         int            `json:"m"`
+	Platform  int            `json:"platform"`
+	Region    RegionCategory `json:"region"`
+	UpdatedAt int            `json:"updated_at"`
+	Y         int            `json:"y"`
 }
+
+//go:generate stringer -type=DateCategory,RegionCategory
+
+// DateCategory represents the IGDB enumerated type Date Category which
+// describes the format of a release date. Use the Stringer interface to
+// access the corresponding Date Category values as strings.
+type DateCategory int
+
+const (
+	DateYYYYMMMMDD DateCategory = iota
+	DateYYYYMMMM
+	DateYYYY
+	DateYYYYQ1
+	DateYYYYQ2
+	DateYYYYQ3
+	DateYYYYQ4
+	DateTBD
+)
+
+type RegionCategory int
+
+const (
+	RegionEurope RegionCategory = iota + 1
+	RegionNorthAmerica
+	RegionAustralia
+	RegionNewZealand
+	RegionJapan
+	RegionChina
+	RegionAsia
+	RegionWorldwide
+)
+
+// ReleaseDateService handles all the API calls for the IGDB ReleaseDate endpoint.
+type ReleaseDateService service
 
 // Get returns a single ReleaseDate identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any ReleaseDates, an error is returned.
-func (rds *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, error) {
-	url, err := rds.client.singleURL(ReleaseDateEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
+func (rs *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, error) {
+	if id < 0 {
+		return nil, ErrNegativeID
 	}
 
-	var rd []ReleaseDate
+	var date []*ReleaseDate
 
-	err = rds.client.get(url, &rd)
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := rs.client.get(rs.end, &date, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get ReleaseDate with ID %v", id)
 	}
 
-	return &rd[0], nil
+	return date[0], nil
 }
 
 // List returns a list of ReleaseDates identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of ReleaseDates based solely on the provided
-// options. Any ID that does not match a ReleaseDate is ignored. If none of the IDs
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a ReleaseDate is ignored. If none of the IDs
 // match a ReleaseDate, an error is returned.
-func (rds *ReleaseDateService) List(ids []int, opts ...FuncOption) ([]*ReleaseDate, error) {
-	url, err := rds.client.multiURL(ReleaseDateEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
+func (rs *ReleaseDateService) List(ids []int, opts ...FuncOption) ([]*ReleaseDate, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
 	}
 
-	var rd []*ReleaseDate
-
-	err = rds.client.get(url, &rd)
-	if err != nil {
-		return nil, err
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
 	}
 
-	return rd, nil
+	var date []*ReleaseDate
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := rs.client.get(rs.end, &date, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get ReleaseDates with IDs %v", ids)
+	}
+
+	return date, nil
+}
+
+// Index returns an index of ReleaseDates based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no ReleaseDates can
+// be found using the provided options, an error is returned.
+func (rs *ReleaseDateService) Index(opts ...FuncOption) ([]*ReleaseDate, error) {
+	var date []*ReleaseDate
+
+	err := rs.client.get(rs.end, &date, opts...)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot get index of ReleaseDates")
+	}
+
+	return date, nil
 }
 
 // Count returns the number of ReleaseDates available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which ReleaseDates to count.
-func (rds *ReleaseDateService) Count(opts ...FuncOption) (int, error) {
-	ct, err := rds.client.getEndpointCount(ReleaseDateEndpoint, opts...)
+func (rs *ReleaseDateService) Count(opts ...FuncOption) (int, error) {
+	ct, err := rs.client.getCount(rs.end, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count ReleaseDates")
 	}
 
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB ReleaseDate object.
-func (rds *ReleaseDateService) ListFields() ([]string, error) {
-	fl, err := rds.client.getEndpointFieldList(ReleaseDateEndpoint)
+func (rs *ReleaseDateService) Fields() ([]string, error) {
+	f, err := rs.client.getFields(rs.end)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get ReleaseDate fields")
 	}
 
-	return fl, nil
+	return f, nil
 }

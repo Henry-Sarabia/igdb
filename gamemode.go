@@ -1,101 +1,103 @@
 package igdb
 
-// GameModeService handles all the API
-// calls for the IGDB GameMode endpoint.
-type GameModeService service
+import (
+	"github.com/pkg/errors"
+	"strconv"
+)
 
-// GameMode contains information on an IGDB entry for a particular game mode
-// (e.g. single player, multiplayer).
-//
-// For more information, visit: https://igdb.github.io/api/endpoints/game-mode/
+//go:generate gomodifytags -file $GOFILE -struct GameMode -add-tags json -w
+
+// GameMode represents a video game mode such as single or multi player.
+// For more information visit: https://api-docs.igdb.com/#game-mode
 type GameMode struct {
-	ID        int    `json:"id"`
+	CreatedAt int    `json:"created_at"`
 	Name      string `json:"name"`
 	Slug      string `json:"slug"`
-	URL       URL    `json:"url"`
-	CreatedAt int    `json:"created_at"` // Unix time in milliseconds
-	UpdatedAt int    `json:"updated_at"` // Unix time in milliseconds
-	Games     []int  `json:"games"`
+	UpdatedAt int    `json:"updated_at"`
+	URL       string `json:"url"`
 }
+
+// GameModeService handles all the API calls for the IGDB GameMode endpoint.
+type GameModeService service
 
 // Get returns a single GameMode identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameModes, an error is returned.
-func (gms *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
-	url, err := gms.client.singleURL(GameModeEndpoint, id, opts...)
-	if err != nil {
-		return nil, err
+func (gs *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
+	if id < 0 {
+		return nil, ErrNegativeID
 	}
 
-	var gm []GameMode
+	var mode []*GameMode
 
-	err = gms.client.get(url, &gm)
+	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
+	err := gs.client.get(gs.end, &mode, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot get GameMode with ID %v", id)
 	}
 
-	return &gm[0], nil
+	return mode[0], nil
 }
 
 // List returns a list of GameModes identified by the provided list of IGDB IDs.
-// Provide functional options to sort, filter, and paginate the results. Omitting
-// IDs will instead retrieve an index of GameModes based solely on the provided
-// options. Any ID that does not match a GameMode is ignored. If none of the IDs
+// Provide functional options to sort, filter, and paginate the results.
+// Any ID that does not match a GameMode is ignored. If none of the IDs
 // match a GameMode, an error is returned.
-func (gms *GameModeService) List(ids []int, opts ...FuncOption) ([]*GameMode, error) {
-	url, err := gms.client.multiURL(GameModeEndpoint, ids, opts...)
-	if err != nil {
-		return nil, err
+func (gs *GameModeService) List(ids []int, opts ...FuncOption) ([]*GameMode, error) {
+	for len(ids) < 1 {
+		return nil, ErrEmptyIDs
 	}
 
-	var gm []*GameMode
-
-	err = gms.client.get(url, &gm)
-	if err != nil {
-		return nil, err
+	for _, id := range ids {
+		if id < 0 {
+			return nil, ErrNegativeID
+		}
 	}
 
-	return gm, nil
+	var mode []*GameMode
+
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	err := gs.client.get(gs.end, &mode, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get GameModes with IDs %v", ids)
+	}
+
+	return mode, nil
 }
 
-// Search returns a list of GameModes found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate the results. If
-// no GameModes are found using the provided query, an error is returned.
-func (gms *GameModeService) Search(qry string, opts ...FuncOption) ([]*GameMode, error) {
-	url, err := gms.client.searchURL(GameModeEndpoint, qry, opts...)
+// Index returns an index of GameModes based solely on the provided functional
+// options used to sort, filter, and paginate the results. If no GameModes can
+// be found using the provided options, an error is returned.
+func (gs *GameModeService) Index(opts ...FuncOption) ([]*GameMode, error) {
+	var mode []*GameMode
+
+	err := gs.client.get(gs.end, &mode, opts...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get index of GameModes")
 	}
 
-	var gm []*GameMode
-
-	err = gms.client.get(url, &gm)
-	if err != nil {
-		return nil, err
-	}
-
-	return gm, nil
+	return mode, nil
 }
 
 // Count returns the number of GameModes available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameModes to count.
-func (gms *GameModeService) Count(opts ...FuncOption) (int, error) {
-	ct, err := gms.client.getEndpointCount(GameModeEndpoint, opts...)
+func (gs *GameModeService) Count(opts ...FuncOption) (int, error) {
+	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "cannot count GameModes")
 	}
 
 	return ct, nil
 }
 
-// ListFields returns the up-to-date list of fields in an
+// Fields returns the up-to-date list of fields in an
 // IGDB GameMode object.
-func (gms *GameModeService) ListFields() ([]string, error) {
-	fl, err := gms.client.getEndpointFieldList(GameModeEndpoint)
+func (gs *GameModeService) Fields() ([]string, error) {
+	f, err := gs.client.getFields(gs.end)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "cannot get GameMode fields")
 	}
 
-	return fl, nil
+	return f, nil
 }
