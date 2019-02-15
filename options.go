@@ -5,7 +5,6 @@ import (
 	"github.com/Henry-Sarabia/apicalypse"
 	"github.com/Henry-Sarabia/whitespace"
 	"github.com/pkg/errors"
-	"regexp"
 	"strings"
 )
 
@@ -180,10 +179,10 @@ const (
 // For more information, visit: https://api-docs.igdb.com/#filters
 func SetFilter(field string, op operator, val ...string) Option {
 	return func() (apicalypse.Option, error) {
-		if isBlank(field) {
+		if whitespace.IsBlank(field) {
 			return nil, ErrEmptyFields
 		}
-		if len(val) <= 0 || hasBlankElem(val) {
+		if len(val) <= 0 || whitespace.HasBlank(val) {
 			return nil, ErrEmptyFilterValues
 		}
 
@@ -196,38 +195,9 @@ func SetFilter(field string, op operator, val ...string) Option {
 // provided query.
 func setSearch(qry string) Option {
 	return func() (apicalypse.Option, error) {
-		if isBlank(qry) {
+		if whitespace.IsBlank(qry) {
 			return nil, ErrEmptyQuery
 		}
 		return apicalypse.Search("", qry), nil
 	}
-}
-
-// hasBlankElem returns true if the slice of strings contains a blank string
-// element, either an empty string or a string of space characters. Otherwise,
-// return false.
-func hasBlankElem(s []string) bool {
-	for _, v := range s {
-		if strings.TrimSpace(v) == "" {
-			return true
-		}
-	}
-	return false
-}
-
-// isBlank returns true if the provided string is empty or only consists of whitespace.
-// Returns false otherwise.
-func isBlank(s string) bool {
-	if removeWhitespace(s) == "" {
-		return true
-	}
-
-	return false
-}
-
-// removeWhitespace returns the provided string with all of the whitespace removed.
-// This includes spaces, tabs, newlines, returns, and form feeds.
-func removeWhitespace(s string) string {
-	space := regexp.MustCompile(`\s+`)
-	return space.ReplaceAllString(s, "")
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Henry-Sarabia/whitespace"
 	"io/ioutil"
 	"net/http"
 )
@@ -57,7 +58,7 @@ func checkResponse(resp *http.Response) error {
 	}
 
 	msg := fmt.Sprintf("Status %d", e.Status)
-	if e.Message != "" {
+	if !whitespace.IsBlank(e.Message) {
 		msg += fmt.Sprintf(" - %v", e.Message)
 	}
 	return errors.New(msg)
