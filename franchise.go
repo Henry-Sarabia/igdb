@@ -24,7 +24,7 @@ type FranchiseService service
 // Get returns a single Franchise identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Franchises, an error is returned.
-func (fs *FranchiseService) Get(id int, opts ...FuncOption) (*Franchise, error) {
+func (fs *FranchiseService) Get(id int, opts ...Option) (*Franchise, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -44,7 +44,7 @@ func (fs *FranchiseService) Get(id int, opts ...FuncOption) (*Franchise, error) 
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Franchise is ignored. If none of the IDs
 // match a Franchise, an error is returned.
-func (fs *FranchiseService) List(ids []int, opts ...FuncOption) ([]*Franchise, error) {
+func (fs *FranchiseService) List(ids []int, opts ...Option) ([]*Franchise, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -69,7 +69,7 @@ func (fs *FranchiseService) List(ids []int, opts ...FuncOption) ([]*Franchise, e
 // Index returns an index of Franchises based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Franchises can
 // be found using the provided options, an error is returned.
-func (fs *FranchiseService) Index(opts ...FuncOption) ([]*Franchise, error) {
+func (fs *FranchiseService) Index(opts ...Option) ([]*Franchise, error) {
 	var fr []*Franchise
 
 	err := fs.client.get(fs.end, &fr, opts...)
@@ -83,7 +83,7 @@ func (fs *FranchiseService) Index(opts ...FuncOption) ([]*Franchise, error) {
 // Count returns the number of Franchises available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Franchises to count.
-func (fs *FranchiseService) Count(opts ...FuncOption) (int, error) {
+func (fs *FranchiseService) Count(opts ...Option) (int, error) {
 	ct, err := fs.client.getCount(fs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Franchises")

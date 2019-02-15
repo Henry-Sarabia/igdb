@@ -29,7 +29,7 @@ type AgeRatingContentService service
 // Get returns a single AgeRatingContent identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any AgeRatingContents, an error is returned.
-func (as *AgeRatingContentService) Get(id int, opts ...FuncOption) (*AgeRatingContent, error) {
+func (as *AgeRatingContentService) Get(id int, opts ...Option) (*AgeRatingContent, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -49,7 +49,7 @@ func (as *AgeRatingContentService) Get(id int, opts ...FuncOption) (*AgeRatingCo
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a AgeRatingContent is ignored. If none of the IDs
 // match a AgeRatingContent, an error is returned.
-func (as *AgeRatingContentService) List(ids []int, opts ...FuncOption) ([]*AgeRatingContent, error) {
+func (as *AgeRatingContentService) List(ids []int, opts ...Option) ([]*AgeRatingContent, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -74,7 +74,7 @@ func (as *AgeRatingContentService) List(ids []int, opts ...FuncOption) ([]*AgeRa
 // Index returns an index of AgeRatingContents based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AgeRatingContents can
 // be found using the provided options, an error is returned.
-func (as *AgeRatingContentService) Index(opts ...FuncOption) ([]*AgeRatingContent, error) {
+func (as *AgeRatingContentService) Index(opts ...Option) ([]*AgeRatingContent, error) {
 	var cont []*AgeRatingContent
 
 	err := as.client.get(as.end, &cont, opts...)
@@ -88,7 +88,7 @@ func (as *AgeRatingContentService) Index(opts ...FuncOption) ([]*AgeRatingConten
 // Count returns the number of AgeRatingContents available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which AgeRatingContents to count.
-func (as *AgeRatingContentService) Count(opts ...FuncOption) (int, error) {
+func (as *AgeRatingContentService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count AgeRatingContents")

@@ -73,7 +73,7 @@ type AchievementService service
 // Get returns a single Achievement identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Achievements, an error is returned.
-func (as *AchievementService) Get(id int, opts ...FuncOption) (*Achievement, error) {
+func (as *AchievementService) Get(id int, opts ...Option) (*Achievement, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -93,7 +93,7 @@ func (as *AchievementService) Get(id int, opts ...FuncOption) (*Achievement, err
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Achievement is ignored. If none of the IDs
 // match a Achievement, an error is returned.
-func (as *AchievementService) List(ids []int, opts ...FuncOption) ([]*Achievement, error) {
+func (as *AchievementService) List(ids []int, opts ...Option) ([]*Achievement, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -118,7 +118,7 @@ func (as *AchievementService) List(ids []int, opts ...FuncOption) ([]*Achievemen
 // Index returns an index of Achievements based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Achievements can
 // be found using the provided options, an error is returned.
-func (as *AchievementService) Index(opts ...FuncOption) ([]*Achievement, error) {
+func (as *AchievementService) Index(opts ...Option) ([]*Achievement, error) {
 	var ach []*Achievement
 
 	err := as.client.get(as.end, &ach, opts...)
@@ -132,7 +132,7 @@ func (as *AchievementService) Index(opts ...FuncOption) ([]*Achievement, error) 
 // Count returns the number of Achievements available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Achievements to count.
-func (as *AchievementService) Count(opts ...FuncOption) (int, error) {
+func (as *AchievementService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Achievements")

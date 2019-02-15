@@ -21,7 +21,7 @@ type ScreenshotService service
 // Get returns a single Screenshot identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Screenshots, an error is returned.
-func (ss *ScreenshotService) Get(id int, opts ...FuncOption) (*Screenshot, error) {
+func (ss *ScreenshotService) Get(id int, opts ...Option) (*Screenshot, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -41,7 +41,7 @@ func (ss *ScreenshotService) Get(id int, opts ...FuncOption) (*Screenshot, error
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Screenshot is ignored. If none of the IDs
 // match a Screenshot, an error is returned.
-func (ss *ScreenshotService) List(ids []int, opts ...FuncOption) ([]*Screenshot, error) {
+func (ss *ScreenshotService) List(ids []int, opts ...Option) ([]*Screenshot, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -66,7 +66,7 @@ func (ss *ScreenshotService) List(ids []int, opts ...FuncOption) ([]*Screenshot,
 // Index returns an index of Screenshots based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Screenshots can
 // be found using the provided options, an error is returned.
-func (ss *ScreenshotService) Index(opts ...FuncOption) ([]*Screenshot, error) {
+func (ss *ScreenshotService) Index(opts ...Option) ([]*Screenshot, error) {
 	var shot []*Screenshot
 
 	err := ss.client.get(ss.end, &shot, opts...)
@@ -80,7 +80,7 @@ func (ss *ScreenshotService) Index(opts ...FuncOption) ([]*Screenshot, error) {
 // Count returns the number of Screenshots available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Screenshots to count.
-func (ss *ScreenshotService) Count(opts ...FuncOption) (int, error) {
+func (ss *ScreenshotService) Count(opts ...Option) (int, error) {
 	ct, err := ss.client.getCount(ss.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Screenshots")

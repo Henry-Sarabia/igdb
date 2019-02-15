@@ -20,7 +20,7 @@ type CompanyWebsiteService service
 // Get returns a single CompanyWebsite identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any CompanyWebsites, an error is returned.
-func (zs *CompanyWebsiteService) Get(id int, opts ...FuncOption) (*CompanyWebsite, error) {
+func (zs *CompanyWebsiteService) Get(id int, opts ...Option) (*CompanyWebsite, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -40,7 +40,7 @@ func (zs *CompanyWebsiteService) Get(id int, opts ...FuncOption) (*CompanyWebsit
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a CompanyWebsite is ignored. If none of the IDs
 // match a CompanyWebsite, an error is returned.
-func (zs *CompanyWebsiteService) List(ids []int, opts ...FuncOption) ([]*CompanyWebsite, error) {
+func (zs *CompanyWebsiteService) List(ids []int, opts ...Option) ([]*CompanyWebsite, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -65,7 +65,7 @@ func (zs *CompanyWebsiteService) List(ids []int, opts ...FuncOption) ([]*Company
 // Index returns an index of CompanyWebsites based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no CompanyWebsites can
 // be found using the provided options, an error is returned.
-func (zs *CompanyWebsiteService) Index(opts ...FuncOption) ([]*CompanyWebsite, error) {
+func (zs *CompanyWebsiteService) Index(opts ...Option) ([]*CompanyWebsite, error) {
 	var web []*CompanyWebsite
 
 	err := zs.client.get(zs.end, &web, opts...)
@@ -79,7 +79,7 @@ func (zs *CompanyWebsiteService) Index(opts ...FuncOption) ([]*CompanyWebsite, e
 // Count returns the number of CompanyWebsites available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which CompanyWebsites to count.
-func (zs *CompanyWebsiteService) Count(opts ...FuncOption) (int, error) {
+func (zs *CompanyWebsiteService) Count(opts ...Option) (int, error) {
 	ct, err := zs.client.getCount(zs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count CompanyWebsites")

@@ -18,7 +18,7 @@ type PlatformLogoService service
 // Get returns a single PlatformLogo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlatformLogos, an error is returned.
-func (ps *PlatformLogoService) Get(id int, opts ...FuncOption) (*PlatformLogo, error) {
+func (ps *PlatformLogoService) Get(id int, opts ...Option) (*PlatformLogo, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (ps *PlatformLogoService) Get(id int, opts ...FuncOption) (*PlatformLogo, e
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformLogo is ignored. If none of the IDs
 // match a PlatformLogo, an error is returned.
-func (ps *PlatformLogoService) List(ids []int, opts ...FuncOption) ([]*PlatformLogo, error) {
+func (ps *PlatformLogoService) List(ids []int, opts ...Option) ([]*PlatformLogo, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (ps *PlatformLogoService) List(ids []int, opts ...FuncOption) ([]*PlatformL
 // Index returns an index of PlatformLogos based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlatformLogos can
 // be found using the provided options, an error is returned.
-func (ps *PlatformLogoService) Index(opts ...FuncOption) ([]*PlatformLogo, error) {
+func (ps *PlatformLogoService) Index(opts ...Option) ([]*PlatformLogo, error) {
 	var logo []*PlatformLogo
 
 	err := ps.client.get(ps.end, &logo, opts...)
@@ -77,7 +77,7 @@ func (ps *PlatformLogoService) Index(opts ...FuncOption) ([]*PlatformLogo, error
 // Count returns the number of PlatformLogos available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlatformLogos to count.
-func (ps *PlatformLogoService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformLogoService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlatformLogos")

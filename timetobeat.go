@@ -23,7 +23,7 @@ type TimeToBeatService service
 // Get returns a single TimeToBeat identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any TimeToBeats, an error is returned.
-func (ts *TimeToBeatService) Get(id int, opts ...FuncOption) (*TimeToBeat, error) {
+func (ts *TimeToBeatService) Get(id int, opts ...Option) (*TimeToBeat, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -43,7 +43,7 @@ func (ts *TimeToBeatService) Get(id int, opts ...FuncOption) (*TimeToBeat, error
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a TimeToBeat is ignored. If none of the IDs
 // match a TimeToBeat, an error is returned.
-func (ts *TimeToBeatService) List(ids []int, opts ...FuncOption) ([]*TimeToBeat, error) {
+func (ts *TimeToBeatService) List(ids []int, opts ...Option) ([]*TimeToBeat, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -68,7 +68,7 @@ func (ts *TimeToBeatService) List(ids []int, opts ...FuncOption) ([]*TimeToBeat,
 // Index returns an index of TimeToBeats based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no TimeToBeats can
 // be found using the provided options, an error is returned.
-func (ts *TimeToBeatService) Index(opts ...FuncOption) ([]*TimeToBeat, error) {
+func (ts *TimeToBeatService) Index(opts ...Option) ([]*TimeToBeat, error) {
 	var time []*TimeToBeat
 
 	err := ts.client.get(ts.end, &time, opts...)
@@ -82,7 +82,7 @@ func (ts *TimeToBeatService) Index(opts ...FuncOption) ([]*TimeToBeat, error) {
 // Count returns the number of TimeToBeats available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which TimeToBeats to count.
-func (ts *TimeToBeatService) Count(opts ...FuncOption) (int, error) {
+func (ts *TimeToBeatService) Count(opts ...Option) (int, error) {
 	ct, err := ts.client.getCount(ts.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count TimeToBeats")

@@ -18,7 +18,7 @@ type PageBackgroundService service
 // Get returns a single PageBackground identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PageBackgrounds, an error is returned.
-func (ps *PageBackgroundService) Get(id int, opts ...FuncOption) (*PageBackground, error) {
+func (ps *PageBackgroundService) Get(id int, opts ...Option) (*PageBackground, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (ps *PageBackgroundService) Get(id int, opts ...FuncOption) (*PageBackgroun
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PageBackground is ignored. If none of the IDs
 // match a PageBackground, an error is returned.
-func (ps *PageBackgroundService) List(ids []int, opts ...FuncOption) ([]*PageBackground, error) {
+func (ps *PageBackgroundService) List(ids []int, opts ...Option) ([]*PageBackground, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (ps *PageBackgroundService) List(ids []int, opts ...FuncOption) ([]*PageBac
 // Index returns an index of PageBackgrounds based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PageBackgrounds can
 // be found using the provided options, an error is returned.
-func (ps *PageBackgroundService) Index(opts ...FuncOption) ([]*PageBackground, error) {
+func (ps *PageBackgroundService) Index(opts ...Option) ([]*PageBackground, error) {
 	var bg []*PageBackground
 
 	err := ps.client.get(ps.end, &bg, opts...)
@@ -77,7 +77,7 @@ func (ps *PageBackgroundService) Index(opts ...FuncOption) ([]*PageBackground, e
 // Count returns the number of PageBackgrounds available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PageBackgrounds to count.
-func (ps *PageBackgroundService) Count(opts ...FuncOption) (int, error) {
+func (ps *PageBackgroundService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PageBackgrounds")

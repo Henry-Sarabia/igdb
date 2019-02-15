@@ -27,14 +27,14 @@ func TestAlternativeNameService_Get(t *testing.T) {
 		name                string
 		file                string
 		id                  int
-		opts                []FuncOption
+		opts                []Option
 		wantAlternativeName *AlternativeName
 		wantErr             error
 	}{
-		{"Valid response", testAlternativeNameGet, 8989, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testAlternativeNameGet, 8989, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 8989, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 8989, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 8989, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -70,15 +70,15 @@ func TestAlternativeNameService_List(t *testing.T) {
 		name                 string
 		file                 string
 		ids                  []int
-		opts                 []FuncOption
+		opts                 []Option
 		wantAlternativeNames []*AlternativeName
 		wantErr              error
 	}{
-		{"Valid response", testAlternativeNameList, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testAlternativeNameList, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{10758, 3254, 9036, 9008, 4626, 13861, 13874, 13862}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -113,13 +113,13 @@ func TestAlternativeNameService_Index(t *testing.T) {
 	tests := []struct {
 		name                 string
 		file                 string
-		opts                 []FuncOption
+		opts                 []Option
 		wantAlternativeNames []*AlternativeName
 		wantErr              error
 	}{
-		{"Valid response", testAlternativeNameList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testAlternativeNameList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -146,13 +146,13 @@ func TestAlternativeNameService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
-		opts      []FuncOption
+		opts      []Option
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

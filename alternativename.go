@@ -20,7 +20,7 @@ type AlternativeNameService service
 // Get returns a single AlternativeName identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any AlternativeNames, an error is returned.
-func (as *AlternativeNameService) Get(id int, opts ...FuncOption) (*AlternativeName, error) {
+func (as *AlternativeNameService) Get(id int, opts ...Option) (*AlternativeName, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -40,7 +40,7 @@ func (as *AlternativeNameService) Get(id int, opts ...FuncOption) (*AlternativeN
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a AlternativeName is ignored. If none of the IDs
 // match a AlternativeName, an error is returned.
-func (as *AlternativeNameService) List(ids []int, opts ...FuncOption) ([]*AlternativeName, error) {
+func (as *AlternativeNameService) List(ids []int, opts ...Option) ([]*AlternativeName, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -65,7 +65,7 @@ func (as *AlternativeNameService) List(ids []int, opts ...FuncOption) ([]*Altern
 // Index returns an index of AlternativeNames based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AlternativeNames can
 // be found using the provided options, an error is returned.
-func (as *AlternativeNameService) Index(opts ...FuncOption) ([]*AlternativeName, error) {
+func (as *AlternativeNameService) Index(opts ...Option) ([]*AlternativeName, error) {
 	var alt []*AlternativeName
 
 	err := as.client.get(as.end, &alt, opts...)
@@ -79,7 +79,7 @@ func (as *AlternativeNameService) Index(opts ...FuncOption) ([]*AlternativeName,
 // Count returns the number of AlternativeNames available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which AlternativeNames to count.
-func (as *AlternativeNameService) Count(opts ...FuncOption) (int, error) {
+func (as *AlternativeNameService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count AlternativeNames")

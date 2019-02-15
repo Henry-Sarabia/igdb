@@ -49,7 +49,7 @@ type WebsiteService service
 // Get returns a single Website identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Websites, an error is returned.
-func (ws *WebsiteService) Get(id int, opts ...FuncOption) (*Website, error) {
+func (ws *WebsiteService) Get(id int, opts ...Option) (*Website, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -69,7 +69,7 @@ func (ws *WebsiteService) Get(id int, opts ...FuncOption) (*Website, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Website is ignored. If none of the IDs
 // match a Website, an error is returned.
-func (ws *WebsiteService) List(ids []int, opts ...FuncOption) ([]*Website, error) {
+func (ws *WebsiteService) List(ids []int, opts ...Option) ([]*Website, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -94,7 +94,7 @@ func (ws *WebsiteService) List(ids []int, opts ...FuncOption) ([]*Website, error
 // Index returns an index of Websites based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Websites can
 // be found using the provided options, an error is returned.
-func (ws *WebsiteService) Index(opts ...FuncOption) ([]*Website, error) {
+func (ws *WebsiteService) Index(opts ...Option) ([]*Website, error) {
 	var web []*Website
 
 	err := ws.client.get(ws.end, &web, opts...)
@@ -108,7 +108,7 @@ func (ws *WebsiteService) Index(opts ...FuncOption) ([]*Website, error) {
 // Count returns the number of Websites available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Websites to count.
-func (ws *WebsiteService) Count(opts ...FuncOption) (int, error) {
+func (ws *WebsiteService) Count(opts ...Option) (int, error) {
 	ct, err := ws.client.getCount(ws.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Websites")

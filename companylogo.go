@@ -18,7 +18,7 @@ type CompanyLogoService service
 // Get returns a single CompanyLogo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any CompanyLogos, an error is returned.
-func (cs *CompanyLogoService) Get(id int, opts ...FuncOption) (*CompanyLogo, error) {
+func (cs *CompanyLogoService) Get(id int, opts ...Option) (*CompanyLogo, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (cs *CompanyLogoService) Get(id int, opts ...FuncOption) (*CompanyLogo, err
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a CompanyLogo is ignored. If none of the IDs
 // match a CompanyLogo, an error is returned.
-func (cs *CompanyLogoService) List(ids []int, opts ...FuncOption) ([]*CompanyLogo, error) {
+func (cs *CompanyLogoService) List(ids []int, opts ...Option) ([]*CompanyLogo, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (cs *CompanyLogoService) List(ids []int, opts ...FuncOption) ([]*CompanyLog
 // Index returns an index of CompanyLogos based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no CompanyLogos can
 // be found using the provided options, an error is returned.
-func (cs *CompanyLogoService) Index(opts ...FuncOption) ([]*CompanyLogo, error) {
+func (cs *CompanyLogoService) Index(opts ...Option) ([]*CompanyLogo, error) {
 	var logo []*CompanyLogo
 
 	err := cs.client.get(cs.end, &logo, opts...)
@@ -77,7 +77,7 @@ func (cs *CompanyLogoService) Index(opts ...FuncOption) ([]*CompanyLogo, error) 
 // Count returns the number of CompanyLogos available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which CompanyLogos to count.
-func (cs *CompanyLogoService) Count(opts ...FuncOption) (int, error) {
+func (cs *CompanyLogoService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count CompanyLogos")

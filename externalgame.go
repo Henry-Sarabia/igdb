@@ -51,7 +51,7 @@ type ExternalGameService service
 // Get returns a single ExternalGame identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any ExternalGames, an error is returned.
-func (es *ExternalGameService) Get(id int, opts ...FuncOption) (*ExternalGame, error) {
+func (es *ExternalGameService) Get(id int, opts ...Option) (*ExternalGame, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -71,7 +71,7 @@ func (es *ExternalGameService) Get(id int, opts ...FuncOption) (*ExternalGame, e
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a ExternalGame is ignored. If none of the IDs
 // match a ExternalGame, an error is returned.
-func (es *ExternalGameService) List(ids []int, opts ...FuncOption) ([]*ExternalGame, error) {
+func (es *ExternalGameService) List(ids []int, opts ...Option) ([]*ExternalGame, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -96,7 +96,7 @@ func (es *ExternalGameService) List(ids []int, opts ...FuncOption) ([]*ExternalG
 // Index returns an index of ExternalGames based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no ExternalGames can
 // be found using the provided options, an error is returned.
-func (es *ExternalGameService) Index(opts ...FuncOption) ([]*ExternalGame, error) {
+func (es *ExternalGameService) Index(opts ...Option) ([]*ExternalGame, error) {
 	var ext []*ExternalGame
 
 	err := es.client.get(es.end, &ext, opts...)
@@ -110,7 +110,7 @@ func (es *ExternalGameService) Index(opts ...FuncOption) ([]*ExternalGame, error
 // Count returns the number of ExternalGames available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which ExternalGames to count.
-func (es *ExternalGameService) Count(opts ...FuncOption) (int, error) {
+func (es *ExternalGameService) Count(opts ...Option) (int, error) {
 	ct, err := es.client.getCount(es.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count ExternalGames")

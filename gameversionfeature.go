@@ -34,7 +34,7 @@ type GameVersionFeatureService service
 // Get returns a single GameVersionFeature identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameVersionFeatures, an error is returned.
-func (gs *GameVersionFeatureService) Get(id int, opts ...FuncOption) (*GameVersionFeature, error) {
+func (gs *GameVersionFeatureService) Get(id int, opts ...Option) (*GameVersionFeature, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -54,7 +54,7 @@ func (gs *GameVersionFeatureService) Get(id int, opts ...FuncOption) (*GameVersi
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a GameVersionFeature is ignored. If none of the IDs
 // match a GameVersionFeature, an error is returned.
-func (gs *GameVersionFeatureService) List(ids []int, opts ...FuncOption) ([]*GameVersionFeature, error) {
+func (gs *GameVersionFeatureService) List(ids []int, opts ...Option) ([]*GameVersionFeature, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -79,7 +79,7 @@ func (gs *GameVersionFeatureService) List(ids []int, opts ...FuncOption) ([]*Gam
 // Index returns an index of GameVersionFeatures based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameVersionFeatures can
 // be found using the provided options, an error is returned.
-func (gs *GameVersionFeatureService) Index(opts ...FuncOption) ([]*GameVersionFeature, error) {
+func (gs *GameVersionFeatureService) Index(opts ...Option) ([]*GameVersionFeature, error) {
 	var ft []*GameVersionFeature
 
 	err := gs.client.get(gs.end, &ft, opts...)
@@ -93,7 +93,7 @@ func (gs *GameVersionFeatureService) Index(opts ...FuncOption) ([]*GameVersionFe
 // Count returns the number of GameVersionFeatures available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameVersionFeatures to count.
-func (gs *GameVersionFeatureService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameVersionFeatureService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count GameVersionFeatures")

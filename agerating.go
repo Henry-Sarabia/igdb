@@ -50,7 +50,7 @@ type AgeRatingService service
 // Get returns a single AgeRating identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any AgeRatings, an error is returned.
-func (as *AgeRatingService) Get(id int, opts ...FuncOption) (*AgeRating, error) {
+func (as *AgeRatingService) Get(id int, opts ...Option) (*AgeRating, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -70,7 +70,7 @@ func (as *AgeRatingService) Get(id int, opts ...FuncOption) (*AgeRating, error) 
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a AgeRating is ignored. If none of the IDs
 // match a AgeRating, an error is returned.
-func (as *AgeRatingService) List(ids []int, opts ...FuncOption) ([]*AgeRating, error) {
+func (as *AgeRatingService) List(ids []int, opts ...Option) ([]*AgeRating, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -95,7 +95,7 @@ func (as *AgeRatingService) List(ids []int, opts ...FuncOption) ([]*AgeRating, e
 // Index returns an index of AgeRatings based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AgeRatings can
 // be found using the provided options, an error is returned.
-func (as *AgeRatingService) Index(opts ...FuncOption) ([]*AgeRating, error) {
+func (as *AgeRatingService) Index(opts ...Option) ([]*AgeRating, error) {
 	var age []*AgeRating
 
 	err := as.client.get(as.end, &age, opts...)
@@ -109,7 +109,7 @@ func (as *AgeRatingService) Index(opts ...FuncOption) ([]*AgeRating, error) {
 // Count returns the number of AgeRatings available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which AgeRatings to count.
-func (as *AgeRatingService) Count(opts ...FuncOption) (int, error) {
+func (as *AgeRatingService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count AgeRatings")

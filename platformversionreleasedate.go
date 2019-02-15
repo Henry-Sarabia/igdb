@@ -29,7 +29,7 @@ type PlatformVersionReleaseDateService service
 // Get returns a single PlatformVersionReleaseDate identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlatformVersionReleaseDates, an error is returned.
-func (ps *PlatformVersionReleaseDateService) Get(id int, opts ...FuncOption) (*PlatformVersionReleaseDate, error) {
+func (ps *PlatformVersionReleaseDateService) Get(id int, opts ...Option) (*PlatformVersionReleaseDate, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -49,7 +49,7 @@ func (ps *PlatformVersionReleaseDateService) Get(id int, opts ...FuncOption) (*P
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformVersionReleaseDate is ignored. If none of the IDs
 // match a PlatformVersionReleaseDate, an error is returned.
-func (ps *PlatformVersionReleaseDateService) List(ids []int, opts ...FuncOption) ([]*PlatformVersionReleaseDate, error) {
+func (ps *PlatformVersionReleaseDateService) List(ids []int, opts ...Option) ([]*PlatformVersionReleaseDate, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -74,7 +74,7 @@ func (ps *PlatformVersionReleaseDateService) List(ids []int, opts ...FuncOption)
 // Index returns an index of PlatformVersionReleaseDates based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlatformVersionReleaseDates can
 // be found using the provided options, an error is returned.
-func (ps *PlatformVersionReleaseDateService) Index(opts ...FuncOption) ([]*PlatformVersionReleaseDate, error) {
+func (ps *PlatformVersionReleaseDateService) Index(opts ...Option) ([]*PlatformVersionReleaseDate, error) {
 	var date []*PlatformVersionReleaseDate
 
 	err := ps.client.get(ps.end, &date, opts...)
@@ -88,7 +88,7 @@ func (ps *PlatformVersionReleaseDateService) Index(opts ...FuncOption) ([]*Platf
 // Count returns the number of PlatformVersionReleaseDates available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlatformVersionReleaseDates to count.
-func (ps *PlatformVersionReleaseDateService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformVersionReleaseDateService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlatformVersionReleaseDates")

@@ -29,14 +29,14 @@ func TestGameService_Get(t *testing.T) {
 		name     string
 		file     string
 		id       int
-		opts     []FuncOption
+		opts     []Option
 		wantGame *Game
 		wantErr  error
 	}{
-		{"Valid response", testGameGet, 7346, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testGameGet, 7346, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 7346, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 7346, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 7346, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -72,15 +72,15 @@ func TestGameService_List(t *testing.T) {
 		name      string
 		file      string
 		ids       []int
-		opts      []FuncOption
+		opts      []Option
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameList, []int{105842, 32478, 98774, 104945, 69530}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testGameList, []int{105842, 32478, 98774, 104945, 69530}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{105842, 32478, 98774, 104945, 69530}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{105842, 32478, 98774, 104945, 69530}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{105842, 32478, 98774, 104945, 69530}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -115,13 +115,13 @@ func TestGameService_Index(t *testing.T) {
 	tests := []struct {
 		name      string
 		file      string
-		opts      []FuncOption
+		opts      []Option
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testGameList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -157,14 +157,14 @@ func TestGameService_Search(t *testing.T) {
 		name      string
 		file      string
 		qry       string
-		opts      []FuncOption
+		opts      []Option
 		wantGames []*Game
 		wantErr   error
 	}{
-		{"Valid response", testGameSearch, "mario", []FuncOption{SetLimit(5)}, init, nil},
-		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(5)}, nil, ErrEmptyQuery},
+		{"Valid response", testGameSearch, "mario", []Option{SetLimit(5)}, init, nil},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(5)}, nil, ErrEmptyQuery},
 		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, "mario", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -191,13 +191,13 @@ func TestGameService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
-		opts      []FuncOption
+		opts      []Option
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

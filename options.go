@@ -9,26 +9,26 @@ import (
 	"strings"
 )
 
-// Errors returned by a FuncOption when setting options for an API call.
+// Errors returned by a Option when setting options for an API call.
 var (
 	// ErrEmptyQuery occurs when an empty string is used as a query value.
-	ErrEmptyQuery = errors.New("igdb.FuncOption: provided query value is empty")
+	ErrEmptyQuery = errors.New("igdb.Option: provided query value is empty")
 	// ErrEmptyFields occurs when an empty string is used as a field value.
-	ErrEmptyFields = errors.New("igdb.FuncOption: one or more provided field values are empty")
+	ErrEmptyFields = errors.New("igdb.Option: one or more provided field values are empty")
 	// ErrEmptyFilterValues occurs when an empty string is used as a filter value.
-	ErrEmptyFilterValues = errors.New("igdb.FuncOption: one or more provided filter values are empty")
+	ErrEmptyFilterValues = errors.New("igdb.Option: one or more provided filter values are empty")
 	// ErrOutOfRange occurs when a provided number value is out of valid range.
-	ErrOutOfRange = errors.New("igdb.FuncOption: provided value is out of range")
+	ErrOutOfRange = errors.New("igdb.Option: provided value is out of range")
 )
 
-// FuncOption functions are used to set the options for an API call.
-// FuncOption is the first-order function returned by the available
+// Option functions are used to set the options for an API call.
+// Option is the first-order function returned by the available
 // functional options (e.g. SetLimit or SetFilter). This first-order
 // function is then passed into a service's Get, List, Index, Search, or
 // Count function.
-type FuncOption func() (apicalypse.Option, error)
+type Option func() (apicalypse.Option, error)
 
-func unwrapOptions(opts ...FuncOption) ([]apicalypse.Option, error) {
+func unwrapOptions(opts ...Option) ([]apicalypse.Option, error) {
 	unwrapped := make([]apicalypse.Option, len(opts))
 	for i, opt := range opts {
 		var err error
@@ -40,12 +40,12 @@ func unwrapOptions(opts ...FuncOption) ([]apicalypse.Option, error) {
 	return unwrapped, nil
 }
 
-// ComposeOptions composes multiple functional options into a single FuncOption.
+// ComposeOptions composes multiple functional options into a single Option.
 // This is primarily used to create a single functional option that can be used
 // repeatedly across multiple queries.
-func ComposeOptions(funcOpts ...FuncOption) FuncOption {
+func ComposeOptions(opts ...Option) Option {
 	return func() (apicalypse.Option, error) {
-		unwrapped, err := unwrapOptions(funcOpts...)
+		unwrapped, err := unwrapOptions(opts...)
 		if err != nil {
 			return nil, errors.Wrap(err, "cannot compose invalid functional options")
 		}
@@ -70,7 +70,7 @@ const (
 	OrderDescending order = "desc"
 )
 
-func SetOrder(field string, order order) FuncOption {
+func SetOrder(field string, order order) Option {
 	return func() (apicalypse.Option, error) {
 		if whitespace.IsBlank(field) {
 			return nil, ErrEmptyFields
@@ -83,7 +83,7 @@ func SetOrder(field string, order order) FuncOption {
 // an API call. The default limit is 10. The maximum limit is 50.
 //
 // For more information, visit: https://api-docs.igdb.com/#pagination
-func SetLimit(lim int) FuncOption {
+func SetLimit(lim int) Option {
 	return func() (apicalypse.Option, error) {
 		if lim <= 0 || lim > 50 {
 			return nil, ErrOutOfRange
@@ -97,7 +97,7 @@ func SetLimit(lim int) FuncOption {
 // call. The default offset is 0. The maximum offset is 10,000.
 //
 // For more information, visit: https://api-docs.igdb.com/#pagination
-func SetOffset(off int) FuncOption {
+func SetOffset(off int) Option {
 	return func() (apicalypse.Option, error) {
 		if off < 0 || off > 10000 {
 			return nil, ErrOutOfRange
@@ -118,7 +118,7 @@ func SetOffset(off int) FuncOption {
 // The default for Search functions is set to solely the ID field.
 //
 // For more information, visit: https://api-docs.igdb.com/#fields
-func SetFields(fields ...string) FuncOption {
+func SetFields(fields ...string) Option {
 	return func() (apicalypse.Option, error) {
 		if len(fields) <= 0 {
 			return nil, ErrEmptyFields
@@ -178,7 +178,7 @@ const (
 // to the intended field value.
 //
 // For more information, visit: https://api-docs.igdb.com/#filters
-func SetFilter(field string, op operator, val ...string) FuncOption {
+func SetFilter(field string, op operator, val ...string) Option {
 	return func() (apicalypse.Option, error) {
 		if isBlank(field) {
 			return nil, ErrEmptyFields
@@ -194,7 +194,7 @@ func SetFilter(field string, op operator, val ...string) FuncOption {
 
 // setSearch is a functional option used to search the IGDB using the
 // provided query.
-func setSearch(qry string) FuncOption {
+func setSearch(qry string) Option {
 	return func() (apicalypse.Option, error) {
 		if isBlank(qry) {
 			return nil, ErrEmptyQuery

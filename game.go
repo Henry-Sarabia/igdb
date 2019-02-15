@@ -101,7 +101,7 @@ type GameService service
 // Get returns a single Game identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Games, an error is returned.
-func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
+func (gs *GameService) Get(id int, opts ...Option) (*Game, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -121,7 +121,7 @@ func (gs *GameService) Get(id int, opts ...FuncOption) (*Game, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Game is ignored. If none of the IDs
 // match a Game, an error is returned.
-func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
+func (gs *GameService) List(ids []int, opts ...Option) ([]*Game, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -146,7 +146,7 @@ func (gs *GameService) List(ids []int, opts ...FuncOption) ([]*Game, error) {
 // Index returns an index of Games based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Games can
 // be found using the provided options, an error is returned.
-func (gs *GameService) Index(opts ...FuncOption) ([]*Game, error) {
+func (gs *GameService) Index(opts ...Option) ([]*Game, error) {
 	var g []*Game
 
 	err := gs.client.get(gs.end, &g, opts...)
@@ -160,7 +160,7 @@ func (gs *GameService) Index(opts ...FuncOption) ([]*Game, error) {
 // Search returns a list of Games found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Games are found using the provided query, an error is returned.
-func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
+func (gs *GameService) Search(qry string, opts ...Option) ([]*Game, error) {
 	var g []*Game
 
 	opts = append(opts, setSearch(qry))
@@ -175,7 +175,7 @@ func (gs *GameService) Search(qry string, opts ...FuncOption) ([]*Game, error) {
 // Count returns the number of Games available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Games to count.
-func (gs *GameService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Games")

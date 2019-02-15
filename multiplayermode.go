@@ -30,7 +30,7 @@ type MultiplayerModeService service
 // Get returns a single MultiplayerMode identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any MultiplayerModes, an error is returned.
-func (ms *MultiplayerModeService) Get(id int, opts ...FuncOption) (*MultiplayerMode, error) {
+func (ms *MultiplayerModeService) Get(id int, opts ...Option) (*MultiplayerMode, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -50,7 +50,7 @@ func (ms *MultiplayerModeService) Get(id int, opts ...FuncOption) (*MultiplayerM
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a MultiplayerMode is ignored. If none of the IDs
 // match a MultiplayerMode, an error is returned.
-func (ms *MultiplayerModeService) List(ids []int, opts ...FuncOption) ([]*MultiplayerMode, error) {
+func (ms *MultiplayerModeService) List(ids []int, opts ...Option) ([]*MultiplayerMode, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -75,7 +75,7 @@ func (ms *MultiplayerModeService) List(ids []int, opts ...FuncOption) ([]*Multip
 // Index returns an index of MultiplayerModes based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no MultiplayerModes can
 // be found using the provided options, an error is returned.
-func (ms *MultiplayerModeService) Index(opts ...FuncOption) ([]*MultiplayerMode, error) {
+func (ms *MultiplayerModeService) Index(opts ...Option) ([]*MultiplayerMode, error) {
 	var mode []*MultiplayerMode
 
 	err := ms.client.get(ms.end, &mode, opts...)
@@ -89,7 +89,7 @@ func (ms *MultiplayerModeService) Index(opts ...FuncOption) ([]*MultiplayerMode,
 // Count returns the number of MultiplayerModes available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which MultiplayerModes to count.
-func (ms *MultiplayerModeService) Count(opts ...FuncOption) (int, error) {
+func (ms *MultiplayerModeService) Count(opts ...Option) (int, error) {
 	ct, err := ms.client.getCount(ms.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count MultiplayerModes")

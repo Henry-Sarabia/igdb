@@ -24,7 +24,7 @@ type CollectionService service
 // Get returns a single Collection identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Collections, an error is returned.
-func (cs *CollectionService) Get(id int, opts ...FuncOption) (*Collection, error) {
+func (cs *CollectionService) Get(id int, opts ...Option) (*Collection, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -44,7 +44,7 @@ func (cs *CollectionService) Get(id int, opts ...FuncOption) (*Collection, error
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Collection is ignored. If none of the IDs
 // match a Collection, an error is returned.
-func (cs *CollectionService) List(ids []int, opts ...FuncOption) ([]*Collection, error) {
+func (cs *CollectionService) List(ids []int, opts ...Option) ([]*Collection, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -69,7 +69,7 @@ func (cs *CollectionService) List(ids []int, opts ...FuncOption) ([]*Collection,
 // Index returns an index of Collections based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Collections can
 // be found using the provided options, an error is returned.
-func (cs *CollectionService) Index(opts ...FuncOption) ([]*Collection, error) {
+func (cs *CollectionService) Index(opts ...Option) ([]*Collection, error) {
 	var col []*Collection
 
 	err := cs.client.get(cs.end, &col, opts...)
@@ -83,7 +83,7 @@ func (cs *CollectionService) Index(opts ...FuncOption) ([]*Collection, error) {
 // Search returns a list of Collections found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Collections are found using the provided query, an error is returned.
-func (cs *CollectionService) Search(qry string, opts ...FuncOption) ([]*Collection, error) {
+func (cs *CollectionService) Search(qry string, opts ...Option) ([]*Collection, error) {
 	var col []*Collection
 
 	opts = append(opts, setSearch(qry))
@@ -98,7 +98,7 @@ func (cs *CollectionService) Search(qry string, opts ...FuncOption) ([]*Collecti
 // Count returns the number of Collections available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Collections to count.
-func (cs *CollectionService) Count(opts ...FuncOption) (int, error) {
+func (cs *CollectionService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Collections")

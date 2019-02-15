@@ -23,7 +23,7 @@ type GenreService service
 // Get returns a single Genre identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Genres, an error is returned.
-func (gs *GenreService) Get(id int, opts ...FuncOption) (*Genre, error) {
+func (gs *GenreService) Get(id int, opts ...Option) (*Genre, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -43,7 +43,7 @@ func (gs *GenreService) Get(id int, opts ...FuncOption) (*Genre, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Genre is ignored. If none of the IDs
 // match a Genre, an error is returned.
-func (gs *GenreService) List(ids []int, opts ...FuncOption) ([]*Genre, error) {
+func (gs *GenreService) List(ids []int, opts ...Option) ([]*Genre, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -68,7 +68,7 @@ func (gs *GenreService) List(ids []int, opts ...FuncOption) ([]*Genre, error) {
 // Index returns an index of Genres based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Genres can
 // be found using the provided options, an error is returned.
-func (gs *GenreService) Index(opts ...FuncOption) ([]*Genre, error) {
+func (gs *GenreService) Index(opts ...Option) ([]*Genre, error) {
 	var gen []*Genre
 
 	err := gs.client.get(gs.end, &gen, opts...)
@@ -82,7 +82,7 @@ func (gs *GenreService) Index(opts ...FuncOption) ([]*Genre, error) {
 // Count returns the number of Genres available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Genres to count.
-func (gs *GenreService) Count(opts ...FuncOption) (int, error) {
+func (gs *GenreService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Genres")

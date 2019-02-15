@@ -37,7 +37,7 @@ type PlatformVersionService service
 // Get returns a single PlatformVersion identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlatformVersions, an error is returned.
-func (ps *PlatformVersionService) Get(id int, opts ...FuncOption) (*PlatformVersion, error) {
+func (ps *PlatformVersionService) Get(id int, opts ...Option) (*PlatformVersion, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -57,7 +57,7 @@ func (ps *PlatformVersionService) Get(id int, opts ...FuncOption) (*PlatformVers
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformVersion is ignored. If none of the IDs
 // match a PlatformVersion, an error is returned.
-func (ps *PlatformVersionService) List(ids []int, opts ...FuncOption) ([]*PlatformVersion, error) {
+func (ps *PlatformVersionService) List(ids []int, opts ...Option) ([]*PlatformVersion, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -82,7 +82,7 @@ func (ps *PlatformVersionService) List(ids []int, opts ...FuncOption) ([]*Platfo
 // Index returns an index of PlatformVersions based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlatformVersions can
 // be found using the provided options, an error is returned.
-func (ps *PlatformVersionService) Index(opts ...FuncOption) ([]*PlatformVersion, error) {
+func (ps *PlatformVersionService) Index(opts ...Option) ([]*PlatformVersion, error) {
 	var ver []*PlatformVersion
 
 	err := ps.client.get(ps.end, &ver, opts...)
@@ -96,7 +96,7 @@ func (ps *PlatformVersionService) Index(opts ...FuncOption) ([]*PlatformVersion,
 // Count returns the number of PlatformVersions available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlatformVersions to count.
-func (ps *PlatformVersionService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformVersionService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlatformVersions")
