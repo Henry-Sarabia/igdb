@@ -28,7 +28,7 @@ type GameEngineService service
 // Get returns a single GameEngine identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameEngines, an error is returned.
-func (gs *GameEngineService) Get(id int, opts ...FuncOption) (*GameEngine, error) {
+func (gs *GameEngineService) Get(id int, opts ...Option) (*GameEngine, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -48,7 +48,7 @@ func (gs *GameEngineService) Get(id int, opts ...FuncOption) (*GameEngine, error
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a GameEngine is ignored. If none of the IDs
 // match a GameEngine, an error is returned.
-func (gs *GameEngineService) List(ids []int, opts ...FuncOption) ([]*GameEngine, error) {
+func (gs *GameEngineService) List(ids []int, opts ...Option) ([]*GameEngine, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -73,7 +73,7 @@ func (gs *GameEngineService) List(ids []int, opts ...FuncOption) ([]*GameEngine,
 // Index returns an index of GameEngines based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameEngines can
 // be found using the provided options, an error is returned.
-func (gs *GameEngineService) Index(opts ...FuncOption) ([]*GameEngine, error) {
+func (gs *GameEngineService) Index(opts ...Option) ([]*GameEngine, error) {
 	var eng []*GameEngine
 
 	err := gs.client.get(gs.end, &eng, opts...)
@@ -87,7 +87,7 @@ func (gs *GameEngineService) Index(opts ...FuncOption) ([]*GameEngine, error) {
 // Count returns the number of GameEngines available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameEngines to count.
-func (gs *GameEngineService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameEngineService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count GameEngines")

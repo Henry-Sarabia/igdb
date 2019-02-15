@@ -24,7 +24,7 @@ type KeywordService service
 // Get returns a single Keyword identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Keywords, an error is returned.
-func (ks *KeywordService) Get(id int, opts ...FuncOption) (*Keyword, error) {
+func (ks *KeywordService) Get(id int, opts ...Option) (*Keyword, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -44,7 +44,7 @@ func (ks *KeywordService) Get(id int, opts ...FuncOption) (*Keyword, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Keyword is ignored. If none of the IDs
 // match a Keyword, an error is returned.
-func (ks *KeywordService) List(ids []int, opts ...FuncOption) ([]*Keyword, error) {
+func (ks *KeywordService) List(ids []int, opts ...Option) ([]*Keyword, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -69,7 +69,7 @@ func (ks *KeywordService) List(ids []int, opts ...FuncOption) ([]*Keyword, error
 // Index returns an index of Keywords based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Keywords can
 // be found using the provided options, an error is returned.
-func (ks *KeywordService) Index(opts ...FuncOption) ([]*Keyword, error) {
+func (ks *KeywordService) Index(opts ...Option) ([]*Keyword, error) {
 	var key []*Keyword
 
 	err := ks.client.get(ks.end, &key, opts...)
@@ -83,7 +83,7 @@ func (ks *KeywordService) Index(opts ...FuncOption) ([]*Keyword, error) {
 // Count returns the number of Keywords available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Keywords to count.
-func (ks *KeywordService) Count(opts ...FuncOption) (int, error) {
+func (ks *KeywordService) Count(opts ...Option) (int, error) {
 	ct, err := ks.client.getCount(ks.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Keywords")

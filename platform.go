@@ -47,7 +47,7 @@ type PlatformService service
 // Get returns a single Platform identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Platforms, an error is returned.
-func (ps *PlatformService) Get(id int, opts ...FuncOption) (*Platform, error) {
+func (ps *PlatformService) Get(id int, opts ...Option) (*Platform, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -67,7 +67,7 @@ func (ps *PlatformService) Get(id int, opts ...FuncOption) (*Platform, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Platform is ignored. If none of the IDs
 // match a Platform, an error is returned.
-func (ps *PlatformService) List(ids []int, opts ...FuncOption) ([]*Platform, error) {
+func (ps *PlatformService) List(ids []int, opts ...Option) ([]*Platform, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -92,7 +92,7 @@ func (ps *PlatformService) List(ids []int, opts ...FuncOption) ([]*Platform, err
 // Index returns an index of Platforms based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Platforms can
 // be found using the provided options, an error is returned.
-func (ps *PlatformService) Index(opts ...FuncOption) ([]*Platform, error) {
+func (ps *PlatformService) Index(opts ...Option) ([]*Platform, error) {
 	var plat []*Platform
 
 	err := ps.client.get(ps.end, &plat, opts...)
@@ -106,7 +106,7 @@ func (ps *PlatformService) Index(opts ...FuncOption) ([]*Platform, error) {
 // Search returns a list of Platforms found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Platforms are found using the provided query, an error is returned.
-func (ps *PlatformService) Search(qry string, opts ...FuncOption) ([]*Platform, error) {
+func (ps *PlatformService) Search(qry string, opts ...Option) ([]*Platform, error) {
 	var plat []*Platform
 
 	opts = append(opts, setSearch(qry))
@@ -121,7 +121,7 @@ func (ps *PlatformService) Search(qry string, opts ...FuncOption) ([]*Platform, 
 // Count returns the number of Platforms available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Platforms to count.
-func (ps *PlatformService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Platforms")

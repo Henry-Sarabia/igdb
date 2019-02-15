@@ -28,7 +28,7 @@ type InvolvedCompanyService service
 // Get returns a single InvolvedCompany identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any InvolvedCompanies, an error is returned.
-func (is *InvolvedCompanyService) Get(id int, opts ...FuncOption) (*InvolvedCompany, error) {
+func (is *InvolvedCompanyService) Get(id int, opts ...Option) (*InvolvedCompany, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -48,7 +48,7 @@ func (is *InvolvedCompanyService) Get(id int, opts ...FuncOption) (*InvolvedComp
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a InvolvedCompany is ignored. If none of the IDs
 // match a InvolvedCompany, an error is returned.
-func (is *InvolvedCompanyService) List(ids []int, opts ...FuncOption) ([]*InvolvedCompany, error) {
+func (is *InvolvedCompanyService) List(ids []int, opts ...Option) ([]*InvolvedCompany, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -73,7 +73,7 @@ func (is *InvolvedCompanyService) List(ids []int, opts ...FuncOption) ([]*Involv
 // Index returns an index of InvolvedCompanies based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no InvolvedCompanies can
 // be found using the provided options, an error is returned.
-func (is *InvolvedCompanyService) Index(opts ...FuncOption) ([]*InvolvedCompany, error) {
+func (is *InvolvedCompanyService) Index(opts ...Option) ([]*InvolvedCompany, error) {
 	var com []*InvolvedCompany
 
 	err := is.client.get(is.end, &com, opts...)
@@ -87,7 +87,7 @@ func (is *InvolvedCompanyService) Index(opts ...FuncOption) ([]*InvolvedCompany,
 // Count returns the number of InvolvedCompanies available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which InvolvedCompanies to count.
-func (is *InvolvedCompanyService) Count(opts ...FuncOption) (int, error) {
+func (is *InvolvedCompanyService) Count(opts ...Option) (int, error) {
 	ct, err := is.client.getCount(is.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count InvolvedCompanies")

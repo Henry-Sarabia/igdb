@@ -52,7 +52,7 @@ type CharacterService service
 // Get returns a single Character identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Characters, an error is returned.
-func (cs *CharacterService) Get(id int, opts ...FuncOption) (*Character, error) {
+func (cs *CharacterService) Get(id int, opts ...Option) (*Character, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -72,7 +72,7 @@ func (cs *CharacterService) Get(id int, opts ...FuncOption) (*Character, error) 
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Character is ignored. If none of the IDs
 // match a Character, an error is returned.
-func (cs *CharacterService) List(ids []int, opts ...FuncOption) ([]*Character, error) {
+func (cs *CharacterService) List(ids []int, opts ...Option) ([]*Character, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -97,7 +97,7 @@ func (cs *CharacterService) List(ids []int, opts ...FuncOption) ([]*Character, e
 // Index returns an index of Characters based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Characters can
 // be found using the provided options, an error is returned.
-func (cs *CharacterService) Index(opts ...FuncOption) ([]*Character, error) {
+func (cs *CharacterService) Index(opts ...Option) ([]*Character, error) {
 	var ch []*Character
 
 	err := cs.client.get(cs.end, &ch, opts...)
@@ -111,7 +111,7 @@ func (cs *CharacterService) Index(opts ...FuncOption) ([]*Character, error) {
 // Search returns a list of Characters found by searching the IGDB using the provided
 // query. Provide functional options to sort, filter, and paginate the results. If
 // no Characters are found using the provided query, an error is returned.
-func (cs *CharacterService) Search(qry string, opts ...FuncOption) ([]*Character, error) {
+func (cs *CharacterService) Search(qry string, opts ...Option) ([]*Character, error) {
 	var ch []*Character
 
 	opts = append(opts, setSearch(qry))
@@ -126,7 +126,7 @@ func (cs *CharacterService) Search(qry string, opts ...FuncOption) ([]*Character
 // Count returns the number of Characters available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Characters to count.
-func (cs *CharacterService) Count(opts ...FuncOption) (int, error) {
+func (cs *CharacterService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Characters")

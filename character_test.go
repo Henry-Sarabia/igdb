@@ -28,14 +28,14 @@ func TestCharacterService_Get(t *testing.T) {
 		name          string
 		file          string
 		id            int
-		opts          []FuncOption
+		opts          []Option
 		wantCharacter *Character
 		wantErr       error
 	}{
-		{"Valid response", testCharacterGet, 12690, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testCharacterGet, 12690, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 12690, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 12690, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 12690, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -71,15 +71,15 @@ func TestCharacterService_List(t *testing.T) {
 		name           string
 		file           string
 		ids            []int
-		opts           []FuncOption
+		opts           []Option
 		wantCharacters []*Character
 		wantErr        error
 	}{
-		{"Valid response", testCharacterList, []int{11079, 799, 11563, 7337, 11576}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testCharacterList, []int{11079, 799, 11563, 7337, 11576}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{11079, 799, 11563, 7337, 11576}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{11079, 799, 11563, 7337, 11576}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{11079, 799, 11563, 7337, 11576}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -114,13 +114,13 @@ func TestCharacterService_Index(t *testing.T) {
 	tests := []struct {
 		name           string
 		file           string
-		opts           []FuncOption
+		opts           []Option
 		wantCharacters []*Character
 		wantErr        error
 	}{
-		{"Valid response", testCharacterList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testCharacterList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -156,14 +156,14 @@ func TestCharacterService_Search(t *testing.T) {
 		name           string
 		file           string
 		qry            string
-		opts           []FuncOption
+		opts           []Option
 		wantCharacters []*Character
 		wantErr        error
 	}{
-		{"Valid response", testCharacterSearch, "super", []FuncOption{SetLimit(50)}, init, nil},
-		{"Empty query", testFileEmpty, "", []FuncOption{SetLimit(50)}, nil, ErrEmptyQuery},
+		{"Valid response", testCharacterSearch, "super", []Option{SetLimit(50)}, init, nil},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQuery},
 		{"Empty response", testFileEmpty, "super", nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, "super", []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, "super", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -190,13 +190,13 @@ func TestCharacterService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
-		opts      []FuncOption
+		opts      []Option
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

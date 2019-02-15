@@ -61,7 +61,7 @@ type ReleaseDateService service
 // Get returns a single ReleaseDate identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any ReleaseDates, an error is returned.
-func (rs *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, error) {
+func (rs *ReleaseDateService) Get(id int, opts ...Option) (*ReleaseDate, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -81,7 +81,7 @@ func (rs *ReleaseDateService) Get(id int, opts ...FuncOption) (*ReleaseDate, err
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a ReleaseDate is ignored. If none of the IDs
 // match a ReleaseDate, an error is returned.
-func (rs *ReleaseDateService) List(ids []int, opts ...FuncOption) ([]*ReleaseDate, error) {
+func (rs *ReleaseDateService) List(ids []int, opts ...Option) ([]*ReleaseDate, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -106,7 +106,7 @@ func (rs *ReleaseDateService) List(ids []int, opts ...FuncOption) ([]*ReleaseDat
 // Index returns an index of ReleaseDates based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no ReleaseDates can
 // be found using the provided options, an error is returned.
-func (rs *ReleaseDateService) Index(opts ...FuncOption) ([]*ReleaseDate, error) {
+func (rs *ReleaseDateService) Index(opts ...Option) ([]*ReleaseDate, error) {
 	var date []*ReleaseDate
 
 	err := rs.client.get(rs.end, &date, opts...)
@@ -120,7 +120,7 @@ func (rs *ReleaseDateService) Index(opts ...FuncOption) ([]*ReleaseDate, error) 
 // Count returns the number of ReleaseDates available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which ReleaseDates to count.
-func (rs *ReleaseDateService) Count(opts ...FuncOption) (int, error) {
+func (rs *ReleaseDateService) Count(opts ...Option) (int, error) {
 	ct, err := rs.client.getCount(rs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count ReleaseDates")

@@ -27,14 +27,14 @@ func TestInvolvedCompanyService_Get(t *testing.T) {
 		name                string
 		file                string
 		id                  int
-		opts                []FuncOption
+		opts                []Option
 		wantInvolvedCompany *InvolvedCompany
 		wantErr             error
 	}{
-		{"Valid response", testInvolvedCompanyGet, 36603, []FuncOption{SetFields("name")}, init[0], nil},
+		{"Valid response", testInvolvedCompanyGet, 36603, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 36603, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 36603, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 36603, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -70,15 +70,15 @@ func TestInvolvedCompanyService_List(t *testing.T) {
 		name                  string
 		file                  string
 		ids                   []int
-		opts                  []FuncOption
+		opts                  []Option
 		wantInvolvedCompanies []*InvolvedCompany
 		wantErr               error
 	}{
-		{"Valid response", testInvolvedCompanyList, []int{10268, 66143, 8, 65560, 67552}, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testInvolvedCompanyList, []int{10268, 66143, 8, 65560, 67552}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{10268, 66143, 8, 65560, 67552}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{10268, 66143, 8, 65560, 67552}, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{10268, 66143, 8, 65560, 67552}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -113,13 +113,13 @@ func TestInvolvedCompanyService_Index(t *testing.T) {
 	tests := []struct {
 		name                  string
 		file                  string
-		opts                  []FuncOption
+		opts                  []Option
 		wantInvolvedCompanies []*InvolvedCompany
 		wantErr               error
 	}{
-		{"Valid response", testInvolvedCompanyList, []FuncOption{SetLimit(5)}, init, nil},
+		{"Valid response", testInvolvedCompanyList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []FuncOption{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -146,13 +146,13 @@ func TestInvolvedCompanyService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
-		opts      []FuncOption
+		opts      []Option
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []FuncOption{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []FuncOption{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

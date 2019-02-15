@@ -18,7 +18,7 @@ type PageWebsiteService service
 // Get returns a single PageWebsite identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PageWebsites, an error is returned.
-func (ps *PageWebsiteService) Get(id int, opts ...FuncOption) (*PageWebsite, error) {
+func (ps *PageWebsiteService) Get(id int, opts ...Option) (*PageWebsite, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (ps *PageWebsiteService) Get(id int, opts ...FuncOption) (*PageWebsite, err
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PageWebsite is ignored. If none of the IDs
 // match a PageWebsite, an error is returned.
-func (ps *PageWebsiteService) List(ids []int, opts ...FuncOption) ([]*PageWebsite, error) {
+func (ps *PageWebsiteService) List(ids []int, opts ...Option) ([]*PageWebsite, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (ps *PageWebsiteService) List(ids []int, opts ...FuncOption) ([]*PageWebsit
 // Index returns an index of PageWebsites based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PageWebsites can
 // be found using the provided options, an error is returned.
-func (ps *PageWebsiteService) Index(opts ...FuncOption) ([]*PageWebsite, error) {
+func (ps *PageWebsiteService) Index(opts ...Option) ([]*PageWebsite, error) {
 	var site []*PageWebsite
 
 	err := ps.client.get(ps.end, &site, opts...)
@@ -77,7 +77,7 @@ func (ps *PageWebsiteService) Index(opts ...FuncOption) ([]*PageWebsite, error) 
 // Count returns the number of PageWebsites available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PageWebsites to count.
-func (ps *PageWebsiteService) Count(opts ...FuncOption) (int, error) {
+func (ps *PageWebsiteService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PageWebsites")

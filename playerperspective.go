@@ -24,7 +24,7 @@ type PlayerPerspectiveService service
 // Get returns a single PlayerPerspective identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlayerPerspectives, an error is returned.
-func (ps *PlayerPerspectiveService) Get(id int, opts ...FuncOption) (*PlayerPerspective, error) {
+func (ps *PlayerPerspectiveService) Get(id int, opts ...Option) (*PlayerPerspective, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -44,7 +44,7 @@ func (ps *PlayerPerspectiveService) Get(id int, opts ...FuncOption) (*PlayerPers
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlayerPerspective is ignored. If none of the IDs
 // match a PlayerPerspective, an error is returned.
-func (ps *PlayerPerspectiveService) List(ids []int, opts ...FuncOption) ([]*PlayerPerspective, error) {
+func (ps *PlayerPerspectiveService) List(ids []int, opts ...Option) ([]*PlayerPerspective, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -69,7 +69,7 @@ func (ps *PlayerPerspectiveService) List(ids []int, opts ...FuncOption) ([]*Play
 // Index returns an index of PlayerPerspectives based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlayerPerspectives can
 // be found using the provided options, an error is returned.
-func (ps *PlayerPerspectiveService) Index(opts ...FuncOption) ([]*PlayerPerspective, error) {
+func (ps *PlayerPerspectiveService) Index(opts ...Option) ([]*PlayerPerspective, error) {
 	var pp []*PlayerPerspective
 
 	err := ps.client.get(ps.end, &pp, opts...)
@@ -83,7 +83,7 @@ func (ps *PlayerPerspectiveService) Index(opts ...FuncOption) ([]*PlayerPerspect
 // Count returns the number of PlayerPerspectives available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlayerPerspectives to count.
-func (ps *PlayerPerspectiveService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlayerPerspectiveService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlayerPerspectives")

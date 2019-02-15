@@ -19,7 +19,7 @@ type CoverService service
 // Get returns a single Cover identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Covers, an error is returned.
-func (cs *CoverService) Get(id int, opts ...FuncOption) (*Cover, error) {
+func (cs *CoverService) Get(id int, opts ...Option) (*Cover, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -39,7 +39,7 @@ func (cs *CoverService) Get(id int, opts ...FuncOption) (*Cover, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Cover is ignored. If none of the IDs
 // match a Cover, an error is returned.
-func (cs *CoverService) List(ids []int, opts ...FuncOption) ([]*Cover, error) {
+func (cs *CoverService) List(ids []int, opts ...Option) ([]*Cover, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -64,7 +64,7 @@ func (cs *CoverService) List(ids []int, opts ...FuncOption) ([]*Cover, error) {
 // Index returns an index of Covers based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Covers can
 // be found using the provided options, an error is returned.
-func (cs *CoverService) Index(opts ...FuncOption) ([]*Cover, error) {
+func (cs *CoverService) Index(opts ...Option) ([]*Cover, error) {
 	var cov []*Cover
 
 	err := cs.client.get(cs.end, &cov, opts...)
@@ -78,7 +78,7 @@ func (cs *CoverService) Index(opts ...FuncOption) ([]*Cover, error) {
 // Count returns the number of Covers available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Covers to count.
-func (cs *CoverService) Count(opts ...FuncOption) (int, error) {
+func (cs *CoverService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Covers")

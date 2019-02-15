@@ -48,7 +48,7 @@ type FeedService service
 // Get returns a single Feed identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Feeds, an error is returned.
-func (fs *FeedService) Get(id int, opts ...FuncOption) (*Feed, error) {
+func (fs *FeedService) Get(id int, opts ...Option) (*Feed, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -68,7 +68,7 @@ func (fs *FeedService) Get(id int, opts ...FuncOption) (*Feed, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Feed is ignored. If none of the IDs
 // match a Feed, an error is returned.
-func (fs *FeedService) List(ids []int, opts ...FuncOption) ([]*Feed, error) {
+func (fs *FeedService) List(ids []int, opts ...Option) ([]*Feed, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -93,7 +93,7 @@ func (fs *FeedService) List(ids []int, opts ...FuncOption) ([]*Feed, error) {
 // Index returns an index of Feeds based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Feeds can
 // be found using the provided options, an error is returned.
-func (fs *FeedService) Index(opts ...FuncOption) ([]*Feed, error) {
+func (fs *FeedService) Index(opts ...Option) ([]*Feed, error) {
 	var feed []*Feed
 
 	err := fs.client.get(fs.end, &feed, opts...)
@@ -107,7 +107,7 @@ func (fs *FeedService) Index(opts ...FuncOption) ([]*Feed, error) {
 // Count returns the number of Feeds available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Feeds to count.
-func (fs *FeedService) Count(opts ...FuncOption) (int, error) {
+func (fs *FeedService) Count(opts ...Option) (int, error) {
 	ct, err := fs.client.getCount(fs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Feeds")

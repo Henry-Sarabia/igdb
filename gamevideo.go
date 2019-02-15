@@ -21,7 +21,7 @@ type GameVideoService service
 // Get returns a single GameVideo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameVideos, an error is returned.
-func (gs *GameVideoService) Get(id int, opts ...FuncOption) (*GameVideo, error) {
+func (gs *GameVideoService) Get(id int, opts ...Option) (*GameVideo, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -41,7 +41,7 @@ func (gs *GameVideoService) Get(id int, opts ...FuncOption) (*GameVideo, error) 
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a GameVideo is ignored. If none of the IDs
 // match a GameVideo, an error is returned.
-func (gs *GameVideoService) List(ids []int, opts ...FuncOption) ([]*GameVideo, error) {
+func (gs *GameVideoService) List(ids []int, opts ...Option) ([]*GameVideo, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -66,7 +66,7 @@ func (gs *GameVideoService) List(ids []int, opts ...FuncOption) ([]*GameVideo, e
 // Index returns an index of GameVideos based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameVideos can
 // be found using the provided options, an error is returned.
-func (gs *GameVideoService) Index(opts ...FuncOption) ([]*GameVideo, error) {
+func (gs *GameVideoService) Index(opts ...Option) ([]*GameVideo, error) {
 	var vid []*GameVideo
 
 	err := gs.client.get(gs.end, &vid, opts...)
@@ -80,7 +80,7 @@ func (gs *GameVideoService) Index(opts ...FuncOption) ([]*GameVideo, error) {
 // Count returns the number of GameVideos available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameVideos to count.
-func (gs *GameVideoService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameVideoService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count GameVideos")

@@ -10,15 +10,15 @@ import (
 func TestComposeOptions(t *testing.T) {
 	var optTests = []struct {
 		name        string
-		opts        []FuncOption
+		opts        []Option
 		wantFilters []string
 		wantErr     error
 	}{
 		{"Zero options", nil, nil, nil},
-		{"Single option", []FuncOption{SetLimit(20)}, []string{"20"}, nil},
-		{"Multiple options", []FuncOption{SetLimit(20), SetFields("name", "id"), SetFilter("popularity", OpLessThan, "50")}, []string{"50", "name,id", "where popularity < 50"}, nil},
-		{"Single invalid option", []FuncOption{SetOffset(-500)}, nil, ErrOutOfRange},
-		{"Multiple invalid options", []FuncOption{SetOffset(-500), SetLimit(999)}, nil, ErrOutOfRange},
+		{"Single option", []Option{SetLimit(20)}, []string{"20"}, nil},
+		{"Multiple options", []Option{SetLimit(20), SetFields("name", "id"), SetFilter("popularity", OpLessThan, "50")}, []string{"50", "name,id", "where popularity < 50"}, nil},
+		{"Single invalid option", []Option{SetOffset(-500)}, nil, ErrOutOfRange},
+		{"Multiple invalid options", []Option{SetOffset(-500), SetLimit(999)}, nil, ErrOutOfRange},
 	}
 
 	for _, test := range optTests {

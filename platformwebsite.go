@@ -20,7 +20,7 @@ type PlatformWebsiteService service
 // Get returns a single PlatformWebsite identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlatformWebsites, an error is returned.
-func (ps *PlatformWebsiteService) Get(id int, opts ...FuncOption) (*PlatformWebsite, error) {
+func (ps *PlatformWebsiteService) Get(id int, opts ...Option) (*PlatformWebsite, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -40,7 +40,7 @@ func (ps *PlatformWebsiteService) Get(id int, opts ...FuncOption) (*PlatformWebs
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformWebsite is ignored. If none of the IDs
 // match a PlatformWebsite, an error is returned.
-func (ps *PlatformWebsiteService) List(ids []int, opts ...FuncOption) ([]*PlatformWebsite, error) {
+func (ps *PlatformWebsiteService) List(ids []int, opts ...Option) ([]*PlatformWebsite, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -65,7 +65,7 @@ func (ps *PlatformWebsiteService) List(ids []int, opts ...FuncOption) ([]*Platfo
 // Index returns an index of PlatformWebsites based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlatformWebsites can
 // be found using the provided options, an error is returned.
-func (ps *PlatformWebsiteService) Index(opts ...FuncOption) ([]*PlatformWebsite, error) {
+func (ps *PlatformWebsiteService) Index(opts ...Option) ([]*PlatformWebsite, error) {
 	var web []*PlatformWebsite
 
 	err := ps.client.get(ps.end, &web, opts...)
@@ -79,7 +79,7 @@ func (ps *PlatformWebsiteService) Index(opts ...FuncOption) ([]*PlatformWebsite,
 // Count returns the number of PlatformWebsites available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlatformWebsites to count.
-func (ps *PlatformWebsiteService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformWebsiteService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlatformWebsites")

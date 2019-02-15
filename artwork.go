@@ -20,7 +20,7 @@ type Artwork struct {
 // Get returns a single Artwork identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Artworks, an error is returned.
-func (as *ArtworkService) Get(id int, opts ...FuncOption) (*Artwork, error) {
+func (as *ArtworkService) Get(id int, opts ...Option) (*Artwork, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -40,7 +40,7 @@ func (as *ArtworkService) Get(id int, opts ...FuncOption) (*Artwork, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Artwork is ignored. If none of the IDs
 // match a Artwork, an error is returned.
-func (as *ArtworkService) List(ids []int, opts ...FuncOption) ([]*Artwork, error) {
+func (as *ArtworkService) List(ids []int, opts ...Option) ([]*Artwork, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -65,7 +65,7 @@ func (as *ArtworkService) List(ids []int, opts ...FuncOption) ([]*Artwork, error
 // Index returns an index of Artworks based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Artworks can
 // be found using the provided options, an error is returned.
-func (as *ArtworkService) Index(opts ...FuncOption) ([]*Artwork, error) {
+func (as *ArtworkService) Index(opts ...Option) ([]*Artwork, error) {
 	var art []*Artwork
 
 	err := as.client.get(as.end, &art, opts...)
@@ -79,7 +79,7 @@ func (as *ArtworkService) Index(opts ...FuncOption) ([]*Artwork, error) {
 // Count returns the number of Artworks available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Artworks to count.
-func (as *ArtworkService) Count(opts ...FuncOption) (int, error) {
+func (as *ArtworkService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Artworks")

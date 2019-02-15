@@ -74,7 +74,7 @@ type PageService service
 // Get returns a single Page identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Pages, an error is returned.
-func (ps *PageService) Get(id int, opts ...FuncOption) (*Page, error) {
+func (ps *PageService) Get(id int, opts ...Option) (*Page, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -94,7 +94,7 @@ func (ps *PageService) Get(id int, opts ...FuncOption) (*Page, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Page is ignored. If none of the IDs
 // match a Page, an error is returned.
-func (ps *PageService) List(ids []int, opts ...FuncOption) ([]*Page, error) {
+func (ps *PageService) List(ids []int, opts ...Option) ([]*Page, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -119,7 +119,7 @@ func (ps *PageService) List(ids []int, opts ...FuncOption) ([]*Page, error) {
 // Index returns an index of Pages based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Pages can
 // be found using the provided options, an error is returned.
-func (ps *PageService) Index(opts ...FuncOption) ([]*Page, error) {
+func (ps *PageService) Index(opts ...Option) ([]*Page, error) {
 	var pg []*Page
 
 	err := ps.client.get(ps.end, &pg, opts...)
@@ -133,7 +133,7 @@ func (ps *PageService) Index(opts ...FuncOption) ([]*Page, error) {
 // Count returns the number of Pages available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Pages to count.
-func (ps *PageService) Count(opts ...FuncOption) (int, error) {
+func (ps *PageService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Pages")

@@ -18,7 +18,7 @@ type CharacterMugshot struct {
 // Get returns a single CharacterMugshot identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any CharacterMugshots, an error is returned.
-func (cs *CharacterMugshotService) Get(id int, opts ...FuncOption) (*CharacterMugshot, error) {
+func (cs *CharacterMugshotService) Get(id int, opts ...Option) (*CharacterMugshot, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (cs *CharacterMugshotService) Get(id int, opts ...FuncOption) (*CharacterMu
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a CharacterMugshot is ignored. If none of the IDs
 // match a CharacterMugshot, an error is returned.
-func (cs *CharacterMugshotService) List(ids []int, opts ...FuncOption) ([]*CharacterMugshot, error) {
+func (cs *CharacterMugshotService) List(ids []int, opts ...Option) ([]*CharacterMugshot, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (cs *CharacterMugshotService) List(ids []int, opts ...FuncOption) ([]*Chara
 // Index returns an index of CharacterMugshots based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no CharacterMugshots can
 // be found using the provided options, an error is returned.
-func (cs *CharacterMugshotService) Index(opts ...FuncOption) ([]*CharacterMugshot, error) {
+func (cs *CharacterMugshotService) Index(opts ...Option) ([]*CharacterMugshot, error) {
 	var mug []*CharacterMugshot
 
 	err := cs.client.get(cs.end, &mug, opts...)
@@ -77,7 +77,7 @@ func (cs *CharacterMugshotService) Index(opts ...FuncOption) ([]*CharacterMugsho
 // Count returns the number of CharacterMugshots available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which CharacterMugshots to count.
-func (cs *CharacterMugshotService) Count(opts ...FuncOption) (int, error) {
+func (cs *CharacterMugshotService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count CharacterMugshots")

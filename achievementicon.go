@@ -20,7 +20,7 @@ type AchievementIconService service
 // Get returns a single AchievementIcon identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any AchievementIcons, an error is returned.
-func (as *AchievementIconService) Get(id int, opts ...FuncOption) (*AchievementIcon, error) {
+func (as *AchievementIconService) Get(id int, opts ...Option) (*AchievementIcon, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -40,7 +40,7 @@ func (as *AchievementIconService) Get(id int, opts ...FuncOption) (*AchievementI
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a AchievementIcon is ignored. If none of the IDs
 // match a AchievementIcon, an error is returned.
-func (as *AchievementIconService) List(ids []int, opts ...FuncOption) ([]*AchievementIcon, error) {
+func (as *AchievementIconService) List(ids []int, opts ...Option) ([]*AchievementIcon, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -65,7 +65,7 @@ func (as *AchievementIconService) List(ids []int, opts ...FuncOption) ([]*Achiev
 // Index returns an index of AchievementIcons based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no AchievementIcons can
 // be found using the provided options, an error is returned.
-func (as *AchievementIconService) Index(opts ...FuncOption) ([]*AchievementIcon, error) {
+func (as *AchievementIconService) Index(opts ...Option) ([]*AchievementIcon, error) {
 	var icon []*AchievementIcon
 
 	err := as.client.get(as.end, &icon, opts...)
@@ -79,7 +79,7 @@ func (as *AchievementIconService) Index(opts ...FuncOption) ([]*AchievementIcon,
 // Count returns the number of AchievementIcons available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which AchievementIcons to count.
-func (as *AchievementIconService) Count(opts ...FuncOption) (int, error) {
+func (as *AchievementIconService) Count(opts ...Option) (int, error) {
 	ct, err := as.client.getCount(as.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count AchievementIcons")

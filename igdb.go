@@ -142,7 +142,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 
 // Request configures a new request for the provided URL and
 // adds the necessary headers to communicate with the IGDB.
-func (c *Client) request(end endpoint, opts ...FuncOption) (*http.Request, error) {
+func (c *Client) request(end endpoint, opts ...Option) (*http.Request, error) {
 	unwrapped, err := unwrapOptions(opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot create request with invalid options")
@@ -191,7 +191,7 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 
 // Get sends a GET request to the provided endpoint with the provided options and
 // stores the results in the value pointed to by result.
-func (c *Client) get(end endpoint, result interface{}, opts ...FuncOption) error {
+func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
 	req, err := c.request(end, opts...)
 	if err != nil {
 		return err

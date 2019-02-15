@@ -23,7 +23,7 @@ type GameModeService service
 // Get returns a single GameMode identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameModes, an error is returned.
-func (gs *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
+func (gs *GameModeService) Get(id int, opts ...Option) (*GameMode, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -43,7 +43,7 @@ func (gs *GameModeService) Get(id int, opts ...FuncOption) (*GameMode, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a GameMode is ignored. If none of the IDs
 // match a GameMode, an error is returned.
-func (gs *GameModeService) List(ids []int, opts ...FuncOption) ([]*GameMode, error) {
+func (gs *GameModeService) List(ids []int, opts ...Option) ([]*GameMode, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -68,7 +68,7 @@ func (gs *GameModeService) List(ids []int, opts ...FuncOption) ([]*GameMode, err
 // Index returns an index of GameModes based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameModes can
 // be found using the provided options, an error is returned.
-func (gs *GameModeService) Index(opts ...FuncOption) ([]*GameMode, error) {
+func (gs *GameModeService) Index(opts ...Option) ([]*GameMode, error) {
 	var mode []*GameMode
 
 	err := gs.client.get(gs.end, &mode, opts...)
@@ -82,7 +82,7 @@ func (gs *GameModeService) Index(opts ...FuncOption) ([]*GameMode, error) {
 // Count returns the number of GameModes available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameModes to count.
-func (gs *GameModeService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameModeService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count GameModes")

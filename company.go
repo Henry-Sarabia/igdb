@@ -37,7 +37,7 @@ type CompanyService service
 // Get returns a single Company identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Companies, an error is returned.
-func (cs *CompanyService) Get(id int, opts ...FuncOption) (*Company, error) {
+func (cs *CompanyService) Get(id int, opts ...Option) (*Company, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -57,7 +57,7 @@ func (cs *CompanyService) Get(id int, opts ...FuncOption) (*Company, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Company is ignored. If none of the IDs
 // match a Company, an error is returned.
-func (cs *CompanyService) List(ids []int, opts ...FuncOption) ([]*Company, error) {
+func (cs *CompanyService) List(ids []int, opts ...Option) ([]*Company, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -82,7 +82,7 @@ func (cs *CompanyService) List(ids []int, opts ...FuncOption) ([]*Company, error
 // Index returns an index of Companies based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Companies can
 // be found using the provided options, an error is returned.
-func (cs *CompanyService) Index(opts ...FuncOption) ([]*Company, error) {
+func (cs *CompanyService) Index(opts ...Option) ([]*Company, error) {
 	var comp []*Company
 
 	err := cs.client.get(cs.end, &comp, opts...)
@@ -96,7 +96,7 @@ func (cs *CompanyService) Index(opts ...FuncOption) ([]*Company, error) {
 // Count returns the number of Companies available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Companies to count.
-func (cs *CompanyService) Count(opts ...FuncOption) (int, error) {
+func (cs *CompanyService) Count(opts ...Option) (int, error) {
 	ct, err := cs.client.getCount(cs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Companies")

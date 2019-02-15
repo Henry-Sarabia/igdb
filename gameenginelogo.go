@@ -18,7 +18,7 @@ type GameEngineLogoService service
 // Get returns a single GameEngineLogo identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any GameEngineLogos, an error is returned.
-func (gs *GameEngineLogoService) Get(id int, opts ...FuncOption) (*GameEngineLogo, error) {
+func (gs *GameEngineLogoService) Get(id int, opts ...Option) (*GameEngineLogo, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -38,7 +38,7 @@ func (gs *GameEngineLogoService) Get(id int, opts ...FuncOption) (*GameEngineLog
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a GameEngineLogo is ignored. If none of the IDs
 // match a GameEngineLogo, an error is returned.
-func (gs *GameEngineLogoService) List(ids []int, opts ...FuncOption) ([]*GameEngineLogo, error) {
+func (gs *GameEngineLogoService) List(ids []int, opts ...Option) ([]*GameEngineLogo, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -63,7 +63,7 @@ func (gs *GameEngineLogoService) List(ids []int, opts ...FuncOption) ([]*GameEng
 // Index returns an index of GameEngineLogos based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no GameEngineLogos can
 // be found using the provided options, an error is returned.
-func (gs *GameEngineLogoService) Index(opts ...FuncOption) ([]*GameEngineLogo, error) {
+func (gs *GameEngineLogoService) Index(opts ...Option) ([]*GameEngineLogo, error) {
 	var logo []*GameEngineLogo
 
 	err := gs.client.get(gs.end, &logo, opts...)
@@ -77,7 +77,7 @@ func (gs *GameEngineLogoService) Index(opts ...FuncOption) ([]*GameEngineLogo, e
 // Count returns the number of GameEngineLogos available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which GameEngineLogos to count.
-func (gs *GameEngineLogoService) Count(opts ...FuncOption) (int, error) {
+func (gs *GameEngineLogoService) Count(opts ...Option) (int, error) {
 	ct, err := gs.client.getCount(gs.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count GameEngineLogos")

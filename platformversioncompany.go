@@ -23,7 +23,7 @@ type PlatformVersionCompanyService service
 // Get returns a single PlatformVersionCompany identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any PlatformVersionCompanies, an error is returned.
-func (ps *PlatformVersionCompanyService) Get(id int, opts ...FuncOption) (*PlatformVersionCompany, error) {
+func (ps *PlatformVersionCompanyService) Get(id int, opts ...Option) (*PlatformVersionCompany, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -43,7 +43,7 @@ func (ps *PlatformVersionCompanyService) Get(id int, opts ...FuncOption) (*Platf
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a PlatformVersionCompany is ignored. If none of the IDs
 // match a PlatformVersionCompany, an error is returned.
-func (ps *PlatformVersionCompanyService) List(ids []int, opts ...FuncOption) ([]*PlatformVersionCompany, error) {
+func (ps *PlatformVersionCompanyService) List(ids []int, opts ...Option) ([]*PlatformVersionCompany, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -68,7 +68,7 @@ func (ps *PlatformVersionCompanyService) List(ids []int, opts ...FuncOption) ([]
 // Index returns an index of PlatformVersionCompanies based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no PlatformVersionCompanies can
 // be found using the provided options, an error is returned.
-func (ps *PlatformVersionCompanyService) Index(opts ...FuncOption) ([]*PlatformVersionCompany, error) {
+func (ps *PlatformVersionCompanyService) Index(opts ...Option) ([]*PlatformVersionCompany, error) {
 	var com []*PlatformVersionCompany
 
 	err := ps.client.get(ps.end, &com, opts...)
@@ -82,7 +82,7 @@ func (ps *PlatformVersionCompanyService) Index(opts ...FuncOption) ([]*PlatformV
 // Count returns the number of PlatformVersionCompanies available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which PlatformVersionCompanies to count.
-func (ps *PlatformVersionCompanyService) Count(opts ...FuncOption) (int, error) {
+func (ps *PlatformVersionCompanyService) Count(opts ...Option) (int, error) {
 	ct, err := ps.client.getCount(ps.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count PlatformVersionCompanies")

@@ -26,7 +26,7 @@ type TitleService service
 // Get returns a single Title identified by the provided IGDB ID. Provide
 // the SetFields functional option if you need to specify which fields to
 // retrieve. If the ID does not match any Titles, an error is returned.
-func (ts *TitleService) Get(id int, opts ...FuncOption) (*Title, error) {
+func (ts *TitleService) Get(id int, opts ...Option) (*Title, error) {
 	if id < 0 {
 		return nil, ErrNegativeID
 	}
@@ -46,7 +46,7 @@ func (ts *TitleService) Get(id int, opts ...FuncOption) (*Title, error) {
 // Provide functional options to sort, filter, and paginate the results.
 // Any ID that does not match a Title is ignored. If none of the IDs
 // match a Title, an error is returned.
-func (ts *TitleService) List(ids []int, opts ...FuncOption) ([]*Title, error) {
+func (ts *TitleService) List(ids []int, opts ...Option) ([]*Title, error) {
 	for len(ids) < 1 {
 		return nil, ErrEmptyIDs
 	}
@@ -71,7 +71,7 @@ func (ts *TitleService) List(ids []int, opts ...FuncOption) ([]*Title, error) {
 // Index returns an index of Titles based solely on the provided functional
 // options used to sort, filter, and paginate the results. If no Titles can
 // be found using the provided options, an error is returned.
-func (ts *TitleService) Index(opts ...FuncOption) ([]*Title, error) {
+func (ts *TitleService) Index(opts ...Option) ([]*Title, error) {
 	var t []*Title
 
 	err := ts.client.get(ts.end, &t, opts...)
@@ -85,7 +85,7 @@ func (ts *TitleService) Index(opts ...FuncOption) ([]*Title, error) {
 // Count returns the number of Titles available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Titles to count.
-func (ts *TitleService) Count(opts ...FuncOption) (int, error) {
+func (ts *TitleService) Count(opts ...Option) (int, error) {
 	ct, err := ts.client.getCount(ts.end, opts...)
 	if err != nil {
 		return 0, errors.Wrap(err, "cannot count Titles")
