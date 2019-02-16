@@ -177,8 +177,8 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 		return errors.Wrap(err, "cannot read response body")
 	}
 
-	if err = checkResults(b); err != nil {
-		return err
+	if isBracketPair(b) {
+		return ErrNoResults
 	}
 
 	err = json.Unmarshal(b, &result)
