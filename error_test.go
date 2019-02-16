@@ -15,11 +15,11 @@ const testErrNotFound = `
 `
 
 func TestCheckResponse(t *testing.T) {
-	var errTests = []struct {
-		Name string
-		Code int
-		Body string
-		Exp  string
+	var tests = []struct {
+		name    string
+		code    int
+		body    string
+		wantErr string
 	}{
 		{"Status OK", http.StatusOK, "", ""},
 		{"Status Bad Request", http.StatusBadRequest, "", ErrBadRequest.Error()},
@@ -29,10 +29,10 @@ func TestCheckResponse(t *testing.T) {
 		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
 	}
 
-	for _, et := range errTests {
-		t.Run(et.Name, func(t *testing.T) {
-			resp := &http.Response{StatusCode: et.Code,
-				Body: ioutil.NopCloser(strings.NewReader(et.Body)),
+	for _, et := range tests {
+		t.Run(et.name, func(t *testing.T) {
+			resp := &http.Response{StatusCode: et.code,
+				Body: ioutil.NopCloser(strings.NewReader(et.body)),
 			}
 
 			err := checkResponse(resp)
@@ -42,8 +42,8 @@ func TestCheckResponse(t *testing.T) {
 				}
 				return
 			}
-			if err.Error() != et.Exp {
-				t.Fatalf("Expected '%v', got '%v'", et.Exp, err.Error())
+			if err.Error() != et.wantErr {
+				t.Fatalf("Expected '%v', got '%v'", et.wantErr, err.Error())
 			}
 		})
 	}
