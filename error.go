@@ -24,9 +24,9 @@ var (
 	ErrInternalError = errors.New("IGDB: internal error - report bug")
 )
 
-// Error contains information on an
+// ServerError contains information on an
 // error returned from an IGDB API call.
-type Error struct {
+type ServerError struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
@@ -50,7 +50,7 @@ func checkResponse(resp *http.Response) error {
 		return err
 	}
 
-	var e Error
+	var e ServerError
 
 	err = json.Unmarshal(b, &e)
 	if err != nil {
@@ -75,16 +75,17 @@ const (
 	closedBracketASCII = 93
 )
 
-// checkResults checks if the results of an API call are an empty array.
-// If they are, an error is returned. Otherwise, nil is returned.
-func checkResults(r []byte) error {
-	if len(r) != 2 {
-		return nil
+// isBracketPair returns true if the provided slice of bytes is equivalent to
+// an open and closed bracket pair in byte representation. Otherwise, false is returned.
+// Used primarily to check if the results of an API call are an empty array.
+func isBracketPair(b []byte) bool {
+	if len(b) != 2 {
+		return false
 	}
 
-	if r[0] == openBracketASCII && r[1] == closedBracketASCII {
-		return ErrNoResults
+	if b[0] == openBracketASCII && b[1] == closedBracketASCII {
+		return true
 	}
 
-	return nil
+	return false
 }
