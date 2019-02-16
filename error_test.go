@@ -29,21 +29,22 @@ func TestCheckResponse(t *testing.T) {
 		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
 	}
 
-	for _, et := range tests {
-		t.Run(et.name, func(t *testing.T) {
-			resp := &http.Response{StatusCode: et.code,
-				Body: ioutil.NopCloser(strings.NewReader(et.body)),
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			resp := &http.Response{StatusCode: test.code,
+				Body: ioutil.NopCloser(strings.NewReader(test.body)),
 			}
 
 			err := checkResponse(resp)
 			if resp.StatusCode == http.StatusOK {
 				if err != nil {
-					t.Fatalf("Expected nil err, got '%v'", err)
+					t.Errorf("got: <%v>, want: <%v>", err, nil)
 				}
 				return
 			}
-			if err.Error() != et.wantErr {
-				t.Fatalf("Expected '%v', got '%v'", et.wantErr, err.Error())
+
+			if err.Error() != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", err.Error(), test.wantErr)
 			}
 		})
 	}
