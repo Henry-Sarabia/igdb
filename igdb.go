@@ -6,7 +6,6 @@ import (
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 // igdbURL is the base URL for the IGDB API.
@@ -203,14 +202,4 @@ func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
 	}
 
 	return nil
-}
-
-// intsToStrings is a helper function that converts a slice of ints to a
-// slice of strings.
-func intsToStrings(ints []int) []string {
-	var str []string
-	for _, i := range ints {
-		str = append(str, strconv.Itoa(i))
-	}
-	return str
 }

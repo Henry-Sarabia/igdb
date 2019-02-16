@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func (cs *CollectionService) List(ids []int, opts ...Option) ([]*Collection, err
 
 	var col []*Collection
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := cs.client.get(cs.end, &col, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Collections with IDs %v", ids)

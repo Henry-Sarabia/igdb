@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -53,7 +54,7 @@ func (as *ArtworkService) List(ids []int, opts ...Option) ([]*Artwork, error) {
 
 	var art []*Artwork
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := as.client.get(as.end, &art, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Artworks with IDs %v", ids)

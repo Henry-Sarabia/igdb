@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func (ks *KeywordService) List(ids []int, opts ...Option) ([]*Keyword, error) {
 
 	var key []*Keyword
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ks.client.get(ks.end, &key, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Keywords with IDs %v", ids)

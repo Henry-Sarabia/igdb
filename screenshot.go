@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -54,7 +55,7 @@ func (ss *ScreenshotService) List(ids []int, opts ...Option) ([]*Screenshot, err
 
 	var shot []*Screenshot
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ss.client.get(ss.end, &shot, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Screenshots with IDs %v", ids)

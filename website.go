@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -82,7 +83,7 @@ func (ws *WebsiteService) List(ids []int, opts ...Option) ([]*Website, error) {
 
 	var web []*Website
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ws.client.get(ws.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Websites with IDs %v", ids)

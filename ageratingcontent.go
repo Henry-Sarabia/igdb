@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -62,7 +63,7 @@ func (as *AgeRatingContentService) List(ids []int, opts ...Option) ([]*AgeRating
 
 	var cont []*AgeRatingContent
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := as.client.get(as.end, &cont, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AgeRatingContents with IDs %v", ids)

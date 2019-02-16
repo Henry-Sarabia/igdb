@@ -46,7 +46,7 @@ func (zs *ZypeService) List(ids []int, opts ...Option) ([]*Zype, error) {
 
 	var z []*Zype
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := zs.client.get(zs.end, &z, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Zypes with IDs %v", ids)

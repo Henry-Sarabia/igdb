@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -70,7 +71,7 @@ func (cs *CompanyService) List(ids []int, opts ...Option) ([]*Company, error) {
 
 	var comp []*Company
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := cs.client.get(cs.end, &comp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Companies with IDs %v", ids)

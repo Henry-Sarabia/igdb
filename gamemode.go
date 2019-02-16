@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -56,7 +57,7 @@ func (gs *GameModeService) List(ids []int, opts ...Option) ([]*GameMode, error) 
 
 	var mode []*GameMode
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := gs.client.get(gs.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameModes with IDs %v", ids)

@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -53,7 +54,7 @@ func (as *AchievementIconService) List(ids []int, opts ...Option) ([]*Achievemen
 
 	var icon []*AchievementIcon
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := as.client.get(as.end, &icon, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AchievementIcons with IDs %v", ids)

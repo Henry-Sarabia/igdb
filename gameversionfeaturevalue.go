@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -66,7 +67,7 @@ func (gs *GameVersionFeatureValueService) List(ids []int, opts ...Option) ([]*Ga
 
 	var val []*GameVersionFeatureValue
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := gs.client.get(gs.end, &val, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersionFeatureValues with IDs %v", ids)

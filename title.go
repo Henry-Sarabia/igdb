@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -59,7 +60,7 @@ func (ts *TitleService) List(ids []int, opts ...Option) ([]*Title, error) {
 
 	var t []*Title
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ts.client.get(ts.end, &t, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Titles with IDs %v", ids)

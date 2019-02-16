@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -51,7 +52,7 @@ func (cs *CharacterMugshotService) List(ids []int, opts ...Option) ([]*Character
 
 	var mug []*CharacterMugshot
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := cs.client.get(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CharacterMugshots with IDs %v", ids)

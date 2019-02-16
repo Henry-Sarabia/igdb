@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func (ps *PlayerPerspectiveService) List(ids []int, opts ...Option) ([]*PlayerPe
 
 	var pp []*PlayerPerspective
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ps.client.get(ps.end, &pp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlayerPerspectives with IDs %v", ids)

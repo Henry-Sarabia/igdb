@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -61,7 +62,7 @@ func (gs *GameEngineService) List(ids []int, opts ...Option) ([]*GameEngine, err
 
 	var eng []*GameEngine
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := gs.client.get(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngines with IDs %v", ids)

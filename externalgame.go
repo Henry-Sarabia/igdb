@@ -1,8 +1,10 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"strconv"
+
+	"github.com/Henry-Sarabia/sliceconv"
+	"github.com/pkg/errors"
 )
 
 //go:generate gomodifytags -file $GOFILE -struct ExternalGame -add-tags json -w
@@ -84,7 +86,7 @@ func (es *ExternalGameService) List(ids []int, opts ...Option) ([]*ExternalGame,
 
 	var ext []*ExternalGame
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := es.client.get(es.end, &ext, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ExternalGames with IDs %v", ids)

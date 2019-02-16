@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -51,7 +52,7 @@ func (cs *CompanyLogoService) List(ids []int, opts ...Option) ([]*CompanyLogo, e
 
 	var logo []*CompanyLogo
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := cs.client.get(cs.end, &logo, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CompanyLogos with IDs %v", ids)
