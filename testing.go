@@ -8,7 +8,6 @@ import (
 	"os"
 	"reflect"
 	"strings"
-	"testing"
 )
 
 const (
@@ -65,22 +64,6 @@ func testServerFile(status int, filename string, headers ...testHeader) (*httpte
 	}
 	ts, c := startTestServer(status, f, headers...)
 	return ts, c, nil
-}
-
-// assertError checks if the provided error and expected
-// error string signal the same error. If they do not, the
-// given test will fail. If they do, the test continues as normal.
-func assertError(t *testing.T, err error, expErr string) {
-	if err != nil {
-		if err.Error() != expErr {
-			t.Fatalf("Expected error '%v', got '%v'", expErr, err.Error())
-		}
-	} else {
-		if expErr != "" {
-			t.Fatalf("Expected error '%v', got nil error", expErr)
-		}
-	}
-	return
 }
 
 // equalSlice returns true if two slices contain

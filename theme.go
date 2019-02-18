@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func (ts *ThemeService) List(ids []int, opts ...Option) ([]*Theme, error) {
 
 	var th []*Theme
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ts.client.get(ts.end, &th, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Themes with IDs %v", ids)

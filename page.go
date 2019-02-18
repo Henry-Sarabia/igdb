@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -107,7 +108,7 @@ func (ps *PageService) List(ids []int, opts ...Option) ([]*Page, error) {
 
 	var pg []*Page
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ps.client.get(ps.end, &pg, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Pages with IDs %v", ids)

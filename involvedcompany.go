@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -61,7 +62,7 @@ func (is *InvolvedCompanyService) List(ids []int, opts ...Option) ([]*InvolvedCo
 
 	var com []*InvolvedCompany
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := is.client.get(is.end, &com, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get InvolvedCompanies with IDs %v", ids)

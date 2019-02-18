@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -94,7 +95,7 @@ func (rs *ReleaseDateService) List(ids []int, opts ...Option) ([]*ReleaseDate, e
 
 	var date []*ReleaseDate
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := rs.client.get(rs.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ReleaseDates with IDs %v", ids)

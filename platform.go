@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -80,7 +81,7 @@ func (ps *PlatformService) List(ids []int, opts ...Option) ([]*Platform, error) 
 
 	var plat []*Platform
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ps.client.get(ps.end, &plat, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Platforms with IDs %v", ids)

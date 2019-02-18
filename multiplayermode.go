@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -63,7 +64,7 @@ func (ms *MultiplayerModeService) List(ids []int, opts ...Option) ([]*Multiplaye
 
 	var mode []*MultiplayerMode
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ms.client.get(ms.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get MultiplayerModes with IDs %v", ids)

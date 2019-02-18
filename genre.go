@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -56,7 +57,7 @@ func (gs *GenreService) List(ids []int, opts ...Option) ([]*Genre, error) {
 
 	var gen []*Genre
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := gs.client.get(gs.end, &gen, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Genres with IDs %v", ids)

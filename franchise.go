@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -57,7 +58,7 @@ func (fs *FranchiseService) List(ids []int, opts ...Option) ([]*Franchise, error
 
 	var fr []*Franchise
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := fs.client.get(fs.end, &fr, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Franchises with IDs %v", ids)

@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -56,7 +57,7 @@ func (ts *TimeToBeatService) List(ids []int, opts ...Option) ([]*TimeToBeat, err
 
 	var time []*TimeToBeat
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ts.client.get(ts.end, &time, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get TimeToBeats with IDs %v", ids)

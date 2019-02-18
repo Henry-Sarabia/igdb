@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -85,7 +86,7 @@ func (cs *CharacterService) List(ids []int, opts ...Option) ([]*Character, error
 
 	var ch []*Character
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := cs.client.get(cs.end, &ch, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Characters with IDs %v", ids)

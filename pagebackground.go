@@ -1,6 +1,7 @@
 package igdb
 
 import (
+	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -51,7 +52,7 @@ func (ps *PageBackgroundService) List(ids []int, opts ...Option) ([]*PageBackgro
 
 	var bg []*PageBackground
 
-	opts = append(opts, SetFilter("id", OpContainsAtLeast, intsToStrings(ids)...))
+	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
 	err := ps.client.get(ps.end, &bg, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PageBackgrounds with IDs %v", ids)
