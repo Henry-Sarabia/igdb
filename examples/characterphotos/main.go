@@ -37,11 +37,11 @@ func main() {
 
 	fmt.Print("The 20 Newest Character Photos:\n\n")
 	for _, v := range ch {
-		mugshot, err := c.CharacterMugshots.Get(v.MugShot) // retrieve mugshot ID
+		mugshot, err := c.CharacterMugshots.Get(v.MugShot, igdb.SetFields("image_id")) // retrieve mugshot ID
 		if err != nil {
 			log.Fatal(err)
 		}
-		//TODO: figure out why all the mugshots are empty; check character data?
+
 		if mugshot.ImageID == "" {
 			continue
 		}
