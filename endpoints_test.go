@@ -1,72 +1,77 @@
-// +build ignore
-
 package igdb
 
 import (
+	"github.com/pkg/errors"
 	"net/http"
+	"reflect"
+	"sort"
 	"testing"
 )
 
-func TestGetEndpointFieldList(t *testing.T) {
-	var fieldsTests = []struct {
-		Name      string
-		Status    int
-		Resp      string
-		ExpFields []string
-		ExpErr    string
+const testEndpoint = "test/"
+
+func TestClient_GetFields(t *testing.T) {
+	var tests = []struct {
+		name       string
+		status     int
+		resp       string
+		wantFields []string
+		wantErr    error
 	}{
-		{"OK status with regular response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, ""},
-		{"OK status with empty response", http.StatusOK, "", nil, errInvalidJSON.Error()},
-		{"OK status with dot response", http.StatusOK, `["mugshot.width","name", "company.id"]`, []string{"company.id", "name", "mugshot.width"}, ""},
-		{"OK status with asterisk response", http.StatusOK, `["*"]`, []string{"*"}, ""},
-		{"Bad status with empty response", http.StatusBadRequest, "", nil, ErrBadRequest.Error()},
-		{"Not found status with error response", http.StatusNotFound, testErrNotFound, nil, "Status 404 - status not found"},
+		{"OK status with regular response", http.StatusOK, `["name", "slug", "url"]`, []string{"url", "slug", "name"}, nil},
+		{"OK status with empty response", http.StatusOK, "", nil, errInvalidJSON},
+		{"OK status with dot response", http.StatusOK, `["mugshot.width","name", "company.id"]`, []string{"company.id", "name", "mugshot.width"}, nil},
+		{"OK status with asterisk response", http.StatusOK, `["*"]`, []string{"*"}, nil},
+		{"Bad status with empty response", http.StatusBadRequest, "", nil, ErrBadRequest},
+		{"Not found status with error response", http.StatusNotFound, testErrNotFound, nil, ServerError{Status: 404, Message: "status not found"}},
 	}
 
-	for _, tt := range fieldsTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(tt.Status, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(test.status, test.resp)
 			defer ts.Close()
 
-			fields, err := c.getFields(testEndpoint)
-			//assertError(t, err, tt.ExpErr)
-
-			ok, err := equalSlice(fields, tt.ExpFields)
-			if err != nil {
-				t.Fatal(err)
+			f, err := c.getFields(testEndpoint)
+			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
-			if !ok {
-				t.Fatalf("Expected fields '%v', got '%v'", tt.ExpFields, fields)
+
+			sort.Strings(f)
+			sort.Strings(test.wantFields)
+			if !reflect.DeepEqual(f, test.wantFields) {
+				t.Errorf("got: <%v>, want: <%v>", test.wantFields, f)
 			}
 		})
 	}
 }
 
-func TestGetEndpointCount(t *testing.T) {
-	var countTests = []struct {
-		Name     string
-		Status   int
-		Resp     string
-		ExpCount int
-		ExpErr   string
+func TestClient_GetCount(t *testing.T) {
+	var tests = []struct {
+		name      string
+		status    int
+		resp      string
+		wantCount int
+		wantErr   error
 	}{
-		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, ""},
-		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, ""},
-		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON.Error()},
-		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest.Error()},
-		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, "Status 404 - status not found"},
+		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, nil},
+		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, nil},
+		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON},
+		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest},
+		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, ServerError{Status: 404, Message: "status not found"}},
 	}
 
-	for _, tt := range countTests {
-		t.Run(tt.Name, func(t *testing.T) {
-			ts, c := testServerString(tt.Status, tt.Resp)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(test.status, test.resp)
 			defer ts.Close()
 
 			count, err := c.getCount(testEndpoint)
-			//assertError(t, err, tt.ExpErr)
+			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
 
-			if count != tt.ExpCount {
-				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
+			if count != test.wantCount {
+				t.Fatalf("Expected count %d, got %d", test.wantCount, count)
 			}
 		})
 	}
