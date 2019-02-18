@@ -4,6 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"net/http"
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -35,43 +36,43 @@ func TestClient_GetFields(t *testing.T) {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			ok, err := equalSlice(f, test.wantFields)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !ok {
+			sort.Strings(f)
+			sort.Strings(test.wantFields)
+			if !reflect.DeepEqual(f, test.wantFields) {
 				t.Errorf("got: <%v>, want: <%v>", test.wantFields, f)
 			}
 		})
 	}
 }
 
-//func TestClient_GetCount(t *testing.T) {
-//	var countTests = []struct {
-//		Name     string
-//		Status   int
-//		Resp     string
-//		ExpCount int
-//		ExpErr   string
-//	}{
-//		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, ""},
-//		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, ""},
-//		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON.Error()},
-//		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest.Error()},
-//		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, "Status 404 - status not found"},
-//	}
-//
-//	for _, tt := range countTests {
-//		t.Run(tt.Name, func(t *testing.T) {
-//			ts, c := testServerString(tt.Status, tt.Resp)
-//			defer ts.Close()
-//
-//			count, err := c.getCount(testEndpoint)
-//			//assertError(t, err, tt.ExpErr)
-//
-//			if count != tt.ExpCount {
-//				t.Fatalf("Expected count %d, got %d", tt.ExpCount, count)
-//			}
-//		})
-//	}
-//}
+func TestClient_GetCount(t *testing.T) {
+	var tests = []struct {
+		name      string
+		status    int
+		resp      string
+		wantCount int
+		wantErr   error
+	}{
+		{"OK status with regular response", http.StatusOK, `{"count": 1234}`, 1234, nil},
+		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, nil},
+		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON},
+		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest},
+		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, ServerError{Status: 404, Message: "status not found"}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(test.status, test.resp)
+			defer ts.Close()
+
+			count, err := c.getCount(testEndpoint)
+			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if count != test.wantCount {
+				t.Fatalf("Expected count %d, got %d", test.wantCount, count)
+			}
+		})
+	}
+}
