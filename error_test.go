@@ -1,8 +1,10 @@
 package igdb
 
 import (
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -19,14 +21,14 @@ func TestCheckResponse(t *testing.T) {
 		name    string
 		code    int
 		body    string
-		wantErr string
+		wantErr error
 	}{
-		{"Status OK", http.StatusOK, "", ""},
-		{"Status Bad Request", http.StatusBadRequest, "", ErrBadRequest.Error()},
-		{"Status Unauthorized", http.StatusUnauthorized, "", ErrAuthFailed.Error()},
-		{"Status Forbidden", http.StatusForbidden, "", ErrAuthFailed.Error()},
-		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError.Error()},
-		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, "Status 404 - status not found"},
+		{"Status OK", http.StatusOK, "", nil},
+		{"Status Bad Request", http.StatusBadRequest, "", ErrBadRequest},
+		{"Status Unauthorized", http.StatusUnauthorized, "", ErrAuthFailed},
+		{"Status Forbidden", http.StatusForbidden, "", ErrAuthFailed},
+		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError},
+		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, ServerError{Status: 404, Message: "status not found"}},
 	}
 
 	for _, test := range tests {
@@ -36,15 +38,9 @@ func TestCheckResponse(t *testing.T) {
 			}
 
 			err := checkResponse(resp)
-			if resp.StatusCode == http.StatusOK {
-				if err != nil {
-					t.Errorf("got: <%v>, want: <%v>", err, nil)
-				}
-				return
-			}
 
-			if err.Error() != test.wantErr {
-				t.Errorf("got: <%v>, want: <%v>", err.Error(), test.wantErr)
+			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 		})
 	}

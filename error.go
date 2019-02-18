@@ -3,10 +3,9 @@ package igdb
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
-	"github.com/Henry-Sarabia/whitespace"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 var (
@@ -29,6 +28,10 @@ var (
 type ServerError struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
+}
+
+func (e ServerError) Error() string {
+	return "server error: status: " + strconv.Itoa(e.Status) + " message: " + e.Message
 }
 
 // checkResponse checks the provided HTTP response
@@ -57,11 +60,7 @@ func checkResponse(resp *http.Response) error {
 		return err
 	}
 
-	msg := fmt.Sprintf("Status %d", e.Status)
-	if !whitespace.IsBlank(e.Message) {
-		msg += fmt.Sprintf(" - %v", e.Message)
-	}
-	return errors.New(msg)
+	return e
 }
 
 // ErrNoResults occurs when the IGDB returns no results
