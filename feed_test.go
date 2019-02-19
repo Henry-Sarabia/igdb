@@ -196,12 +196,7 @@ func TestFeedService_Fields(t *testing.T) {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			ok, err := equalSlice(fields, test.wantFields)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			if !ok {
+			if !equalSlice(fields, test.wantFields) {
 				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
 			}
 		})

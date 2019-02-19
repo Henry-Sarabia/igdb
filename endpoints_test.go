@@ -4,7 +4,6 @@ import (
 	"github.com/pkg/errors"
 	"net/http"
 	"reflect"
-	"sort"
 	"testing"
 )
 
@@ -36,10 +35,8 @@ func TestClient_GetFields(t *testing.T) {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			sort.Strings(f)
-			sort.Strings(test.wantFields)
-			if !reflect.DeepEqual(f, test.wantFields) {
-				t.Errorf("got: <%v>, want: <%v>", test.wantFields, f)
+			if !equalSlice(f, test.wantFields) {
+				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, f)
 			}
 		})
 	}

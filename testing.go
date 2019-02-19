@@ -1,12 +1,12 @@
 package igdb
 
 import (
-	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"reflect"
+	"sort"
 	"strings"
 )
 
@@ -18,9 +18,6 @@ const (
 	// testFileEmptyArray is an empty array file used for testing input.
 	testFileEmptyArray string = "test_data/empty_array.json"
 )
-
-// errNotSlice occurs when a non-slice type is provided to a function expecting a slice.
-var errNotSlice = errors.New("igdb: not a slice")
 
 // testHeader mocks a single HTTP header entry with a key and value field.
 type testHeader struct {
@@ -68,49 +65,14 @@ func testServerFile(status int, filename string, headers ...testHeader) (*httpte
 
 // equalSlice returns true if two slices contain
 // the same elements, otherwise it returns false.
-//
-// Adapted from github.com/emou/testify/assert/assertions.go
-func equalSlice(x, y interface{}) (bool, error) {
-	if x == nil || y == nil {
-		return x == y, nil
+// The slices will be sorted.
+func equalSlice(x, y []string) bool {
+	if len(x) != len(y) {
+		return false
 	}
 
-	if reflect.TypeOf(x).Kind() != reflect.Slice {
-		return false, errNotSlice
-	}
+	sort.Strings(x)
+	sort.Strings(y)
 
-	if reflect.TypeOf(y).Kind() != reflect.Slice {
-		return false, errNotSlice
-	}
-
-	vx := reflect.ValueOf(x)
-	vy := reflect.ValueOf(y)
-
-	if vx.Len() != vy.Len() {
-		return false, nil
-	}
-
-	visited := make([]bool, vy.Len())
-
-	for i := 0; i < vx.Len(); i++ {
-		element := vx.Index(i).Interface()
-
-		found := false
-		for j := 0; j < vy.Len(); j++ {
-			if visited[j] {
-				continue
-			}
-
-			if reflect.DeepEqual(vy.Index(j).Interface(), element) {
-				visited[j] = true
-				found = true
-				break
-			}
-		}
-		if !found {
-			return false, nil
-		}
-	}
-
-	return true, nil
+	return reflect.DeepEqual(x, y)
 }
