@@ -108,143 +108,511 @@ func TestClient_Send(t *testing.T) {
 	}
 }
 
-//func TestGet(t *testing.T) {
-//	var getTests = []struct {
-//		Name    string
-//		Status  int
-//		Resp    string
-//		URL     string
-//		ExpResp string
-//		ExpErr  string
-//	}{
-//		{"OK request with valid response", http.StatusOK, testResult, string(testEndpoint), "value", ""},
-//		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errInvalidJSON.Error()},
-//		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errInvalidJSON.Error()},
-//		{"Bad request with error response", http.StatusNotFound, testErrNotFound, "badURL", "", "Status 404 - status not found"},
-//	}
-//
-//	for _, gt := range getTests {
-//		testResp := testResultPlaceholder{}
-//		t.Run(gt.Name, func(t *testing.T) {
-//			ts, c := testServerString(gt.Status, gt.Resp)
-//			defer ts.Close()
-//
-//			err := c.send(c.rootURL+gt.URL, &testResp)
-//			//assertError(t, err, gt.ExpErr)
-//
-//			if testResp.Field != gt.ExpResp {
-//				t.Fatalf("Expected response '%v', got '%v'", gt.ExpResp, testResp.Field)
-//			}
-//		})
-//	}
-//}
-//
-//func TestSingleURL(t *testing.T) {
-//	var singleTests = []struct {
-//		Name   string
-//		ID     int
-//		Opts   []Option
-//		ExpURL string
-//		ExpErr error
-//	}{
-//		{"Positive ID with no options", 1234, nil, igdbURL + string(testEndpoint) + "1234", nil},
-//		{"Positive ID with limit and offset", 55, []Option{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "55?limit=20&offset=15", nil},
-//		{"Positive ID with fields and order", 100, []Option{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
-//		{"Positive ID with filters", 55555, []Option{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
-//		{"Negative ID with no options", -1234, nil, "", ErrNegativeID},
-//		{"Negative ID with options", -55555, []Option{SetLimit(20), SetOffset(15)}, "", ErrNegativeID},
-//		{"Positive ID with invalid option", 100, []Option{SetLimit(999)}, "", ErrOutOfRange},
-//		{"Negative ID with invalid option", -100, []Option{SetLimit(999)}, "", ErrNegativeID},
-//	}
-//	for _, st := range singleTests {
-//		t.Run(st.Name, func(t *testing.T) {
-//			c := NewClient(testKey, nil)
-//
-//			url, err := c.singleURL(testEndpoint, st.ID, st.Opts...)
-//			if !reflect.DeepEqual(err, st.ExpErr) {
-//				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
-//			}
-//
-//			if url != st.ExpURL {
-//				t.Fatalf("Expected URL '%s', got '%s'", st.ExpURL, url)
-//			}
-//		})
-//	}
-//}
-//
-//func TestMultiURL(t *testing.T) {
-//	var multiTests = []struct {
-//		Name   string
-//		IDs    []int
-//		Opts   []Option
-//		ExpURL string
-//		ExpErr error
-//	}{
-//		{"Positive ID with no options", []int{1234}, nil, igdbURL + string(testEndpoint) + "1234", nil},
-//		{"Positive IDs with no options", []int{1, 2, 3, 4}, nil, igdbURL + string(testEndpoint) + "1,2,3,4", nil},
-//		{"Positive IDs with limit and offset", []int{55, 110}, []Option{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "55,110?limit=20&offset=15", nil},
-//		{"Positive IDs with fields and order", []int{100}, []Option{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "100?fields=name%2Crating&order=rating%3Adesc", nil},
-//		{"Positive IDs with filters", []int{55555}, []Option{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "55555?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80", nil},
-//		{"Negative ID with no options", []int{-1234}, nil, "", ErrNegativeID},
-//		{"Negative IDs with no options", []int{-1, -2, -3, -4}, nil, "", ErrNegativeID},
-//		{"Negative IDs with options", []int{-55555}, []Option{SetLimit(20), SetOffset(15)}, "", ErrNegativeID},
-//		{"Mixed IDs with options", []int{100, -200, 300, -400}, []Option{SetLimit(5), SetOffset(20)}, "", ErrNegativeID},
-//		{"Mixed IDs with no options", []int{-1, 2, -3, 4}, nil, "", ErrNegativeID},
-//		{"No IDs with no options", nil, nil, igdbURL + string(testEndpoint), nil},
-//		{"No IDs with options", nil, []Option{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15", nil},
-//		{"Positive IDs with invalid option", []int{100, 200}, []Option{SetLimit(999)}, "", ErrOutOfRange},
-//		{"Negative IDs with invalid option", []int{-100, -200}, []Option{SetLimit(999)}, "", ErrNegativeID},
-//		{"Mixed IDs with invalid option", []int{100, -200}, []Option{(SetLimit(999))}, "", ErrNegativeID},
-//	}
-//	for _, mt := range multiTests {
-//		t.Run(mt.Name, func(t *testing.T) {
-//			c := NewClient(testKey, nil)
-//
-//			url, err := c.multiURL(testEndpoint, mt.IDs, mt.Opts...)
-//			if !reflect.DeepEqual(err, mt.ExpErr) {
-//				t.Fatalf("Expected error '%v', got '%v'", mt.ExpErr, err)
-//			}
-//
-//			if url != mt.ExpURL {
-//				t.Fatalf("Expected URL '%s', got '%s'", mt.ExpURL, url)
-//			}
-//		})
-//	}
-//}
-//
-//func TestSearchURL(t *testing.T) {
-//	var searchTests = []struct {
-//		Name   string
-//		Query  string
-//		Opts   []Option
-//		ExpURL string
-//		ExpErr error
-//	}{
-//		{"Non-empty query with no options", "zelda", nil, igdbURL + string(testEndpoint) + "?search=zelda", nil},
-//		{"Non-empty query with limit and offset", "zelda", []Option{SetLimit(20), SetOffset(15)}, igdbURL + string(testEndpoint) + "?limit=20&offset=15&search=zelda", nil},
-//		{"Non-empty query with fields and order", "zelda", []Option{SetFields("name", "rating"), SetOrder("rating", OrderDescending)}, igdbURL + string(testEndpoint) + "?fields=name%2Crating&order=rating%3Adesc&search=zelda", nil},
-//		{"Non-empty query with filters", "zelda", []Option{SetFilter("rating", OpGreaterThan, "80"), SetFilter("popularity", OpLessThan, "2")}, igdbURL + string(testEndpoint) + "?filter%5Bpopularity%5D%5Blt%5D=2&filter%5Brating%5D%5Bgt%5D=80&search=zelda", nil},
-//		{"Empty query with no options", "", nil, "", ErrEmptyQuery},
-//		{"Empty query with options", "", []Option{SetLimit(50), SetFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
-//		{"Space query with no options", "   ", nil, "", ErrEmptyQuery},
-//		{"Space query with options", "   ", []Option{SetLimit(50), SetFilter("platforms", OpAny, "9")}, "", ErrEmptyQuery},
-//		{"Non-empty query with invalid option", "zelda", []Option{SetOffset(-999)}, "", ErrOutOfRange},
-//		{"Empty query with invalid option", "", []Option{SetOffset(-999)}, "", ErrEmptyQuery},
-//		{"Space query with invalid option", "   ", []Option{SetOffset(-999)}, "", ErrEmptyQuery},
-//	}
-//
-//	for _, st := range searchTests {
-//		t.Run(st.Name, func(t *testing.T) {
-//			c := NewClient(testKey, nil)
-//
-//			url, err := c.searchURL(testEndpoint, st.Query, st.Opts...)
-//			if !reflect.DeepEqual(err, st.ExpErr) {
-//				t.Fatalf("Expected error '%v', got '%v'", st.ExpErr, err)
-//			}
-//
-//			if url != st.ExpURL {
-//				t.Fatalf("Expected URL '%s', got '%s'", st.ExpURL, url)
-//			}
-//		})
-//	}
-//}
+func TestClient_Get(t *testing.T) {
+	tests := []struct {
+		name      string
+		srvStatus int
+		srvResp   string
+		opts      []Option
+		wantRes   testResultPlaceholder
+		wantErr   error
+	}{
+		{
+			"Status OK, populated response, no options",
+			http.StatusOK,
+			testResult,
+			[]Option{},
+			testResultPlaceholder{SomeField: "some_value"},
+			nil,
+		},
+		{
+			"Status OK, populated response, single valid option",
+			http.StatusOK,
+			testResult,
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{SomeField: "some_value"},
+			nil,
+		},
+		{
+			"Status OK, populated response, multiple valid options",
+			http.StatusOK,
+			testResult,
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{SomeField: "some_value"},
+			nil,
+		},
+		{
+			"Status OK, populated response, single invalid option",
+			http.StatusOK,
+			testResult,
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status OK, empty array response, no options",
+			http.StatusOK,
+			"[]",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrNoResults,
+		},
+		{
+			"Status OK, empty array response, single valid option",
+			http.StatusOK,
+			"[]",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrNoResults,
+		},
+		{
+			"Status OK, empty array response, multiple valid options",
+			http.StatusOK,
+			"[]",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrNoResults,
+		},
+		{
+			"Status OK, empty array response, single invalid option",
+			http.StatusOK,
+			"[]",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status OK, empty response, no options",
+			http.StatusOK,
+			"",
+			[]Option{},
+			testResultPlaceholder{},
+			errInvalidJSON,
+		},
+		{
+			"Status OK, empty response, single valid option",
+			http.StatusOK,
+			"",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			errInvalidJSON,
+		},
+		{
+			"Status OK, empty response, multiple valid options",
+			http.StatusOK,
+			"",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			errInvalidJSON,
+		},
+		{
+			"Status OK, empty response, single invalid option",
+			http.StatusOK,
+			"",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status BadRequest, empty response, no options",
+			http.StatusBadRequest,
+			testResult,
+			[]Option{},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, single valid option",
+			http.StatusBadRequest,
+			testResult,
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, multiple valid options",
+			http.StatusBadRequest,
+			testResult,
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, single invalid option",
+			http.StatusBadRequest,
+			testResult,
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status BadRequest, empty array response, no options",
+			http.StatusBadRequest,
+			"[]",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty array response, single valid option",
+			http.StatusBadRequest,
+			"[]",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty array response, multiple valid options",
+			http.StatusBadRequest,
+			"[]",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty array response, single invalid option",
+			http.StatusBadRequest,
+			"[]",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status BadRequest, empty response, no options",
+			http.StatusBadRequest,
+			"",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, single valid option",
+			http.StatusBadRequest,
+			"",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, multiple valid options",
+			http.StatusBadRequest,
+			"",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrBadRequest,
+		},
+		{
+			"Status BadRequest, empty response, single invalid option",
+			http.StatusBadRequest,
+			"",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Unauthorized, populated response, no options",
+			http.StatusUnauthorized,
+			testResult,
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, populated response, single valid option",
+			http.StatusUnauthorized,
+			testResult,
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, populated response, multiple valid options",
+			http.StatusUnauthorized,
+			testResult,
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, populated response, single invalid option",
+			http.StatusUnauthorized,
+			testResult,
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Unauthorized, empty array response, no options",
+			http.StatusUnauthorized,
+			"[]",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty array response, single valid option",
+			http.StatusUnauthorized,
+			"[]",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty array response, multiple valid options",
+			http.StatusUnauthorized,
+			"[]",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty array response, single invalid option",
+			http.StatusUnauthorized,
+			"[]",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Unauthorized, empty response, no options",
+			http.StatusUnauthorized,
+			"",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty response, single valid option",
+			http.StatusUnauthorized,
+			"",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty response, multiple valid options",
+			http.StatusUnauthorized,
+			"",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Unauthorized, empty response, single invalid option",
+			http.StatusUnauthorized,
+			"",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Forbidden, populated response, no options",
+			http.StatusForbidden,
+			testResult,
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, populated response, single valid option",
+			http.StatusForbidden,
+			testResult,
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, populated response, multiple valid options",
+			http.StatusForbidden,
+			testResult,
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, populated response, single invalid option",
+			http.StatusForbidden,
+			testResult,
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Forbidden, empty array response, no options",
+			http.StatusForbidden,
+			"[]",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty array response, single valid option",
+			http.StatusForbidden,
+			"[]",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty array response, multiple valid options",
+			http.StatusForbidden,
+			"[]",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty array response, single invalid option",
+			http.StatusForbidden,
+			"[]",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status Forbidden, empty response, no options",
+			http.StatusForbidden,
+			"",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty response, single valid option",
+			http.StatusForbidden,
+			"",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty response, multiple valid options",
+			http.StatusForbidden,
+			"",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrAuthFailed,
+		},
+		{
+			"Status Forbidden, empty response, single invalid option",
+			http.StatusForbidden,
+			"",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status InternalServerError, populated response, no options",
+			http.StatusInternalServerError,
+			testResult,
+			[]Option{},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, populated response, single valid option",
+			http.StatusInternalServerError,
+			testResult,
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, populated response, multiple valid options",
+			http.StatusInternalServerError,
+			testResult,
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, populated response, single invalid option",
+			http.StatusInternalServerError,
+			testResult,
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status InternalServerError, empty array response, no options",
+			http.StatusInternalServerError,
+			"[]",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty array response, single valid option",
+			http.StatusInternalServerError,
+			"[]",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty array response, multiple valid options",
+			http.StatusInternalServerError,
+			"[]",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty array response, single invalid option",
+			http.StatusInternalServerError,
+			"[]",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+		{
+			"Status InternalServerError, empty response, no options",
+			http.StatusInternalServerError,
+			"",
+			[]Option{},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty response, single valid option",
+			http.StatusInternalServerError,
+			"",
+			[]Option{SetLimit(15)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty response, multiple valid options",
+			http.StatusInternalServerError,
+			"",
+			[]Option{SetLimit(15), SetOffset(20)},
+			testResultPlaceholder{},
+			ErrInternalError,
+		},
+		{
+			"Status InternalServerError, empty response, single invalid option",
+			http.StatusInternalServerError,
+			"",
+			[]Option{SetLimit(-99)},
+			testResultPlaceholder{},
+			ErrOutOfRange,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(test.srvStatus, test.srvResp)
+			defer ts.Close()
+
+			res := testResultPlaceholder{}
+
+			err := c.get(testEndpoint, &res, test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(res, test.wantRes) {
+				t.Errorf("got: <%v>, want: <%v>", res, test.wantRes)
+			}
+		})
+	}
+}
