@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -18,9 +19,9 @@ var (
 //
 // For more information, visit: https://igdb.github.io/api/references/response-codes/
 var (
-	ErrAuthFailed    = errors.New("IGDB: authentication failed - need valid API key in user-key header")
-	ErrBadRequest    = errors.New("IGDB: bad request - check query parameters")
-	ErrInternalError = errors.New("IGDB: internal error - report bug")
+	ErrAuthFailed    = errors.New("authentication failed - need valid API key in user-key header")
+	ErrBadRequest    = errors.New("bad request - check query parameters")
+	ErrInternalError = errors.New("internal error - report bug")
 )
 
 // ServerError contains information on an
@@ -52,6 +53,7 @@ func checkResponse(resp *http.Response) error {
 	if err != nil {
 		return err
 	}
+	log.Println(string(b))
 
 	var e ServerError
 

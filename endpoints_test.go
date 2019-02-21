@@ -7,8 +7,6 @@ import (
 	"testing"
 )
 
-const testEndpoint = "test/"
-
 func TestClient_GetFields(t *testing.T) {
 	var tests = []struct {
 		name       string

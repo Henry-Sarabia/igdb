@@ -17,7 +17,16 @@ const (
 	testFileEmpty string = "test_data/empty.json"
 	// testFileEmptyArray is an empty array file used for testing input.
 	testFileEmptyArray string = "test_data/empty_array.json"
+	// testEndpoint mocks an endpoint.
+	testEndpoint = "test/"
+	// testResult is a mocked response from a Get request.
+	testResult = `{"some_field": "some_value"}`
 )
+
+// testResultPlaceHolder mocks an IGDB object.
+type testResultPlaceholder struct {
+	SomeField string `json:"some_field"`
+}
 
 // testHeader mocks a single HTTP header entry with a key and value field.
 type testHeader struct {
@@ -37,8 +46,7 @@ func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httpte
 		io.Copy(w, resp)
 	}))
 
-	c := NewClient(testKey, nil)
-	c.http = ts.Client()
+	c := NewClient(testKey, ts.Client())
 	c.rootURL = ts.URL + "/"
 
 	return ts, c
