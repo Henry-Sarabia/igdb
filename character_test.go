@@ -161,7 +161,7 @@ func TestCharacterService_Search(t *testing.T) {
 		wantErr        error
 	}{
 		{"Valid response", testCharacterSearch, "super", []Option{SetLimit(50)}, init, nil},
-		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQuery},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
 		{"Empty response", testFileEmpty, "super", nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, "super", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},

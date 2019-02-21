@@ -8,16 +8,16 @@ import (
 	"strings"
 )
 
-// Errors returned by a Option when setting options for an API call.
+// Errors returned by an Option when setting options for an API call.
 var (
-	// ErrEmptyQuery occurs when an empty string is used as a query value.
-	ErrEmptyQuery = errors.New("igdb.Option: provided query value is empty")
+	// ErrEmptyQry occurs when an empty string is used as a query value.
+	ErrEmptyQry = errors.New("provided option query value is empty")
 	// ErrEmptyFields occurs when an empty string is used as a field value.
-	ErrEmptyFields = errors.New("igdb.Option: one or more provided field values are empty")
-	// ErrEmptyFilterValues occurs when an empty string is used as a filter value.
-	ErrEmptyFilterValues = errors.New("igdb.Option: one or more provided filter values are empty")
+	ErrEmptyFields = errors.New("one or more provided option field values are empty")
+	// ErrEmptyFilterVals occurs when an empty string is used as a filter value.
+	ErrEmptyFilterVals = errors.New("one or more provided filter option values are empty")
 	// ErrOutOfRange occurs when a provided number value is out of valid range.
-	ErrOutOfRange = errors.New("igdb.Option: provided value is out of range")
+	ErrOutOfRange = errors.New("provided option value is out of range")
 )
 
 // Option functions are used to set the options for an API call.
@@ -26,18 +26,6 @@ var (
 // function is then passed into a service's Get, List, Index, Search, or
 // Count function.
 type Option func() (apicalypse.Option, error)
-
-func unwrapOptions(opts ...Option) ([]apicalypse.Option, error) {
-	unwrapped := make([]apicalypse.Option, len(opts))
-	for i, opt := range opts {
-		var err error
-		if unwrapped[i], err = opt(); err != nil {
-			return nil, errors.Wrap(err, "cannot unwrap invalid option")
-		}
-	}
-
-	return unwrapped, nil
-}
 
 // ComposeOptions composes multiple functional options into a single Option.
 // This is primarily used to create a single functional option that can be used
@@ -51,6 +39,20 @@ func ComposeOptions(opts ...Option) Option {
 
 		return apicalypse.ComposeOptions(unwrapped...), nil
 	}
+}
+
+// unwrapOptions executes the provided options to retrieve the apicalypse options
+// and check for any errors. The first error encountered will be returned.
+func unwrapOptions(opts ...Option) ([]apicalypse.Option, error) {
+	unwrapped := make([]apicalypse.Option, len(opts))
+	for i, opt := range opts {
+		var err error
+		if unwrapped[i], err = opt(); err != nil {
+			return nil, errors.Wrap(err, "cannot unwrap invalid option")
+		}
+	}
+
+	return unwrapped, nil
 }
 
 // order specifies the order in which to organize the results from an API call.
@@ -166,15 +168,16 @@ const (
 // call. Filtering operations need three different arguments: an operator
 // and 2 operands, the field and its value. The provided field and val string
 // act as the operands for the provided operator. If multiple values are provided,
-//they will be concatenated into a comma separated list. If no values are
-//provided, an error is returned.
+// they will be concatenated into a comma separated list. If no values are
+// provided, an error is returned.
 //
-//SetFilter is the only option allowed to be set multiple times in a single
-//API call. By default, results are unfiltered.
+// SetFilter is the only option allowed to be set multiple times in a single
+// API call. By default, results are unfiltered.
 //
-//Note that when filtering a field that consists of an enumerated type (e.g. Gender Code,
+// Note that when filtering a field that consists of an enumerated type (e.g. Gender Code,
 // Feed Category, Game Status, etc.), you must provide the number corresponding
-// to the intended field value.
+// to the intended field value. For your convenience, you may also provide the
+// enumerated constant.
 //
 // For more information, visit: https://api-docs.igdb.com/#filters
 func SetFilter(field string, op operator, val ...string) Option {
@@ -183,7 +186,7 @@ func SetFilter(field string, op operator, val ...string) Option {
 			return nil, ErrEmptyFields
 		}
 		if len(val) <= 0 || whitespace.HasBlank(val) {
-			return nil, ErrEmptyFilterValues
+			return nil, ErrEmptyFilterVals
 		}
 
 		j := strings.Join(val, ",")
@@ -196,7 +199,7 @@ func SetFilter(field string, op operator, val ...string) Option {
 func setSearch(qry string) Option {
 	return func() (apicalypse.Option, error) {
 		if whitespace.IsBlank(qry) {
-			return nil, ErrEmptyQuery
+			return nil, ErrEmptyQry
 		}
 		return apicalypse.Search("", qry), nil
 	}

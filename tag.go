@@ -1,12 +1,8 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"strconv"
 )
-
-// ErrNegativeID occurs when a negative ID is used as an argument in an API call.
-var ErrNegativeID = errors.New("ID cannot be negative")
 
 // Tag is a generated number that represents a specific IGDB object. Tag
 // provides a quick and compact way to do complex filtering on the IGDB API.

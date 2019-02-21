@@ -222,7 +222,7 @@ func TestZypeService_Search(t *testing.T) {
 		wantErr   error
 	}{
 		{"Valid response", testZypeSearch, "mario", []Option{SetLimit(50)}, init, nil},
-		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQuery},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
 		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},

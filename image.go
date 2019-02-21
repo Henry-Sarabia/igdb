@@ -8,10 +8,10 @@ import (
 
 // Errors returned when creating Image URLs.
 var (
-	// ErrBlankID occurs when an empty string is used as an argument in a function.
-	ErrBlankID = errors.New("igdb: id value empty")
+	// ErrBlankID occurs when an empty string is used as an argument.
+	ErrBlankID = errors.New("image id value empty")
 	// ErrPixelRatio occurs when an unsupported display pixel ratio is used as an argument in a function.
-	ErrPixelRatio = errors.New("igdb: invalid display pixel ratio")
+	ErrPixelRatio = errors.New("invalid display pixel ratio")
 )
 
 //go:generate gomodifytags -file $GOFILE -struct Image -add-tags json -w
