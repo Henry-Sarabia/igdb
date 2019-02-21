@@ -63,12 +63,12 @@ func TestClient_Send(t *testing.T) {
 		{"Status BadRequest, populated response", http.StatusBadRequest, testResult, testResultPlaceholder{}, ErrBadRequest},
 		{"Status BadRequest, empty array response", http.StatusBadRequest, "[]", testResultPlaceholder{}, ErrBadRequest},
 		{"Status BadRequest, empty response", http.StatusBadRequest, "", testResultPlaceholder{}, ErrBadRequest},
-		{"Status Unauthorized, populated response", http.StatusUnauthorized, testResult, testResultPlaceholder{}, ErrAuthFailed},
-		{"Status Unauthorized, empty array response", http.StatusUnauthorized, "[]", testResultPlaceholder{}, ErrAuthFailed},
-		{"Status Unauthorized, empty response", http.StatusUnauthorized, "", testResultPlaceholder{}, ErrAuthFailed},
-		{"Status Forbidden, populated response", http.StatusForbidden, testResult, testResultPlaceholder{}, ErrAuthFailed},
-		{"Status Forbidden, empty array response", http.StatusForbidden, "[]", testResultPlaceholder{}, ErrAuthFailed},
-		{"Status Forbidden, empty response", http.StatusForbidden, "", testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Unauthorized, populated response", http.StatusUnauthorized, testResult, testResultPlaceholder{}, ErrUnauthorized},
+		{"Status Unauthorized, empty array response", http.StatusUnauthorized, "[]", testResultPlaceholder{}, ErrUnauthorized},
+		{"Status Unauthorized, empty response", http.StatusUnauthorized, "", testResultPlaceholder{}, ErrUnauthorized},
+		{"Status Forbidden, populated response", http.StatusForbidden, testResult, testResultPlaceholder{}, ErrForbidden},
+		{"Status Forbidden, empty array response", http.StatusForbidden, "[]", testResultPlaceholder{}, ErrForbidden},
+		{"Status Forbidden, empty response", http.StatusForbidden, "", testResultPlaceholder{}, ErrForbidden},
 		{"Status InternalServerError, populated response", http.StatusInternalServerError, testResult, testResultPlaceholder{}, ErrInternalError},
 		{"Status InternalServerError, empty array response", http.StatusInternalServerError, "[]", testResultPlaceholder{}, ErrInternalError},
 		{"Status InternalServerError, empty response", http.StatusInternalServerError, "", testResultPlaceholder{}, ErrInternalError},
@@ -304,7 +304,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, populated response, single valid option",
@@ -312,7 +312,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, populated response, multiple valid options",
@@ -320,7 +320,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, populated response, single invalid option",
@@ -336,7 +336,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty array response, single valid option",
@@ -344,7 +344,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty array response, multiple valid options",
@@ -352,7 +352,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty array response, single invalid option",
@@ -368,7 +368,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty response, single valid option",
@@ -376,7 +376,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty response, multiple valid options",
@@ -384,7 +384,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrUnauthorized,
 		},
 		{
 			"Status Unauthorized, empty response, single invalid option",
@@ -400,7 +400,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, populated response, single valid option",
@@ -408,7 +408,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, populated response, multiple valid options",
@@ -416,7 +416,7 @@ func TestClient_Get(t *testing.T) {
 			testResult,
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, populated response, single invalid option",
@@ -432,7 +432,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty array response, single valid option",
@@ -440,7 +440,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty array response, multiple valid options",
@@ -448,7 +448,7 @@ func TestClient_Get(t *testing.T) {
 			"[]",
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty array response, single invalid option",
@@ -464,7 +464,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty response, single valid option",
@@ -472,7 +472,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{SetLimit(15)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty response, multiple valid options",
@@ -480,7 +480,7 @@ func TestClient_Get(t *testing.T) {
 			"",
 			[]Option{SetLimit(15), SetOffset(20)},
 			testResultPlaceholder{},
-			ErrAuthFailed,
+			ErrForbidden,
 		},
 		{
 			"Status Forbidden, empty response, single invalid option",

@@ -205,9 +205,9 @@ func TestSetFilter(t *testing.T) {
 	}{
 		{"Non-empty field and non-empty value", "rating", OpGreaterThanEqual, []string{"60"}, "60", nil},
 		{"Non-empty field and non-empty values", "games", OpContainsAll, []string{"123", "456"}, "123,456", nil},
-		{"Non-empty field and empty value", "name", OpNotEquals, []string{""}, "", ErrEmptyFilterValues},
-		{"Non-empty field and empty values", "name", OpNotEquals, []string{"", ""}, "", ErrEmptyFilterValues},
-		{"Non-empty field and no values", "rating", OpGreaterThanEqual, nil, "", ErrEmptyFilterValues},
+		{"Non-empty field and empty value", "name", OpNotEquals, []string{""}, "", ErrEmptyFilterVals},
+		{"Non-empty field and empty values", "name", OpNotEquals, []string{"", ""}, "", ErrEmptyFilterVals},
+		{"Non-empty field and no values", "rating", OpGreaterThanEqual, nil, "", ErrEmptyFilterVals},
 		{"Empty field and non-empty value", "", OpEquals, []string{"Megaman X1"}, "", ErrEmptyFields},
 		{"Empty field and empty value", "", OpEquals, []string{""}, "", ErrEmptyFields},
 		{"Empty field and no values", "", OpEquals, nil, "", ErrEmptyFields},
@@ -244,7 +244,7 @@ func TestSetSearch(t *testing.T) {
 	}{
 		{"Non-empty query", "zelda", "zelda", nil},
 		{"Non-Empty query with spaces", "the legend of zelda", "the legend of zelda", nil},
-		{"Empty query", "", "", ErrEmptyQuery},
+		{"Empty query", "", "", ErrEmptyQry},
 	}
 
 	for _, test := range tests {

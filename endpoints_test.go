@@ -20,7 +20,7 @@ func TestClient_GetFields(t *testing.T) {
 		{"OK status with dot response", http.StatusOK, `["mugshot.width","name", "company.id"]`, []string{"company.id", "name", "mugshot.width"}, nil},
 		{"OK status with asterisk response", http.StatusOK, `["*"]`, []string{"*"}, nil},
 		{"Bad status with empty response", http.StatusBadRequest, "", nil, ErrBadRequest},
-		{"Not found status with error response", http.StatusNotFound, testErrNotFound, nil, ServerError{Status: 404, Message: "status not found"}},
+		{"Not found status with error response", http.StatusNotFound, testErrNotFound, nil, ServerError{Status: 404, Msg: "status not found"}},
 	}
 
 	for _, test := range tests {
@@ -52,7 +52,7 @@ func TestClient_GetCount(t *testing.T) {
 		{"OK status with count of zero response", http.StatusOK, `{"count": 0}`, 0, nil},
 		{"OK status with empty response", http.StatusOK, "", 0, errInvalidJSON},
 		{"Bad status with empty response", http.StatusBadRequest, "", 0, ErrBadRequest},
-		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, ServerError{Status: 404, Message: "status not found"}},
+		{"Not found status with error response", http.StatusNotFound, testErrNotFound, 0, ServerError{Status: 404, Msg: "status not found"}},
 	}
 
 	for _, test := range tests {

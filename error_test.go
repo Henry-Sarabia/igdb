@@ -25,10 +25,10 @@ func TestCheckResponse(t *testing.T) {
 	}{
 		{"Status OK", http.StatusOK, "", nil},
 		{"Status Bad Request", http.StatusBadRequest, "", ErrBadRequest},
-		{"Status Unauthorized", http.StatusUnauthorized, "", ErrAuthFailed},
-		{"Status Forbidden", http.StatusForbidden, "", ErrAuthFailed},
+		{"Status Unauthorized", http.StatusUnauthorized, "", ErrUnauthorized},
+		{"Status Forbidden", http.StatusForbidden, "", ErrForbidden},
 		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError},
-		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, ServerError{Status: 404, Message: "status not found"}},
+		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, ServerError{Status: 404, Msg: "status not found"}},
 	}
 
 	for _, test := range tests {

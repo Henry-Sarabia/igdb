@@ -162,7 +162,7 @@ func TestGameService_Search(t *testing.T) {
 		wantErr   error
 	}{
 		{"Valid response", testGameSearch, "mario", []Option{SetLimit(5)}, init, nil},
-		{"Empty query", testFileEmpty, "", []Option{SetLimit(5)}, nil, ErrEmptyQuery},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(5)}, nil, ErrEmptyQry},
 		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
