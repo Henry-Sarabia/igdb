@@ -9,17 +9,6 @@ import (
 	"testing"
 )
 
-// Mocked arguments for testing.
-const (
-	// testResult is a mocked response from a Get request.
-	testResult = `{"some_field": "some_value"}`
-)
-
-// testResultPlaceHolder mocks an IGDB object.
-type testResultPlaceholder struct {
-	SomeField string `json:"some_field"`
-}
-
 func TestClient_Request(t *testing.T) {
 	tests := []struct {
 		name    string
