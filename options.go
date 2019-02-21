@@ -71,11 +71,16 @@ const (
 	OrderDescending order = "desc"
 )
 
+// SetOrder is a functional option used to sort the results from an API call.
+// The default order is by relevance.
+//
+// For more information, visit: https://api-docs.igdb.com/#sorting
 func SetOrder(field string, order order) Option {
 	return func() (apicalypse.Option, error) {
 		if whitespace.IsBlank(field) {
 			return nil, ErrEmptyFields
 		}
+
 		return apicalypse.Sort(field, string(order)), nil
 	}
 }
@@ -115,21 +120,42 @@ func SetOffset(off int) Option {
 // match an IGDB object's JSON field tag exactly, not the Go struct field
 // name.
 //
-// The default for Get and List functions is set to all available fields.
-// The default for Search functions is set to solely the ID field.
-//
 // For more information, visit: https://api-docs.igdb.com/#fields
 func SetFields(fields ...string) Option {
 	return func() (apicalypse.Option, error) {
 		if len(fields) <= 0 {
 			return nil, ErrEmptyFields
 		}
+
 		for _, f := range fields {
 			if whitespace.IsBlank(f) {
 				return nil, ErrEmptyFields
 			}
 		}
+
 		return apicalypse.Fields(fields...), nil
+	}
+}
+
+// SetExclude is a functional option used to specify which fields of the
+// requested IGDB object you want the API to exclude. Note that the field
+// string must match an IGDB object's JSON field tag exactly, not the Go struct
+// name.
+//
+// For more information, visit: https://api-docs.igdb.com/#exclude
+func SetExclude(fields ...string) Option {
+	return func() (apicalypse.Option, error) {
+		if len(fields) <= 0 {
+			return nil, ErrEmptyFields
+		}
+
+		for _, f := range fields {
+			if whitespace.IsBlank(f) {
+				return nil, ErrEmptyFields
+			}
+		}
+
+		return apicalypse.Exclude(fields...), nil
 	}
 }
 
@@ -201,6 +227,7 @@ func setSearch(qry string) Option {
 		if whitespace.IsBlank(qry) {
 			return nil, ErrEmptyQry
 		}
+
 		return apicalypse.Search("", qry), nil
 	}
 }

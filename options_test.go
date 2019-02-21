@@ -194,6 +194,44 @@ func TestSetFields(t *testing.T) {
 	}
 }
 
+func TestSetExclude(t *testing.T) {
+	var tests = []struct {
+		name       string
+		fields     []string
+		wantFields string
+		wantErr    error
+	}{
+		{"Single non-empty field", []string{"name"}, "name", nil},
+		{"Multiple non-empty fields", []string{"name", "popularity", "rating"}, "name,popularity,rating", nil},
+		{"Empty fields slice", []string{}, "", ErrEmptyFields},
+		{"Single empty field", []string{"  "}, "", ErrEmptyFields},
+		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyFields},
+		{"Mixed empty and non-empty fields", []string{"", "id", "  ", "url"}, "", ErrEmptyFields},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			fn, err := SetExclude(test.fields...)()
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if test.wantErr != nil {
+				return
+			}
+
+			q, err := apicalypse.Query(fn)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !strings.Contains(q, test.wantFields) {
+				t.Errorf("got: <%v>, want: <%v>", q, test.wantFields)
+			}
+		})
+	}
+}
+
 func TestSetFilter(t *testing.T) {
 	var tests = []struct {
 		name       string
