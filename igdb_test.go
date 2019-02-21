@@ -214,7 +214,7 @@ func TestClient_Get(t *testing.T) {
 			ErrOutOfRange,
 		},
 		{
-			"Status BadRequest, empty response, no options",
+			"Status BadRequest, populated response, no options",
 			http.StatusBadRequest,
 			testResult,
 			[]Option{},
@@ -222,7 +222,7 @@ func TestClient_Get(t *testing.T) {
 			ErrBadRequest,
 		},
 		{
-			"Status BadRequest, empty response, single valid option",
+			"Status BadRequest, populated response, single valid option",
 			http.StatusBadRequest,
 			testResult,
 			[]Option{SetLimit(15)},
@@ -230,7 +230,7 @@ func TestClient_Get(t *testing.T) {
 			ErrBadRequest,
 		},
 		{
-			"Status BadRequest, empty response, multiple valid options",
+			"Status BadRequest, populated response, multiple valid options",
 			http.StatusBadRequest,
 			testResult,
 			[]Option{SetLimit(15), SetOffset(20)},
@@ -238,7 +238,7 @@ func TestClient_Get(t *testing.T) {
 			ErrBadRequest,
 		},
 		{
-			"Status BadRequest, empty response, single invalid option",
+			"Status BadRequest, populated response, single invalid option",
 			http.StatusBadRequest,
 			testResult,
 			[]Option{SetLimit(-99)},
