@@ -11,13 +11,13 @@ import (
 
 // Mocked arguments for testing.
 const (
-	// testGetResp is a mocked response from a Get request.
-	testGetResp = `{"field": "value"}`
+	// testResult is a mocked response from a Get request.
+	testResult = `{"some_field": "some_value"}`
 )
 
 // testResultPlaceHolder mocks an IGDB object.
 type testResultPlaceholder struct {
-	Field string `json:"field"`
+	SomeField string `json:"some_field"`
 }
 
 func TestClient_Request(t *testing.T) {
@@ -60,6 +60,54 @@ func TestClient_Request(t *testing.T) {
 	}
 }
 
+func TestClient_Send(t *testing.T) {
+	tests := []struct {
+		name      string
+		srvStatus int
+		srvResp   string
+		wantRes   testResultPlaceholder
+		wantErr   error
+	}{
+		{"Status OK, populated response", http.StatusOK, testResult, testResultPlaceholder{SomeField: "some_value"}, nil},
+		{"Status OK, empty array response", http.StatusOK, "[]", testResultPlaceholder{}, ErrNoResults},
+		{"Status OK, empty response", http.StatusOK, "", testResultPlaceholder{}, errInvalidJSON},
+		{"Status BadRequest, populated response", http.StatusBadRequest, testResult, testResultPlaceholder{}, ErrBadRequest},
+		{"Status BadRequest, empty array response", http.StatusBadRequest, "[]", testResultPlaceholder{}, ErrBadRequest},
+		{"Status BadRequest, empty response", http.StatusBadRequest, "", testResultPlaceholder{}, ErrBadRequest},
+		{"Status Unauthorized, populated response", http.StatusUnauthorized, testResult, testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Unauthorized, empty array response", http.StatusUnauthorized, "[]", testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Unauthorized, empty response", http.StatusUnauthorized, "", testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Forbidden, populated response", http.StatusForbidden, testResult, testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Forbidden, empty array response", http.StatusForbidden, "[]", testResultPlaceholder{}, ErrAuthFailed},
+		{"Status Forbidden, empty response", http.StatusForbidden, "", testResultPlaceholder{}, ErrAuthFailed},
+		{"Status InternalServerError, populated response", http.StatusInternalServerError, testResult, testResultPlaceholder{}, ErrInternalError},
+		{"Status InternalServerError, empty array response", http.StatusInternalServerError, "[]", testResultPlaceholder{}, ErrInternalError},
+		{"Status InternalServerError, empty response", http.StatusInternalServerError, "", testResultPlaceholder{}, ErrInternalError},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c := testServerString(test.srvStatus, test.srvResp)
+			defer ts.Close()
+
+			req, err := http.NewRequest("GET", ts.URL, nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			res := testResultPlaceholder{}
+
+			err = c.send(req, &res)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(res, test.wantRes) {
+				t.Errorf("got: <%v>, want: <%v>", res, test.wantRes)
+			}
+		})
+	}
+}
+
 //func TestGet(t *testing.T) {
 //	var getTests = []struct {
 //		Name    string
@@ -69,7 +117,7 @@ func TestClient_Request(t *testing.T) {
 //		ExpResp string
 //		ExpErr  string
 //	}{
-//		{"OK request with valid response", http.StatusOK, testGetResp, string(testEndpoint), "value", ""},
+//		{"OK request with valid response", http.StatusOK, testResult, string(testEndpoint), "value", ""},
 //		{"OK request with empty response", http.StatusOK, "", string(testEndpoint), "", errInvalidJSON.Error()},
 //		{"Bad request with empty response", http.StatusNotFound, "", "badURL", "", errInvalidJSON.Error()},
 //		{"Bad request with error response", http.StatusNotFound, testErrNotFound, "badURL", "", "Status 404 - status not found"},

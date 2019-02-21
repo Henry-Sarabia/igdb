@@ -37,8 +37,7 @@ func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httpte
 		io.Copy(w, resp)
 	}))
 
-	c := NewClient(testKey, nil)
-	c.http = ts.Client()
+	c := NewClient(testKey, ts.Client())
 	c.rootURL = ts.URL + "/"
 
 	return ts, c
