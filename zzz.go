@@ -71,21 +71,6 @@ func (zs *ZypeService) Index(opts ...Option) ([]*Zype, error) {
 	return z, nil
 }
 
-// Search returns a list of Zypes found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate the results. If
-// no Zypes are found using the provided query, an error is returned.
-func (zs *ZypeService) Search(qry string, opts ...Option) ([]*Zype, error) {
-	var z []*Zype
-
-	opts = append(opts, setSearch(qry))
-	err := zs.client.get(zs.end, &z, opts...)
-	if err != nil {
-		return nil, errors.Wrapf(err, "cannot get Zype with query %s", qry)
-	}
-
-	return z, nil
-}
-
 // Count returns the number of Zypes available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Zypes to count.
@@ -107,4 +92,19 @@ func (zs *ZypeService) Fields() ([]string, error) {
 	}
 
 	return f, nil
+}
+
+// Search returns a list of Zypes found by searching the IGDB using the provided
+// query. Provide functional options to sort, filter, and paginate the results. If
+// no Zypes are found using the provided query, an error is returned.
+func (zs *ZypeService) Search(qry string, opts ...Option) ([]*Zype, error) {
+	var z []*Zype
+
+	opts = append(opts, setSearch(qry))
+	err := zs.client.get(zs.end, &z, opts...)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get Zype with query %s", qry)
+	}
+
+	return z, nil
 }

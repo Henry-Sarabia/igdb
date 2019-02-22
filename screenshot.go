@@ -11,9 +11,9 @@ import (
 // Screenshot represents a screenshot of a particular game.
 // For more information visit: https://api-docs.igdb.com/#screenshot
 type Screenshot struct {
-	Image
-	ID   int `json:"id"`
-	Game int `json:"game"`
+	Image `json:"image"`
+	ID    int `json:"id"`
+	Game  int `json:"game"`
 }
 
 // ScreenshotService handles all the API calls for the IGDB Screenshot endpoint.

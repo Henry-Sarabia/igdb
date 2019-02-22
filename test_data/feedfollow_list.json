@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1111,
+    "created_at": 1112,
+    "feed": 1,
+    "published_at": 1113,
+    "updated_at": 1114,
+    "user": 1115
+  },
+  {
+    "id": 2221,
+    "created_at": 2222,
+    "feed": 2,
+    "published_at": 2223,
+    "updated_at": 2224,
+    "user": 2225
+  }
+]
