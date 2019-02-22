@@ -75,6 +75,9 @@ type Client struct {
 	TimeToBeats                 *TimeToBeatService
 	Titles                      *TitleService
 	Websites                    *WebsiteService
+
+	// Private Services
+	Credits *CreditService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -142,6 +145,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.Titles = &TitleService{client: c, end: EndpointTitle}
 	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
+	c.Credits = &CreditService{client: c, end: EndpointCredit}
 	return c
 }
 

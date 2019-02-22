@@ -59,19 +59,19 @@ const (
 
 // Private IGDB API endpoints
 const (
-	EndpointCredit         endpoint = "private/credits"
-	EndpointFeedFollow     endpoint = "private/feed_follows"
-	EndpointFollow         endpoint = "private/follows"
-	EndpointList           endpoint = "private/lists"
-	EndpointListEntry      endpoint = "private/list_entries"
-	EndpointPerson         endpoint = "private/people"
-	EndpointPersonMugshots endpoint = "private/person_mug_shots"
-	EndpointPersonWebsite  endpoint = "private/person_websites"
-	EndpointRate           endpoint = "private/rates"
-	EndpointReview         endpoint = "private/reviews"
-	EndpointReviewVideo    endpoint = "private/review_videos"
-	EndpointSocialMetric   endpoint = "private/social_metrics"
-	EndpointTestDummy      endpoint = "private/test_dummies"
+	EndpointCredit         endpoint = "private/credits/"
+	EndpointFeedFollow     endpoint = "private/feed_follows/"
+	EndpointFollow         endpoint = "private/follows/"
+	EndpointList           endpoint = "private/lists/"
+	EndpointListEntry      endpoint = "private/list_entries/"
+	EndpointPerson         endpoint = "private/people/"
+	EndpointPersonMugshots endpoint = "private/person_mug_shots/"
+	EndpointPersonWebsite  endpoint = "private/person_websites/"
+	EndpointRate           endpoint = "private/rates/"
+	EndpointReview         endpoint = "private/reviews/"
+	EndpointReviewVideo    endpoint = "private/review_videos/"
+	EndpointSocialMetric   endpoint = "private/social_metrics/"
+	EndpointTestDummy      endpoint = "private/test_dummies/"
 )
 
 // Count contains the number of objects

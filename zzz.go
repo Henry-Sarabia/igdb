@@ -7,6 +7,8 @@ import (
 	"strconv"
 )
 
+//go:generate gomodifytags -file $GOFILE -struct Zype -add-tags json -w
+
 // ZypeService handles all the API calls for the IGDB Zype endpoint.
 type ZypeService service
 
