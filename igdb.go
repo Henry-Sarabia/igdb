@@ -23,9 +23,11 @@ type service struct {
 // Client also initializes all the separate services to communicate
 // with each individual IGDB API endpoint.
 type Client struct {
-	http    *http.Client
-	rootURL string
-	key     string
+	http      *http.Client
+	rootURL   string
+	key       string
+	maxLimit  int
+	maxOffset int
 
 	// Services
 	Achievements                *AchievementService
@@ -77,18 +79,22 @@ type Client struct {
 
 // NewClient returns a new Client configured to communicate with the IGDB.
 // The provided apiKey will be used to make requests on your behalf. The
-// provided HTTP Client will be the client making requests to the IGDB.
-// If no HTTP Client is provided, a default HTTP client is used instead.
+// provided Tier will determine the maximum limit and offset your key entitles
+// you to in an API call. The provided HTTP Client will be the client making
+// requests to the IGDB. If no HTTP Client is provided, a default HTTP client
+// is used instead.
 //
 // If you need an IGDB API key, please visit: https://api.igdb.com/signup
 func NewClient(apiKey string, custom *http.Client) *Client {
 	if custom == nil {
 		custom = http.DefaultClient
 	}
-	c := &Client{}
-	c.http = custom
-	c.key = apiKey
-	c.rootURL = igdbURL
+
+	c := &Client{
+		http:    custom,
+		rootURL: igdbURL,
+		key:     apiKey,
+	}
 
 	c.Achievements = &AchievementService{client: c, end: EndpointAchievement}
 	c.AchievementIcons = &AchievementIconService{client: c, end: EndpointAchievementIcon}
