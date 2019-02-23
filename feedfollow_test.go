@@ -31,10 +31,10 @@ func TestFeedFollowService_Get(t *testing.T) {
 		wantFeedFollow *FeedFollow
 		wantErr        error
 	}{
-		{"Valid response", testFeedFollowGet, 777777, []Option{SetFields("name")}, init[0], nil},
+		{"Valid response", testFeedFollowGet, 1111, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 777777, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 777777, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 1111, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 1111, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestFeedFollowService_List(t *testing.T) {
 		wantFeedFollows []*FeedFollow
 		wantErr         error
 	}{
-		{"Valid response", testFeedFollowList, []int{1111}, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testFeedFollowList, []int{1111, 2221}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1111}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1111}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1111, 2221}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1111, 2221}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

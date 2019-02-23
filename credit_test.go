@@ -31,10 +31,10 @@ func TestCreditService_Get(t *testing.T) {
 		wantCredit *Credit
 		wantErr    error
 	}{
-		{"Valid response", testCreditGet, 777777, []Option{SetFields("name")}, init[0], nil},
+		{"Valid response", testCreditGet, 1111, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 777777, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 777777, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 1111, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 1111, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestCreditService_List(t *testing.T) {
 		wantCredits []*Credit
 		wantErr     error
 	}{
-		{"Valid response", testCreditList, []int{1111}, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testCreditList, []int{1111, 2221}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1111}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1111}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1111, 2221}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1111, 2221}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
