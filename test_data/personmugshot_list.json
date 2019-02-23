@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1111,
+    "alpha_channel": true,
+    "animated": true,
+    "height": 1112,
+    "image_id": "some_id",
+    "url": "some_url",
+    "width": 1113
+  },
+  {
+    "id": 2222,
+    "alpha_channel": true,
+    "animated": true,
+    "height": 2223,
+    "image_id": "another_id",
+    "url": "another_url",
+    "width": 2224
+  }
+]
