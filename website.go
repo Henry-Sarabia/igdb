@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+//go:generate gomodifytags -file $GOFILE -struct Website -add-tags json -w
+
 // Website represents a website and its URL; usually associated with a game.
 // For more information visit: https://api-docs.igdb.com/#website
 type Website struct {

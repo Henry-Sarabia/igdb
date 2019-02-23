@@ -6,11 +6,15 @@ import (
 	"strconv"
 )
 
+//go:generate gomodifytags -file $GOFILE -struct PageWebsite -add-tags json -w
+
 // PageWebsite represents the website of a specific page.
 // For more information visit: https://api-docs.igdb.com/#page-website
 type PageWebsite struct {
-	Website
-	ID int `json:"id"`
+	ID       int             `json:"id"`
+	Category WebsiteCategory `json:"category"`
+	Trusted  bool            `json:"trusted"`
+	URL      string          `json:"url"`
 }
 
 // PageWebsiteService handles all the API calls for the IGDB PageWebsite endpoint.
