@@ -79,6 +79,7 @@ type Client struct {
 	// Private Services
 	Credits     *CreditService
 	FeedFollows *FeedFollowService
+	Follows     *FollowService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -148,6 +149,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 
 	c.Credits = &CreditService{client: c, end: EndpointCredit}
 	c.FeedFollows = &FeedFollowService{client: c, end: EndpointFeedFollow}
+	c.Follows = &FollowService{client: c, end: EndpointFollow}
 	return c
 }
 
