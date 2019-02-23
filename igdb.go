@@ -81,6 +81,7 @@ type Client struct {
 	FeedFollows *FeedFollowService
 	Follows     *FollowService
 	Lists       *ListService
+	ListEntrys  *ListEntryService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -152,6 +153,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.FeedFollows = &FeedFollowService{client: c, end: EndpointFeedFollow}
 	c.Follows = &FollowService{client: c, end: EndpointFollow}
 	c.Lists = &ListService{client: c, end: EndpointList}
+	c.ListEntrys = &ListEntryService{client: c, end: EndpointListEntry}
 	return c
 }
 

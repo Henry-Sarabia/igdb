@@ -1,40 +1,40 @@
-// +build ignore
-
 package igdb
 
 import (
 	"encoding/json"
 	"github.com/pkg/errors"
+	"io/ioutil"
 	"net/http"
 	"reflect"
+	"testing"
 )
 
 const (
-	testZypeGet  string = "test_data/zype_get.json"
-	testZypeList string = "test_data/zype_list.json"
+	testListEntryGet  string = "test_data/listentry_get.json"
+	testListEntryList string = "test_data/listentry_list.json"
 )
 
-func TestZypeService_Get(t *testing.T) {
-	f, err := ioutil.ReadFile(testZypeGet)
+func TestListEntryService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testListEntryGet)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*Zype, 1)
+	init := make([]*ListEntry, 1)
 	json.Unmarshal(f, &init)
 
 	var tests = []struct {
-		name     string
-		file     string
-		id       int
-		opts     []Option
-		wantZype *Zype
-		wantErr  error
+		name          string
+		file          string
+		id            int
+		opts          []Option
+		wantListEntry *ListEntry
+		wantErr       error
 	}{
-		{"Valid response", testZypeGet, 1111, []Option{SetFields("name")}, init[0], nil},
+		{"Valid response", testListEntryGet, 777777, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 1111, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 1111, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 777777, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 777777, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -45,40 +45,40 @@ func TestZypeService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.Zypes.Get(test.id, test.opts...)
+			le, err := c.ListEntrys.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantZype) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantZype)
+			if !reflect.DeepEqual(le, test.wantListEntry) {
+				t.Errorf("got: <%v>, \nwant: <%v>", le, test.wantListEntry)
 			}
 		})
 	}
 }
 
-func TestZypeService_List(t *testing.T) {
-	f, err := ioutil.ReadFile(testZypeList)
+func TestListEntryService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testListEntryList)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*Zype, 0)
+	init := make([]*ListEntry, 0)
 	json.Unmarshal(f, &init)
 
 	var tests = []struct {
-		name      string
-		file      string
-		ids       []int
-		opts      []Option
-		wantZypes []*Zype
-		wantErr   error
+		name           string
+		file           string
+		ids            []int
+		opts           []Option
+		wantListEntrys []*ListEntry
+		wantErr        error
 	}{
-		{"Valid response", testZypeList, []int{1111, 2222}, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testListEntryList, []int{1111}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1111, 2222}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1111, 2222}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1111}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1111}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -89,35 +89,35 @@ func TestZypeService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.Zypes.List(test.ids, test.opts...)
+			le, err := c.ListEntrys.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantZypes) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantZypes)
+			if !reflect.DeepEqual(le, test.wantListEntrys) {
+				t.Errorf("got: <%v>, \nwant: <%v>", le, test.wantListEntrys)
 			}
 		})
 	}
 }
 
-func TestZypeService_Index(t *testing.T) {
-	f, err := ioutil.ReadFile(testZypeList)
+func TestListEntryService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testListEntryList)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*Zype, 0)
+	init := make([]*ListEntry, 0)
 	json.Unmarshal(f, &init)
 
 	tests := []struct {
-		name      string
-		file      string
-		opts      []Option
-		wantZypes []*Zype
-		wantErr   error
+		name           string
+		file           string
+		opts           []Option
+		wantListEntrys []*ListEntry
+		wantErr        error
 	}{
-		{"Valid response", testZypeList, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testListEntryList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
@@ -130,19 +130,19 @@ func TestZypeService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			z, err := c.Zypes.Index(test.opts...)
+			le, err := c.ListEntrys.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(z, test.wantZypes) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantZypes)
+			if !reflect.DeepEqual(le, test.wantListEntrys) {
+				t.Errorf("got: <%v>, \nwant: <%v>", le, test.wantListEntrys)
 			}
 		})
 	}
 }
 
-func TestZypeService_Count(t *testing.T) {
+func TestListEntryService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
@@ -161,7 +161,7 @@ func TestZypeService_Count(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.Zypes.Count(test.opts...)
+			count, err := c.ListEntrys.Count(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
@@ -174,7 +174,7 @@ func TestZypeService_Count(t *testing.T) {
 	}
 }
 
-func TestZypeService_Fields(t *testing.T) {
+func TestListEntryService_Fields(t *testing.T) {
 	var tests = []struct {
 		name       string
 		resp       string
@@ -192,56 +192,13 @@ func TestZypeService_Fields(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.Zypes.Fields()
+			fields, err := c.ListEntrys.Fields()
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
 			if !equalSlice(fields, test.wantFields) {
 				t.Fatalf("Expected fields '%v', got '%v'", test.wantFields, fields)
-			}
-		})
-	}
-}
-
-func TestZypeService_Search(t *testing.T) {
-	f, err := ioutil.ReadFile(testZypeSearch)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	init := make([]*Zype, 0)
-	json.Unmarshal(f, &init)
-
-	var tests = []struct {
-		name      string
-		file      string
-		qry       string
-		opts      []Option
-		wantZypes []*Zype
-		wantErr   error
-	}{
-		{"Valid response", testZypeSearch, "mario", []Option{SetLimit(50)}, init, nil},
-		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
-		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
-		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			ts, c, err := testServerFile(http.StatusOK, test.file)
-			if err != nil {
-				t.Fatal(err)
-			}
-			defer ts.Close()
-
-			z, err := c.Zypes.Search(test.qry, test.opts...)
-			if errors.Cause(err) != test.wantErr {
-				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
-			}
-
-			if !reflect.DeepEqual(z, test.wantZypes) {
-				t.Errorf("got: <%v>, \nwant: <%v>", z, test.wantZypes)
 			}
 		})
 	}
