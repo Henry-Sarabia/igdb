@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1111,
+    "trusted": true,
+    "url": "some_url"
+  },
+  {
+    "id": 2222,
+    "trusted": true,
+    "url": "another_url"
+  },
+  {
+    "id": 3333,
+    "trusted": false,
+    "url": "other_url"
+  }
+]
