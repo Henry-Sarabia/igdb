@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1111,
+    "category": 1,
+    "trusted": true,
+    "url": "some_url"
+  },
+  {
+    "id": 2222,
+    "category": 1,
+    "trusted": true,
+    "url": "another_url"
+  }
+]

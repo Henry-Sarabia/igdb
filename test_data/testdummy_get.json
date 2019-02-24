@@ -1,0 +1,31 @@
+[
+  {
+    "int": 1111,
+    "bool_value": true,
+    "created_at": 1112,
+    "enum_test": 1,
+    "float_value": 1113,
+    "game": 1114,
+    "integer_array": [
+      1115,
+      1116
+    ],
+    "integer_value": 1117,
+    "name": "some_name",
+    "new_integer_value": 1118,
+    "private": true,
+    "slug": "some_slug",
+    "string_array": [
+      "some_string",
+      "some_string2"
+    ],
+    "test_dummies": [
+      1119,
+      1120
+    ],
+    "test_dummy": 1121,
+    "updated_at": 1122,
+    "url": "some_url",
+    "user": 1123
+  }
+]

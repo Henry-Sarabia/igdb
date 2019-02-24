@@ -34,7 +34,7 @@ func TestPlatformService_Get(t *testing.T) {
 		{"Valid response", testPlatformGet, 8, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 8, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 8, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 8, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -78,7 +78,7 @@ func TestPlatformService_List(t *testing.T) {
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{96, 74, 133, 44, 19}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{96, 74, 133, 44, 19}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{96, 74, 133, 44, 19}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -119,7 +119,7 @@ func TestPlatformService_Index(t *testing.T) {
 	}{
 		{"Valid response", testPlatformList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -152,7 +152,7 @@ func TestPlatformService_Count(t *testing.T) {
 	}{
 		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(-99999)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

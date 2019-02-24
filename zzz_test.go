@@ -31,10 +31,10 @@ func TestZypeService_Get(t *testing.T) {
 		wantZype *Zype
 		wantErr  error
 	}{
-		{"Valid response", testZypeGet, 777777, []Option{SetFields("name")}, init[0], nil},
+		{"Valid response", testZypeGet, 1111, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 777777, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 777777, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 1111, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 1111, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -74,11 +74,11 @@ func TestZypeService_List(t *testing.T) {
 		wantZypes []*Zype
 		wantErr   error
 	}{
-		{"Valid response", testZypeList, []int{1111}, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testZypeList, []int{1111, 2222}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{1111}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{1111}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{1111, 2222}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{1111, 2222}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -119,7 +119,7 @@ func TestZypeService_Index(t *testing.T) {
 	}{
 		{"Valid response", testZypeList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -152,7 +152,7 @@ func TestZypeService_Count(t *testing.T) {
 	}{
 		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(-99999)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 
@@ -224,7 +224,7 @@ func TestZypeService_Search(t *testing.T) {
 		{"Valid response", testZypeSearch, "mario", []Option{SetLimit(50)}, init, nil},
 		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
 		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {

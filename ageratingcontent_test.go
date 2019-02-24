@@ -34,7 +34,7 @@ func TestAgeRatingContentService_Get(t *testing.T) {
 		{"Valid response", testAgeRatingContentGet, 9007, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, 9007, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 9007, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, 9007, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -78,7 +78,7 @@ func TestAgeRatingContentService_List(t *testing.T) {
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
 		{"Empty response", testFileEmpty, []int{21299, 21302, 21309}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{21299, 21302, 21309}, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []int{21299, 21302, 21309}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -119,7 +119,7 @@ func TestAgeRatingContentService_Index(t *testing.T) {
 	}{
 		{"Valid response", testAgeRatingContentList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []Option{SetOffset(99999)}, nil, ErrOutOfRange},
+		{"Invalid option", testFileEmpty, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -152,7 +152,7 @@ func TestAgeRatingContentService_Count(t *testing.T) {
 	}{
 		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
-		{"Invalid option", "", []Option{SetLimit(100)}, 0, ErrOutOfRange},
+		{"Invalid option", "", []Option{SetLimit(-100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
 	}
 

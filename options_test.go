@@ -18,7 +18,7 @@ func TestComposeOptions(t *testing.T) {
 		{"Single option", []Option{SetLimit(20)}, []string{"20"}, nil},
 		{"Multiple options", []Option{SetLimit(20), SetFields("name", "id"), SetFilter("popularity", OpLessThan, "50")}, []string{"50", "name,id", "where popularity < 50"}, nil},
 		{"Single invalid option", []Option{SetOffset(-500)}, nil, ErrOutOfRange},
-		{"Multiple invalid options", []Option{SetOffset(-500), SetLimit(999)}, nil, ErrOutOfRange},
+		{"Multiple invalid options", []Option{SetOffset(-500), SetLimit(-999)}, nil, ErrOutOfRange},
 	}
 
 	for _, test := range optTests {
@@ -94,7 +94,7 @@ func TestSetLimit(t *testing.T) {
 		{"Limit within range", 5, "5", nil},
 		{"Zero limit", 0, "", ErrOutOfRange},
 		{"Limit below range", -10, "", ErrOutOfRange},
-		{"Limit above range", 51, "", ErrOutOfRange},
+		{"Limit above range", 5001, "", ErrOutOfRange},
 	}
 
 	for _, test := range tests {
@@ -130,7 +130,6 @@ func TestSetOffset(t *testing.T) {
 		{"Offset within range", 20, "20", nil},
 		{"Zero offset", 0, "0", nil},
 		{"Offset below range", -15, "", ErrOutOfRange},
-		{"Offset above range", 10001, "", ErrOutOfRange},
 	}
 
 	for _, test := range tests {

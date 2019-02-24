@@ -86,12 +86,15 @@ func SetOrder(field string, order order) Option {
 }
 
 // SetLimit is a functional option used to limit the number of results from
-// an API call. The default limit is 10. The maximum limit is 50.
+// an API call. The default limit is 10.
+// For free tier users, the maximum limit is 50.
+// For pro tier users, the maximum limit is 500.
+// For enterprise users, the maximum limit is 5000.
 //
 // For more information, visit: https://api-docs.igdb.com/#pagination
 func SetLimit(lim int) Option {
 	return func() (apicalypse.Option, error) {
-		if lim <= 0 || lim > 50 {
+		if lim <= 0 || lim > 5000 {
 			return nil, ErrOutOfRange
 		}
 
@@ -100,12 +103,15 @@ func SetLimit(lim int) Option {
 }
 
 // SetOffset is a functional option used to offset the results from an API
-// call. The default offset is 0. The maximum offset is 10,000.
+// call. The default offset is 0.
+// For free tier users, the maximum offset is 150.
+// For pro tier users, the maximum offest is 5000.
+// For enterprise users, there is no maximum offset.
 //
 // For more information, visit: https://api-docs.igdb.com/#pagination
 func SetOffset(off int) Option {
 	return func() (apicalypse.Option, error) {
-		if off < 0 || off > 10000 {
+		if off < 0 {
 			return nil, ErrOutOfRange
 		}
 
