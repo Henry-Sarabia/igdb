@@ -47,6 +47,69 @@ func TestComposeOptions(t *testing.T) {
 	}
 }
 
+func TestUnwrapOptions(t *testing.T) {
+	tests := []struct {
+		name     string
+		opts     []Option
+		wantOpts []string
+		wantErr  error
+	}{
+		{
+			"Zero valid options",
+			nil,
+			nil,
+			nil,
+		},
+		{
+			"Single valid option",
+			[]Option{SetLimit(10)},
+			[]string{"limit 10;"},
+			nil,
+		},
+		{
+			"Multiple valid options",
+			[]Option{SetLimit(10), SetOffset(20), SetFields("name")},
+			[]string{"limit 10;", "offset 20", "fields name;"},
+			nil,
+		},
+		{
+			"Single invalid option",
+			[]Option{SetLimit(-99999)},
+			nil,
+			ErrOutOfRange,
+		},
+		{
+			"Multiple invalid options",
+			[]Option{SetLimit(-99999), SetOffset(-99999)},
+			nil,
+			ErrOutOfRange,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			opts, err := unwrapOptions(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if test.wantErr != nil {
+				return
+			}
+
+			qry, err := apicalypse.Query(opts...)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for _, want := range test.wantOpts {
+				if !strings.Contains(qry, want) {
+					t.Errorf("got: <%v>, want: <%v>", qry, want)
+				}
+			}
+		})
+	}
+}
+
 func TestSetOrder(t *testing.T) {
 	var tests = []struct {
 		name    string
