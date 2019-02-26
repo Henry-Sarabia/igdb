@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	testPersonGet  string = "test_data/person_get.json"
-	testPersonList string = "test_data/person_list.json"
+	testPersonGet    string = "test_data/person_get.json"
+	testPersonList   string = "test_data/person_list.json"
+	testPersonSearch string = "test_data/person_search.json"
 )
 
 func TestPersonService_Get(t *testing.T) {
@@ -131,6 +132,49 @@ func TestPersonService_Index(t *testing.T) {
 			defer ts.Close()
 
 			p, err := c.Persons.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(p, test.wantPersons) {
+				t.Errorf("got: <%v>, \nwant: <%v>", p, test.wantPersons)
+			}
+		})
+	}
+}
+
+func TestPersonService_Search(t *testing.T) {
+	f, err := ioutil.ReadFile(testPersonSearch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Person, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name        string
+		file        string
+		qry         string
+		opts        []Option
+		wantPersons []*Person
+		wantErr     error
+	}{
+		{"Valid response", testPersonSearch, "mario", []Option{SetLimit(50)}, init, nil},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
+		{"Empty response", testFileEmpty, "mario", nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, "mario", []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			p, err := c.Persons.Search(test.qry, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
