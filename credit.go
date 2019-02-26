@@ -100,21 +100,6 @@ func (cs *CreditService) Index(opts ...Option) ([]*Credit, error) {
 	return cr, nil
 }
 
-// Search returns a list of Credits found by searching the IGDB using the provided
-// query. Provide functional options to sort, filter, and paginate the results. If
-// no Credits are found using the provided query, an error is returned.
-func (cs *CreditService) Search(qry string, opts ...Option) ([]*Credit, error) {
-	var cr []*Credit
-
-	opts = append(opts, setSearch(qry))
-	err := cs.client.get(cs.end, &cr, opts...)
-	if err != nil {
-		return nil, errors.Wrapf(err, "cannot get Credit with query %s", qry)
-	}
-
-	return cr, nil
-}
-
 // Count returns the number of Credits available in the IGDB.
 // Provide the SetFilter functional option if you need to filter
 // which Credits to count.
