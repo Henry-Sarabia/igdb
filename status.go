@@ -31,7 +31,8 @@ type UsageReport struct {
 // For more information visit: https://api-docs.igdb.com/#api-status
 func (c *Client) Status() (*Status, error) {
 	var stat []*Status
-	err := c.get(EndpointStatus, &stat, nil)
+
+	err := c.get(EndpointStatus, &stat, []Option{}...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get API status")
 	}
