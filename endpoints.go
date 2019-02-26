@@ -74,6 +74,9 @@ const (
 	EndpointTestDummy     endpoint = "private/test_dummies/"
 )
 
+// EndpointStatus is a unique endpoint for checking the status of the API.
+const EndpointStatus endpoint = "api_status"
+
 // Count contains the number of objects
 // of a certain type counted in the IGDB.
 type Count struct {
