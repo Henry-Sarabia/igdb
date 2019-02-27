@@ -165,6 +165,10 @@ func SetExclude(fields ...string) Option {
 			if whitespace.IsBlank(f) {
 				return nil, ErrEmptyFields
 			}
+
+			if strings.Contains(f, ".") {
+				return nil, ErrExpandedField
+			}
 		}
 
 		return apicalypse.Exclude(fields...), nil
