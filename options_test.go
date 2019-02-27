@@ -482,6 +482,28 @@ func ExampleSetFields() {
 	c.Characters.Search("mario", SetFields("*"))
 }
 
+func ExampleSetExclude() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Exclude name field
+	c.Characters.Search("mario", SetFields("name"))
+
+	// Exclude gender field
+	c.Characters.Search("mario", SetFields("gender"))
+
+	// Exclude both name and gender field
+	c.Characters.Search("mario", SetFields("name", "gender"))
+
+	// Exclude whole mug_shot field
+	c.Characters.Search("mario", SetFields("mug_shot"))
+
+	// Exclude any number of fields
+	c.Characters.Search("mario", SetFields("name", "gender", "url", "species", "games", "mug_shot"))
+
+	// Exclude all available fields
+	c.Characters.Search("mario", SetFields("*"))
+}
+
 func ExampleSetFilter() {
 	c := NewClient("YOUR_API_KEY", nil)
 
