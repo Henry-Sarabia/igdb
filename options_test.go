@@ -231,6 +231,8 @@ func TestSetFields(t *testing.T) {
 		{"Single empty field", []string{"  "}, "", ErrEmptyFields},
 		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyFields},
 		{"Mixed empty and non-empty fields", []string{"", "id", "  ", "url"}, "", ErrEmptyFields},
+		{"Single expanded field", []string{"game.name"}, "", ErrExpandedField},
+		{"Multiple expanded fields", []string{"game.name", "game.id"}, "", ErrExpandedField},
 	}
 
 	for _, test := range tests {
@@ -269,6 +271,8 @@ func TestSetExclude(t *testing.T) {
 		{"Single empty field", []string{"  "}, "", ErrEmptyFields},
 		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyFields},
 		{"Mixed empty and non-empty fields", []string{"", "id", "  ", "url"}, "", ErrEmptyFields},
+		{"Single expanded field", []string{"game.name"}, "", ErrExpandedField},
+		{"Multiple expanded fields", []string{"game.name", "game.id"}, "", ErrExpandedField},
 	}
 
 	for _, test := range tests {
