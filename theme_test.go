@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	testThemeGet  string = "test_data/theme_get.json"
-	testThemeList string = "test_data/theme_list.json"
+	testThemeGet    string = "test_data/theme_get.json"
+	testThemeList   string = "test_data/theme_list.json"
+	testThemeSearch string = "test_data/theme_search.json"
 )
 
 func TestThemeService_Get(t *testing.T) {
@@ -131,6 +132,49 @@ func TestThemeService_Index(t *testing.T) {
 			defer ts.Close()
 
 			th, err := c.Themes.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(th, test.wantThemes) {
+				t.Errorf("got: <%v>, \nwant: <%v>", th, test.wantThemes)
+			}
+		})
+	}
+}
+
+func TestThemeService_Search(t *testing.T) {
+	f, err := ioutil.ReadFile(testThemeSearch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Theme, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name       string
+		file       string
+		qry        string
+		opts       []Option
+		wantThemes []*Theme
+		wantErr    error
+	}{
+		{"Valid response", testThemeSearch, "fiction", []Option{SetLimit(50)}, init, nil},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
+		{"Empty response", testFileEmpty, "fiction", nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, "fiction", []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			th, err := c.Themes.Search(test.qry, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}

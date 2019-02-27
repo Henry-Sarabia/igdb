@@ -1,0 +1,18 @@
+[
+  {
+    "id": 32,
+    "created_at": 1323561600,
+    "name": "Non-fiction",
+    "slug": "non-fiction",
+    "updated_at": 1323561600,
+    "url": "https://www.igdb.com/themes/non-fiction"
+  },
+  {
+    "id": 18,
+    "created_at": 1322524800,
+    "name": "Science fiction",
+    "slug": "science-fiction",
+    "updated_at": 1323216000,
+    "url": "https://www.igdb.com/themes/science-fiction"
+  }
+]

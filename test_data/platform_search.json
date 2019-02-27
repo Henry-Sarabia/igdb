@@ -1,0 +1,177 @@
+[
+  {
+    "id": 131,
+    "alternative_name": "Nintendo Super Disc",
+    "category": 6,
+    "created_at": 1468454400,
+    "name": "Nintendo PlayStation",
+    "product_family": 5,
+    "slug": "nintendo-playstation",
+    "updated_at": 1468540800,
+    "url": "https://www.igdb.com/platforms/nintendo-playstation",
+    "versions": [
+      174
+    ]
+  },
+  {
+    "id": 20,
+    "abbreviation": "NDS",
+    "alternative_name": "DS",
+    "category": 5,
+    "created_at": 1297900800,
+    "generation": 7,
+    "name": "Nintendo DS",
+    "platform_logo": 121,
+    "product_family": 5,
+    "slug": "nds",
+    "updated_at": 1502668800,
+    "url": "https://www.igdb.com/platforms/nds",
+    "versions": [
+      52,
+      190,
+      191,
+      192
+    ]
+  },
+  {
+    "id": 4,
+    "abbreviation": "N64",
+    "alternative_name": "N64",
+    "category": 1,
+    "created_at": 1297555200,
+    "generation": 5,
+    "name": "Nintendo 64",
+    "slug": "n64",
+    "updated_at": 1517270400,
+    "url": "https://www.igdb.com/platforms/n64",
+    "versions": [
+      51,
+      122
+    ]
+  },
+  {
+    "id": 37,
+    "abbreviation": "3DS",
+    "alternative_name": "3DS",
+    "category": 5,
+    "created_at": 1317600000,
+    "generation": 8,
+    "name": "Nintendo 3DS",
+    "platform_logo": 31,
+    "product_family": 5,
+    "slug": "3ds",
+    "updated_at": 1473984000,
+    "url": "https://www.igdb.com/platforms/3ds",
+    "versions": [
+      50
+    ],
+    "websites": [
+      9
+    ]
+  },
+  {
+    "id": 159,
+    "category": 5,
+    "created_at": 1516752000,
+    "name": "Nintendo DSi",
+    "platform_logo": 198,
+    "slug": "nintendo-dsi",
+    "updated_at": 1516752000,
+    "url": "https://www.igdb.com/platforms/nintendo-dsi",
+    "versions": [
+      228,
+      229
+    ]
+  },
+  {
+    "id": 19,
+    "abbreviation": "SNES",
+    "alternative_name": "SNES, Super Nintendo",
+    "category": 1,
+    "created_at": 1297900800,
+    "generation": 4,
+    "name": "Super Nintendo Entertainment System (SNES)",
+    "platform_logo": 106,
+    "product_family": 5,
+    "slug": "snes--1",
+    "updated_at": 1439164800,
+    "url": "https://www.igdb.com/platforms/snes--1",
+    "versions": [
+      68,
+      95,
+      97,
+      139,
+      177
+    ]
+  },
+  {
+    "id": 160,
+    "category": 3,
+    "created_at": 1517961600,
+    "name": "Nintendo eShop",
+    "platform_logo": 201,
+    "slug": "nintendo-eshop",
+    "updated_at": 1517961600,
+    "url": "https://www.igdb.com/platforms/nintendo-eshop",
+    "versions": [
+      230
+    ],
+    "websites": [
+      27
+    ]
+  },
+  {
+    "id": 137,
+    "category": 5,
+    "created_at": 1504569600,
+    "name": "New Nintendo 3DS",
+    "platform_logo": 199,
+    "product_family": 5,
+    "slug": "new-nintendo-3ds",
+    "updated_at": 1515369600,
+    "url": "https://www.igdb.com/platforms/new-nintendo-3ds",
+    "versions": [
+      195
+    ],
+    "websites": [
+      17
+    ]
+  },
+  {
+    "id": 130,
+    "abbreviation": "switch",
+    "alternative_name": "NX",
+    "category": 1,
+    "created_at": 1465948800,
+    "generation": 8,
+    "name": "Nintendo Switch",
+    "platform_logo": 115,
+    "product_family": 5,
+    "slug": "switch",
+    "updated_at": 1550534400,
+    "url": "https://www.igdb.com/platforms/switch",
+    "versions": [
+      173
+    ],
+    "websites": [
+      16
+    ]
+  },
+  {
+    "id": 21,
+    "abbreviation": "NGC",
+    "category": 1,
+    "created_at": 1297987200,
+    "generation": 6,
+    "name": "Nintendo GameCube",
+    "platform_logo": 28,
+    "slug": "ngc",
+    "updated_at": 1392076800,
+    "url": "https://www.igdb.com/platforms/ngc",
+    "versions": [
+      54,
+      121,
+      125
+    ]
+  }
+]

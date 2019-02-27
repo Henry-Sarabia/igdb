@@ -1,0 +1,75 @@
+[
+  {
+    "id": 49632,
+    "alternative_name": "sonic 06 ソニック・ザ・ヘッジホッグ Sonic 360 Sonic 2006 Sonic: 15th Anniversary Sonic Next-Gen",
+    "game": 6231,
+    "name": "Sonic the Hedgehog",
+    "popularity": 36.7621059003636,
+    "published_at": 1163462400
+  },
+  {
+    "id": 63833,
+    "alternative_name": "",
+    "game": 38695,
+    "name": "Sonic Dash 2 Sonic Boom",
+    "popularity": 90,
+    "published_at": 1362528000
+  },
+  {
+    "id": 89082,
+    "alternative_name": "",
+    "game": 74882,
+    "name": "2 Games in 1 Sonic Advance + Sonic Battle",
+    "published_at": 1132012800
+  },
+  {
+    "id": 38696,
+    "alternative_name": "",
+    "game": 78430,
+    "name": "Combo Pack Sonic Advance + Sonic Pinball Party"
+  },
+  {
+    "id": 352624,
+    "alternative_name": "",
+    "game": 79839,
+    "name": "2 Games in 1 Sonic Pinball Party + Sonic Battle",
+    "published_at": 1131580800
+  },
+  {
+    "id": 25523,
+    "alternative_name": "Sonic Toon: Ancient Treasure (ソニックトゥーン 太古の秘宝 Sonikku Tūn: Taiko no Hihō Sonic Toon: Taiko no Hihou",
+    "game": 5322,
+    "name": "Sonic Boom Rise of Lyric",
+    "popularity": 20.4725374083659,
+    "published_at": 1415664000
+  },
+  {
+    "id": 233182,
+    "alternative_name": "Sonic & Tails  Sonic Chaos ソニック＆テイルス",
+    "game": 43322,
+    "name": "Sonic the Hedgehog Chaos",
+    "popularity": 78,
+    "published_at": 751507200
+  },
+  {
+    "id": 79587,
+    "alternative_name": "ソニックトゥーン アイランドアドベンチャー Sonikku Tūn: Airando Adobenchā Sonic Toon: Island Adventure  Sonic Toon: Island Adventure",
+    "game": 7855,
+    "name": "Sonic Boom Shattered Crystal",
+    "popularity": 62,
+    "published_at": 1415664000
+  },
+  {
+    "id": 50708,
+    "alternative_name": "Sonic 3 & Knuckles Sonic 3 Complete Edition",
+    "game": 11219,
+    "name": "Sonic the Hedgehog 3 & Knuckles",
+    "popularity": 87.00483792018449,
+    "published_at": 788832000
+  },
+  {
+    "id": 1318824,
+    "collection": 93,
+    "name": "Sonic"
+  }
+]

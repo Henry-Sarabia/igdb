@@ -10,8 +10,9 @@ import (
 )
 
 const (
-	testPlatformGet  string = "test_data/platform_get.json"
-	testPlatformList string = "test_data/platform_list.json"
+	testPlatformGet    string = "test_data/platform_get.json"
+	testPlatformList   string = "test_data/platform_list.json"
+	testPlatformSearch string = "test_data/platform_search.json"
 )
 
 func TestPlatformService_Get(t *testing.T) {
@@ -131,6 +132,49 @@ func TestPlatformService_Index(t *testing.T) {
 			defer ts.Close()
 
 			plat, err := c.Platforms.Index(test.opts...)
+			if errors.Cause(err) != test.wantErr {
+				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
+			}
+
+			if !reflect.DeepEqual(plat, test.wantPlatforms) {
+				t.Errorf("got: <%v>, \nwant: <%v>", plat, test.wantPlatforms)
+			}
+		})
+	}
+}
+
+func TestPlatformService_Search(t *testing.T) {
+	f, err := ioutil.ReadFile(testPlatformSearch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	init := make([]*Platform, 0)
+	json.Unmarshal(f, &init)
+
+	var tests = []struct {
+		name          string
+		file          string
+		qry           string
+		opts          []Option
+		wantPlatforms []*Platform
+		wantErr       error
+	}{
+		{"Valid response", testPlatformSearch, "nintendo", []Option{SetFields("*")}, init, nil},
+		{"Empty query", testFileEmpty, "", []Option{SetLimit(50)}, nil, ErrEmptyQry},
+		{"Empty response", testFileEmpty, "nintendo", nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, "nintendo", []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"No results", testFileEmptyArray, "non-existent entry", nil, nil, ErrNoResults},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			ts, c, err := testServerFile(http.StatusOK, test.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer ts.Close()
+
+			plat, err := c.Platforms.Search(test.qry, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
