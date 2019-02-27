@@ -1,8 +1,10 @@
 package igdb
 
 import (
+	"fmt"
 	"github.com/Henry-Sarabia/apicalypse"
 	"github.com/pkg/errors"
+	"log"
 	"strings"
 	"testing"
 )
@@ -374,149 +376,139 @@ func TestSetSearch(t *testing.T) {
 	}
 }
 
-//func ExampleComposeOptions() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	// Composing FuncOptions to filter out unpopular results
-//	composedOpts := ComposeOptions(
-//		SetFields("title", "username", "game", "likes", "content"),
-//		SetFilter("likes", OpGreaterThanEqual, "10"),
-//		SetFilter("views", OpGreaterThanEqual, "200"),
-//		SetLimit(50),
-//	)
-//
-//	// Using composed FuncOptions
-//	mario, err := c.Reviews.Search("mario", composedOpts)
-//	if err != nil {
-//		fmt.Println(err)
-//		return
-//	}
-//
-//	// Reusing composed FuncOptions
-//	sonic, err := c.Reviews.Search("sonic", composedOpts)
-//	if err != nil {
-//		fmt.Println(err)
-//		return
-//	}
-//
-//	fmt.Println("Popular reviews related to Mario")
-//	for _, v := range mario {
-//		fmt.Println(*v)
-//	}
-//
-//	fmt.Println("Popular reviews related to Sonic")
-//	for _, v := range sonic {
-//		fmt.Println(*v)
-//	}
-//}
-//
-//func ExampleSetOrder() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	// Retrieve most relevant reviews - default
-//	c.Reviews.Search("zelda")
-//
-//	// Retrieve most viewed reviews
-//	c.Reviews.Search("zelda", SetOrder("views", OrderDescending))
-//
-//	// Retrieve least liked reviews
-//	c.Reviews.Search("zelda", SetOrder("likes", OrderAscending))
-//
-//	// Retrieve arliest released games by their initial release version
-//	c.Games.List(nil, SetOrder("release_dates.date", OrderDescending, SubMin))
-//}
-//
-//func ExampleSetLimit() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	// Retrieve up to 10 results - default
-//	c.Characters.Search("snake")
-//
-//	// Retrieve up to 50 results
-//	c.Characters.Search("snake", SetLimit(50))
-//
-//	// Retrieve up to 1 result
-//	c.Characters.Search("snake", SetLimit(1))
-//}
-//
-//func ExampleSetOffset() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	batchLimit := SetLimit(50)
-//
-//	// Retrieve first batch of results - default
-//	c.People.List(nil, batchLimit)
-//
-//	// Retrieve second batch of results
-//	c.People.List(nil, batchLimit, SetOffset(50))
-//
-//	// Retrieve third batch of results
-//	c.People.List(nil, batchLimit, SetOffset(100))
-//
-//	// Retrieve fourth batch of results
-//	c.People.List(nil, batchLimit, SetOffset(150))
-//}
-//
-//func ExampleSetFields() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	// Retrieve name field
-//	c.Characters.Search("mario", SetFields("name"))
-//
-//	// Retrieve gender field
-//	c.Characters.Search("mario", SetFields("gender"))
-//
-//	// Retrieve both name and gender field
-//	c.Characters.Search("mario", SetFields("name", "gender"))
-//
-//	// Retrieve whole mug_shot field
-//	c.Characters.Search("mario", SetFields("mug_shot"))
-//
-//	// Retrieve only mug_shot.width field
-//	c.Characters.Search("mario", SetFields("mug_shot.width"))
-//
-//	// Retrieve any number of fields
-//	c.Characters.Search("mario", SetFields("name", "gender", "url", "species", "games", "mug_shot.width", "mug_shot.height"))
-//
-//	// Retrieve all available fields
-//	c.Characters.Search("mario", SetFields("*"))
-//}
-//
-//func ExampleSetFilter() {
-//	c := NewClient("YOUR_API_KEY", nil)
-//
-//	// Retrieve unfiltered games - default
-//	c.Games.List(nil)
-//
-//	// Retrieve games with popularity above 50
-//	c.Games.List(nil, SetFilter("popularity", OpGreaterThan, "50"))
-//
-//	// Retrieve games with cover art
-//	c.Games.List(nil, SetFilter("cover", OpExists))
-//
-//	// Retrieve games released on PS4 (platform ID of 48)
-//	c.Games.List(nil, SetFilter("platforms", OpIn, "48"))
-//
-//	// Retrieve games whose ID is not 1234
-//	// (This is a special case where ID can be used for filtering,
-//	// as it is not normally allowed except for filtering out a
-//	// specific entry)
-//	c.Games.List(nil, SetFilter("id", OpNotIn, "1234"))
-//
-//	// Retrieve games whose name does not match "Horizon: Zero Dawn"
-//	c.Games.List(nil, SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"))
-//
-//	// Retrieve games whose ESRB synopsis begins with "Contains adult themes"
-//	c.Games.List(nil, SetFilter("esrb.synopsis", OpPrefix, "Contains adult themes"))
-//
-//	// Retrieve games that meet all the previous requirements
-//	c.Games.List(
-//		nil,
-//		SetFilter("popularity", OpGreaterThan, "50"),
-//		SetFilter("cover", OpExists),
-//		SetFilter("platforms", OpIn, "48"),
-//		SetFilter("id", OpNotIn, "1234"),
-//		SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"),
-//		SetFilter("esrb.synopsis", OpPrefix, "Contains adult themes"),
-//	)
-//}
+func ExampleComposeOptions() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Composing FuncOptions to filter for top 5 popular games
+	composed := ComposeOptions(
+		SetLimit(5),
+		SetFields("name", "cover"),
+		SetOrder("popularity", OrderDescending),
+		SetFilter("category", OpEquals, "0"),
+	)
+
+	// Using composed FuncOptions
+	PS4, err := c.Games.Index(
+		composed,
+		SetFilter("platforms", OpEquals, "48"), // only PS4 games
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Reusing composed FuncOptions
+	XBOX, err := c.Games.Index(
+		composed,
+		SetFilter("platforms", OpEquals, "49"), // only XBOX games
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Top 5 PS4 Games: ")
+	for _, v := range PS4 {
+		fmt.Println(*v)
+	}
+
+	fmt.Println("Top 5 Xbox Games: ")
+	for _, v := range XBOX {
+		fmt.Println(*v)
+	}
+}
+
+func ExampleSetOrder() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve most relevant games - default
+	c.Games.Search("zelda")
+
+	// Retrieve most popular games
+	c.Games.Search("zelda", SetOrder("popularity", OrderDescending))
+
+	// Retrieve least hyped games
+	c.Games.Search("zelda", SetOrder("hypes", OrderAscending))
+}
+
+func ExampleSetLimit() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve up to 10 results - default
+	c.Characters.Search("snake")
+
+	// Retrieve up to 50 results
+	c.Characters.Search("snake", SetLimit(50))
+
+	// Retrieve up to 1 result
+	c.Characters.Search("snake", SetLimit(1))
+}
+
+func ExampleSetOffset() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	batchLimit := SetLimit(50)
+
+	// Retrieve first batch of results - default
+	c.Persons.Index(batchLimit)
+
+	// Retrieve second batch of results
+	c.Persons.Index(batchLimit, SetOffset(50))
+
+	// Retrieve third batch of results
+	c.Persons.Index(batchLimit, SetOffset(100))
+
+	// Retrieve fourth batch of results
+	c.Persons.Index(batchLimit, SetOffset(150))
+}
+
+func ExampleSetFields() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve name field
+	c.Characters.Search("mario", SetFields("name"))
+
+	// Retrieve gender field
+	c.Characters.Search("mario", SetFields("gender"))
+
+	// Retrieve both name and gender field
+	c.Characters.Search("mario", SetFields("name", "gender"))
+
+	// Retrieve whole mug_shot field
+	c.Characters.Search("mario", SetFields("mug_shot"))
+
+	// Retrieve any number of fields
+	c.Characters.Search("mario", SetFields("name", "gender", "url", "species", "games", "mug_shot"))
+
+	// Retrieve all available fields
+	c.Characters.Search("mario", SetFields("*"))
+}
+
+func ExampleSetFilter() {
+	c := NewClient("YOUR_API_KEY", nil)
+
+	// Retrieve unfiltered games - default
+	c.Games.Index()
+
+	// Retrieve games with popularity above 50
+	c.Games.Index(SetFilter("popularity", OpGreaterThan, "50"))
+
+	// Retrieve games with cover art
+	c.Games.Index(SetFilter("cover", OpNotEquals, "null"))
+
+	// Retrieve games released on PS4 (platform ID of 48)
+	c.Games.Index(SetFilter("platforms", OpEquals, "48"))
+
+	// Retrieve games whose name does not match "Horizon: Zero Dawn"
+	c.Games.Index(SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"))
+
+	// Retrieve games which have the Adventure genre (Genre ID of 31)
+	c.Games.Index(SetFilter("genres", OpContainsAtLeast, "31"))
+
+	// Retrieve games that meet all the previous requirements
+	c.Games.Index(
+		SetFilter("popularity", OpGreaterThan, "50"),
+		SetFilter("cover", OpNotEquals, "null"),
+		SetFilter("platforms", OpEquals, "48"),
+		SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"),
+		SetFilter("genres", OpContainsAtLeast, "31"),
+	)
+}
