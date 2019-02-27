@@ -14,6 +14,8 @@ var (
 	ErrEmptyQry = errors.New("provided option query value is empty")
 	// ErrEmptyFields occurs when an empty string is used as a field value.
 	ErrEmptyFields = errors.New("one or more provided option field values are empty")
+	// ErrExpandedField occurs when a field value tries to access an expanded subfield.
+	ErrExpandedField = errors.New("one or more provided option field values is an expanded subfield which is not supported")
 	// ErrEmptyFilterVals occurs when an empty string is used as a filter value.
 	ErrEmptyFilterVals = errors.New("one or more provided filter option values are empty")
 	// ErrOutOfRange occurs when a provided number value is out of valid range.
@@ -136,6 +138,10 @@ func SetFields(fields ...string) Option {
 		for _, f := range fields {
 			if whitespace.IsBlank(f) {
 				return nil, ErrEmptyFields
+			}
+
+			if strings.Contains(f, ".") {
+				return nil, ErrExpandedField
 			}
 		}
 
