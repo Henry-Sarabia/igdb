@@ -20,6 +20,7 @@ type GameVersionFeatureValue struct {
 
 //go:generate stringer -type=VersionFeatureInclusion
 
+// VersionFeatureInclusion specifies whether a feature is included or not.
 type VersionFeatureInclusion int
 
 const (

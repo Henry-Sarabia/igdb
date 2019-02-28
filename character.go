@@ -27,6 +27,7 @@ type Character struct {
 	URL         string           `json:"url"`
 }
 
+// CharacterGender specifies a specific gender.
 type CharacterGender int
 
 //go:generate stringer -type=CharacterGender,CharacterSpecies
@@ -37,6 +38,7 @@ const (
 	GenderOther
 )
 
+// CharacterSpecies specifies a specific species.
 type CharacterSpecies int
 
 const (

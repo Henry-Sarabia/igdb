@@ -65,9 +65,7 @@ type Game struct {
 	Websites              []int        `json:"websites"`
 }
 
-// GameCategory represents the IGDB enumerated type Game Category which
-// describes a type of game content. Use the Stringer interface to access
-// the corresponding Game Category values as strings.
+// GameCategory specifies a type of game content.
 type GameCategory int
 
 //go:generate stringer -type=GameCategory,GameStatus
@@ -80,9 +78,7 @@ const (
 	StandaloneExpansion
 )
 
-// GameStatus represents the IGDB enumerated type Game Status which describes
-// the release status of a specific game. Use the Stringer interface to access
-// the corresponding Game Status values as strings.
+// GameStatus specifies the release status of a specific game.
 type GameStatus int
 
 const (

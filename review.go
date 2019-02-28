@@ -32,6 +32,7 @@ type Review struct {
 
 //go:generate stringer -type=ReviewCategory
 
+// ReviewCategory specifies the medium of review.
 type ReviewCategory int
 
 const (

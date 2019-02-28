@@ -38,6 +38,7 @@ type Page struct {
 
 //go:generate stringer -type=PageCategory,PageSubCategory,PageColor
 
+// PageCategory specifies the type of media associated with a particular page.
 type PageCategory int
 
 const (
@@ -47,6 +48,7 @@ const (
 	PageClanTeam
 )
 
+// PageSubCategory specifies a specific field of media for a particular page.
 type PageSubCategory int
 
 const (
@@ -58,6 +60,7 @@ const (
 	PageESports
 )
 
+// PageColor specifies a particular color.
 type PageColor int
 
 const (

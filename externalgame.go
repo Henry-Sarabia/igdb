@@ -24,6 +24,7 @@ type ExternalGame struct {
 	Year      int                  `json:"year"`
 }
 
+// ExternalGameCategory speficies an external game, platform, or media service.
 type ExternalGameCategory int
 
 //go:generate stringer -type=ExternalGameCategory

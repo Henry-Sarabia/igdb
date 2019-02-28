@@ -31,6 +31,7 @@ type TestDummy struct {
 
 //go:generate stringer -type=TestDummyEnum
 
+// TestDummyEnum mocks an enum.
 type TestDummyEnum int
 
 const (

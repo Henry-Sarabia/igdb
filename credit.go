@@ -25,6 +25,7 @@ type Credit struct {
 	UpdatedAt             int            `json:"updated_at"`
 }
 
+// CreditCategory specifies a specific job or role within a company.
 type CreditCategory int
 
 //go:generate stringer -type=CreditCategory

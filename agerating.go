@@ -19,6 +19,7 @@ type AgeRating struct {
 	Synopsis            string            `json:"synopsis"`
 }
 
+// AgeRatingCategory specifies a regulatory organization.
 type AgeRatingCategory int
 
 //go:generate stringer -type=AgeRatingCategory,AgeRatingEnum
@@ -28,6 +29,7 @@ const (
 	AgeRatingPEGI
 )
 
+// AgeRatingEnum specifies a specific age rating.
 type AgeRatingEnum int
 
 const (
