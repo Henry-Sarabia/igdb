@@ -18,6 +18,7 @@ type SocialMetric struct {
 
 //go:generate stringer -type=SocialMetricCategory
 
+// SocialMetricCategory specifies a particular type of social metric.
 type SocialMetricCategory int
 
 const (

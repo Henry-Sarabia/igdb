@@ -29,6 +29,7 @@ type Feed struct {
 	User           int          `json:"user"`
 }
 
+// FeedCategory specifies a specific type of media.
 type FeedCategory int
 
 //go:generate stringer -type=FeedCategory

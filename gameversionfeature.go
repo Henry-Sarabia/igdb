@@ -22,6 +22,7 @@ type GameVersionFeature struct {
 
 //go:generate stringer -type=VersionFeatureCategory
 
+// VersionFeatureCategory specifies the type of feature for a particular game.
 type VersionFeatureCategory int
 
 const (

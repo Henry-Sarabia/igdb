@@ -17,10 +17,7 @@ type Website struct {
 	URL      string          `json:"url"`
 }
 
-// WebsiteCategory represents the IGDB enumerated type Website Category which
-// simply describes the category in which a website or URL falls under.
-// Use the Stringer interface to access the corresponding category values
-// as strings.
+// WebsiteCategory specifies a specific popular website.
 type WebsiteCategory int
 
 const (

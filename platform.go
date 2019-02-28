@@ -31,6 +31,7 @@ type Platform struct {
 
 //go:generate stringer -type=PlatformCategory
 
+// PlatformCategory specifies a type of platform.
 type PlatformCategory int
 
 const (

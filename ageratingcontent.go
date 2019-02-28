@@ -15,6 +15,7 @@ type AgeRatingContent struct {
 	Description string                   `json:"description"`
 }
 
+// AgeRatingContentCategory specifies a regulatory organization.
 type AgeRatingContentCategory int
 
 //go:generate stringer -type=AgeRatingContentCategory

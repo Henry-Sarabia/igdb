@@ -27,9 +27,7 @@ type ReleaseDate struct {
 
 //go:generate stringer -type=DateCategory,RegionCategory
 
-// DateCategory represents the IGDB enumerated type Date Category which
-// describes the format of a release date. Use the Stringer interface to
-// access the corresponding Date Category values as strings.
+// DateCategory specifies the format of a release date.
 type DateCategory int
 
 const (
@@ -43,6 +41,7 @@ const (
 	DateTBD
 )
 
+// RegionCategory specifies a specific geographic region.
 type RegionCategory int
 
 const (
