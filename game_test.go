@@ -317,13 +317,13 @@ func ExampleGameService_Search() {
 func ExampleGameService_Count() {
 	c := NewClient("YOUR_API_KEY", nil)
 
-	ct, err := c.Games.Count(SetFilter("release_dates.date", OpGreaterThan, "1993-12-15"))
+	ct, err := c.Games.Count(SetFilter("created_at", OpGreaterThan, "1993-12-15"))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Number of games released after December 15, 1993: ", ct)
+	fmt.Println("Number of games created after December 15, 1993: ", ct)
 }
 
 func ExampleGameService_Fields() {
