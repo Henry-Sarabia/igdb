@@ -8,6 +8,9 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct FeedFollow -add-tags json -w
 
+// FeedFollow represents the following of social feed composed of
+// status updates, media, and news articles.
+// For more information visit: https://api-docs.igdb.com/#feed-follow
 type FeedFollow struct {
 	ID          int          `json:"id"`
 	CreatedAt   int          `json:"created_at"`

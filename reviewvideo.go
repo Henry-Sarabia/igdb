@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct ReviewVideo -add-tags json -w
 
+// ReviewVideo represents a user-created review video.
+// For more information visit: https://api-docs.igdb.com/#review-video
 type ReviewVideo struct {
 	ID      int    `json:"id"`
 	Trusted bool   `json:"trusted"`

@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// PersonMugshot represents the mugshot of
+// a person in the video game industry.
+// For more information visit: https://api-docs.igdb.com/#person-mug-shot
 type PersonMugshot struct {
 	Image
 	ID int `json:"id"`

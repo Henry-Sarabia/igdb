@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Rate -add-tags json -w
 
+// Rate represents a user's rating.
+// For more information visit: https://api-docs.igdb.com/#rate
 type Rate struct {
 	ID     int     `json:"id"`
 	Rating float64 `json:"rating"`

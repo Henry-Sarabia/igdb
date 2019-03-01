@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Follow -add-tags json -w
 
+// Follow represents a particular user's following of a particular game.
+// For more information visit: https://api-docs.igdb.com/#follow
 type Follow struct {
 	ID   int `json:"id"`
 	Game int `json:"game"`

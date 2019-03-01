@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Person -add-tags json -w
 
+// Person represents a person in the video game industry.
+// For more information visit: https://api-docs.igdb.com/#person
 type Person struct {
 	ID            int             `json:"id"`
 	Bio           string          `json:"bio"`

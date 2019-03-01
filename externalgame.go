@@ -29,6 +29,7 @@ type ExternalGameCategory int
 
 //go:generate stringer -type=ExternalGameCategory
 
+// Expected ExternalGameCategory enums from the IGDB.
 const (
 	ExternalSteam ExternalGameCategory = iota + 1
 	_

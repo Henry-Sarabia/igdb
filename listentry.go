@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct ListEntry -add-tags json -w
 
+// ListEntry represents an entry in a user-created list of games.
+// For more information visit: https://api-docs.igdb.com/#list-entry
 type ListEntry struct {
 	ID          int    `json:"id"`
 	Description string `json:"description"`

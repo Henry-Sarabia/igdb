@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Review -add-tags json -w
 
+// Review represents a user-created review of a particular video game.
+// For more information visit: https://api-docs.igdb.com/#review-video
 type Review struct {
 	ID             int            `json:"id"`
 	Category       ReviewCategory `json:"category"`
@@ -35,6 +37,7 @@ type Review struct {
 // ReviewCategory specifies the medium of review.
 type ReviewCategory int
 
+// Expected ReviewCategory enums from the IGDB.
 const (
 	ReviewText ReviewCategory = iota + 1
 	ReviewVid

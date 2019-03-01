@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct List -add-tags json -w
 
+// List represents a user-created list of games.
+// For more information visit: https://api-docs.igdb.com/#list
 type List struct {
 	ID           int    `json:"id"`
 	CreatedAt    int    `json:"created_at"`

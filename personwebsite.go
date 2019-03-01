@@ -8,6 +8,9 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct PersonWebsite -add-tags json -w
 
+// PersonWebsite represents a website associated
+// with a person in the video game industry.
+// For more information visit: https://api-docs.igdb.com/#person-website
 type PersonWebsite struct {
 	ID       int             `json:"id"`
 	Category WebsiteCategory `json:"category"`
