@@ -20,6 +20,7 @@ type Website struct {
 // WebsiteCategory specifies a specific popular website.
 type WebsiteCategory int
 
+// Expected WebsiteCategory enums from the IGDB.
 const (
 	WebsiteOfficial WebsiteCategory = iota + 1
 	WebsiteWikia

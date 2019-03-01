@@ -30,6 +30,7 @@ type ReleaseDate struct {
 // DateCategory specifies the format of a release date.
 type DateCategory int
 
+// Expected DateCategory enums from the IGDB.
 const (
 	DateYYYYMMMMDD DateCategory = iota
 	DateYYYYMMMM
@@ -44,6 +45,7 @@ const (
 // RegionCategory specifies a specific geographic region.
 type RegionCategory int
 
+// Expected RegionCategory enums from the IGDB.
 const (
 	RegionEurope RegionCategory = iota + 1
 	RegionNorthAmerica

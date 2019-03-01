@@ -30,6 +30,7 @@ type CreditCategory int
 
 //go:generate stringer -type=CreditCategory
 
+// Expected CreditCategory enums from the IGDB.
 const (
 	CreditVoiceActor CreditCategory = iota + 1
 	CreditLanguage

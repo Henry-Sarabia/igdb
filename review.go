@@ -35,6 +35,7 @@ type Review struct {
 // ReviewCategory specifies the medium of review.
 type ReviewCategory int
 
+// Expected ReviewCategory enums from the IGDB.
 const (
 	ReviewText ReviewCategory = iota + 1
 	ReviewVid

@@ -34,6 +34,7 @@ type TestDummy struct {
 // TestDummyEnum mocks an enum.
 type TestDummyEnum int
 
+// Expected TestDummyEnum enums from the IGDB.
 const (
 	TestDummyEnum1 TestDummyEnum = iota + 1
 	TestDummyEnum2

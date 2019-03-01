@@ -34,6 +34,7 @@ type Platform struct {
 // PlatformCategory specifies a type of platform.
 type PlatformCategory int
 
+// Expected PlatformCategory enums from the IGDB.
 const (
 	PlatformConsole PlatformCategory = iota + 1
 	PlatformArcade

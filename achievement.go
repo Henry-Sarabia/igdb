@@ -34,6 +34,7 @@ type AchievementRank int
 
 //go:generate stringer -type=AchievementRank,AchievementCategory,AchievementLanguage
 
+// Expected AchievementRank enums from the IGDB.
 const (
 	RankBronze AchievementRank = iota + 1
 	RankSilver
@@ -44,6 +45,7 @@ const (
 // AchievementCategory specifies an achievement's native platform.
 type AchievementCategory int
 
+// Expected AchievementCategory enums from the IGDB.
 const (
 	AchievementPlaystation AchievementCategory = iota + 1
 	AchievementXbox
@@ -53,6 +55,7 @@ const (
 // AchievementLanguage specifices an achievement's language.
 type AchievementLanguage int
 
+// Expected AchievementLanguage enums from the IGDB.
 const (
 	LanguageEurope AchievementLanguage = iota + 1
 	LanguageNorthAmerica

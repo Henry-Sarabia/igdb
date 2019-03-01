@@ -34,6 +34,7 @@ type FeedCategory int
 
 //go:generate stringer -type=FeedCategory
 
+// Expected FeedCategory enums from the IGDB.
 const (
 	FeedPulseArticle FeedCategory = iota + 1
 	FeedComingSoon

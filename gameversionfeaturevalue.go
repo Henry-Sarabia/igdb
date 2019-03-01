@@ -23,6 +23,7 @@ type GameVersionFeatureValue struct {
 // VersionFeatureInclusion specifies whether a feature is included or not.
 type VersionFeatureInclusion int
 
+// Expected VersionFeatureInclusion enums from the IGDB.
 const (
 	VersionFeatureNotIncluded VersionFeatureInclusion = iota
 	VersionFeatureIncluded

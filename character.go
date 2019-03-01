@@ -32,6 +32,7 @@ type CharacterGender int
 
 //go:generate stringer -type=CharacterGender,CharacterSpecies
 
+// Expected CharacterGender enums from the IGDB.
 const (
 	GenderMale CharacterGender = iota + 1
 	GenderFemale
@@ -41,6 +42,7 @@ const (
 // CharacterSpecies specifies a specific species.
 type CharacterSpecies int
 
+// Expected CharacterSpecies enums from the IGDB.
 const (
 	SpeciesHuman CharacterSpecies = iota + 1
 	SpeciesAlien

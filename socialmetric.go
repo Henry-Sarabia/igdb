@@ -21,6 +21,7 @@ type SocialMetric struct {
 // SocialMetricCategory specifies a particular type of social metric.
 type SocialMetricCategory int
 
+// Expected SocialMetricCategory enums from the IGDB.
 const (
 	SocialFollows SocialMetricCategory = iota + 1
 	SocialLikes

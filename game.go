@@ -70,6 +70,7 @@ type GameCategory int
 
 //go:generate stringer -type=GameCategory,GameStatus
 
+// Expected GameCategory enums from the IGDB.
 const (
 	MainGame GameCategory = iota
 	DLCAddon
@@ -81,6 +82,7 @@ const (
 // GameStatus specifies the release status of a specific game.
 type GameStatus int
 
+// Expected GameStatus enums from the IGDB.
 const (
 	StatusReleased GameStatus = iota
 	_

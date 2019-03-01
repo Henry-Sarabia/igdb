@@ -25,6 +25,7 @@ type GameVersionFeature struct {
 // VersionFeatureCategory specifies the type of feature for a particular game.
 type VersionFeatureCategory int
 
+// Expected VersionFeatureCategory enums from the IGDB.
 const (
 	VersionFeatureBoolean VersionFeatureCategory = iota
 	VersionFeatureDescription

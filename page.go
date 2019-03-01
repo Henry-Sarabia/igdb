@@ -41,6 +41,7 @@ type Page struct {
 // PageCategory specifies the type of media associated with a particular page.
 type PageCategory int
 
+// Expected PageCategory enums from the IGDB.
 const (
 	PagePersonality PageCategory = iota + 1
 	PageMediaOrganization
@@ -51,6 +52,7 @@ const (
 // PageSubCategory specifies a specific field of media for a particular page.
 type PageSubCategory int
 
+// Expected PageSubCategory enums from the IGDB.
 const (
 	PageUser PageSubCategory = iota + 1
 	PageGame
@@ -63,6 +65,7 @@ const (
 // PageColor specifies a particular color.
 type PageColor int
 
+// Expected PageColor enums from the IGDB.
 const (
 	PageGreen PageColor = iota
 	PageBlue
