@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Credit -add-tags json -w
 
+// Credit represents an employee responsible for working on a particular game.
+// For more information visit: https://api-docs.igdb.com/#credit
 type Credit struct {
 	ID                    int            `json:"id"`
 	Category              CreditCategory `json:"category"`

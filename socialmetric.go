@@ -8,6 +8,9 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct SocialMetric -add-tags json -w
 
+// SocialMetric represents a particular social media metric such as
+// follows, likes, shares, views, favorites, etc.
+// For more information visit: https://api-docs.igdb.com/#social-metric
 type SocialMetric struct {
 	ID                 int                  `json:"id"`
 	Category           SocialMetricCategory `json:"category"`

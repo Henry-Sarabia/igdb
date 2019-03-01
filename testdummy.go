@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct TestDummy -add-tags json -w
 
+// TestDummy represents a mocked IGDB object.
+// For more information visit: https://api-docs.igdb.com/#test-dummy
 type TestDummy struct {
 	ID              int           `json:"int"`
 	BoolValue       bool          `json:"bool_value"`

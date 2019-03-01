@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct Review -add-tags json -w
 
+// Review represents a user-created review of a particular video game.
+// For more information visit: https://api-docs.igdb.com/#review-video
 type Review struct {
 	ID             int            `json:"id"`
 	Category       ReviewCategory `json:"category"`

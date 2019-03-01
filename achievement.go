@@ -52,7 +52,7 @@ const (
 	AchievementSteam
 )
 
-// AchievementLanguage specifices an achievement's language.
+// AchievementLanguage specifies an achievement's language.
 type AchievementLanguage int
 
 // Expected AchievementLanguage enums from the IGDB.
