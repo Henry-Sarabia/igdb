@@ -10,31 +10,31 @@ import (
 )
 
 const (
-	testProductFamilyGet  string = "test_data/productfamily_get.json"
-	testProductFamilyList string = "test_data/productfamily_list.json"
+	testPulseGet  string = "test_data/pulse_get.json"
+	testPulseList string = "test_data/pulse_list.json"
 )
 
-func TestProductFamilyService_Get(t *testing.T) {
-	f, err := ioutil.ReadFile(testProductFamilyGet)
+func TestPulseService_Get(t *testing.T) {
+	f, err := ioutil.ReadFile(testPulseGet)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*ProductFamily, 1)
+	init := make([]*Pulse, 1)
 	json.Unmarshal(f, &init)
 
 	var tests = []struct {
-		name              string
-		file              string
-		id                int
-		opts              []Option
-		wantProductFamily *ProductFamily
-		wantErr           error
+		name      string
+		file      string
+		id        int
+		opts      []Option
+		wantPulse *Pulse
+		wantErr   error
 	}{
-		{"Valid response", testProductFamilyGet, 1, []Option{SetFields("name")}, init[0], nil},
+		{"Valid response", testPulseGet, 296456, []Option{SetFields("name")}, init[0], nil},
 		{"Invalid ID", testFileEmpty, -1, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, 1, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, 1, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, 296456, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, 296456, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, 0, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -45,40 +45,40 @@ func TestProductFamilyService_Get(t *testing.T) {
 			}
 			defer ts.Close()
 
-			fam, err := c.ProductFamilies.Get(test.id, test.opts...)
+			p, err := c.Pulses.Get(test.id, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(fam, test.wantProductFamily) {
-				t.Errorf("got: <%v>, \nwant: <%v>", fam, test.wantProductFamily)
+			if !reflect.DeepEqual(p, test.wantPulse) {
+				t.Errorf("got: <%v>, \nwant: <%v>", p, test.wantPulse)
 			}
 		})
 	}
 }
 
-func TestProductFamilyService_List(t *testing.T) {
-	f, err := ioutil.ReadFile(testProductFamilyList)
+func TestPulseService_List(t *testing.T) {
+	f, err := ioutil.ReadFile(testPulseList)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*ProductFamily, 0)
+	init := make([]*Pulse, 0)
 	json.Unmarshal(f, &init)
 
 	var tests = []struct {
-		name                string
-		file                string
-		ids                 []int
-		opts                []Option
-		wantProductFamilies []*ProductFamily
-		wantErr             error
+		name       string
+		file       string
+		ids        []int
+		opts       []Option
+		wantPulses []*Pulse
+		wantErr    error
 	}{
-		{"Valid response", testProductFamilyList, []int{3, 2, 4, 5}, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testPulseList, []int{296570, 714772, 124499, 296586, 733543}, []Option{SetLimit(5)}, init, nil},
 		{"Zero IDs", testFileEmpty, nil, nil, nil, ErrEmptyIDs},
 		{"Invalid ID", testFileEmpty, []int{-500}, nil, nil, ErrNegativeID},
-		{"Empty response", testFileEmpty, []int{3, 2, 4, 5}, nil, nil, errInvalidJSON},
-		{"Invalid option", testFileEmpty, []int{3, 2, 4, 5}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
+		{"Empty response", testFileEmpty, []int{296570, 714772, 124499, 296586, 733543}, nil, nil, errInvalidJSON},
+		{"Invalid option", testFileEmpty, []int{296570, 714772, 124499, 296586, 733543}, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, []int{0, 9999999}, nil, nil, ErrNoResults},
 	}
 	for _, test := range tests {
@@ -89,35 +89,35 @@ func TestProductFamilyService_List(t *testing.T) {
 			}
 			defer ts.Close()
 
-			fam, err := c.ProductFamilies.List(test.ids, test.opts...)
+			p, err := c.Pulses.List(test.ids, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(fam, test.wantProductFamilies) {
-				t.Errorf("got: <%v>, \nwant: <%v>", fam, test.wantProductFamilies)
+			if !reflect.DeepEqual(p, test.wantPulses) {
+				t.Errorf("got: <%v>, \nwant: <%v>", p, test.wantPulses)
 			}
 		})
 	}
 }
 
-func TestProductFamilyService_Index(t *testing.T) {
-	f, err := ioutil.ReadFile(testProductFamilyList)
+func TestPulseService_Index(t *testing.T) {
+	f, err := ioutil.ReadFile(testPulseList)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	init := make([]*ProductFamily, 0)
+	init := make([]*Pulse, 0)
 	json.Unmarshal(f, &init)
 
 	tests := []struct {
-		name                string
-		file                string
-		opts                []Option
-		wantProductFamilies []*ProductFamily
-		wantErr             error
+		name       string
+		file       string
+		opts       []Option
+		wantPulses []*Pulse
+		wantErr    error
 	}{
-		{"Valid response", testProductFamilyList, []Option{SetLimit(5)}, init, nil},
+		{"Valid response", testPulseList, []Option{SetLimit(5)}, init, nil},
 		{"Empty response", testFileEmpty, nil, nil, errInvalidJSON},
 		{"Invalid option", testFileEmpty, []Option{SetOffset(-99999)}, nil, ErrOutOfRange},
 		{"No results", testFileEmptyArray, nil, nil, ErrNoResults},
@@ -130,19 +130,19 @@ func TestProductFamilyService_Index(t *testing.T) {
 			}
 			defer ts.Close()
 
-			fam, err := c.ProductFamilies.Index(test.opts...)
+			p, err := c.Pulses.Index(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
-			if !reflect.DeepEqual(fam, test.wantProductFamilies) {
-				t.Errorf("got: <%v>, \nwant: <%v>", fam, test.wantProductFamilies)
+			if !reflect.DeepEqual(p, test.wantPulses) {
+				t.Errorf("got: <%v>, \nwant: <%v>", p, test.wantPulses)
 			}
 		})
 	}
 }
 
-func TestProductFamilyService_Count(t *testing.T) {
+func TestPulseService_Count(t *testing.T) {
 	var tests = []struct {
 		name      string
 		resp      string
@@ -161,7 +161,7 @@ func TestProductFamilyService_Count(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			count, err := c.ProductFamilies.Count(test.opts...)
+			count, err := c.Pulses.Count(test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
@@ -173,7 +173,7 @@ func TestProductFamilyService_Count(t *testing.T) {
 	}
 }
 
-func TestProductFamilyService_Fields(t *testing.T) {
+func TestPulseService_Fields(t *testing.T) {
 	var tests = []struct {
 		name       string
 		resp       string
@@ -192,7 +192,7 @@ func TestProductFamilyService_Fields(t *testing.T) {
 			ts, c := testServerString(http.StatusOK, test.resp)
 			defer ts.Close()
 
-			fields, err := c.ProductFamilies.Fields()
+			fields, err := c.Pulses.Fields()
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
