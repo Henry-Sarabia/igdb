@@ -11,6 +11,7 @@ import (
 // Pulse represents a single news article.
 // For more information visit: https://api-docs.igdb.com/#pulse
 type Pulse struct {
+	ID          int      `json:"id"`
 	Author      string   `json:"author"`
 	CreatedAt   int      `json:"created_at"`
 	Image       string   `json:"image"`

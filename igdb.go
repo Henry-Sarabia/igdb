@@ -71,6 +71,7 @@ type Client struct {
 	PlayerPerspectives          *PlayerPerspectiveService
 	ProductFamilies             *ProductFamilyService
 	Pulses                      *PulseService
+	PulseGroups                 *PulseGroupService
 	ReleaseDates                *ReleaseDateService
 	Screenshots                 *ScreenshotService
 	Themes                      *ThemeService
@@ -154,6 +155,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlayerPerspectives = &PlayerPerspectiveService{client: c, end: EndpointPlayerPerspective}
 	c.ProductFamilies = &ProductFamilyService{client: c, end: EndpointProductFamily}
 	c.Pulses = &PulseService{client: c, end: EndpointPulse}
+	c.PulseGroups = &PulseGroupService{client: c, end: EndpointPulseGroup}
 	c.ReleaseDates = &ReleaseDateService{client: c, end: EndpointReleaseDate}
 	c.Screenshots = &ScreenshotService{client: c, end: EndpointScreenshot}
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
