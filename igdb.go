@@ -69,6 +69,7 @@ type Client struct {
 	PlatformVersionReleaseDates *PlatformVersionReleaseDateService
 	PlatformWebsites            *PlatformWebsiteService
 	PlayerPerspectives          *PlayerPerspectiveService
+	ProductFamilies             *ProductFamilyService
 	ReleaseDates                *ReleaseDateService
 	Screenshots                 *ScreenshotService
 	Themes                      *ThemeService
@@ -150,6 +151,7 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlatformVersionReleaseDates = &PlatformVersionReleaseDateService{client: c, end: EndpointPlatformVersionReleaseDate}
 	c.PlatformWebsites = &PlatformWebsiteService{client: c, end: EndpointPlatformWebsite}
 	c.PlayerPerspectives = &PlayerPerspectiveService{client: c, end: EndpointPlayerPerspective}
+	c.ProductFamilies = &ProductFamilyService{client: c, end: EndpointProductFamily}
 	c.ReleaseDates = &ReleaseDateService{client: c, end: EndpointReleaseDate}
 	c.Screenshots = &ScreenshotService{client: c, end: EndpointScreenshot}
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
