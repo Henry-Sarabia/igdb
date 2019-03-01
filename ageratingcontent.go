@@ -20,6 +20,7 @@ type AgeRatingContentCategory int
 
 //go:generate stringer -type=AgeRatingContentCategory
 
+// Expected AgeRatingContentCategory enums from the IGDB.
 const (
 	AgeRatingContentPEGI AgeRatingContentCategory = iota + 1
 	AgeRatingContentESRB

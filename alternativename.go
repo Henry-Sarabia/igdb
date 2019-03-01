@@ -8,6 +8,9 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct AlternativeName -add-tags json -w
 
+// AlternativeName represents an alternative or international
+// name for a particular video game.
+// For more information visit: https://api-docs.igdb.com/#alternative-name
 type AlternativeName struct {
 	ID      int    `json:"id"`
 	Comment string `json:"comment"`
