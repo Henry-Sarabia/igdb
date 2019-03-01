@@ -8,6 +8,8 @@ import (
 
 //go:generate gomodifytags -file $GOFILE -struct PulseSource -add-tags json -w
 
+// PulseSource represents a news article source such as IGN.
+// For more information visit: https://api-docs.igdb.com/#pulse-source
 type PulseSource struct {
 	ID   int    `json:"id"`
 	Game int    `json:"game"`
