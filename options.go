@@ -3,7 +3,7 @@ package igdb
 import (
 	"fmt"
 	"github.com/Henry-Sarabia/apicalypse"
-	"github.com/Henry-Sarabia/whitespace"
+	"github.com/Henry-Sarabia/blank"
 	"github.com/pkg/errors"
 	"strings"
 )
@@ -79,7 +79,7 @@ const (
 // For more information, visit: https://api-docs.igdb.com/#sorting
 func SetOrder(field string, order order) Option {
 	return func() (apicalypse.Option, error) {
-		if whitespace.IsBlank(field) {
+		if blank.Is(field) {
 			return nil, ErrEmptyFields
 		}
 
@@ -136,7 +136,7 @@ func SetFields(fields ...string) Option {
 		}
 
 		for _, f := range fields {
-			if whitespace.IsBlank(f) {
+			if blank.Is(f) {
 				return nil, ErrEmptyFields
 			}
 
@@ -162,7 +162,7 @@ func SetExclude(fields ...string) Option {
 		}
 
 		for _, f := range fields {
-			if whitespace.IsBlank(f) {
+			if blank.Is(f) {
 				return nil, ErrEmptyFields
 			}
 
@@ -224,10 +224,10 @@ const (
 // For more information, visit: https://api-docs.igdb.com/#filters
 func SetFilter(field string, op operator, val ...string) Option {
 	return func() (apicalypse.Option, error) {
-		if whitespace.IsBlank(field) {
+		if blank.Is(field) {
 			return nil, ErrEmptyFields
 		}
-		if len(val) <= 0 || whitespace.HasBlank(val) {
+		if len(val) <= 0 || blank.Has(val) {
 			return nil, ErrEmptyFilterVals
 		}
 
@@ -240,7 +240,7 @@ func SetFilter(field string, op operator, val ...string) Option {
 // provided query.
 func setSearch(qry string) Option {
 	return func() (apicalypse.Option, error) {
-		if whitespace.IsBlank(qry) {
+		if blank.Is(qry) {
 			return nil, ErrEmptyQry
 		}
 
