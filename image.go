@@ -3,7 +3,7 @@ package igdb
 import (
 	"errors"
 	"fmt"
-	"github.com/Henry-Sarabia/whitespace"
+	"github.com/Henry-Sarabia/blank"
 )
 
 // Errors returned when creating Image URLs.
@@ -60,7 +60,7 @@ const (
 // image size, and display pixel ratio. The display pixel ratio only multiplies
 // the resolution of the image. The current available ratios are 1 and 2.
 func SizedImageURL(imageID string, size imageSize, ratio int) (string, error) {
-	if whitespace.IsBlank(imageID) {
+	if blank.Is(imageID) {
 		return "", ErrBlankID
 	}
 
