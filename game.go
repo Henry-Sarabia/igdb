@@ -60,7 +60,7 @@ type Game struct {
 	UpdatedAt             int          `json:"updated_at"`
 	URL                   string       `json:"url"`
 	VersionParent         int          `json:"version_parent"`
-	VersionTitle          int          `json:"version_title"`
+	VersionTitle          string       `json:"version_title"`
 	Videos                []int        `json:"videos"`
 	Websites              []int        `json:"websites"`
 }
