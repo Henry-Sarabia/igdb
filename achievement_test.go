@@ -21,7 +21,10 @@ func TestAchievementService_Get(t *testing.T) {
 	}
 
 	init := make([]*Achievement, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name            string
@@ -64,7 +67,10 @@ func TestAchievementService_List(t *testing.T) {
 	}
 
 	init := make([]*Achievement, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name             string
@@ -108,7 +114,10 @@ func TestAchievementService_Index(t *testing.T) {
 	}
 
 	init := make([]*Achievement, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name             string

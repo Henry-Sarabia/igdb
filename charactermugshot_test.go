@@ -21,7 +21,10 @@ func TestCharacterMugshotService_Get(t *testing.T) {
 	}
 
 	init := make([]*CharacterMugshot, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name                 string
@@ -64,7 +67,10 @@ func TestCharacterMugshotService_List(t *testing.T) {
 	}
 
 	init := make([]*CharacterMugshot, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name                  string
@@ -108,7 +114,10 @@ func TestCharacterMugshotService_Index(t *testing.T) {
 	}
 
 	init := make([]*CharacterMugshot, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name                  string

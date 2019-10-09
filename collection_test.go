@@ -22,7 +22,10 @@ func TestCollectionService_Get(t *testing.T) {
 	}
 
 	init := make([]*Collection, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name           string
@@ -65,7 +68,10 @@ func TestCollectionService_List(t *testing.T) {
 	}
 
 	init := make([]*Collection, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name            string
@@ -109,7 +115,10 @@ func TestCollectionService_Index(t *testing.T) {
 	}
 
 	init := make([]*Collection, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name            string
@@ -150,7 +159,10 @@ func TestCollectionService_Search(t *testing.T) {
 	}
 
 	init := make([]*Collection, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name            string
