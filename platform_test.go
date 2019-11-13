@@ -22,7 +22,10 @@ func TestPlatformService_Get(t *testing.T) {
 	}
 
 	init := make([]*Platform, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name         string
@@ -65,7 +68,10 @@ func TestPlatformService_List(t *testing.T) {
 	}
 
 	init := make([]*Platform, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name          string
@@ -109,7 +115,10 @@ func TestPlatformService_Index(t *testing.T) {
 	}
 
 	init := make([]*Platform, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name          string
@@ -150,7 +159,10 @@ func TestPlatformService_Search(t *testing.T) {
 	}
 
 	init := make([]*Platform, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name          string

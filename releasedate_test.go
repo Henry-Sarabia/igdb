@@ -21,7 +21,7 @@ func TestReleaseDateService_Get(t *testing.T) {
 	}
 
 	init := make([]*ReleaseDate, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
 
 	var tests = []struct {
 		name            string
@@ -64,7 +64,7 @@ func TestReleaseDateService_List(t *testing.T) {
 	}
 
 	init := make([]*ReleaseDate, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
 
 	var tests = []struct {
 		name             string
@@ -108,7 +108,7 @@ func TestReleaseDateService_Index(t *testing.T) {
 	}
 
 	init := make([]*ReleaseDate, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
 
 	tests := []struct {
 		name             string

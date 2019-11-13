@@ -21,7 +21,10 @@ func TestAgeRatingService_Get(t *testing.T) {
 	}
 
 	init := make([]*AgeRating, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name          string
@@ -64,7 +67,10 @@ func TestAgeRatingService_List(t *testing.T) {
 	}
 
 	init := make([]*AgeRating, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name           string
@@ -108,7 +114,10 @@ func TestAgeRatingService_Index(t *testing.T) {
 	}
 
 	init := make([]*AgeRating, 0)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name           string

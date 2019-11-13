@@ -18,7 +18,10 @@ func TestClient_Status(t *testing.T) {
 	}
 
 	init := make([]*Status, 1)
-	json.Unmarshal(f, &init)
+	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name     string
