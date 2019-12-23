@@ -11,9 +11,9 @@ import (
 // ProductFamily represents a collection of closely related platforms.
 // For more information visit: https://api-docs.igdb.com/#product-family
 type ProductFamily struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	ID   int    `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+	Slug string `json:"slug,omitempty"`
 }
 
 // ProductFamilyService handles all the API

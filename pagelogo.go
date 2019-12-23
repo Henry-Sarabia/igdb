@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#page-logo
 type PageLogo struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // PageLogoService handles all the API calls for the IGDB PageLogo endpoint.

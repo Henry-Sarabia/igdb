@@ -12,14 +12,14 @@ import (
 // game that were published around the same time period.
 // For more information visit: https://api-docs.igdb.com/#pulse-group
 type PulseGroup struct {
-	ID          int    `json:"id"`
-	CreatedAt   int    `json:"created_at"`
-	Game        int    `json:"game"`
-	Name        string `json:"name"`
-	PublishedAt int    `json:"published_at"`
-	Pulses      []int  `json:"pulses"`
-	Tags        []Tag  `json:"tags"`
-	UpdatedAt   int    `json:"updated_at"`
+	ID          int    `json:"id,omitempty"`
+	CreatedAt   int    `json:"created_at,omitempty"`
+	Game        int    `json:"game,omitempty"`
+	Name        string `json:"name,omitempty"`
+	PublishedAt int    `json:"published_at,omitempty"`
+	Pulses      []int  `json:"pulses,omitempty"`
+	Tags        []Tag  `json:"tags,omitempty"`
+	UpdatedAt   int    `json:"updated_at,omitempty"`
 }
 
 // PulseGroupService handles all the API

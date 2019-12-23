@@ -25,7 +25,7 @@ const (
 
 // testResultPlaceHolder mocks an IGDB object.
 type testResultPlaceholder struct {
-	SomeField string `json:"some_field"`
+	SomeField string `json:"some_field,omitempty"`
 }
 
 // testHeader mocks a single HTTP header entry with a key and value field.

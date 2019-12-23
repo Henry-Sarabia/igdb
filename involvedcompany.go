@@ -12,15 +12,15 @@ import (
 // of a particular video game.
 // For more information visit: https://api-docs.igdb.com/#involved-company
 type InvolvedCompany struct {
-	ID         int  `json:"id"`
-	Company    int  `json:"company"`
-	CreatedAt  int  `json:"created_at"`
-	Developer  bool `json:"developer"`
-	Game       int  `json:"game"`
-	Porting    bool `json:"porting"`
-	Publisher  bool `json:"publisher"`
-	Supporting bool `json:"supporting"`
-	UpdatedAt  int  `json:"updated_at"`
+	ID         int  `json:"id,omitempty"`
+	Company    int  `json:"company,omitempty"`
+	CreatedAt  int  `json:"created_at,omitempty"`
+	Developer  bool `json:"developer,omitempty"`
+	Game       int  `json:"game,omitempty"`
+	Porting    bool `json:"porting,omitempty"`
+	Publisher  bool `json:"publisher,omitempty"`
+	Supporting bool `json:"supporting,omitempty"`
+	UpdatedAt  int  `json:"updated_at,omitempty"`
 }
 
 // InvolvedCompanyService handles all the API calls for the IGDB InvolvedCompany endpoint.

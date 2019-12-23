@@ -12,11 +12,11 @@ import (
 // such as "World War 2" or "Steampunk".
 // For more information visit: https://api-docs.igdb.com/#keyword
 type Keyword struct {
-	CreatedAt int    `json:"created_at"`
-	Name      string `json:"name"`
-	Slug      string `json:"slug"`
-	UpdatedAt int    `json:"updated_at"`
-	Url       string `json:"url"`
+	CreatedAt int    `json:"created_at,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Slug      string `json:"slug,omitempty"`
+	UpdatedAt int    `json:"updated_at,omitempty"`
+	Url       string `json:"url,omitempty"`
 }
 
 // KeywordService handles all the API calls for the IGDB Keyword endpoint.

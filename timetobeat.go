@@ -11,11 +11,11 @@ import (
 // TimeToBeat represents the average completion times for a particular game.
 // For more information: https://api-docs.igdb.com/#time-to-beat
 type TimeToBeat struct {
-	ID         int `json:"id"`
-	Completely int `json:"completely"`
-	Game       int `json:"game"`
-	Hastly     int `json:"hastly"`
-	Normally   int `json:"normally"`
+	ID         int `json:"id,omitempty"`
+	Completely int `json:"completely,omitempty"`
+	Game       int `json:"game,omitempty"`
+	Hastly     int `json:"hastly,omitempty"`
+	Normally   int `json:"normally,omitempty"`
 }
 
 // TimeToBeatService handles all the API calls for the IGDB TimeToBeat endpoint.

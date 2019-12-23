@@ -11,25 +11,25 @@ import (
 // Review represents a user-created review of a particular video game.
 // For more information visit: https://api-docs.igdb.com/#review-video
 type Review struct {
-	ID             int            `json:"id"`
-	Category       ReviewCategory `json:"category"`
-	Conclusion     string         `json:"conclusion"`
-	Content        string         `json:"content"`
-	CreatedAt      int            `json:"created_at"`
-	Game           int            `json:"game"`
-	Introduction   string         `json:"introduction"`
-	Likes          int            `json:"likes"`
-	NegativePoints string         `json:"negative_points"`
-	Platform       int            `json:"platform"`
-	PositivePoints string         `json:"positive_points"`
-	Slug           string         `json:"slug"`
-	Title          string         `json:"title"`
-	UpdatedAt      int            `json:"updated_at"`
-	URL            string         `json:"url"`
-	User           int            `json:"user"`
-	UserRating     int            `json:"user_rating"`
-	Video          int            `json:"video"`
-	Views          int            `json:"views"`
+	ID             int            `json:"id,omitempty"`
+	Category       ReviewCategory `json:"category,omitempty"`
+	Conclusion     string         `json:"conclusion,omitempty"`
+	Content        string         `json:"content,omitempty"`
+	CreatedAt      int            `json:"created_at,omitempty"`
+	Game           int            `json:"game,omitempty"`
+	Introduction   string         `json:"introduction,omitempty"`
+	Likes          int            `json:"likes,omitempty"`
+	NegativePoints string         `json:"negative_points,omitempty"`
+	Platform       int            `json:"platform,omitempty"`
+	PositivePoints string         `json:"positive_points,omitempty"`
+	Slug           string         `json:"slug,omitempty"`
+	Title          string         `json:"title,omitempty"`
+	UpdatedAt      int            `json:"updated_at,omitempty"`
+	URL            string         `json:"url,omitempty"`
+	User           int            `json:"user,omitempty"`
+	UserRating     int            `json:"user_rating,omitempty"`
+	Video          int            `json:"video,omitempty"`
+	Views          int            `json:"views,omitempty"`
 }
 
 //go:generate stringer -type=ReviewCategory

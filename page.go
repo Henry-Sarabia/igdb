@@ -12,28 +12,28 @@ import (
 // currently used for youtubers and media organizations.
 // For more information visit: https://api-docs.igdb.com/#page
 type Page struct {
-	ID               int             `json:"id"`
-	Background       int             `json:"background"`
-	Battlenet        string          `json:"battlenet"`
-	Category         PageCategory    `json:"category"`
-	Color            PageColor       `json:"color"`
-	Company          int             `json:"company"`
-	Country          int             `json:"country"`
-	CreatedAt        int             `json:"created_at"`
-	Description      string          `json:"description"`
-	Feed             int             `json:"feed"`
-	Game             int             `json:"game"`
-	Name             string          `json:"name"`
-	Origin           string          `json:"origin"`
-	PageFollowsCount int             `json:"page_follows_count"`
-	PageLogo         int             `json:"page_logo"`
-	Slug             string          `json:"slug"`
-	SubCategory      PageSubCategory `json:"sub_category"`
-	UpdatedAt        int             `json:"updated_at"`
-	Uplay            string          `json:"uplay"`
-	URL              string          `json:"url"`
-	User             int             `json:"user"`
-	Websites         []int           `json:"websites"`
+	ID               int             `json:"id,omitempty"`
+	Background       int             `json:"background,omitempty"`
+	Battlenet        string          `json:"battlenet,omitempty"`
+	Category         PageCategory    `json:"category,omitempty"`
+	Color            PageColor       `json:"color,omitempty"`
+	Company          int             `json:"company,omitempty"`
+	Country          int             `json:"country,omitempty"`
+	CreatedAt        int             `json:"created_at,omitempty"`
+	Description      string          `json:"description,omitempty"`
+	Feed             int             `json:"feed,omitempty"`
+	Game             int             `json:"game,omitempty"`
+	Name             string          `json:"name,omitempty"`
+	Origin           string          `json:"origin,omitempty"`
+	PageFollowsCount int             `json:"page_follows_count,omitempty"`
+	PageLogo         int             `json:"page_logo,omitempty"`
+	Slug             string          `json:"slug,omitempty"`
+	SubCategory      PageSubCategory `json:"sub_category,omitempty"`
+	UpdatedAt        int             `json:"updated_at,omitempty"`
+	Uplay            string          `json:"uplay,omitempty"`
+	URL              string          `json:"url,omitempty"`
+	User             int             `json:"user,omitempty"`
+	Websites         []int           `json:"websites,omitempty"`
 }
 
 //go:generate stringer -type=PageCategory,PageSubCategory,PageColor

@@ -11,24 +11,24 @@ import (
 // TestDummy represents a mocked IGDB object.
 // For more information visit: https://api-docs.igdb.com/#test-dummy
 type TestDummy struct {
-	ID              int           `json:"int"`
-	BoolValue       bool          `json:"bool_value"`
-	CreatedAt       int           `json:"created_at"`
-	EnumTest        TestDummyEnum `json:"enum_test"`
-	FloatValue      float64       `json:"float_value"`
-	Game            int           `json:"game"`
-	IntegerArray    []int         `json:"integer_array"`
-	IntegerValue    int           `json:"integer_value"`
-	Name            string        `json:"name"`
-	NewIntegerValue int           `json:"new_integer_value"`
-	Private         bool          `json:"private"`
-	Slug            string        `json:"slug"`
-	StringArray     []string      `json:"string_array"`
-	TestDummies     []int         `json:"test_dummies"`
-	TestDummy       int           `json:"test_dummy"`
-	UpdatedAt       int           `json:"updated_at"`
-	URL             string        `json:"url"`
-	User            int           `json:"user"`
+	ID              int           `json:"int,omitempty"`
+	BoolValue       bool          `json:"bool_value,omitempty"`
+	CreatedAt       int           `json:"created_at,omitempty"`
+	EnumTest        TestDummyEnum `json:"enum_test,omitempty"`
+	FloatValue      float64       `json:"float_value,omitempty"`
+	Game            int           `json:"game,omitempty"`
+	IntegerArray    []int         `json:"integer_array,omitempty"`
+	IntegerValue    int           `json:"integer_value,omitempty"`
+	Name            string        `json:"name,omitempty"`
+	NewIntegerValue int           `json:"new_integer_value,omitempty"`
+	Private         bool          `json:"private,omitempty"`
+	Slug            string        `json:"slug,omitempty"`
+	StringArray     []string      `json:"string_array,omitempty"`
+	TestDummies     []int         `json:"test_dummies,omitempty"`
+	TestDummy       int           `json:"test_dummy,omitempty"`
+	UpdatedAt       int           `json:"updated_at,omitempty"`
+	URL             string        `json:"url,omitempty"`
+	User            int           `json:"user,omitempty"`
 }
 
 //go:generate stringer -type=TestDummyEnum

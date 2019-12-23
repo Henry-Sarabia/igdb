@@ -11,12 +11,12 @@ import (
 // Franchise is a list of video game franchises such as Star Wars.
 // For more information visit: https://api-docs.igdb.com/#franchise
 type Franchise struct {
-	ID        int    `json:"id"`
-	CreatedAt int    `json:"created_at"`
-	Name      string `json:"name"`
-	Slug      string `json:"slug"`
-	UpdatedAt int    `json:"updated_at"`
-	Url       string `json:"url"`
+	ID        int    `json:"id,omitempty"`
+	CreatedAt int    `json:"created_at,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Slug      string `json:"slug,omitempty"`
+	UpdatedAt int    `json:"updated_at,omitempty"`
+	Url       string `json:"url,omitempty"`
 }
 
 // FranchiseService handles all the API calls for the IGDB Franchise endpoint.

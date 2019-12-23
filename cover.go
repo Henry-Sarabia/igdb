@@ -10,8 +10,8 @@ import (
 // For more information visit: https://api-docs.igdb.com/#cover
 type Cover struct {
 	Image
-	ID   int `json:"id"`
-	Game int `json:"game"`
+	ID   int `json:"id,omitempty"`
+	Game int `json:"game,omitempty"`
 }
 
 // CoverService handles all the API calls for the IGDB Cover endpoint.

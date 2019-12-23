@@ -11,25 +11,25 @@ import (
 // Person represents a person in the video game industry.
 // For more information visit: https://api-docs.igdb.com/#person
 type Person struct {
-	ID            int             `json:"id"`
-	Bio           string          `json:"bio"`
-	Characters    []int           `json:"characters"`
-	Country       int             `json:"country"`
-	CreatedAt     int             `json:"created_at"`
-	CreditedGames []int           `json:"credited_games"`
-	Description   string          `json:"description"`
-	DOB           int             `json:"dob"`
-	Gender        CharacterGender `json:"gender"`
-	LovesCount    int             `json:"loves_count"`
-	MugShot       int             `json:"mug_shot"`
-	Name          string          `json:"name"`
-	Nicknames     []string        `json:"nicknames"`
-	Parent        int             `json:"parent"`
-	Slug          string          `json:"slug"`
-	UpdatedAt     int             `json:"updated_at"`
-	URL           string          `json:"url"`
-	VoiceActed    []int           `json:"voice_acted"`
-	Websites      []int           `json:"websites"`
+	ID            int             `json:"id,omitempty"`
+	Bio           string          `json:"bio,omitempty"`
+	Characters    []int           `json:"characters,omitempty"`
+	Country       int             `json:"country,omitempty"`
+	CreatedAt     int             `json:"created_at,omitempty"`
+	CreditedGames []int           `json:"credited_games,omitempty"`
+	Description   string          `json:"description,omitempty"`
+	DOB           int             `json:"dob,omitempty"`
+	Gender        CharacterGender `json:"gender,omitempty"`
+	LovesCount    int             `json:"loves_count,omitempty"`
+	MugShot       int             `json:"mug_shot,omitempty"`
+	Name          string          `json:"name,omitempty"`
+	Nicknames     []string        `json:"nicknames,omitempty"`
+	Parent        int             `json:"parent,omitempty"`
+	Slug          string          `json:"slug,omitempty"`
+	UpdatedAt     int             `json:"updated_at,omitempty"`
+	URL           string          `json:"url,omitempty"`
+	VoiceActed    []int           `json:"voice_acted,omitempty"`
+	Websites      []int           `json:"websites,omitempty"`
 }
 
 // PersonService handles all the API calls for the IGDB Person endpoint.

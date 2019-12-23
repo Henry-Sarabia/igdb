@@ -47,8 +47,8 @@ var (
 // ServerError contains information on an
 // error returned from an IGDB API call.
 type ServerError struct {
-	Status int    `json:"status"`
-	Msg    string `json:"message"`
+	Status int    `json:"status,omitempty"`
+	Msg    string `json:"message,omitempty"`
 }
 
 // Error formats the ServerError and fulfills the error interface.

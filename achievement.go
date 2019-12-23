@@ -12,20 +12,20 @@ import (
 // (currently limited to achievements from Steam, Playstation, and XBox).
 // For more information visit: https://api-docs.igdb.com/#achievement
 type Achievement struct {
-	ID               int                 `json:"id"`
-	AchievementIcon  int                 `json:"achievement_icon"`
-	Category         AchievementCategory `json:"category"`
-	CreatedAt        int                 `json:"created_at"`
-	Description      string              `json:"description"`
-	ExternalID       string              `json:"external_id"`
-	Game             int                 `json:"game"`
-	Language         AchievementLanguage `json:"language"`
-	Name             string              `json:"name"`
-	OwnersPercentage float64             `json:"owners_percentage"`
-	Rank             AchievementRank     `json:"rank"`
-	Slug             string              `json:"slug"`
-	Tags             []Tag               `json:"tags"`
-	UpdatedAt        int                 `json:"updated_at"`
+	ID               int                 `json:"id,omitempty"`
+	AchievementIcon  int                 `json:"achievement_icon,omitempty"`
+	Category         AchievementCategory `json:"category,omitempty"`
+	CreatedAt        int                 `json:"created_at,omitempty"`
+	Description      string              `json:"description,omitempty"`
+	ExternalID       string              `json:"external_id,omitempty"`
+	Game             int                 `json:"game,omitempty"`
+	Language         AchievementLanguage `json:"language,omitempty"`
+	Name             string              `json:"name,omitempty"`
+	OwnersPercentage float64             `json:"owners_percentage,omitempty"`
+	Rank             AchievementRank     `json:"rank,omitempty"`
+	Slug             string              `json:"slug,omitempty"`
+	Tags             []Tag               `json:"tags,omitempty"`
+	UpdatedAt        int                 `json:"updated_at,omitempty"`
 }
 
 // AchievementRank specifies an achievement's rank ranging

@@ -12,12 +12,12 @@ import (
 // status updates, media, and news articles.
 // For more information visit: https://api-docs.igdb.com/#feed-follow
 type FeedFollow struct {
-	ID          int          `json:"id"`
-	CreatedAt   int          `json:"created_at"`
-	Feed        FeedCategory `json:"feed"`
-	PublishedAt int          `json:"published_at"`
-	UpdatedAt   int          `json:"updated_at"`
-	User        int          `json:"user"`
+	ID          int          `json:"id,omitempty"`
+	CreatedAt   int          `json:"created_at,omitempty"`
+	Feed        FeedCategory `json:"feed,omitempty"`
+	PublishedAt int          `json:"published_at,omitempty"`
+	UpdatedAt   int          `json:"updated_at,omitempty"`
+	User        int          `json:"user,omitempty"`
 }
 
 // FeedFollowService handles all the API calls for the IGDB FeedFollow endpoint.

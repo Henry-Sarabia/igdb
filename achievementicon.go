@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#achievement-icon
 type AchievementIcon struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // AchievementIconService handles all the API calls for the IGDB

@@ -11,9 +11,9 @@ import (
 // PulseURL represents a URL linking to an article.
 // For more information visit: https://api-docs.igdb.com/#pulse-url
 type PulseURL struct {
-	ID      int    `json:"id"`
-	Trusted bool   `json:"trusted"`
-	URL     string `json:"url"`
+	ID      int    `json:"id,omitempty"`
+	Trusted bool   `json:"trusted,omitempty"`
+	URL     string `json:"url,omitempty"`
 }
 
 // PulseURLService handles all the API

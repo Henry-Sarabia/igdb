@@ -12,24 +12,24 @@ import (
 // This includes both publishers and developers.
 // For more information visit: https://api-docs.igdb.com/#company
 type Company struct {
-	ID                 int          `json:"id"`
-	ChangeDate         int          `json:"change_date"`
-	ChangeDateCategory DateCategory `json:"change_date_category"`
-	ChangedCompanyID   int          `json:"changed_company_id"`
-	Country            int          `json:"country"`
-	CreatedAt          int          `json:"created_at"`
-	Description        string       `json:"description"`
-	Developed          []int        `json:"developed"`
-	Logo               int          `json:"logo"`
-	Name               string       `json:"name"`
-	Parent             int          `json:"parent"`
-	Published          []int        `json:"published"`
-	Slug               string       `json:"slug"`
-	StartDate          int          `json:"start_date"`
-	StartDateCategory  DateCategory `json:"start_date_category"`
-	UpdatedAt          int          `json:"updated_at"`
-	URL                string       `json:"url"`
-	Websites           []int        `json:"websites"`
+	ID                 int          `json:"id,omitempty"`
+	ChangeDate         int          `json:"change_date,omitempty"`
+	ChangeDateCategory DateCategory `json:"change_date_category,omitempty"`
+	ChangedCompanyID   int          `json:"changed_company_id,omitempty"`
+	Country            int          `json:"country,omitempty"`
+	CreatedAt          int          `json:"created_at,omitempty"`
+	Description        string       `json:"description,omitempty"`
+	Developed          []int        `json:"developed,omitempty"`
+	Logo               int          `json:"logo,omitempty"`
+	Name               string       `json:"name,omitempty"`
+	Parent             int          `json:"parent,omitempty"`
+	Published          []int        `json:"published,omitempty"`
+	Slug               string       `json:"slug,omitempty"`
+	StartDate          int          `json:"start_date,omitempty"`
+	StartDateCategory  DateCategory `json:"start_date_category,omitempty"`
+	UpdatedAt          int          `json:"updated_at,omitempty"`
+	URL                string       `json:"url,omitempty"`
+	Websites           []int        `json:"websites,omitempty"`
 }
 
 // CompanyService handles all the API calls for the IGDB Company endpoint.

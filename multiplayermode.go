@@ -11,18 +11,18 @@ import (
 // MultiplayerMode contains data about the supported multiplayer types.
 // For more information visit: https://api-docs.igdb.com/#multiplayer-mode
 type MultiplayerMode struct {
-	Campaigncoop      bool `json:"campaigncoop"`
-	Dropin            bool `json:"dropin"`
-	Lancoop           bool `json:"lancoop"`
-	Offlinecoop       bool `json:"offlinecoop"`
-	Offlinecoopmax    int  `json:"offlinecoopmax"`
-	Offlinemax        int  `json:"offlinemax"`
-	Onlinecoop        bool `json:"onlinecoop"`
-	Onlinecoopmax     int  `json:"onlinecoopmax"`
-	Onlinemax         int  `json:"onlinemax"`
-	Platform          int  `json:"platform"`
-	Splitscreen       bool `json:"splitscreen"`
-	Splitscreenonline bool `json:"splitscreenonline"`
+	Campaigncoop      bool `json:"campaigncoop,omitempty"`
+	Dropin            bool `json:"dropin,omitempty"`
+	Lancoop           bool `json:"lancoop,omitempty"`
+	Offlinecoop       bool `json:"offlinecoop,omitempty"`
+	Offlinecoopmax    int  `json:"offlinecoopmax,omitempty"`
+	Offlinemax        int  `json:"offlinemax,omitempty"`
+	Onlinecoop        bool `json:"onlinecoop,omitempty"`
+	Onlinecoopmax     int  `json:"onlinecoopmax,omitempty"`
+	Onlinemax         int  `json:"onlinemax,omitempty"`
+	Platform          int  `json:"platform,omitempty"`
+	Splitscreen       bool `json:"splitscreen,omitempty"`
+	Splitscreenonline bool `json:"splitscreenonline,omitempty"`
 }
 
 // MultiplayerModeService handles all the API calls for the IGDB MultiplayerMode endpoint.

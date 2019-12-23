@@ -11,19 +11,19 @@ import (
 // Pulse represents a single news article.
 // For more information visit: https://api-docs.igdb.com/#pulse
 type Pulse struct {
-	ID          int      `json:"id"`
-	Author      string   `json:"author"`
-	CreatedAt   int      `json:"created_at"`
-	Image       string   `json:"image"`
-	PublishedAt int      `json:"published_at"`
-	PulseSource int      `json:"pulse_source"`
-	Summary     string   `json:"summary"`
-	Tags        []Tag    `json:"tags"`
-	Title       string   `json:"title"`
-	UID         string   `json:"uid"`
-	UpdatedAt   int      `json:"updated_at"`
-	Videos      []string `json:"videos"`
-	Website     int      `json:"website"`
+	ID          int      `json:"id,omitempty"`
+	Author      string   `json:"author,omitempty"`
+	CreatedAt   int      `json:"created_at,omitempty"`
+	Image       string   `json:"image,omitempty"`
+	PublishedAt int      `json:"published_at,omitempty"`
+	PulseSource int      `json:"pulse_source,omitempty"`
+	Summary     string   `json:"summary,omitempty"`
+	Tags        []Tag    `json:"tags,omitempty"`
+	Title       string   `json:"title,omitempty"`
+	UID         string   `json:"uid,omitempty"`
+	UpdatedAt   int      `json:"updated_at,omitempty"`
+	Videos      []string `json:"videos,omitempty"`
+	Website     int      `json:"website,omitempty"`
 }
 
 // PulseService handles all the API

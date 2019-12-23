@@ -13,15 +13,15 @@ import (
 // on a third party service.
 // For more information visit: https://api-docs.igdb.com/#external-game
 type ExternalGame struct {
-	ID        int                  `json:"id"`
-	Category  ExternalGameCategory `json:"category"`
-	CreatedAt int                  `json:"created_at"`
-	Game      int                  `json:"game"`
-	Name      string               `json:"name"`
-	UID       string               `json:"uid"`
-	UpdatedAt int                  `json:"updated_at"`
-	Url       string               `json:"url"`
-	Year      int                  `json:"year"`
+	ID        int                  `json:"id,omitempty"`
+	Category  ExternalGameCategory `json:"category,omitempty"`
+	CreatedAt int                  `json:"created_at,omitempty"`
+	Game      int                  `json:"game,omitempty"`
+	Name      string               `json:"name,omitempty"`
+	UID       string               `json:"uid,omitempty"`
+	UpdatedAt int                  `json:"updated_at,omitempty"`
+	Url       string               `json:"url,omitempty"`
+	Year      int                  `json:"year,omitempty"`
 }
 
 // ExternalGameCategory speficies an external game, platform, or media service.

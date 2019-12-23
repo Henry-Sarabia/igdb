@@ -80,7 +80,7 @@ const EndpointStatus endpoint = "api_status"
 // Count contains the number of objects
 // of a certain type counted in the IGDB.
 type Count struct {
-	Count int `json:"count"`
+	Count int `json:"count,omitempty"`
 }
 
 // getFields returns a list of fields that represent the

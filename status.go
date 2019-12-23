@@ -8,9 +8,9 @@ import "github.com/pkg/errors"
 // metadata.
 // For more information visit: https://api-docs.igdb.com/#api-status
 type Status struct {
-	Authorized   bool        `json:"authorized"`
-	Plan         string      `json:"plan"`
-	UsageReports UsageReport `json:"usage_reports"`
+	Authorized   bool        `json:"authorized,omitempty"`
+	Plan         string      `json:"plan,omitempty"`
+	UsageReports UsageReport `json:"usage_reports,omitempty"`
 }
 
 //go:generate gomodifytags -file $GOFILE -struct UsageReport -add-tags json -w
@@ -18,12 +18,12 @@ type Status struct {
 // UsageReport contains information and statistics for the the current user's
 // API usage in the current period.
 type UsageReport struct {
-	Metric       string `json:"metric"`
-	Period       string `json:"period"`
-	PeriodStart  string `json:"period_start"`
-	PeriodEnd    string `json:"period_end"`
-	MaxValue     int    `json:"max_value"`
-	CurrentValue int    `json:"current_value"`
+	Metric       string `json:"metric,omitempty"`
+	Period       string `json:"period,omitempty"`
+	PeriodStart  string `json:"period_start,omitempty"`
+	PeriodEnd    string `json:"period_end,omitempty"`
+	MaxValue     int    `json:"max_value,omitempty"`
+	CurrentValue int    `json:"current_value,omitempty"`
 }
 
 // Status returns a usage report for the user's API key. It shows stats such as

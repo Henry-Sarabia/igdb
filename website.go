@@ -11,10 +11,10 @@ import (
 // Website represents a website and its URL; usually associated with a game.
 // For more information visit: https://api-docs.igdb.com/#website
 type Website struct {
-	ID       int             `json:"id"`
-	Category WebsiteCategory `json:"category"`
-	Trusted  bool            `json:"trusted"`
-	URL      string          `json:"url"`
+	ID       int             `json:"id,omitempty"`
+	Category WebsiteCategory `json:"category,omitempty"`
+	Trusted  bool            `json:"trusted,omitempty"`
+	URL      string          `json:"url,omitempty"`
 }
 
 // WebsiteCategory specifies a specific popular website.

@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#page-background
 type PageBackground struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // PageBackgroundService handles all the API calls for the IGDB PageBackground endpoint.

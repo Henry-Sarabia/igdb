@@ -12,10 +12,10 @@ import (
 // with a person in the video game industry.
 // For more information visit: https://api-docs.igdb.com/#person-website
 type PersonWebsite struct {
-	ID       int             `json:"id"`
-	Category WebsiteCategory `json:"category"`
-	Trusted  bool            `json:"trusted"`
-	URL      string          `json:"url"`
+	ID       int             `json:"id,omitempty"`
+	Category WebsiteCategory `json:"category,omitempty"`
+	Trusted  bool            `json:"trusted,omitempty"`
+	URL      string          `json:"url,omitempty"`
 }
 
 // PersonWebsiteService handles all the API calls for the IGDB PersonWebsite endpoint.

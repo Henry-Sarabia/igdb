@@ -19,12 +19,12 @@ var (
 // Image contains the URL, dimensions, and ID of a particular image.
 // For more information visit: https://api-docs.igdb.com/#images
 type Image struct {
-	AlphaChannel bool   `json:"alpha_channel"`
-	Animated     bool   `json:"animated"`
-	Height       int    `json:"height"`
-	ImageID      string `json:"image_id"`
-	URL          string `json:"url"`
-	Width        int    `json:"width"`
+	AlphaChannel bool   `json:"alpha_channel,omitempty"`
+	Animated     bool   `json:"animated,omitempty"`
+	Height       int    `json:"height,omitempty"`
+	ImageID      string `json:"image_id,omitempty"`
+	URL          string `json:"url,omitempty"`
+	Width        int    `json:"width,omitempty"`
 }
 
 // imageSize is the size of an image from the IGDB API. Note that this is not

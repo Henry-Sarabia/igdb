@@ -11,10 +11,10 @@ import (
 // CompanyWebsite represents a website for a specific company.
 // For more information visit: https://api-docs.igdb.com/#company-website
 type CompanyWebsite struct {
-	ID       int             `json:"id"`
-	Category WebsiteCategory `json:"category"`
-	Trusted  bool            `json:"trusted"`
-	URL      string          `json:"url"`
+	ID       int             `json:"id,omitempty"`
+	Category WebsiteCategory `json:"category,omitempty"`
+	Trusted  bool            `json:"trusted,omitempty"`
+	URL      string          `json:"url,omitempty"`
 }
 
 // CompanyWebsiteService handles all the API calls for the IGDB CompanyWebsite endpoint.

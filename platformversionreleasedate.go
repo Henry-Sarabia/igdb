@@ -12,16 +12,16 @@ import (
 // Used to dig deeper into release dates, platforms, and versions.
 // For more information visit: https://api-docs.igdb.com/#platform-version-release-date
 type PlatformVersionReleaseDate struct {
-	ID              int            `json:"id"`
-	Category        DateCategory   `json:"category"`
-	CreatedAt       int            `json:"created_at"`
-	Date            int            `json:"date"`
-	Human           string         `json:"human"`
-	M               int            `json:"m"`
-	PlatformVersion int            `json:"platform_version"`
-	Region          RegionCategory `json:"region"`
-	UpdatedAt       int            `json:"updated_at"`
-	Y               int            `json:"y"`
+	ID              int            `json:"id,omitempty"`
+	Category        DateCategory   `json:"category,omitempty"`
+	CreatedAt       int            `json:"created_at,omitempty"`
+	Date            int            `json:"date,omitempty"`
+	Human           string         `json:"human,omitempty"`
+	M               int            `json:"m,omitempty"`
+	PlatformVersion int            `json:"platform_version,omitempty"`
+	Region          RegionCategory `json:"region,omitempty"`
+	UpdatedAt       int            `json:"updated_at,omitempty"`
+	Y               int            `json:"y,omitempty"`
 }
 
 // PlatformVersionReleaseDateService handles all the API calls for the IGDB PlatformVersionReleaseDate endpoint.

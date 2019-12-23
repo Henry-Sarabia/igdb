@@ -11,25 +11,25 @@ import (
 // PlatformVersion represents a particular version of a platform.
 // For more information visit: https://api-docs.igdb.com/#platform-version
 type PlatformVersion struct {
-	ID                          int    `json:"id"`
-	Companies                   []int  `json:"companies"`
-	Connectivity                string `json:"connectivity"`
-	CPU                         string `json:"cpu"`
-	Graphics                    string `json:"graphics"`
-	MainManufacturer            int    `json:"main_manufacturer"`
-	Media                       string `json:"media"`
-	Memory                      string `json:"memory"`
-	Name                        string `json:"name"`
-	OS                          string `json:"os"`
-	Output                      string `json:"output"`
-	PlatformLogo                int    `json:"platform_logo"`
-	PlatformVersionReleaseDates []int  `json:"platform_version_release_dates"`
-	Resolutions                 string `json:"resolutions"`
-	Slug                        string `json:"slug"`
-	Sound                       string `json:"sound"`
-	Storage                     string `json:"storage"`
-	Summary                     string `json:"summary"`
-	URL                         string `json:"url"`
+	ID                          int    `json:"id,omitempty"`
+	Companies                   []int  `json:"companies,omitempty"`
+	Connectivity                string `json:"connectivity,omitempty"`
+	CPU                         string `json:"cpu,omitempty"`
+	Graphics                    string `json:"graphics,omitempty"`
+	MainManufacturer            int    `json:"main_manufacturer,omitempty"`
+	Media                       string `json:"media,omitempty"`
+	Memory                      string `json:"memory,omitempty"`
+	Name                        string `json:"name,omitempty"`
+	OS                          string `json:"os,omitempty"`
+	Output                      string `json:"output,omitempty"`
+	PlatformLogo                int    `json:"platform_logo,omitempty"`
+	PlatformVersionReleaseDates []int  `json:"platform_version_release_dates,omitempty"`
+	Resolutions                 string `json:"resolutions,omitempty"`
+	Slug                        string `json:"slug,omitempty"`
+	Sound                       string `json:"sound,omitempty"`
+	Storage                     string `json:"storage,omitempty"`
+	Summary                     string `json:"summary,omitempty"`
+	URL                         string `json:"url,omitempty"`
 }
 
 // PlatformVersionService handles all the API calls for the IGDB PlatformVersion endpoint.

@@ -11,14 +11,14 @@ import (
 // ListEntry represents an entry in a user-created list of games.
 // For more information visit: https://api-docs.igdb.com/#list-entry
 type ListEntry struct {
-	ID          int    `json:"id"`
-	Description string `json:"description"`
-	Game        int    `json:"game"`
-	List        int    `json:"list"`
-	Platform    int    `json:"platform"`
-	Position    int    `json:"position"`
-	Private     bool   `json:"private"`
-	User        int    `json:"user"`
+	ID          int    `json:"id,omitempty"`
+	Description string `json:"description,omitempty"`
+	Game        int    `json:"game,omitempty"`
+	List        int    `json:"list,omitempty"`
+	Platform    int    `json:"platform,omitempty"`
+	Position    int    `json:"position,omitempty"`
+	Private     bool   `json:"private,omitempty"`
+	User        int    `json:"user,omitempty"`
 }
 
 // ListEntryService handles all the API calls for the IGDB ListEntry endpoint.

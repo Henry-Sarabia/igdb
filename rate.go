@@ -11,9 +11,9 @@ import (
 // Rate represents a user's rating.
 // For more information visit: https://api-docs.igdb.com/#rate
 type Rate struct {
-	ID     int     `json:"id"`
-	Rating float64 `json:"rating"`
-	User   int     `json:"user"`
+	ID     int     `json:"id,omitempty"`
+	Rating float64 `json:"rating,omitempty"`
+	User   int     `json:"user,omitempty"`
 }
 
 // RateService handles all the API calls for the IGDB Rate endpoint.

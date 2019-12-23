@@ -11,9 +11,9 @@ import (
 // ReviewVideo represents a user-created review video.
 // For more information visit: https://api-docs.igdb.com/#review-video
 type ReviewVideo struct {
-	ID      int    `json:"id"`
-	Trusted bool   `json:"trusted"`
-	URL     string `json:"url"`
+	ID      int    `json:"id,omitempty"`
+	Trusted bool   `json:"trusted,omitempty"`
+	URL     string `json:"url,omitempty"`
 }
 
 // ReviewVideoService handles all the API calls for the IGDB ReviewVideo endpoint.

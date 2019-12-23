@@ -12,11 +12,11 @@ import (
 // follows, likes, shares, views, favorites, etc.
 // For more information visit: https://api-docs.igdb.com/#social-metric
 type SocialMetric struct {
-	ID                 int                  `json:"id"`
-	Category           SocialMetricCategory `json:"category"`
-	CreatedAt          int                  `json:"created_at"`
-	SocialMetricSource int                  `json:"social_metric_source"`
-	Value              int                  `json:"value"`
+	ID                 int                  `json:"id,omitempty"`
+	Category           SocialMetricCategory `json:"category,omitempty"`
+	CreatedAt          int                  `json:"created_at,omitempty"`
+	SocialMetricSource int                  `json:"social_metric_source,omitempty"`
+	Value              int                  `json:"value,omitempty"`
 }
 
 //go:generate stringer -type=SocialMetricCategory

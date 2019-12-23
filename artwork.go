@@ -14,8 +14,8 @@ type ArtworkService service
 // For more information visit: https://api-docs.igdb.com/#artwork
 type Artwork struct {
 	Image
-	ID   int `json:"id"`
-	Game int `json:"game"`
+	ID   int `json:"id,omitempty"`
+	Game int `json:"game,omitempty"`
 }
 
 // Get returns a single Artwork identified by the provided IGDB ID. Provide

@@ -11,20 +11,20 @@ import (
 // Character represents a video game character.
 // For more information visit: https://api-docs.igdb.com/#character
 type Character struct {
-	ID          int              `json:"ID"`
-	AKAS        []string         `json:"akas"`
-	CountryName string           `json:"country_name"`
-	CreatedAt   int              `json:"created_at"`
-	Description string           `json:"description"`
-	Games       []int            `json:"games"`
-	Gender      CharacterGender  `json:"gender"`
-	MugShot     int              `json:"mug_shot"`
-	Name        string           `json:"name"`
-	People      []int            `json:"people"`
-	Slug        string           `json:"slug"`
-	Species     CharacterSpecies `json:"species"`
-	UpdatedAt   int              `json:"updated_at"`
-	URL         string           `json:"url"`
+	ID          int              `json:"ID,omitempty"`
+	AKAS        []string         `json:"akas,omitempty"`
+	CountryName string           `json:"country_name,omitempty"`
+	CreatedAt   int              `json:"created_at,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Games       []int            `json:"games,omitempty"`
+	Gender      CharacterGender  `json:"gender,omitempty"`
+	MugShot     int              `json:"mug_shot,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	People      []int            `json:"people,omitempty"`
+	Slug        string           `json:"slug,omitempty"`
+	Species     CharacterSpecies `json:"species,omitempty"`
+	UpdatedAt   int              `json:"updated_at,omitempty"`
+	URL         string           `json:"url,omitempty"`
 }
 
 // CharacterGender specifies a specific gender.

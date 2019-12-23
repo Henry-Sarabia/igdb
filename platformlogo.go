@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#platform-logo
 type PlatformLogo struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // PlatformLogoService handles all the API calls for the IGDB PlatformLogo endpoint.

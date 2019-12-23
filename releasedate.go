@@ -12,17 +12,17 @@ import (
 // Used to dig deeper into release dates, platforms, and versions.
 // For more information visit: https://api-docs.igdb.com/#release-date
 type ReleaseDate struct {
-	ID        int            `json:"id"`
-	Category  DateCategory   `json:"category"`
-	CreatedAt int            `json:"created_at"`
-	Date      int            `json:"date"`
-	Game      int            `json:"game"`
-	Human     string         `json:"human"`
-	M         int            `json:"m"`
-	Platform  int            `json:"platform"`
-	Region    RegionCategory `json:"region"`
-	UpdatedAt int            `json:"updated_at"`
-	Y         int            `json:"y"`
+	ID        int            `json:"id,omitempty"`
+	Category  DateCategory   `json:"category,omitempty"`
+	CreatedAt int            `json:"created_at,omitempty"`
+	Date      int            `json:"date,omitempty"`
+	Game      int            `json:"game,omitempty"`
+	Human     string         `json:"human,omitempty"`
+	M         int            `json:"m,omitempty"`
+	Platform  int            `json:"platform,omitempty"`
+	Region    RegionCategory `json:"region,omitempty"`
+	UpdatedAt int            `json:"updated_at,omitempty"`
+	Y         int            `json:"y,omitempty"`
 }
 
 //go:generate stringer -type=DateCategory,RegionCategory

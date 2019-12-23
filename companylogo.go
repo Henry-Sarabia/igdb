@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#company-logo
 type CompanyLogo struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // CompanyLogoService handles all the API calls for the IGDB CompanyLogo endpoint.

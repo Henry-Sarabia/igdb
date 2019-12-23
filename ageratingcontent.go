@@ -10,9 +10,9 @@ import (
 
 // AgeRatingContent is the organization behind a specific rating.
 type AgeRatingContent struct {
-	ID          int                      `json:"id"`
-	Category    AgeRatingContentCategory `json:"category"`
-	Description string                   `json:"description"`
+	ID          int                      `json:"id,omitempty"`
+	Category    AgeRatingContentCategory `json:"category,omitempty"`
+	Description string                   `json:"description,omitempty"`
 }
 
 // AgeRatingContentCategory specifies a regulatory organization.

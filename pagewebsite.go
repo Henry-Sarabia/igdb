@@ -11,10 +11,10 @@ import (
 // PageWebsite represents the website of a specific page.
 // For more information visit: https://api-docs.igdb.com/#page-website
 type PageWebsite struct {
-	ID       int             `json:"id"`
-	Category WebsiteCategory `json:"category"`
-	Trusted  bool            `json:"trusted"`
-	URL      string          `json:"url"`
+	ID       int             `json:"id,omitempty"`
+	Category WebsiteCategory `json:"category,omitempty"`
+	Trusted  bool            `json:"trusted,omitempty"`
+	URL      string          `json:"url,omitempty"`
 }
 
 // PageWebsiteService handles all the API calls for the IGDB PageWebsite endpoint.

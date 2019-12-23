@@ -11,21 +11,21 @@ import (
 // List represents a user-created list of games.
 // For more information visit: https://api-docs.igdb.com/#list
 type List struct {
-	ID           int    `json:"id"`
-	CreatedAt    int    `json:"created_at"`
-	Description  string `json:"description"`
-	EntriesCount int    `json:"entries_count"`
-	ListEntries  []int  `json:"list_entries"`
-	ListTags     []int  `json:"list_tags"`
-	ListedGames  []int  `json:"listed_games"`
-	Name         string `json:"name"`
-	Numbering    bool   `json:"numbering"`
-	Private      bool   `json:"private"`
-	SimilarLists []int  `json:"similar_lists"`
-	Slug         string `json:"slug"`
-	UpdatedAt    int    `json:"updated_at"`
-	URL          string `json:"url"`
-	User         int    `json:"user"`
+	ID           int    `json:"id,omitempty"`
+	CreatedAt    int    `json:"created_at,omitempty"`
+	Description  string `json:"description,omitempty"`
+	EntriesCount int    `json:"entries_count,omitempty"`
+	ListEntries  []int  `json:"list_entries,omitempty"`
+	ListTags     []int  `json:"list_tags,omitempty"`
+	ListedGames  []int  `json:"listed_games,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Numbering    bool   `json:"numbering,omitempty"`
+	Private      bool   `json:"private,omitempty"`
+	SimilarLists []int  `json:"similar_lists,omitempty"`
+	Slug         string `json:"slug,omitempty"`
+	UpdatedAt    int    `json:"updated_at,omitempty"`
+	URL          string `json:"url,omitempty"`
+	User         int    `json:"user,omitempty"`
 }
 
 // ListService handles all the API calls for the IGDB List endpoint.

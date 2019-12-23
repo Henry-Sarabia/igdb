@@ -11,10 +11,10 @@ import (
 // PulseSource represents a news article source such as IGN.
 // For more information visit: https://api-docs.igdb.com/#pulse-source
 type PulseSource struct {
-	ID   int    `json:"id"`
-	Game int    `json:"game"`
-	Name string `json:"name"`
-	Page int    `json:"page"`
+	ID   int    `json:"id,omitempty"`
+	Game int    `json:"game,omitempty"`
+	Name string `json:"name,omitempty"`
+	Page int    `json:"page,omitempty"`
 }
 
 // PulseSourceService handles all the API

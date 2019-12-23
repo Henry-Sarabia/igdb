@@ -11,20 +11,20 @@ import (
 // Credit represents an employee responsible for working on a particular game.
 // For more information visit: https://api-docs.igdb.com/#credit
 type Credit struct {
-	ID                    int            `json:"id"`
-	Category              CreditCategory `json:"category"`
-	Character             int            `json:"character"`
-	CharacterCreditedName string         `json:"character_credited_name"`
-	Comment               string         `json:"comment"`
-	Company               int            `json:"company"`
-	Country               int            `json:"country"`
-	CreatedAt             int            `json:"created_at"`
-	CreditedName          string         `json:"credited_name"`
-	Game                  int            `json:"game"`
-	Person                int            `json:"person"`
-	PersonTitle           int            `json:"person_title"`
-	Position              int            `json:"position"`
-	UpdatedAt             int            `json:"updated_at"`
+	ID                    int            `json:"id,omitempty"`
+	Category              CreditCategory `json:"category,omitempty"`
+	Character             int            `json:"character,omitempty"`
+	CharacterCreditedName string         `json:"character_credited_name,omitempty"`
+	Comment               string         `json:"comment,omitempty"`
+	Company               int            `json:"company,omitempty"`
+	Country               int            `json:"country,omitempty"`
+	CreatedAt             int            `json:"created_at,omitempty"`
+	CreditedName          string         `json:"credited_name,omitempty"`
+	Game                  int            `json:"game,omitempty"`
+	Person                int            `json:"person,omitempty"`
+	PersonTitle           int            `json:"person_title,omitempty"`
+	Position              int            `json:"position,omitempty"`
+	UpdatedAt             int            `json:"updated_at,omitempty"`
 }
 
 // CreditCategory specifies a specific job or role within a company.

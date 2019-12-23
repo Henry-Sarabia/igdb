@@ -11,11 +11,11 @@ import (
 // PlatformVersionCompany represents a platform developer.
 // For more information visit: https://api-docs.igdb.com/#platform-version-company
 type PlatformVersionCompany struct {
-	ID           int    `json:"id"`
-	Comment      string `json:"comment"`
-	Company      int    `json:"company"`
-	Developer    bool   `json:"developer"`
-	Manufacturer bool   `json:"manufacturer"`
+	ID           int    `json:"id,omitempty"`
+	Comment      string `json:"comment,omitempty"`
+	Company      int    `json:"company,omitempty"`
+	Developer    bool   `json:"developer,omitempty"`
+	Manufacturer bool   `json:"manufacturer,omitempty"`
 }
 
 // PlatformVersionCompanyService handles all the API calls for the IGDB PlatformVersionCompany endpoint.

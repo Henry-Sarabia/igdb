@@ -11,9 +11,9 @@ import (
 // Follow represents a particular user's following of a particular game.
 // For more information visit: https://api-docs.igdb.com/#follow
 type Follow struct {
-	ID   int `json:"id"`
-	Game int `json:"game"`
-	User int `json:"user"`
+	ID   int `json:"id,omitempty"`
+	Game int `json:"game,omitempty"`
+	User int `json:"user,omitempty"`
 }
 
 // FollowService handles all the API calls for the IGDB Follow endpoint.

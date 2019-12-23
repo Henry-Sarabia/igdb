@@ -10,7 +10,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#game-engine-logo
 type GameEngineLogo struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // GameEngineLogoService handles all the API calls for the IGDB GameEngineLogo endpoint.

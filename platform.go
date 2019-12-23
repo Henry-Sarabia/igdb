@@ -12,21 +12,21 @@ import (
 // or game delivery network.
 // For more information visit: https://api-docs.igdb.com/#platform
 type Platform struct {
-	ID              int              `json:"id"`
-	Abbreviation    string           `json:"abbreviation"`
-	AlternativeName string           `json:"alternative_name"`
-	Category        PlatformCategory `json:"category"`
-	CreatedAt       int              `json:"created_at"`
-	Generation      int              `json:"generation"`
-	Name            string           `json:"name"`
-	PlatformLogo    int              `json:"platform_logo"`
-	ProductFamily   int              `json:"product_family"`
-	Slug            string           `json:"slug"`
-	Summary         string           `json:"summary"`
-	UpdatedAt       int              `json:"updated_at"`
-	URL             string           `json:"url"`
-	Versions        []int            `json:"versions"`
-	Websites        []int            `json:"websites"`
+	ID              int              `json:"id,omitempty"`
+	Abbreviation    string           `json:"abbreviation,omitempty"`
+	AlternativeName string           `json:"alternative_name,omitempty"`
+	Category        PlatformCategory `json:"category,omitempty"`
+	CreatedAt       int              `json:"created_at,omitempty"`
+	Generation      int              `json:"generation,omitempty"`
+	Name            string           `json:"name,omitempty"`
+	PlatformLogo    int              `json:"platform_logo,omitempty"`
+	ProductFamily   int              `json:"product_family,omitempty"`
+	Slug            string           `json:"slug,omitempty"`
+	Summary         string           `json:"summary,omitempty"`
+	UpdatedAt       int              `json:"updated_at,omitempty"`
+	URL             string           `json:"url,omitempty"`
+	Versions        []int            `json:"versions,omitempty"`
+	Websites        []int            `json:"websites,omitempty"`
 }
 
 //go:generate stringer -type=PlatformCategory

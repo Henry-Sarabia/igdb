@@ -13,7 +13,7 @@ type CharacterMugshotService service
 // For more information visit: https://api-docs.igdb.com/#character-mug-shot
 type CharacterMugshot struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // Get returns a single CharacterMugshot identified by the provided IGDB ID. Provide

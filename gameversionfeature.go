@@ -12,12 +12,12 @@ import (
 // each version/edition different from their main game.
 // For more information visit: https://api-docs.igdb.com/#game-version-feature
 type GameVersionFeature struct {
-	ID          int                    `json:"id"`
-	Category    VersionFeatureCategory `json:"category"`
-	Description string                 `json:"description"`
-	Position    int                    `json:"position"`
-	Title       string                 `json:"title"`
-	Values      []int                  `json:"values"`
+	ID          int                    `json:"id,omitempty"`
+	Category    VersionFeatureCategory `json:"category,omitempty"`
+	Description string                 `json:"description,omitempty"`
+	Position    int                    `json:"position,omitempty"`
+	Title       string                 `json:"title,omitempty"`
+	Values      []int                  `json:"values,omitempty"`
 }
 
 //go:generate stringer -type=VersionFeatureCategory

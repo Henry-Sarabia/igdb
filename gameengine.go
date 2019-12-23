@@ -11,16 +11,16 @@ import (
 // GameEngine represents a video game engine such as Unreal Engine.
 // For more information visit: https://api-docs.igdb.com/#game-engine
 type GameEngine struct {
-	ID          int    `json:"id"`
-	Companies   []int  `json:"companies"`
-	CreatedAt   int    `json:"created_at"`
-	Description string `json:"description"`
-	Logo        int    `json:"logo"`
-	Name        string `json:"name"`
-	Platforms   []int  `json:"platforms"`
-	Slug        string `json:"slug"`
-	UpdatedAt   int    `json:"updated_at"`
-	URL         string `json:"url"`
+	ID          int    `json:"id,omitempty"`
+	Companies   []int  `json:"companies,omitempty"`
+	CreatedAt   int    `json:"created_at,omitempty"`
+	Description string `json:"description,omitempty"`
+	Logo        int    `json:"logo,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Platforms   []int  `json:"platforms,omitempty"`
+	Slug        string `json:"slug,omitempty"`
+	UpdatedAt   int    `json:"updated_at,omitempty"`
+	URL         string `json:"url,omitempty"`
 }
 
 // GameEngineService handles all the API calls for the IGDB GameEngine endpoint.

@@ -11,7 +11,7 @@ import (
 // For more information visit: https://api-docs.igdb.com/#person-mug-shot
 type PersonMugshot struct {
 	Image
-	ID int `json:"id"`
+	ID int `json:"id,omitempty"`
 }
 
 // PersonMugshotService handles all the API calls for the IGDB PersonMugshot endpoint.

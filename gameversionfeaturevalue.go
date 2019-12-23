@@ -11,11 +11,11 @@ import (
 // GameVersionFeatureValue represents the bool/text value of a particular feature.
 // For more information visit: https://api-docs.igdb.com/#game-version-feature-value
 type GameVersionFeatureValue struct {
-	ID              int                     `json:"id"`
-	Game            int                     `json:"game"`
-	GameFeature     int                     `json:"game_feature"`
-	IncludedFeature VersionFeatureInclusion `json:"included_feature"`
-	Note            string                  `json:"note"`
+	ID              int                     `json:"id,omitempty"`
+	Game            int                     `json:"game,omitempty"`
+	GameFeature     int                     `json:"game_feature,omitempty"`
+	IncludedFeature VersionFeatureInclusion `json:"included_feature,omitempty"`
+	Note            string                  `json:"note,omitempty"`
 }
 
 //go:generate stringer -type=VersionFeatureInclusion

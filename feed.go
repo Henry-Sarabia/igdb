@@ -11,22 +11,22 @@ import (
 // Feed items are a social feed of status updates, media, and news articles.
 // For more information visit: https://api-docs.igdb.com/#feed
 type Feed struct {
-	ID             int          `json:"id"`
-	Category       FeedCategory `json:"category"`
-	Content        string       `json:"content"`
-	CreatedAt      int          `json:"created_at"`
-	FeedLikesCount int          `json:"feed_likes_count"`
-	FeedVideo      int          `json:"feed_video"`
-	Games          []int        `json:"games"`
-	Meta           string       `json:"meta"`
-	PublishedAt    int          `json:"published_at"`
-	Pulse          int          `json:"pulse"`
-	Slug           string       `json:"slug"`
-	Title          string       `json:"title"`
-	UID            string       `json:"uid"`
-	UpdatedAt      int          `json:"updated_at"`
-	URL            string       `json:"url"`
-	User           int          `json:"user"`
+	ID             int          `json:"id,omitempty"`
+	Category       FeedCategory `json:"category,omitempty"`
+	Content        string       `json:"content,omitempty"`
+	CreatedAt      int          `json:"created_at,omitempty"`
+	FeedLikesCount int          `json:"feed_likes_count,omitempty"`
+	FeedVideo      int          `json:"feed_video,omitempty"`
+	Games          []int        `json:"games,omitempty"`
+	Meta           string       `json:"meta,omitempty"`
+	PublishedAt    int          `json:"published_at,omitempty"`
+	Pulse          int          `json:"pulse,omitempty"`
+	Slug           string       `json:"slug,omitempty"`
+	Title          string       `json:"title,omitempty"`
+	UID            string       `json:"uid,omitempty"`
+	UpdatedAt      int          `json:"updated_at,omitempty"`
+	URL            string       `json:"url,omitempty"`
+	User           int          `json:"user,omitempty"`
 }
 
 // FeedCategory specifies a specific type of media.

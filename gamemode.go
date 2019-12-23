@@ -11,11 +11,11 @@ import (
 // GameMode represents a video game mode such as single or multi player.
 // For more information visit: https://api-docs.igdb.com/#game-mode
 type GameMode struct {
-	CreatedAt int    `json:"created_at"`
-	Name      string `json:"name"`
-	Slug      string `json:"slug"`
-	UpdatedAt int    `json:"updated_at"`
-	URL       string `json:"url"`
+	CreatedAt int    `json:"created_at,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Slug      string `json:"slug,omitempty"`
+	UpdatedAt int    `json:"updated_at,omitempty"`
+	URL       string `json:"url,omitempty"`
 }
 
 // GameModeService handles all the API calls for the IGDB GameMode endpoint.

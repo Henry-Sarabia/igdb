@@ -11,12 +11,12 @@ import (
 // AgeRating describes an age rating according to various organizations.
 // For more information visit: https://api-docs.igdb.com/#age-rating
 type AgeRating struct {
-	ID                  int               `json:"id"`
-	Category            AgeRatingCategory `json:"category"`
-	ContentDescriptions []int             `json:"content_descriptions"`
-	Rating              AgeRatingEnum     `json:"rating"`
-	RatingCoverURL      string            `json:"rating_cover_url"`
-	Synopsis            string            `json:"synopsis"`
+	ID                  int               `json:"id,omitempty"`
+	Category            AgeRatingCategory `json:"category,omitempty"`
+	ContentDescriptions []int             `json:"content_descriptions,omitempty"`
+	Rating              AgeRatingEnum     `json:"rating,omitempty"`
+	RatingCoverURL      string            `json:"rating_cover_url,omitempty"`
+	Synopsis            string            `json:"synopsis,omitempty"`
 }
 
 // AgeRatingCategory specifies a regulatory organization.
