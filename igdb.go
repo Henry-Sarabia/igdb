@@ -2,10 +2,11 @@ package igdb
 
 import (
 	"encoding/json"
-	"github.com/Henry-Sarabia/apicalypse"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/Henry-Sarabia/apicalypse"
+	"github.com/pkg/errors"
 )
 
 // igdbURL is the base URL for the IGDB API.
@@ -99,10 +100,8 @@ type Client struct {
 
 // NewClient returns a new Client configured to communicate with the IGDB.
 // The provided apiKey will be used to make requests on your behalf. The
-// provided Tier will determine the maximum limit and offset your key entitles
-// you to in an API call. The provided HTTP Client will be the client making
-// requests to the IGDB. If no HTTP Client is provided, a default HTTP client
-// is used instead.
+// provided HTTP Client will be the client making requests to the IGDB. If no
+// HTTP Client is provided, a default HTTP client is used instead.
 //
 // If you need an IGDB API key, please visit: https://api.igdb.com/signup
 func NewClient(apiKey string, custom *http.Client) *Client {
