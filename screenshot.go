@@ -1,19 +1,18 @@
 package igdb
 
 import (
+	"strconv"
+
 	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
-	"strconv"
 )
-
-//go:generate gomodifytags -file $GOFILE -struct Screenshot -add-tags json -w
 
 // Screenshot represents a screenshot of a particular game.
 // For more information visit: https://api-docs.igdb.com/#screenshot
 type Screenshot struct {
-	Image `json:"image"`
-	ID    int `json:"id"`
-	Game  int `json:"game"`
+	Image
+	ID   int `json:"id"`
+	Game int `json:"game"`
 }
 
 // ScreenshotService handles all the API calls for the IGDB Screenshot endpoint.
