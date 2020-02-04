@@ -1,26 +1,24 @@
 # IGDB 
 
-[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://godoc.org/github.com/Henry-Sarabia/igdb) [![Build Status](https://travis-ci.org/Henry-Sarabia/igdb.svg?branch=master)](https://travis-ci.org/Henry-Sarabia/igdb) [![Coverage Status](https://coveralls.io/repos/github/Henry-Sarabia/igdb/badge.svg?branch=master)](https://coveralls.io/github/Henry-Sarabia/igdb?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)  
+[![GoDoc](https://godoc.org/github.com/Henry-Sarabia/igdb?status.svg)](https://pkg.go.dev/github.com/Henry-Sarabia/igdb?tab=doc) [![Build Status](https://travis-ci.org/Henry-Sarabia/igdb.svg?branch=master)](https://travis-ci.org/Henry-Sarabia/igdb) [![Coverage Status](https://coveralls.io/repos/github/Henry-Sarabia/igdb/badge.svg?branch=master)](https://coveralls.io/github/Henry-Sarabia/igdb?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/Henry-Sarabia/igdb)](https://goreportcard.com/report/github.com/Henry-Sarabia/igdb) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)  
 
 <img align="right" src="https://raw.githubusercontent.com/Henry-Sarabia/igdb/master/img/gopherigdb.png">
 
-**Recently updated to support IGDB V3!**
-
 Communicate with the [Internet Game Database API](https://www.igdb.com/api) quickly and easily
-with the `igdb` [Go](https://golang.org/) package. With the `igdb` client, you can retrieve
+with the **igdb** package. With the **igdb** client, you can retrieve
 extensive information on any number of video games, characters, companies, media, artwork
 and [much more](https://api-docs.igdb.com/#endpoints). Every IGDB API endpoint is supported!
 
-If you would like to help the Go `igdb` project, please submit a pull request - it's always
+If you would like to help the Go **igdb** project, please submit a pull request - it's always
 greatly appreciated.
 
 ## Installation
 
-If you do not have Go installed yet, you can find installation instructions 
+If you do not have [Go](https://golang.org/) installed yet, you can find installation instructions 
 [here](https://golang.org/doc/install). Please note that the package requires Go version
-1.9 or later.
+1.13 or later for module support.
 
-To pull the most recent version of `igdb`, use `go get`.
+To pull the most recent version of **igdb**, use `go get`.
 
 ```
 go get github.com/Henry-Sarabia/igdb
@@ -38,7 +36,7 @@ Now you're ready to Go.
 
 ### Creating A Client
 
-Before using the `igdb` package, you need to have an IGDB API key. If you do
+Before using the **igdb** package, you need to have an IGDB API key. If you do
 not have a key yet, you can sign up [here](https://api.igdb.com/signup).
 
 Create a client with your API key to start communicating with the IGDB API.
@@ -51,7 +49,7 @@ If you need to use a preconfigured HTTP client, simply pass its address to the
 `NewClient` function.
 
 ```go
-client, err := igdb.NewClient("YOUR_API_KEY", &customClient)
+client, err := igdb.NewClient("YOUR_API_KEY", &custom)
 ```
 
 ### Services
@@ -79,12 +77,12 @@ contains several examples on how to use each service function.
 
 Service functions by themselves allow you to retrieve a considerable amount of
 information from the IGDB but sometimes you need more control over the results
-being returned. For this reason, the `igdb` package provides a set of 
+being returned. For this reason, the **igdb** package provides a set of 
 flexible functional options for customizing a service function's API query.
 
 ### Functional Options
 
-The `igdb` package uses what are called functional options to apply different 
+The **igdb** package uses what are called functional options to apply different 
 query parameters to service function's API call. Functional options themselves
 are merely first order functions that are passed to a service function.
 
@@ -140,7 +138,7 @@ filter out any character that does not have a gender code of 1 (which in this
 case represents male), retrieve the id, name, and games fields, and return
 only up to 5 of these results.
 
-Second, the `igdb` package provides a `ComposeOptions` function which takes any 
+Second, the **igdb** package provides a `ComposeOptions` function which takes any 
 number of functional options as its parameters, composes them into a single
 functional option, and returns that composed functional option.
 ```go
@@ -181,12 +179,12 @@ finely grained control over similar API calls.
 ## Examples
 
 The repository contains several example mini-applications that demonstrate
-how one might use the `igdb` package.
+how one might use the **igdb** package.
 
 * [Mini Applications](https://github.com/Henry-Sarabia/igdb/tree/master/examples)
 * [Documentation Examples](https://godoc.org/github.com/Henry-Sarabia/igdb#pkg-examples)
 
-If you have used the `igdb` package for a project and would like to have it
+If you have used the **igdb** package for a project and would like to have it
 featured here as a reference for new users, please submit an issue and I'll be
 sure to add it.
 
@@ -219,4 +217,4 @@ on functional options
 projects for inspiring me to create my own open source package for others to enjoy
 * The [Awesome Go](https://github.com/avelino/awesome-go) project for so many
 references to admire
-* The awesome people in the IGDB community who were always open to my questions
+* The awesome people in the IGDB community who are always open to questions
