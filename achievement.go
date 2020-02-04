@@ -71,7 +71,6 @@ const (
 
 // AchievementService handles all the API calls for the IGDB
 // Achievement endpoint.
-// This endpoint is only available for the IGDB Pro tier or above.
 type AchievementService service
 
 // Get returns a single Achievement identified by the provided IGDB ID. Provide

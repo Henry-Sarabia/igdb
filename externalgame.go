@@ -49,7 +49,6 @@ const (
 )
 
 // ExternalGameService handles all the API calls for the IGDB ExternalGame endpoint.
-// This endpoint is only available for the IGDB Pro tier or above.
 type ExternalGameService service
 
 // Get returns a single ExternalGame identified by the provided IGDB ID. Provide
