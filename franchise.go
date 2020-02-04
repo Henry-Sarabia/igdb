@@ -1,9 +1,10 @@
 package igdb
 
 import (
+	"strconv"
+
 	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
-	"strconv"
 )
 
 //go:generate gomodifytags -file $GOFILE -struct Franchise -add-tags json -w
