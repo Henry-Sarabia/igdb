@@ -4,6 +4,18 @@ package igdb
 
 import "strconv"
 
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[FeedPulseArticle-1]
+	_ = x[FeedComingSoon-2]
+	_ = x[FeedNewTrailer-3]
+	_ = x[FeedUserContributedItem-5]
+	_ = x[FeedUserContributionsItem-6]
+	_ = x[FeedPageContributedItem-7]
+}
+
 const (
 	_FeedCategory_name_0 = "FeedPulseArticleFeedComingSoonFeedNewTrailer"
 	_FeedCategory_name_1 = "FeedUserContributedItemFeedUserContributionsItemFeedPageContributedItem"

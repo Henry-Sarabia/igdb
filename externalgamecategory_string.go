@@ -4,6 +4,19 @@ package igdb
 
 import "strconv"
 
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[ExternalSteam-1]
+	_ = x[ExternalGOG-5]
+	_ = x[ExternalYoutube-10]
+	_ = x[ExternalMicrosoft-11]
+	_ = x[ExternalApple-13]
+	_ = x[ExternalTwitch-14]
+	_ = x[ExternalAndroid-15]
+}
+
 const (
 	_ExternalGameCategory_name_0 = "ExternalSteam"
 	_ExternalGameCategory_name_1 = "ExternalGOG"

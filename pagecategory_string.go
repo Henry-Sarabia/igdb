@@ -4,6 +4,16 @@ package igdb
 
 import "strconv"
 
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[PagePersonality-1]
+	_ = x[PageMediaOrganization-2]
+	_ = x[PageContentCreator-3]
+	_ = x[PageClanTeam-4]
+}
+
 const _PageCategory_name = "PagePersonalityPageMediaOrganizationPageContentCreatorPageClanTeam"
 
 var _PageCategory_index = [...]uint8{0, 15, 36, 54, 66}
@@ -14,6 +24,17 @@ func (i PageCategory) String() string {
 		return "PageCategory(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _PageCategory_name[_PageCategory_index[i]:_PageCategory_index[i+1]]
+}
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[PageUser-1]
+	_ = x[PageGame-2]
+	_ = x[PageCompany-3]
+	_ = x[PageConsumer-4]
+	_ = x[PageIndustry-5]
+	_ = x[PageESports-6]
 }
 
 const _PageSubCategory_name = "PageUserPageGamePageCompanyPageConsumerPageIndustryPageESports"
@@ -26,6 +47,17 @@ func (i PageSubCategory) String() string {
 		return "PageSubCategory(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _PageSubCategory_name[_PageSubCategory_index[i]:_PageSubCategory_index[i+1]]
+}
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[PageGreen-0]
+	_ = x[PageBlue-1]
+	_ = x[PageRed-2]
+	_ = x[PageOrange-3]
+	_ = x[PagePink-4]
+	_ = x[PageYellow-5]
 }
 
 const _PageColor_name = "PageGreenPageBluePageRedPageOrangePagePinkPageYellow"
