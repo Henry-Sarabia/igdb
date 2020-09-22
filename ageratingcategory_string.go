@@ -4,14 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[AgeRatingESRB-1]
-	_ = x[AgeRatingPEGI-2]
-}
-
 const _AgeRatingCategory_name = "AgeRatingESRBAgeRatingPEGI"
 
 var _AgeRatingCategory_index = [...]uint8{0, 13, 26}
@@ -22,23 +14,6 @@ func (i AgeRatingCategory) String() string {
 		return "AgeRatingCategory(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _AgeRatingCategory_name[_AgeRatingCategory_index[i]:_AgeRatingCategory_index[i+1]]
-}
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[AgeRatingThree-1]
-	_ = x[AgeRatingSeven-2]
-	_ = x[AgeRatingTwelve-3]
-	_ = x[AgeRatingSixteen-4]
-	_ = x[AgeRatingEighteen-5]
-	_ = x[AgeRatingRP-6]
-	_ = x[AgeRatingEC-7]
-	_ = x[AgeRatingE-8]
-	_ = x[AgeRatingE10-9]
-	_ = x[AgeRatingT-10]
-	_ = x[AgeRatingM-11]
-	_ = x[AgeRatingAO-12]
 }
 
 const _AgeRatingEnum_name = "AgeRatingThreeAgeRatingSevenAgeRatingTwelveAgeRatingSixteenAgeRatingEighteenAgeRatingRPAgeRatingECAgeRatingEAgeRatingE10AgeRatingTAgeRatingMAgeRatingAO"

@@ -4,19 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[SocialFollows-1]
-	_ = x[SocialLikes-2]
-	_ = x[SocialHates-3]
-	_ = x[SocialShares-4]
-	_ = x[SocialViews-5]
-	_ = x[SocialComments-6]
-	_ = x[SocialFavorites-7]
-}
-
 const _SocialMetricCategory_name = "SocialFollowsSocialLikesSocialHatesSocialSharesSocialViewsSocialCommentsSocialFavorites"
 
 var _SocialMetricCategory_index = [...]uint8{0, 13, 24, 35, 47, 58, 72, 87}
