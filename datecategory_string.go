@@ -4,20 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[DateYYYYMMMMDD-0]
-	_ = x[DateYYYYMMMM-1]
-	_ = x[DateYYYY-2]
-	_ = x[DateYYYYQ1-3]
-	_ = x[DateYYYYQ2-4]
-	_ = x[DateYYYYQ3-5]
-	_ = x[DateYYYYQ4-6]
-	_ = x[DateTBD-7]
-}
-
 const _DateCategory_name = "DateYYYYMMMMDDDateYYYYMMMMDateYYYYDateYYYYQ1DateYYYYQ2DateYYYYQ3DateYYYYQ4DateTBD"
 
 var _DateCategory_index = [...]uint8{0, 14, 26, 34, 44, 54, 64, 74, 81}
@@ -27,19 +13,6 @@ func (i DateCategory) String() string {
 		return "DateCategory(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
 	return _DateCategory_name[_DateCategory_index[i]:_DateCategory_index[i+1]]
-}
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[RegionEurope-1]
-	_ = x[RegionNorthAmerica-2]
-	_ = x[RegionAustralia-3]
-	_ = x[RegionNewZealand-4]
-	_ = x[RegionJapan-5]
-	_ = x[RegionChina-6]
-	_ = x[RegionAsia-7]
-	_ = x[RegionWorldwide-8]
 }
 
 const _RegionCategory_name = "RegionEuropeRegionNorthAmericaRegionAustraliaRegionNewZealandRegionJapanRegionChinaRegionAsiaRegionWorldwide"

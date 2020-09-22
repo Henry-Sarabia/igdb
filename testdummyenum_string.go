@@ -4,14 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[TestDummyEnum1-1]
-	_ = x[TestDummyEnum2-2]
-}
-
 const _TestDummyEnum_name = "TestDummyEnum1TestDummyEnum2"
 
 var _TestDummyEnum_index = [...]uint8{0, 14, 28}

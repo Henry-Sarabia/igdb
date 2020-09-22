@@ -4,40 +4,15 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[MainGame-0]
-	_ = x[DLCAddon-1]
-	_ = x[Expansion-2]
-	_ = x[Bundle-3]
-	_ = x[StandaloneExpansion-4]
-	_ = x[Mod-5]
-	_ = x[Episode-6]
-	_ = x[Season-7]
-}
+const _GameCategory_name = "MainGameDLCAddonExpansionBundleStandaloneExpansion"
 
-const _GameCategory_name = "MainGameDLCAddonExpansionBundleStandaloneExpansionModEpisodeSeason"
-
-var _GameCategory_index = [...]uint8{0, 8, 16, 25, 31, 50, 53, 60, 66}
+var _GameCategory_index = [...]uint8{0, 8, 16, 25, 31, 50}
 
 func (i GameCategory) String() string {
 	if i < 0 || i >= GameCategory(len(_GameCategory_index)-1) {
 		return "GameCategory(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
 	return _GameCategory_name[_GameCategory_index[i]:_GameCategory_index[i+1]]
-}
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[StatusReleased-0]
-	_ = x[StatusAlpha-2]
-	_ = x[StatusBeta-3]
-	_ = x[StatusEarlyAccess-4]
-	_ = x[StatusOffline-5]
-	_ = x[StatusCancelled-6]
 }
 
 const (

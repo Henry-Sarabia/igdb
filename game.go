@@ -77,9 +77,6 @@ const (
 	Expansion
 	Bundle
 	StandaloneExpansion
-	Mod
-	Episode
-	Season
 )
 
 // GameStatus specifies the release status of a specific game.

@@ -4,15 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[VersionFeatureNotIncluded-0]
-	_ = x[VersionFeatureIncluded-1]
-	_ = x[VersionFeaturePreOrderOnly-2]
-}
-
 const _VersionFeatureInclusion_name = "VersionFeatureNotIncludedVersionFeatureIncludedVersionFeaturePreOrderOnly"
 
 var _VersionFeatureInclusion_index = [...]uint8{0, 25, 47, 73}

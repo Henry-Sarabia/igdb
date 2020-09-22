@@ -4,15 +4,6 @@ package igdb
 
 import "strconv"
 
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[GenderMale-1]
-	_ = x[GenderFemale-2]
-	_ = x[GenderOther-3]
-}
-
 const _CharacterGender_name = "GenderMaleGenderFemaleGenderOther"
 
 var _CharacterGender_index = [...]uint8{0, 10, 22, 33}
@@ -23,16 +14,6 @@ func (i CharacterGender) String() string {
 		return "CharacterGender(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _CharacterGender_name[_CharacterGender_index[i]:_CharacterGender_index[i+1]]
-}
-func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
-	// Re-run the stringer command to generate them again.
-	var x [1]struct{}
-	_ = x[SpeciesHuman-1]
-	_ = x[SpeciesAlien-2]
-	_ = x[SpeciesAnimal-3]
-	_ = x[SpeciesAndroid-4]
-	_ = x[SpeciesUnknown-5]
 }
 
 const _CharacterSpecies_name = "SpeciesHumanSpeciesAlienSpeciesAnimalSpeciesAndroidSpeciesUnknown"
