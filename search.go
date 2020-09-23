@@ -7,19 +7,18 @@ import "github.com/pkg/errors"
 // SearchResult represents a result from searching the IGDB.
 // It can contain: Characters, Collections Games, People, Platforms, and Themes.
 type SearchResult struct {
-	AlternativeName string  `json:"alternative_name"`
-	Character       int     `json:"character"`
-	Collection      int     `json:"collection"`
-	Company         int     `json:"company"`
-	Description     string  `json:"description"`
-	Game            int     `json:"game"`
-	Name            string  `json:"name"`
-	Person          int     `json:"person"`
-	Platform        int     `json:"platform"`
-	Popularity      float64 `json:"popularity"`
-	PublishedAt     int     `json:"published_at"`
-	TestDummy       int     `json:"test_dummy"`
-	Theme           int     `json:"theme"`
+	AlternativeName string `json:"alternative_name"`
+	Character       int    `json:"character"`
+	Collection      int    `json:"collection"`
+	Company         int    `json:"company"`
+	Description     string `json:"description"`
+	Game            int    `json:"game"`
+	Name            string `json:"name"`
+	Person          int    `json:"person"`
+	Platform        int    `json:"platform"`
+	PublishedAt     int    `json:"published_at"`
+	TestDummy       int    `json:"test_dummy"`
+	Theme           int    `json:"theme"`
 }
 
 // Search returns a list of SearchResults using the provided query. Provide functional

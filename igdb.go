@@ -10,7 +10,7 @@ import (
 )
 
 // igdbURL is the base URL for the IGDB API.
-const igdbURL string = "https://api-v3.igdb.com/"
+const igdbURL string = "https://api.igdb.com/v4/"
 
 // service is the underlying struct that handles
 // all API calls for different IGDB endpoints.
@@ -26,13 +26,12 @@ type service struct {
 type Client struct {
 	http      *http.Client
 	rootURL   string
-	key       string
+	clientID  string
+	token     string
 	maxLimit  int
 	maxOffset int
 
 	// Services
-	Achievements                *AchievementService
-	AchievementIcons            *AchievementIconService
 	AgeRatings                  *AgeRatingService
 	AgeRatingContents           *AgeRatingContentService
 	AlternativeNames            *AlternativeNameService
@@ -45,7 +44,6 @@ type Client struct {
 	CompanyWebsites             *CompanyWebsiteService
 	Covers                      *CoverService
 	ExternalGames               *ExternalGameService
-	Feeds                       *FeedService
 	Franchises                  *FranchiseService
 	Games                       *GameService
 	GameEngines                 *GameEngineService
@@ -59,10 +57,6 @@ type Client struct {
 	InvolvedCompanies           *InvolvedCompanyService
 	Keywords                    *KeywordService
 	MultiplayerModes            *MultiplayerModeService
-	Pages                       *PageService
-	PageBackgrounds             *PageBackgroundService
-	PageLogos                   *PageLogoService
-	PageWebsites                *PageWebsiteService
 	Platforms                   *PlatformService
 	PlatformLogos               *PlatformLogoService
 	PlatformVersions            *PlatformVersionService
@@ -70,53 +64,34 @@ type Client struct {
 	PlatformVersionReleaseDates *PlatformVersionReleaseDateService
 	PlatformWebsites            *PlatformWebsiteService
 	PlayerPerspectives          *PlayerPerspectiveService
-	ProductFamilies             *ProductFamilyService
-	Pulses                      *PulseService
-	PulseGroups                 *PulseGroupService
-	PulseSources                *PulseSourceService
-	PulseURLs                   *PulseURLService
+	PlatformFamilies            *PlatformFamilyService
 	ReleaseDates                *ReleaseDateService
 	Screenshots                 *ScreenshotService
 	Themes                      *ThemeService
-	TimeToBeats                 *TimeToBeatService
-	Titles                      *TitleService
 	Websites                    *WebsiteService
 
 	// Private Services
-	Credits        *CreditService
-	FeedFollows    *FeedFollowService
-	Follows        *FollowService
-	Lists          *ListService
-	ListEntrys     *ListEntryService
-	Persons        *PersonService
-	PersonMugshots *PersonMugshotService
-	PersonWebsites *PersonWebsiteService
-	Rates          *RateService
-	Reviews        *ReviewService
-	ReviewVideos   *ReviewVideoService
-	SocialMetrics  *SocialMetricService
-	TestDummies    *TestDummyService
+	TestDummies *TestDummyService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
-// The provided apiKey will be used to make requests on your behalf. The
-// provided HTTP Client will be the client making requests to the IGDB. If no
+// The provided clientID and appAccessToken will be used to make requests on your behalf.
+// The provided HTTP Client will be the client making requests to the IGDB. If no
 // HTTP Client is provided, a default HTTP client is used instead.
 //
-// If you need an IGDB API key, please visit: https://api.igdb.com/signup
-func NewClient(apiKey string, custom *http.Client) *Client {
+// If you need an IGDB/Twitch API keys, please visit: https://api-docs.igdb.com/#account-creation
+func NewClient(clientID string, appAccessToken string, custom *http.Client) *Client {
 	if custom == nil {
 		custom = http.DefaultClient
 	}
 
 	c := &Client{
-		http:    custom,
-		rootURL: igdbURL,
-		key:     apiKey,
+		http:     custom,
+		rootURL:  igdbURL,
+		clientID: clientID,
+		token:    appAccessToken,
 	}
 
-	c.Achievements = &AchievementService{client: c, end: EndpointAchievement}
-	c.AchievementIcons = &AchievementIconService{client: c, end: EndpointAchievementIcon}
 	c.AgeRatings = &AgeRatingService{client: c, end: EndpointAgeRating}
 	c.AgeRatingContents = &AgeRatingContentService{client: c, end: EndpointAgeRatingContent}
 	c.AlternativeNames = &AlternativeNameService{client: c, end: EndpointAlternativeName}
@@ -129,7 +104,6 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.CompanyWebsites = &CompanyWebsiteService{client: c, end: EndpointCompanyWebsite}
 	c.Covers = &CoverService{client: c, end: EndpointCover}
 	c.ExternalGames = &ExternalGameService{client: c, end: EndpointExternalGame}
-	c.Feeds = &FeedService{client: c, end: EndpointFeed}
 	c.Franchises = &FranchiseService{client: c, end: EndpointFranchise}
 	c.Games = &GameService{client: c, end: EndpointGame}
 	c.GameEngines = &GameEngineService{client: c, end: EndpointGameEngine}
@@ -143,10 +117,6 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.InvolvedCompanies = &InvolvedCompanyService{client: c, end: EndpointInvolvedCompany}
 	c.Keywords = &KeywordService{client: c, end: EndpointKeyword}
 	c.MultiplayerModes = &MultiplayerModeService{client: c, end: EndpointMultiplayerMode}
-	c.Pages = &PageService{client: c, end: EndpointPage}
-	c.PageBackgrounds = &PageBackgroundService{client: c, end: EndpointPageBackground}
-	c.PageLogos = &PageLogoService{client: c, end: EndpointPageLogo}
-	c.PageWebsites = &PageWebsiteService{client: c, end: EndpointPageWebsite}
 	c.Platforms = &PlatformService{client: c, end: EndpointPlatform}
 	c.PlatformLogos = &PlatformLogoService{client: c, end: EndpointPlatformLogo}
 	c.PlatformVersions = &PlatformVersionService{client: c, end: EndpointPlatformVersion}
@@ -154,30 +124,12 @@ func NewClient(apiKey string, custom *http.Client) *Client {
 	c.PlatformVersionReleaseDates = &PlatformVersionReleaseDateService{client: c, end: EndpointPlatformVersionReleaseDate}
 	c.PlatformWebsites = &PlatformWebsiteService{client: c, end: EndpointPlatformWebsite}
 	c.PlayerPerspectives = &PlayerPerspectiveService{client: c, end: EndpointPlayerPerspective}
-	c.ProductFamilies = &ProductFamilyService{client: c, end: EndpointProductFamily}
-	c.Pulses = &PulseService{client: c, end: EndpointPulse}
-	c.PulseGroups = &PulseGroupService{client: c, end: EndpointPulseGroup}
-	c.PulseSources = &PulseSourceService{client: c, end: EndpointPulseSource}
-	c.PulseURLs = &PulseURLService{client: c, end: EndpointPulseURL}
+	c.PlatformFamilies = &PlatformFamilyService{client: c, end: EndpointPlatformFamily}
 	c.ReleaseDates = &ReleaseDateService{client: c, end: EndpointReleaseDate}
 	c.Screenshots = &ScreenshotService{client: c, end: EndpointScreenshot}
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
-	c.TimeToBeats = &TimeToBeatService{client: c, end: EndpointTimeToBeat}
-	c.Titles = &TitleService{client: c, end: EndpointTitle}
 	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
-	c.Credits = &CreditService{client: c, end: EndpointCredit}
-	c.FeedFollows = &FeedFollowService{client: c, end: EndpointFeedFollow}
-	c.Follows = &FollowService{client: c, end: EndpointFollow}
-	c.Lists = &ListService{client: c, end: EndpointList}
-	c.ListEntrys = &ListEntryService{client: c, end: EndpointListEntry}
-	c.Persons = &PersonService{client: c, end: EndpointPerson}
-	c.PersonMugshots = &PersonMugshotService{client: c, end: EndpointPersonMugshot}
-	c.PersonWebsites = &PersonWebsiteService{client: c, end: EndpointPersonWebsite}
-	c.Rates = &RateService{client: c, end: EndpointRate}
-	c.Reviews = &ReviewService{client: c, end: EndpointReview}
-	c.ReviewVideos = &ReviewVideoService{client: c, end: EndpointReviewVideo}
-	c.SocialMetrics = &SocialMetricService{client: c, end: EndpointSocialMetric}
 	c.TestDummies = &TestDummyService{client: c, end: EndpointTestDummy}
 	return c
 }
@@ -190,12 +142,14 @@ func (c *Client) request(end endpoint, opts ...Option) (*http.Request, error) {
 		return nil, errors.Wrap(err, "cannot create request with invalid options")
 	}
 
-	req, err := apicalypse.NewRequest("GET", c.rootURL+string(end), unwrapped...)
+	req, err := apicalypse.NewRequest("POST", c.rootURL+string(end), unwrapped...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot make request for '%s' endpoint", end)
 	}
 
-	req.Header.Add("user-key", c.key)
+	req.Header.Add("client-id", c.clientID)
+	req.Header.Add("Authorization", "Bearer "+c.token)
+	req.Header.Add("x-user-agent", "HenrySarabia/igdb")
 	req.Header.Add("Accept", "application/json")
 
 	return req, nil

@@ -18,7 +18,7 @@ func TestComposeOptions(t *testing.T) {
 	}{
 		{"Zero options", nil, nil, nil},
 		{"Single option", []Option{SetLimit(20)}, []string{"20"}, nil},
-		{"Multiple options", []Option{SetLimit(20), SetFields("name", "id"), SetFilter("popularity", OpLessThan, "50")}, []string{"50", "name,id", "where popularity < 50"}, nil},
+		{"Multiple options", []Option{SetLimit(20), SetFields("name", "id"), SetFilter("hypes", OpLessThan, "50")}, []string{"50", "name,id", "where hypes < 50"}, nil},
 		{"Single invalid option", []Option{SetOffset(-500)}, nil, ErrOutOfRange},
 		{"Multiple invalid options", []Option{SetOffset(-500), SetLimit(-999)}, nil, ErrOutOfRange},
 	}
@@ -228,7 +228,7 @@ func TestSetFields(t *testing.T) {
 		wantErr    error
 	}{
 		{"Single non-empty field", []string{"name"}, "name", nil},
-		{"Multiple non-empty fields", []string{"name", "popularity", "rating"}, "name,popularity,rating", nil},
+		{"Multiple non-empty fields", []string{"name", "hypes", "rating"}, "name,hypes,rating", nil},
 		{"Empty fields slice", []string{}, "", ErrEmptyFields},
 		{"Single empty field", []string{"  "}, "", ErrEmptyFields},
 		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyFields},
@@ -268,7 +268,7 @@ func TestSetExclude(t *testing.T) {
 		wantErr    error
 	}{
 		{"Single non-empty field", []string{"name"}, "name", nil},
-		{"Multiple non-empty fields", []string{"name", "popularity", "rating"}, "name,popularity,rating", nil},
+		{"Multiple non-empty fields", []string{"name", "hypes", "rating"}, "name,hypes,rating", nil},
 		{"Empty fields slice", []string{}, "", ErrEmptyFields},
 		{"Single empty field", []string{"  "}, "", ErrEmptyFields},
 		{"Multiple empty fields", []string{"", " ", "", ""}, "", ErrEmptyFields},
@@ -377,13 +377,13 @@ func TestSetSearch(t *testing.T) {
 }
 
 func ExampleComposeOptions() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Composing FuncOptions to filter for top 5 popular games
 	composed := ComposeOptions(
 		SetLimit(5),
 		SetFields("name", "cover"),
-		SetOrder("popularity", OrderDescending),
+		SetOrder("hypes", OrderDescending),
 		SetFilter("category", OpEquals, "0"),
 	)
 
@@ -417,20 +417,20 @@ func ExampleComposeOptions() {
 }
 
 func ExampleSetOrder() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Retrieve most relevant games - default
 	c.Games.Search("zelda")
 
-	// Retrieve most popular games
-	c.Games.Search("zelda", SetOrder("popularity", OrderDescending))
+	// Retrieve most hyped games
+	c.Games.Search("zelda", SetOrder("hypes", OrderDescending))
 
 	// Retrieve least hyped games
 	c.Games.Search("zelda", SetOrder("hypes", OrderAscending))
 }
 
 func ExampleSetLimit() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Retrieve up to 10 results - default
 	c.Characters.Search("snake")
@@ -443,25 +443,25 @@ func ExampleSetLimit() {
 }
 
 func ExampleSetOffset() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	batchLimit := SetLimit(50)
 
 	// Retrieve first batch of results - default
-	c.Persons.Index(batchLimit)
+	c.Games.Index(batchLimit)
 
 	// Retrieve second batch of results
-	c.Persons.Index(batchLimit, SetOffset(50))
+	c.Games.Index(batchLimit, SetOffset(50))
 
 	// Retrieve third batch of results
-	c.Persons.Index(batchLimit, SetOffset(100))
+	c.Games.Index(batchLimit, SetOffset(100))
 
 	// Retrieve fourth batch of results
-	c.Persons.Index(batchLimit, SetOffset(150))
+	c.Games.Index(batchLimit, SetOffset(150))
 }
 
 func ExampleSetFields() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Retrieve name field
 	c.Characters.Search("mario", SetFields("name"))
@@ -483,7 +483,7 @@ func ExampleSetFields() {
 }
 
 func ExampleSetExclude() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Exclude name field
 	c.Characters.Search("mario", SetFields("name"))
@@ -505,13 +505,13 @@ func ExampleSetExclude() {
 }
 
 func ExampleSetFilter() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	// Retrieve unfiltered games - default
 	c.Games.Index()
 
 	// Retrieve games with popularity above 50
-	c.Games.Index(SetFilter("popularity", OpGreaterThan, "50"))
+	c.Games.Index(SetFilter("hypes", OpGreaterThan, "50"))
 
 	// Retrieve games with cover art
 	c.Games.Index(SetFilter("cover", OpNotEquals, "null"))
@@ -527,7 +527,7 @@ func ExampleSetFilter() {
 
 	// Retrieve games that meet all the previous requirements
 	c.Games.Index(
-		SetFilter("popularity", OpGreaterThan, "50"),
+		SetFilter("hypes", OpGreaterThan, "50"),
 		SetFilter("cover", OpNotEquals, "null"),
 		SetFilter("platforms", OpEquals, "48"),
 		SetFilter("name", OpNotEquals, "Horizon: Zero Dawn"),

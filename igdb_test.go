@@ -23,7 +23,7 @@ func TestClient_Request(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			c := NewClient("somekey", nil)
+			c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 			req, err := c.request(test.end, test.opts...)
 			if errors.Cause(err) != test.wantErr {

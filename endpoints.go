@@ -4,8 +4,6 @@ type endpoint string
 
 // Public IGDB API endpoints
 const (
-	EndpointAchievement                endpoint = "achievements/"
-	EndpointAchievementIcon            endpoint = "achievement_icons/"
 	EndpointAgeRating                  endpoint = "age_ratings/"
 	EndpointAgeRatingContent           endpoint = "age_rating_content_descriptions/"
 	EndpointAlternativeName            endpoint = "alternative_names/"
@@ -18,7 +16,6 @@ const (
 	EndpointCompanyWebsite             endpoint = "company_websites/"
 	EndpointCover                      endpoint = "covers/"
 	EndpointExternalGame               endpoint = "external_games/"
-	EndpointFeed                       endpoint = "feeds/"
 	EndpointFranchise                  endpoint = "franchises/"
 	EndpointGame                       endpoint = "games/"
 	EndpointGameEngine                 endpoint = "game_engines/"
@@ -32,10 +29,6 @@ const (
 	EndpointInvolvedCompany            endpoint = "involved_companies/"
 	EndpointKeyword                    endpoint = "keywords/"
 	EndpointMultiplayerMode            endpoint = "multiplayer_modes/"
-	EndpointPage                       endpoint = "pages/"
-	EndpointPageBackground             endpoint = "page_backgrounds/"
-	EndpointPageLogo                   endpoint = "page_logos/"
-	EndpointPageWebsite                endpoint = "page_websites/"
 	EndpointPlatform                   endpoint = "platforms/"
 	EndpointPlatformLogo               endpoint = "platform_logos/"
 	EndpointPlatformVersion            endpoint = "platform_versions/"
@@ -43,39 +36,20 @@ const (
 	EndpointPlatformVersionReleaseDate endpoint = "platform_version_release_dates/"
 	EndpointPlatformWebsite            endpoint = "platform_websites/"
 	EndpointPlayerPerspective          endpoint = "player_perspectives/"
-	EndpointProductFamily              endpoint = "product_families/"
+	EndpointPlatformFamily             endpoint = "product_families/"
 	EndpointPulse                      endpoint = "pulses/"
-	EndpointPulseGroup                 endpoint = "pulse_groups/"
-	EndpointPulseSource                endpoint = "pulse_sources/"
-	EndpointPulseURL                   endpoint = "pulse_urls/"
 	EndpointReleaseDate                endpoint = "release_dates/"
 	EndpointScreenshot                 endpoint = "screenshots/"
 	EndpointSearch                     endpoint = "search/"
 	EndpointTheme                      endpoint = "themes/"
-	EndpointTimeToBeat                 endpoint = "time_to_beats/"
 	EndpointTitle                      endpoint = "titles/"
 	EndpointWebsite                    endpoint = "websites/"
 )
 
 // Private IGDB API endpoints
 const (
-	EndpointCredit        endpoint = "private/credits/"
-	EndpointFeedFollow    endpoint = "private/feed_follows/"
-	EndpointFollow        endpoint = "private/follows/"
-	EndpointList          endpoint = "private/lists/"
-	EndpointListEntry     endpoint = "private/list_entries/"
-	EndpointPerson        endpoint = "private/people/"
-	EndpointPersonMugshot endpoint = "private/person_mug_shots/"
-	EndpointPersonWebsite endpoint = "private/person_websites/"
-	EndpointRate          endpoint = "private/rates/"
-	EndpointReview        endpoint = "private/reviews/"
-	EndpointReviewVideo   endpoint = "private/review_videos/"
-	EndpointSocialMetric  endpoint = "private/social_metrics/"
-	EndpointTestDummy     endpoint = "private/test_dummies/"
+	EndpointTestDummy endpoint = "private/test_dummies/"
 )
-
-// EndpointStatus is a unique endpoint for checking the status of the API.
-const EndpointStatus endpoint = "api_status"
 
 // Count contains the number of objects
 // of a certain type counted in the IGDB.
