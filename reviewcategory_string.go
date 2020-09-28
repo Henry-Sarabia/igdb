@@ -4,6 +4,14 @@ package igdb
 
 import "strconv"
 
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[ReviewText-1]
+	_ = x[ReviewVid-2]
+}
+
 const _ReviewCategory_name = "ReviewTextReviewVid"
 
 var _ReviewCategory_index = [...]uint8{0, 10, 19}
