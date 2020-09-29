@@ -37,19 +37,19 @@ Now you're ready to Go.
 ### Creating A Client
 
 Before using the **igdb** package, you need to have an IGDB API key. If you do
-not have a key yet, you can sign up [here](https://api.igdb.com/signup).
+not have a key yet, you can sign up [here](https://api-docs.igdb.com/#account-creation).
 
-Create a client with your API key to start communicating with the IGDB API.
+Create a client with your Client-ID and App Access Token to start communicating with the IGDB API.
 
 ```go
-client, err := igdb.NewClient("YOUR_API_KEY", nil)
+client, err := igdb.NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 ```
 
 If you need to use a preconfigured HTTP client, simply pass its address to the
 `NewClient` function.
 
 ```go
-client, err := igdb.NewClient("YOUR_API_KEY", &custom)
+client, err := igdb.NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", &custom)
 ```
 
 ### Services
@@ -108,11 +108,11 @@ so we effectively iterated through to the next set of results by 15.
 To set the order of the results returned from an API call, pass SetOrder much
 in the same way as the previous examples.
 ```go
-games, err := client.Games.Search("megaman", SetOrder("popularity", igdb.OrderDescending))
+games, err := client.Games.Search("megaman", SetOrder("hypes", igdb.OrderDescending))
 ```
 SetOrder is used to specify in what order you want the results to be retrieved 
 in and by what criteria. Here, SetOrder will retrieve the results with the 
-highest popularity first.
+highest hypes first.
 
 The remaining functional options are not unlike the examples we covered and 
 are further described in the [documentation](https://godoc.org/github.com/Henry-Sarabia/igdb#Option).
@@ -142,10 +142,10 @@ Second, the **igdb** package provides a `ComposeOptions` function which takes an
 number of functional options as its parameters, composes them into a single
 functional option, and returns that composed functional option.
 ```go
-popularOpt := igdb.ComposeOptions(
+hypeOpt := igdb.ComposeOptions(
     igdb.SetLimit(5),
     igdb.SetFields("name"),
-	igdb.SetOrder("popularity", igdb.OrderDescending),
+	igdb.SetOrder("hypes", igdb.OrderDescending),
 )
 ```
 This call to ComposeOptions creates a single functional option that will allow
@@ -217,4 +217,4 @@ on functional options
 projects for inspiring me to create my own open source package for others to enjoy
 * The [Awesome Go](https://github.com/avelino/awesome-go) project for so many
 references to admire
-* The awesome people in the IGDB community who are always open to questions
+* The awesome people in the [IGDB community](https://discord.gg/JKsh9R7) who are always open to questions

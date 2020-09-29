@@ -9,25 +9,31 @@ import (
 )
 
 var key string
+var token string
 
 func init() {
-	flag.StringVar(&key, "k", "", "API key")
+	flag.StringVar(&key, "k", "", "Client-ID")
+	flag.StringVar(&token, "t", "", "AppAccessToken")
 	flag.Parse()
 }
 
 func main() {
 	if key == "" {
-		fmt.Println("No key provided. Please run: topgames -k YOUR_API_KEY")
+		fmt.Println("No key provided. Please run: topgames -k YOUR_CLIENT_ID -t YOUR_APP_ACCESS_TOKEN")
+		return
+	}
+	if token == "" {
+		fmt.Println("No token provided. Please run: topgames -k YOUR_CLIENT_ID -t YOUR_APP_ACCESS_TOKEN")
 		return
 	}
 
-	c := igdb.NewClient(key, nil)
+	c := igdb.NewClient(key, token, nil)
 
 	// Composing options set to retrieve top 5 popular results
 	byPop := igdb.ComposeOptions(
 		igdb.SetLimit(5),
 		igdb.SetFields("name", "cover"),
-		igdb.SetOrder("popularity", igdb.OrderDescending),
+		igdb.SetOrder("hypes", igdb.OrderDescending),
 		igdb.SetFilter("category", igdb.OpEquals, "0"),
 		igdb.SetFilter("cover", igdb.OpNotEquals, "null"),
 	)

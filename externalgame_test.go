@@ -159,7 +159,7 @@ func TestExternalGameService_Count(t *testing.T) {
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("hypes", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
 		{"Invalid option", "", []Option{SetLimit(-100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},

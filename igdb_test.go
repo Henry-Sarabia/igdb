@@ -1,12 +1,13 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 func TestClient_Request(t *testing.T) {
@@ -17,13 +18,13 @@ func TestClient_Request(t *testing.T) {
 		wantReq *http.Request
 		wantErr error
 	}{
-		{"Zero options", testEndpoint, nil, httptest.NewRequest("GET", igdbURL+testEndpoint, nil), nil},
-		{"Single option", testEndpoint, []Option{SetLimit(15)}, httptest.NewRequest("GET", igdbURL+testEndpoint, strings.NewReader("limit 15; ")), nil},
-		{"Error option", testEndpoint, []Option{SetLimit(-99)}, httptest.NewRequest("GET", igdbURL+testEndpoint, nil), ErrOutOfRange},
+		{"Zero options", testEndpoint, nil, httptest.NewRequest("POST", igdbURL+testEndpoint, nil), nil},
+		{"Single option", testEndpoint, []Option{SetLimit(15)}, httptest.NewRequest("POST", igdbURL+testEndpoint, strings.NewReader("limit 15; ")), nil},
+		{"Error option", testEndpoint, []Option{SetLimit(-99)}, httptest.NewRequest("POST", igdbURL+testEndpoint, nil), ErrOutOfRange},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			c := NewClient("somekey", nil)
+			c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 			req, err := c.request(test.end, test.opts...)
 			if errors.Cause(err) != test.wantErr {
@@ -78,7 +79,7 @@ func TestClient_Send(t *testing.T) {
 			ts, c := testServerString(test.srvStatus, test.srvResp)
 			defer ts.Close()
 
-			req, err := http.NewRequest("GET", ts.URL, nil)
+			req, err := http.NewRequest("POST", ts.URL, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
