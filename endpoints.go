@@ -46,11 +46,6 @@ const (
 	EndpointWebsite                    endpoint = "websites/"
 )
 
-// Private IGDB API endpoints
-const (
-	EndpointTestDummy endpoint = "private/test_dummies/"
-)
-
 // Count contains the number of objects
 // of a certain type counted in the IGDB.
 type Count struct {
