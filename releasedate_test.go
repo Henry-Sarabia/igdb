@@ -69,6 +69,9 @@ func TestReleaseDateService_List(t *testing.T) {
 
 	init := make([]*ReleaseDate, 0)
 	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name             string
@@ -113,6 +116,9 @@ func TestReleaseDateService_Index(t *testing.T) {
 
 	init := make([]*ReleaseDate, 0)
 	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name             string
