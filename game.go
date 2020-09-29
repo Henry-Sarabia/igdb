@@ -40,8 +40,6 @@ type Game struct {
 	ParentGame            int          `json:"parent_game"`
 	Platforms             []int        `json:"platforms"`
 	PlayerPerspectives    []int        `json:"player_perspectives"`
-	Popularity            float64      `json:"popularity"`
-	PulseCount            int          `json:"pulse_count"`
 	Rating                float64      `json:"rating"`
 	RatingCount           int          `json:"rating_count"`
 	ReleaseDates          []int        `json:"release_dates"`
@@ -54,7 +52,6 @@ type Game struct {
 	Summary               string       `json:"summary"`
 	Tags                  []Tag        `json:"tags"`
 	Themes                []int        `json:"themes"`
-	TimeToBeat            int          `json:"time_to_beat"`
 	TotalRating           float64      `json:"total_rating"`
 	TotalRatingCount      int          `json:"total_rating_count"`
 	UpdatedAt             int          `json:"updated_at"`
@@ -77,6 +74,9 @@ const (
 	Expansion
 	Bundle
 	StandaloneExpansion
+	Mod
+	Episode
+	Season
 )
 
 // GameStatus specifies the release status of a specific game.

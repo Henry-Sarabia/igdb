@@ -207,7 +207,7 @@ func TestGameService_Count(t *testing.T) {
 		wantCount int
 		wantErr   error
 	}{
-		{"Happy path", `{"count": 100}`, []Option{SetFilter("popularity", OpGreaterThan, "75")}, 100, nil},
+		{"Happy path", `{"count": 100}`, []Option{SetFilter("hypes", OpGreaterThan, "75")}, 100, nil},
 		{"Empty response", "", nil, 0, errInvalidJSON},
 		{"Invalid option", "", []Option{SetLimit(-100)}, 0, ErrOutOfRange},
 		{"No results", "[]", nil, 0, ErrNoResults},
@@ -262,9 +262,9 @@ func TestGameService_Fields(t *testing.T) {
 }
 
 func ExampleGameService_Get() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
-	g, err := c.Games.Get(7346, SetFields("name", "url", "summary", "storyline", "rating", "popularity", "cover"))
+	g, err := c.Games.Get(7346, SetFields("name", "url", "summary", "storyline", "rating", "hypes", "cover"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -274,7 +274,7 @@ func ExampleGameService_Get() {
 }
 
 func ExampleGameService_List() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	g, err := c.Games.List([]int{1721, 2777, 1074})
 	if err != nil {
@@ -289,25 +289,25 @@ func ExampleGameService_List() {
 }
 
 func ExampleGameService_Index() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	g, err := c.Games.Index(
 		SetLimit(5),
-		SetFilter("popularity", OpGreaterThan, "80"),
+		SetFilter("hypes", OpGreaterThan, "80"),
 	)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("IGDB entries for 5 Games with popularity above 80")
+	fmt.Println("IGDB entries for 5 Games with hypes above 80")
 	for _, v := range g {
 		fmt.Println(*v)
 	}
 }
 
 func ExampleGameService_Search() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	g, err := c.Games.Search(
 		"mario",
@@ -327,7 +327,7 @@ func ExampleGameService_Search() {
 }
 
 func ExampleGameService_Count() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	ct, err := c.Games.Count(SetFilter("created_at", OpGreaterThan, "1993-12-15"))
 	if err != nil {
@@ -339,7 +339,7 @@ func ExampleGameService_Count() {
 }
 
 func ExampleGameService_Fields() {
-	c := NewClient("YOUR_API_KEY", nil)
+	c := NewClient("YOUR_CLIENT_ID", "YOUR_APP_ACCESS_TOKEN", nil)
 
 	fl, err := c.Games.Fields()
 	if err != nil {

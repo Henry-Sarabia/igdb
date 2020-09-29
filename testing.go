@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	// testKey mocks an IGDB API key.
-	testKey = "notarealkey"
+	// testClientID mocks an IGDB API key.
+	testClientID = "notarealclientid"
+	testToken    = "notarealtoken"
 	// testFileEmpty is an empty file used for testing input.
 	testFileEmpty string = "test_data/empty.json"
 	// testFileEmptyArray is an empty array file used for testing input.
@@ -46,7 +47,7 @@ func startTestServer(status int, resp io.Reader, headers ...testHeader) (*httpte
 		io.Copy(w, resp)
 	}))
 
-	c := NewClient(testKey, ts.Client())
+	c := NewClient(testClientID, testToken, ts.Client())
 	c.rootURL = ts.URL + "/"
 
 	return ts, c

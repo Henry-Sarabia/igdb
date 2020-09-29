@@ -22,7 +22,7 @@ build tool as follows.
 ```
 go build
 ```
-
+topg
 This command will have built the example into an executable and can now be run
 from the command line.
 
