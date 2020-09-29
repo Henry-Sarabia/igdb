@@ -24,12 +24,10 @@ type service struct {
 // Client also initializes all the separate services to communicate
 // with each individual IGDB API endpoint.
 type Client struct {
-	http      *http.Client
-	rootURL   string
-	clientID  string
-	token     string
-	maxLimit  int
-	maxOffset int
+	http     *http.Client
+	rootURL  string
+	clientID string
+	token    string
 
 	// Services
 	AgeRatings                  *AgeRatingService
