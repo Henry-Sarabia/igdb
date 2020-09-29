@@ -28,6 +28,7 @@ func TestCheckResponse(t *testing.T) {
 		{"Status Unauthorized", http.StatusUnauthorized, "", ErrUnauthorized},
 		{"Status Forbidden", http.StatusForbidden, "", ErrForbidden},
 		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError},
+		{"Status Too Many Requests", http.StatusTooManyRequests, "", ErrManyRequests},
 		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, ServerError{Status: 404, Msg: "status not found"}},
 	}
 
