@@ -67,9 +67,6 @@ type Client struct {
 	Screenshots                 *ScreenshotService
 	Themes                      *ThemeService
 	Websites                    *WebsiteService
-
-	// Private Services
-	TestDummies *TestDummyService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -128,7 +125,6 @@ func NewClient(clientID string, appAccessToken string, custom *http.Client) *Cli
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
 	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
-	c.TestDummies = &TestDummyService{client: c, end: EndpointTestDummy}
 	return c
 }
 
