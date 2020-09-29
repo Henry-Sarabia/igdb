@@ -4,6 +4,16 @@ package igdb
 
 import "strconv"
 
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[RankBronze-1]
+	_ = x[RankSilver-2]
+	_ = x[RankGold-3]
+	_ = x[RankPlatinum-4]
+}
+
 const _AchievementRank_name = "RankBronzeRankSilverRankGoldRankPlatinum"
 
 var _AchievementRank_index = [...]uint8{0, 10, 20, 28, 40}
@@ -14,6 +24,14 @@ func (i AchievementRank) String() string {
 		return "AchievementRank(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _AchievementRank_name[_AchievementRank_index[i]:_AchievementRank_index[i+1]]
+}
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[AchievementPlaystation-1]
+	_ = x[AchievementXbox-2]
+	_ = x[AchievementSteam-3]
 }
 
 const _AchievementCategory_name = "AchievementPlaystationAchievementXboxAchievementSteam"
@@ -26,6 +44,21 @@ func (i AchievementCategory) String() string {
 		return "AchievementCategory(" + strconv.FormatInt(int64(i+1), 10) + ")"
 	}
 	return _AchievementCategory_name[_AchievementCategory_index[i]:_AchievementCategory_index[i+1]]
+}
+func _() {
+	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// Re-run the stringer command to generate them again.
+	var x [1]struct{}
+	_ = x[LanguageEurope-1]
+	_ = x[LanguageNorthAmerica-2]
+	_ = x[LanguageAustralia-3]
+	_ = x[LanguageNewZealand-4]
+	_ = x[LanguageJapan-5]
+	_ = x[LanguageChina-6]
+	_ = x[LanguageAsia-7]
+	_ = x[LanguageWorldwide-8]
+	_ = x[LanguageHongKong-9]
+	_ = x[LanguageSouthKorea-10]
 }
 
 const _AchievementLanguage_name = "LanguageEuropeLanguageNorthAmericaLanguageAustraliaLanguageNewZealandLanguageJapanLanguageChinaLanguageAsiaLanguageWorldwideLanguageHongKongLanguageSouthKorea"
