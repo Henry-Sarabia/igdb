@@ -24,48 +24,53 @@ var (
 var (
 	// ErrBadRequest occurs when a request is malformed.
 	ErrBadRequest = ServerError{
-		Status:    http.StatusBadRequest,
-		Msg:       "bad request: check query parameters",
-		Temporary: false,
+		Status: http.StatusBadRequest,
+		Msg:    "bad request: check query parameters",
+		Temp:   false,
 	}
 	// ErrUnauthorized occurs when a request is made without authorization.
 	ErrUnauthorized = ServerError{
-		Status:    http.StatusUnauthorized,
-		Msg:       "authentication failed: check for valid API key in user-key header",
-		Temporary: false,
+		Status: http.StatusUnauthorized,
+		Msg:    "authentication failed: check for valid API key in user-key header",
+		Temp:   false,
 	}
 	// ErrForbidden occurs when a request is made without authorization.
 	ErrForbidden = ServerError{
-		Status:    http.StatusForbidden,
-		Msg:       "authentication failed: check for valid API key in user-key header",
-		Temporary: false,
+		Status: http.StatusForbidden,
+		Msg:    "authentication failed: check for valid API key in user-key header",
+		Temp:   false,
 	}
 	// ErrInternalError occurs when an unexpected IGDB server error occurs and should be reported.
 	ErrInternalError = ServerError{
-		Status:    http.StatusInternalServerError,
-		Msg:       "internal error: report bug",
-		Temporary: false,
+		Status: http.StatusInternalServerError,
+		Msg:    "internal error: report bug",
+		Temp:   false,
 	}
 	// ErrManyRequests occurs when request rate exceeds 4 per second.
 	// For full information, visit https://api-docs.igdb.com/#rate-limits
 	ErrManyRequests = ServerError{
-		Status:    http.StatusTooManyRequests,
-		Msg:       "too many requests",
-		Temporary: true,
+		Status: http.StatusTooManyRequests,
+		Msg:    "too many requests",
+		Temp:   true,
 	}
 )
 
 // ServerError contains information on an
 // error returned from an IGDB API call.
 type ServerError struct {
-	Status    int    `json:"status"`
-	Msg       string `json:"message"`
-	Temporary bool   `json:"temporary"`
+	Status int    `json:"status"`
+	Msg    string `json:"message"`
+	Temp   bool   `json:"temporary"`
 }
 
 // Error formats the ServerError and fulfills the error interface.
 func (e ServerError) Error() string {
 	return "igdb server error: status: " + strconv.Itoa(e.Status) + " message: " + e.Msg
+}
+
+// Temporary returns true if the error is temporary.
+func (e *ServerError) Temporary() bool {
+	return e.Temp
 }
 
 // checkResponse checks the provided HTTP response
