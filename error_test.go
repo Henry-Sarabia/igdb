@@ -1,12 +1,12 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 const testErrNotFound = `
@@ -39,7 +39,7 @@ func TestCheckResponse(t *testing.T) {
 
 			err := checkResponse(resp)
 
-			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 		})
