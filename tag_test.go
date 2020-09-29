@@ -1,7 +1,6 @@
 package igdb
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -21,7 +20,7 @@ func TestGenerateTag(t *testing.T) {
 	for _, tt := range tagTests {
 		t.Run(tt.Name, func(t *testing.T) {
 			tag, err := GenerateTag(tt.TypeID, tt.ObjectID)
-			if !reflect.DeepEqual(err, tt.ExpErr) {
+			if err != tt.ExpErr {
 				t.Fatalf("Expected error '%v', got '%v'", tt.ExpErr, err)
 			}
 
