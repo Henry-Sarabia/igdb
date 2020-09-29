@@ -2,11 +2,11 @@ package igdb
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 var (
@@ -24,31 +24,43 @@ var (
 var (
 	// ErrBadRequest occurs when a request is malformed.
 	ErrBadRequest = ServerError{
-		Status: http.StatusBadRequest,
-		Msg:    "bad request: check query parameters",
+		Status:    http.StatusBadRequest,
+		Msg:       "bad request: check query parameters",
+		Temporary: false,
 	}
 	// ErrUnauthorized occurs when a request is made without authorization.
 	ErrUnauthorized = ServerError{
-		Status: http.StatusUnauthorized,
-		Msg:    "authentication failed: check for valid API key in user-key header",
+		Status:    http.StatusUnauthorized,
+		Msg:       "authentication failed: check for valid API key in user-key header",
+		Temporary: false,
 	}
 	// ErrForbidden occurs when a request is made without authorization.
 	ErrForbidden = ServerError{
-		Status: http.StatusForbidden,
-		Msg:    "authentication failed: check for valid API key in user-key header",
+		Status:    http.StatusForbidden,
+		Msg:       "authentication failed: check for valid API key in user-key header",
+		Temporary: false,
 	}
 	// ErrInternalError occurs when an unexpected IGDB server error occurs and should be reported.
 	ErrInternalError = ServerError{
-		Status: http.StatusInternalServerError,
-		Msg:    "internal error: report bug",
+		Status:    http.StatusInternalServerError,
+		Msg:       "internal error: report bug",
+		Temporary: false,
+	}
+	// ErrManyRequests occurs when request rate exceeds 4 per second.
+	// For full information, visit https://api-docs.igdb.com/#rate-limits
+	ErrManyRequests = ServerError{
+		Status:    http.StatusTooManyRequests,
+		Msg:       "too many requests",
+		Temporary: true,
 	}
 )
 
 // ServerError contains information on an
 // error returned from an IGDB API call.
 type ServerError struct {
-	Status int    `json:"status"`
-	Msg    string `json:"message"`
+	Status    int    `json:"status"`
+	Msg       string `json:"message"`
+	Temporary bool   `json:"temporary"`
 }
 
 // Error formats the ServerError and fulfills the error interface.
@@ -70,13 +82,14 @@ func checkResponse(resp *http.Response) error {
 		return ErrForbidden
 	case http.StatusInternalServerError:
 		return ErrInternalError
+	case http.StatusTooManyRequests:
+		return ErrManyRequests
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
-	log.Println(string(b))
 
 	var e ServerError
 
