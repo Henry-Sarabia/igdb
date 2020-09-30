@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Henry-Sarabia/igdb"
+	"github.com/Henry-Sarabia/igdb/v2"
 )
 
 var key string
