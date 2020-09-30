@@ -24,12 +24,10 @@ type service struct {
 // Client also initializes all the separate services to communicate
 // with each individual IGDB API endpoint.
 type Client struct {
-	http      *http.Client
-	rootURL   string
-	clientID  string
-	token     string
-	maxLimit  int
-	maxOffset int
+	http     *http.Client
+	rootURL  string
+	clientID string
+	token    string
 
 	// Services
 	AgeRatings                  *AgeRatingService
@@ -69,9 +67,6 @@ type Client struct {
 	Screenshots                 *ScreenshotService
 	Themes                      *ThemeService
 	Websites                    *WebsiteService
-
-	// Private Services
-	TestDummies *TestDummyService
 }
 
 // NewClient returns a new Client configured to communicate with the IGDB.
@@ -130,7 +125,6 @@ func NewClient(clientID string, appAccessToken string, custom *http.Client) *Cli
 	c.Themes = &ThemeService{client: c, end: EndpointTheme}
 	c.Websites = &WebsiteService{client: c, end: EndpointWebsite}
 
-	c.TestDummies = &TestDummyService{client: c, end: EndpointTestDummy}
 	return c
 }
 
@@ -185,9 +179,9 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 	return nil
 }
 
-// Get sends a GET request to the provided endpoint with the provided options and
+// post sends a POST request to the provided endpoint with the provided options and
 // stores the results in the value pointed to by result.
-func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
+func (c *Client) post(end endpoint, result interface{}, opts ...Option) error {
 	req, err := c.request(end, opts...)
 	if err != nil {
 		return err
@@ -195,7 +189,7 @@ func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
 
 	err = c.send(req, result)
 	if err != nil {
-		return errors.Wrap(err, "cannot make GET request")
+		return errors.Wrap(err, "cannot make POST request")
 	}
 
 	return nil

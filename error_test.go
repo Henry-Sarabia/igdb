@@ -1,12 +1,12 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 const testErrNotFound = `
@@ -28,6 +28,7 @@ func TestCheckResponse(t *testing.T) {
 		{"Status Unauthorized", http.StatusUnauthorized, "", ErrUnauthorized},
 		{"Status Forbidden", http.StatusForbidden, "", ErrForbidden},
 		{"Status Internal Server Error", http.StatusInternalServerError, "", ErrInternalError},
+		{"Status Too Many Requests", http.StatusTooManyRequests, "", ErrManyRequests},
 		{"Unexpected Status Not Found", http.StatusNotFound, testErrNotFound, ServerError{Status: 404, Msg: "status not found"}},
 	}
 
@@ -39,7 +40,7 @@ func TestCheckResponse(t *testing.T) {
 
 			err := checkResponse(resp)
 
-			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 		})

@@ -2,11 +2,12 @@ package igdb
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -22,6 +23,9 @@ func TestReleaseDateService_Get(t *testing.T) {
 
 	init := make([]*ReleaseDate, 1)
 	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name            string
@@ -65,6 +69,9 @@ func TestReleaseDateService_List(t *testing.T) {
 
 	init := make([]*ReleaseDate, 0)
 	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	var tests = []struct {
 		name             string
@@ -109,6 +116,9 @@ func TestReleaseDateService_Index(t *testing.T) {
 
 	init := make([]*ReleaseDate, 0)
 	err = json.Unmarshal(f, &init)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	tests := []struct {
 		name             string

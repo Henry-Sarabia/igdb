@@ -33,7 +33,7 @@ func (ts *ThemeService) Get(id int, opts ...Option) (*Theme, error) {
 	var th []*Theme
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ts.client.get(ts.end, &th, opts...)
+	err := ts.client.post(ts.end, &th, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Theme with ID %v", id)
 	}
@@ -59,7 +59,7 @@ func (ts *ThemeService) List(ids []int, opts ...Option) ([]*Theme, error) {
 	var th []*Theme
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ts.client.get(ts.end, &th, opts...)
+	err := ts.client.post(ts.end, &th, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Themes with IDs %v", ids)
 	}
@@ -73,7 +73,7 @@ func (ts *ThemeService) List(ids []int, opts ...Option) ([]*Theme, error) {
 func (ts *ThemeService) Index(opts ...Option) ([]*Theme, error) {
 	var th []*Theme
 
-	err := ts.client.get(ts.end, &th, opts...)
+	err := ts.client.post(ts.end, &th, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Themes")
 	}
@@ -88,7 +88,7 @@ func (ts *ThemeService) Search(qry string, opts ...Option) ([]*Theme, error) {
 	var th []*Theme
 
 	opts = append(opts, setSearch(qry))
-	err := ts.client.get(ts.end, &th, opts...)
+	err := ts.client.post(ts.end, &th, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Theme with query %s", qry)
 	}

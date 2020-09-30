@@ -63,7 +63,7 @@ func (as *AgeRatingService) Get(id int, opts ...Option) (*AgeRating, error) {
 	var age []*AgeRating
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.post(as.end, &age, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AgeRating with ID %v", id)
 	}
@@ -89,7 +89,7 @@ func (as *AgeRatingService) List(ids []int, opts ...Option) ([]*AgeRating, error
 	var age []*AgeRating
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.post(as.end, &age, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AgeRatings with IDs %v", ids)
 	}
@@ -103,7 +103,7 @@ func (as *AgeRatingService) List(ids []int, opts ...Option) ([]*AgeRating, error
 func (as *AgeRatingService) Index(opts ...Option) ([]*AgeRating, error) {
 	var age []*AgeRating
 
-	err := as.client.get(as.end, &age, opts...)
+	err := as.client.post(as.end, &age, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of AgeRatings")
 	}

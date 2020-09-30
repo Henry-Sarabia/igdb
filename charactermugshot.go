@@ -27,7 +27,7 @@ func (cs *CharacterMugshotService) Get(id int, opts ...Option) (*CharacterMugsho
 	var mug []*CharacterMugshot
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &mug, opts...)
+	err := cs.client.post(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CharacterMugshot with ID %v", id)
 	}
@@ -53,7 +53,7 @@ func (cs *CharacterMugshotService) List(ids []int, opts ...Option) ([]*Character
 	var mug []*CharacterMugshot
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := cs.client.get(cs.end, &mug, opts...)
+	err := cs.client.post(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CharacterMugshots with IDs %v", ids)
 	}
@@ -67,7 +67,7 @@ func (cs *CharacterMugshotService) List(ids []int, opts ...Option) ([]*Character
 func (cs *CharacterMugshotService) Index(opts ...Option) ([]*CharacterMugshot, error) {
 	var mug []*CharacterMugshot
 
-	err := cs.client.get(cs.end, &mug, opts...)
+	err := cs.client.post(cs.end, &mug, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of CharacterMugshots")
 	}

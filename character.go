@@ -65,7 +65,7 @@ func (cs *CharacterService) Get(id int, opts ...Option) (*Character, error) {
 	var ch []*Character
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.post(cs.end, &ch, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Character with ID %v", id)
 	}
@@ -91,7 +91,7 @@ func (cs *CharacterService) List(ids []int, opts ...Option) ([]*Character, error
 	var ch []*Character
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.post(cs.end, &ch, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Characters with IDs %v", ids)
 	}
@@ -105,7 +105,7 @@ func (cs *CharacterService) List(ids []int, opts ...Option) ([]*Character, error
 func (cs *CharacterService) Index(opts ...Option) ([]*Character, error) {
 	var ch []*Character
 
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.post(cs.end, &ch, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Characters")
 	}
@@ -120,7 +120,7 @@ func (cs *CharacterService) Search(qry string, opts ...Option) ([]*Character, er
 	var ch []*Character
 
 	opts = append(opts, setSearch(qry))
-	err := cs.client.get(cs.end, &ch, opts...)
+	err := cs.client.post(cs.end, &ch, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Character with query %s", qry)
 	}

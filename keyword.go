@@ -34,7 +34,7 @@ func (ks *KeywordService) Get(id int, opts ...Option) (*Keyword, error) {
 	var key []*Keyword
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ks.client.get(ks.end, &key, opts...)
+	err := ks.client.post(ks.end, &key, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Keyword with ID %v", id)
 	}
@@ -60,7 +60,7 @@ func (ks *KeywordService) List(ids []int, opts ...Option) ([]*Keyword, error) {
 	var key []*Keyword
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ks.client.get(ks.end, &key, opts...)
+	err := ks.client.post(ks.end, &key, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Keywords with IDs %v", ids)
 	}
@@ -74,7 +74,7 @@ func (ks *KeywordService) List(ids []int, opts ...Option) ([]*Keyword, error) {
 func (ks *KeywordService) Index(opts ...Option) ([]*Keyword, error) {
 	var key []*Keyword
 
-	err := ks.client.get(ks.end, &key, opts...)
+	err := ks.client.post(ks.end, &key, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Keywords")
 	}

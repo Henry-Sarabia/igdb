@@ -31,7 +31,7 @@ func (zs *CompanyWebsiteService) Get(id int, opts ...Option) (*CompanyWebsite, e
 	var web []*CompanyWebsite
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := zs.client.get(zs.end, &web, opts...)
+	err := zs.client.post(zs.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CompanyWebsite with ID %v", id)
 	}
@@ -57,7 +57,7 @@ func (zs *CompanyWebsiteService) List(ids []int, opts ...Option) ([]*CompanyWebs
 	var web []*CompanyWebsite
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := zs.client.get(zs.end, &web, opts...)
+	err := zs.client.post(zs.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get CompanyWebsites with IDs %v", ids)
 	}
@@ -71,7 +71,7 @@ func (zs *CompanyWebsiteService) List(ids []int, opts ...Option) ([]*CompanyWebs
 func (zs *CompanyWebsiteService) Index(opts ...Option) ([]*CompanyWebsite, error) {
 	var web []*CompanyWebsite
 
-	err := zs.client.get(zs.end, &web, opts...)
+	err := zs.client.post(zs.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of CompanyWebsites")
 	}

@@ -1,10 +1,10 @@
 package igdb
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 func TestClient_GetFields(t *testing.T) {
@@ -29,7 +29,7 @@ func TestClient_GetFields(t *testing.T) {
 			defer ts.Close()
 
 			f, err := c.getFields(testEndpoint)
-			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
@@ -61,7 +61,7 @@ func TestClient_GetCount(t *testing.T) {
 			defer ts.Close()
 
 			count, err := c.getCount(testEndpoint)
-			if !reflect.DeepEqual(errors.Cause(err), test.wantErr) {
+			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}
 
