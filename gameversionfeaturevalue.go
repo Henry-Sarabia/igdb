@@ -44,7 +44,7 @@ func (gs *GameVersionFeatureValueService) Get(id int, opts ...Option) (*GameVers
 	var val []*GameVersionFeatureValue
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &val, opts...)
+	err := gs.client.post(gs.end, &val, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersionFeatureValue with ID %v", id)
 	}
@@ -70,7 +70,7 @@ func (gs *GameVersionFeatureValueService) List(ids []int, opts ...Option) ([]*Ga
 	var val []*GameVersionFeatureValue
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &val, opts...)
+	err := gs.client.post(gs.end, &val, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersionFeatureValues with IDs %v", ids)
 	}
@@ -84,7 +84,7 @@ func (gs *GameVersionFeatureValueService) List(ids []int, opts ...Option) ([]*Ga
 func (gs *GameVersionFeatureValueService) Index(opts ...Option) ([]*GameVersionFeatureValue, error) {
 	var val []*GameVersionFeatureValue
 
-	err := gs.client.get(gs.end, &val, opts...)
+	err := gs.client.post(gs.end, &val, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameVersionFeatureValues")
 	}

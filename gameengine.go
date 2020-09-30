@@ -37,7 +37,7 @@ func (gs *GameEngineService) Get(id int, opts ...Option) (*GameEngine, error) {
 	var eng []*GameEngine
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &eng, opts...)
+	err := gs.client.post(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngine with ID %v", id)
 	}
@@ -63,7 +63,7 @@ func (gs *GameEngineService) List(ids []int, opts ...Option) ([]*GameEngine, err
 	var eng []*GameEngine
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &eng, opts...)
+	err := gs.client.post(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngines with IDs %v", ids)
 	}
@@ -77,7 +77,7 @@ func (gs *GameEngineService) List(ids []int, opts ...Option) ([]*GameEngine, err
 func (gs *GameEngineService) Index(opts ...Option) ([]*GameEngine, error) {
 	var eng []*GameEngine
 
-	err := gs.client.get(gs.end, &eng, opts...)
+	err := gs.client.post(gs.end, &eng, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameEngines")
 	}

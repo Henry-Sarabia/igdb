@@ -62,7 +62,7 @@ func (es *ExternalGameService) Get(id int, opts ...Option) (*ExternalGame, error
 	var ext []*ExternalGame
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := es.client.get(es.end, &ext, opts...)
+	err := es.client.post(es.end, &ext, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ExternalGame with ID %v", id)
 	}
@@ -88,7 +88,7 @@ func (es *ExternalGameService) List(ids []int, opts ...Option) ([]*ExternalGame,
 	var ext []*ExternalGame
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := es.client.get(es.end, &ext, opts...)
+	err := es.client.post(es.end, &ext, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ExternalGames with IDs %v", ids)
 	}
@@ -102,7 +102,7 @@ func (es *ExternalGameService) List(ids []int, opts ...Option) ([]*ExternalGame,
 func (es *ExternalGameService) Index(opts ...Option) ([]*ExternalGame, error) {
 	var ext []*ExternalGame
 
-	err := es.client.get(es.end, &ext, opts...)
+	err := es.client.post(es.end, &ext, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of ExternalGames")
 	}

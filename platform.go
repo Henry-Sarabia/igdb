@@ -58,7 +58,7 @@ func (ps *PlatformService) Get(id int, opts ...Option) (*Platform, error) {
 	var plat []*Platform
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ps.client.get(ps.end, &plat, opts...)
+	err := ps.client.post(ps.end, &plat, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Platform with ID %v", id)
 	}
@@ -84,7 +84,7 @@ func (ps *PlatformService) List(ids []int, opts ...Option) ([]*Platform, error) 
 	var plat []*Platform
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ps.client.get(ps.end, &plat, opts...)
+	err := ps.client.post(ps.end, &plat, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Platforms with IDs %v", ids)
 	}
@@ -98,7 +98,7 @@ func (ps *PlatformService) List(ids []int, opts ...Option) ([]*Platform, error) 
 func (ps *PlatformService) Index(opts ...Option) ([]*Platform, error) {
 	var plat []*Platform
 
-	err := ps.client.get(ps.end, &plat, opts...)
+	err := ps.client.post(ps.end, &plat, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Platforms")
 	}
@@ -113,7 +113,7 @@ func (ps *PlatformService) Search(qry string, opts ...Option) ([]*Platform, erro
 	var plat []*Platform
 
 	opts = append(opts, setSearch(qry))
-	err := ps.client.get(ps.end, &plat, opts...)
+	err := ps.client.post(ps.end, &plat, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Platform with query %s", qry)
 	}

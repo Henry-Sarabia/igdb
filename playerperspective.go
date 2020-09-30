@@ -33,7 +33,7 @@ func (ps *PlayerPerspectiveService) Get(id int, opts ...Option) (*PlayerPerspect
 	var pp []*PlayerPerspective
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ps.client.get(ps.end, &pp, opts...)
+	err := ps.client.post(ps.end, &pp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlayerPerspective with ID %v", id)
 	}
@@ -59,7 +59,7 @@ func (ps *PlayerPerspectiveService) List(ids []int, opts ...Option) ([]*PlayerPe
 	var pp []*PlayerPerspective
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ps.client.get(ps.end, &pp, opts...)
+	err := ps.client.post(ps.end, &pp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlayerPerspectives with IDs %v", ids)
 	}
@@ -73,7 +73,7 @@ func (ps *PlayerPerspectiveService) List(ids []int, opts ...Option) ([]*PlayerPe
 func (ps *PlayerPerspectiveService) Index(opts ...Option) ([]*PlayerPerspective, error) {
 	var pp []*PlayerPerspective
 
-	err := ps.client.get(ps.end, &pp, opts...)
+	err := ps.client.post(ps.end, &pp, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of PlayerPerspectives")
 	}

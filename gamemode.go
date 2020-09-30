@@ -32,7 +32,7 @@ func (gs *GameModeService) Get(id int, opts ...Option) (*GameMode, error) {
 	var mode []*GameMode
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &mode, opts...)
+	err := gs.client.post(gs.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameMode with ID %v", id)
 	}
@@ -58,7 +58,7 @@ func (gs *GameModeService) List(ids []int, opts ...Option) ([]*GameMode, error) 
 	var mode []*GameMode
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &mode, opts...)
+	err := gs.client.post(gs.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameModes with IDs %v", ids)
 	}
@@ -72,7 +72,7 @@ func (gs *GameModeService) List(ids []int, opts ...Option) ([]*GameMode, error) 
 func (gs *GameModeService) Index(opts ...Option) ([]*GameMode, error) {
 	var mode []*GameMode
 
-	err := gs.client.get(gs.end, &mode, opts...)
+	err := gs.client.post(gs.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameModes")
 	}

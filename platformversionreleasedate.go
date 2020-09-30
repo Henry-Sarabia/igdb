@@ -38,7 +38,7 @@ func (ps *PlatformVersionReleaseDateService) Get(id int, opts ...Option) (*Platf
 	var date []*PlatformVersionReleaseDate
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ps.client.get(ps.end, &date, opts...)
+	err := ps.client.post(ps.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformVersionReleaseDate with ID %v", id)
 	}
@@ -64,7 +64,7 @@ func (ps *PlatformVersionReleaseDateService) List(ids []int, opts ...Option) ([]
 	var date []*PlatformVersionReleaseDate
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ps.client.get(ps.end, &date, opts...)
+	err := ps.client.post(ps.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformVersionReleaseDates with IDs %v", ids)
 	}
@@ -78,7 +78,7 @@ func (ps *PlatformVersionReleaseDateService) List(ids []int, opts ...Option) ([]
 func (ps *PlatformVersionReleaseDateService) Index(opts ...Option) ([]*PlatformVersionReleaseDate, error) {
 	var date []*PlatformVersionReleaseDate
 
-	err := ps.client.get(ps.end, &date, opts...)
+	err := ps.client.post(ps.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of PlatformVersionReleaseDates")
 	}

@@ -29,7 +29,7 @@ func (ps *PlatformWebsiteService) Get(id int, opts ...Option) (*PlatformWebsite,
 	var web []*PlatformWebsite
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ps.client.get(ps.end, &web, opts...)
+	err := ps.client.post(ps.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformWebsite with ID %v", id)
 	}
@@ -55,7 +55,7 @@ func (ps *PlatformWebsiteService) List(ids []int, opts ...Option) ([]*PlatformWe
 	var web []*PlatformWebsite
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ps.client.get(ps.end, &web, opts...)
+	err := ps.client.post(ps.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformWebsites with IDs %v", ids)
 	}
@@ -69,7 +69,7 @@ func (ps *PlatformWebsiteService) List(ids []int, opts ...Option) ([]*PlatformWe
 func (ps *PlatformWebsiteService) Index(opts ...Option) ([]*PlatformWebsite, error) {
 	var web []*PlatformWebsite
 
-	err := ps.client.get(ps.end, &web, opts...)
+	err := ps.client.post(ps.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of PlatformWebsites")
 	}

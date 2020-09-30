@@ -33,7 +33,7 @@ func (cs *CollectionService) Get(id int, opts ...Option) (*Collection, error) {
 	var col []*Collection
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &col, opts...)
+	err := cs.client.post(cs.end, &col, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Collection with ID %v", id)
 	}
@@ -59,7 +59,7 @@ func (cs *CollectionService) List(ids []int, opts ...Option) ([]*Collection, err
 	var col []*Collection
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := cs.client.get(cs.end, &col, opts...)
+	err := cs.client.post(cs.end, &col, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Collections with IDs %v", ids)
 	}
@@ -73,7 +73,7 @@ func (cs *CollectionService) List(ids []int, opts ...Option) ([]*Collection, err
 func (cs *CollectionService) Index(opts ...Option) ([]*Collection, error) {
 	var col []*Collection
 
-	err := cs.client.get(cs.end, &col, opts...)
+	err := cs.client.post(cs.end, &col, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Collections")
 	}
@@ -88,7 +88,7 @@ func (cs *CollectionService) Search(qry string, opts ...Option) ([]*Collection, 
 	var col []*Collection
 
 	opts = append(opts, setSearch(qry))
-	err := cs.client.get(cs.end, &col, opts...)
+	err := cs.client.post(cs.end, &col, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Collection with query %s", qry)
 	}

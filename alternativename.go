@@ -32,7 +32,7 @@ func (as *AlternativeNameService) Get(id int, opts ...Option) (*AlternativeName,
 	var alt []*AlternativeName
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := as.client.get(as.end, &alt, opts...)
+	err := as.client.post(as.end, &alt, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AlternativeName with ID %v", id)
 	}
@@ -58,7 +58,7 @@ func (as *AlternativeNameService) List(ids []int, opts ...Option) ([]*Alternativ
 	var alt []*AlternativeName
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := as.client.get(as.end, &alt, opts...)
+	err := as.client.post(as.end, &alt, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get AlternativeNames with IDs %v", ids)
 	}
@@ -72,7 +72,7 @@ func (as *AlternativeNameService) List(ids []int, opts ...Option) ([]*Alternativ
 func (as *AlternativeNameService) Index(opts ...Option) ([]*AlternativeName, error) {
 	var alt []*AlternativeName
 
-	err := as.client.get(as.end, &alt, opts...)
+	err := as.client.post(as.end, &alt, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of AlternativeNames")
 	}

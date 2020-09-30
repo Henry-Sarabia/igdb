@@ -46,7 +46,7 @@ func (cs *CompanyService) Get(id int, opts ...Option) (*Company, error) {
 	var comp []*Company
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &comp, opts...)
+	err := cs.client.post(cs.end, &comp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Company with ID %v", id)
 	}
@@ -72,7 +72,7 @@ func (cs *CompanyService) List(ids []int, opts ...Option) ([]*Company, error) {
 	var comp []*Company
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := cs.client.get(cs.end, &comp, opts...)
+	err := cs.client.post(cs.end, &comp, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Companies with IDs %v", ids)
 	}
@@ -86,7 +86,7 @@ func (cs *CompanyService) List(ids []int, opts ...Option) ([]*Company, error) {
 func (cs *CompanyService) Index(opts ...Option) ([]*Company, error) {
 	var comp []*Company
 
-	err := cs.client.get(cs.end, &comp, opts...)
+	err := cs.client.post(cs.end, &comp, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Companies")
 	}

@@ -39,7 +39,7 @@ func (ms *MultiplayerModeService) Get(id int, opts ...Option) (*MultiplayerMode,
 	var mode []*MultiplayerMode
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ms.client.get(ms.end, &mode, opts...)
+	err := ms.client.post(ms.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get MultiplayerMode with ID %v", id)
 	}
@@ -65,7 +65,7 @@ func (ms *MultiplayerModeService) List(ids []int, opts ...Option) ([]*Multiplaye
 	var mode []*MultiplayerMode
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ms.client.get(ms.end, &mode, opts...)
+	err := ms.client.post(ms.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get MultiplayerModes with IDs %v", ids)
 	}
@@ -79,7 +79,7 @@ func (ms *MultiplayerModeService) List(ids []int, opts ...Option) ([]*Multiplaye
 func (ms *MultiplayerModeService) Index(opts ...Option) ([]*MultiplayerMode, error) {
 	var mode []*MultiplayerMode
 
-	err := ms.client.get(ms.end, &mode, opts...)
+	err := ms.client.post(ms.end, &mode, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of MultiplayerModes")
 	}

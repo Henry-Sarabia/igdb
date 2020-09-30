@@ -27,7 +27,7 @@ func (gs *GameEngineLogoService) Get(id int, opts ...Option) (*GameEngineLogo, e
 	var logo []*GameEngineLogo
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &logo, opts...)
+	err := gs.client.post(gs.end, &logo, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngineLogo with ID %v", id)
 	}
@@ -53,7 +53,7 @@ func (gs *GameEngineLogoService) List(ids []int, opts ...Option) ([]*GameEngineL
 	var logo []*GameEngineLogo
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &logo, opts...)
+	err := gs.client.post(gs.end, &logo, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameEngineLogos with IDs %v", ids)
 	}
@@ -67,7 +67,7 @@ func (gs *GameEngineLogoService) List(ids []int, opts ...Option) ([]*GameEngineL
 func (gs *GameEngineLogoService) Index(opts ...Option) ([]*GameEngineLogo, error) {
 	var logo []*GameEngineLogo
 
-	err := gs.client.get(gs.end, &logo, opts...)
+	err := gs.client.post(gs.end, &logo, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameEngineLogos")
 	}

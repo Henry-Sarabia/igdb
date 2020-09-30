@@ -33,7 +33,7 @@ func (gs *GameVersionService) Get(id int, opts ...Option) (*GameVersion, error) 
 	var ver []*GameVersion
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &ver, opts...)
+	err := gs.client.post(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersion with ID %v", id)
 	}
@@ -59,7 +59,7 @@ func (gs *GameVersionService) List(ids []int, opts ...Option) ([]*GameVersion, e
 	var ver []*GameVersion
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &ver, opts...)
+	err := gs.client.post(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVersions with IDs %v", ids)
 	}
@@ -73,7 +73,7 @@ func (gs *GameVersionService) List(ids []int, opts ...Option) ([]*GameVersion, e
 func (gs *GameVersionService) Index(opts ...Option) ([]*GameVersion, error) {
 	var ver []*GameVersion
 
-	err := gs.client.get(gs.end, &ver, opts...)
+	err := gs.client.post(gs.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameVersions")
 	}
