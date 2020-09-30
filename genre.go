@@ -33,7 +33,7 @@ func (gs *GenreService) Get(id int, opts ...Option) (*Genre, error) {
 	var gen []*Genre
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &gen, opts...)
+	err := gs.client.post(gs.end, &gen, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Genre with ID %v", id)
 	}
@@ -59,7 +59,7 @@ func (gs *GenreService) List(ids []int, opts ...Option) ([]*Genre, error) {
 	var gen []*Genre
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &gen, opts...)
+	err := gs.client.post(gs.end, &gen, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Genres with IDs %v", ids)
 	}
@@ -73,7 +73,7 @@ func (gs *GenreService) List(ids []int, opts ...Option) ([]*Genre, error) {
 func (gs *GenreService) Index(opts ...Option) ([]*Genre, error) {
 	var gen []*Genre
 
-	err := gs.client.get(gs.end, &gen, opts...)
+	err := gs.client.post(gs.end, &gen, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Genres")
 	}

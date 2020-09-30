@@ -34,7 +34,7 @@ func (fs *FranchiseService) Get(id int, opts ...Option) (*Franchise, error) {
 	var fr []*Franchise
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := fs.client.get(fs.end, &fr, opts...)
+	err := fs.client.post(fs.end, &fr, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Franchise with ID %v", id)
 	}
@@ -60,7 +60,7 @@ func (fs *FranchiseService) List(ids []int, opts ...Option) ([]*Franchise, error
 	var fr []*Franchise
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := fs.client.get(fs.end, &fr, opts...)
+	err := fs.client.post(fs.end, &fr, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Franchises with IDs %v", ids)
 	}
@@ -74,7 +74,7 @@ func (fs *FranchiseService) List(ids []int, opts ...Option) ([]*Franchise, error
 func (fs *FranchiseService) Index(opts ...Option) ([]*Franchise, error) {
 	var fr []*Franchise
 
-	err := fs.client.get(fs.end, &fr, opts...)
+	err := fs.client.post(fs.end, &fr, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Franchises")
 	}

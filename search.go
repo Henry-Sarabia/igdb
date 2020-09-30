@@ -30,7 +30,7 @@ func (c *Client) Search(qry string, opts ...Option) ([]*SearchResult, error) {
 	var res []*SearchResult
 
 	opts = append(opts, setSearch(qry))
-	err := c.get(EndpointSearch, &res, opts...)
+	err := c.post(EndpointSearch, &res, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot perform search with query %s", qry)
 	}

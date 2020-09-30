@@ -179,9 +179,9 @@ func (c *Client) send(req *http.Request, result interface{}) error {
 	return nil
 }
 
-// Get sends a GET request to the provided endpoint with the provided options and
+// post sends a POST request to the provided endpoint with the provided options and
 // stores the results in the value pointed to by result.
-func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
+func (c *Client) post(end endpoint, result interface{}, opts ...Option) error {
 	req, err := c.request(end, opts...)
 	if err != nil {
 		return err
@@ -189,7 +189,7 @@ func (c *Client) get(end endpoint, result interface{}, opts ...Option) error {
 
 	err = c.send(req, result)
 	if err != nil {
-		return errors.Wrap(err, "cannot make GET request")
+		return errors.Wrap(err, "cannot make POST request")
 	}
 
 	return nil

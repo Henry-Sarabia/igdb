@@ -98,7 +98,7 @@ func TestClient_Send(t *testing.T) {
 	}
 }
 
-func TestClient_Get(t *testing.T) {
+func TestClient_Post(t *testing.T) {
 	tests := []struct {
 		name      string
 		srvStatus int
@@ -595,7 +595,7 @@ func TestClient_Get(t *testing.T) {
 
 			res := testResultPlaceholder{}
 
-			err := c.get(testEndpoint, &res, test.opts...)
+			err := c.post(testEndpoint, &res, test.opts...)
 			if errors.Cause(err) != test.wantErr {
 				t.Errorf("got: <%v>, want: <%v>", errors.Cause(err), test.wantErr)
 			}

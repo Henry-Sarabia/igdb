@@ -28,7 +28,7 @@ func (cs *CoverService) Get(id int, opts ...Option) (*Cover, error) {
 	var cov []*Cover
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := cs.client.get(cs.end, &cov, opts...)
+	err := cs.client.post(cs.end, &cov, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Cover with ID %v", id)
 	}
@@ -54,7 +54,7 @@ func (cs *CoverService) List(ids []int, opts ...Option) ([]*Cover, error) {
 	var cov []*Cover
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := cs.client.get(cs.end, &cov, opts...)
+	err := cs.client.post(cs.end, &cov, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Covers with IDs %v", ids)
 	}
@@ -68,7 +68,7 @@ func (cs *CoverService) List(ids []int, opts ...Option) ([]*Cover, error) {
 func (cs *CoverService) Index(opts ...Option) ([]*Cover, error) {
 	var cov []*Cover
 
-	err := cs.client.get(cs.end, &cov, opts...)
+	err := cs.client.post(cs.end, &cov, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Covers")
 	}

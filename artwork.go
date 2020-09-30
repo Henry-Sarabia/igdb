@@ -29,7 +29,7 @@ func (as *ArtworkService) Get(id int, opts ...Option) (*Artwork, error) {
 	var art []*Artwork
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := as.client.get(as.end, &art, opts...)
+	err := as.client.post(as.end, &art, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Artwork with ID %v", id)
 	}
@@ -55,7 +55,7 @@ func (as *ArtworkService) List(ids []int, opts ...Option) ([]*Artwork, error) {
 	var art []*Artwork
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := as.client.get(as.end, &art, opts...)
+	err := as.client.post(as.end, &art, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Artworks with IDs %v", ids)
 	}
@@ -69,7 +69,7 @@ func (as *ArtworkService) List(ids []int, opts ...Option) ([]*Artwork, error) {
 func (as *ArtworkService) Index(opts ...Option) ([]*Artwork, error) {
 	var art []*Artwork
 
-	err := as.client.get(as.end, &art, opts...)
+	err := as.client.post(as.end, &art, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Artworks")
 	}

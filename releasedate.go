@@ -71,7 +71,7 @@ func (rs *ReleaseDateService) Get(id int, opts ...Option) (*ReleaseDate, error) 
 	var date []*ReleaseDate
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := rs.client.get(rs.end, &date, opts...)
+	err := rs.client.post(rs.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ReleaseDate with ID %v", id)
 	}
@@ -97,7 +97,7 @@ func (rs *ReleaseDateService) List(ids []int, opts ...Option) ([]*ReleaseDate, e
 	var date []*ReleaseDate
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := rs.client.get(rs.end, &date, opts...)
+	err := rs.client.post(rs.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get ReleaseDates with IDs %v", ids)
 	}
@@ -111,7 +111,7 @@ func (rs *ReleaseDateService) List(ids []int, opts ...Option) ([]*ReleaseDate, e
 func (rs *ReleaseDateService) Index(opts ...Option) ([]*ReleaseDate, error) {
 	var date []*ReleaseDate
 
-	err := rs.client.get(rs.end, &date, opts...)
+	err := rs.client.post(rs.end, &date, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of ReleaseDates")
 	}

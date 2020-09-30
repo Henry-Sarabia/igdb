@@ -46,7 +46,7 @@ func (ps *PlatformVersionService) Get(id int, opts ...Option) (*PlatformVersion,
 	var ver []*PlatformVersion
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ps.client.get(ps.end, &ver, opts...)
+	err := ps.client.post(ps.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformVersion with ID %v", id)
 	}
@@ -72,7 +72,7 @@ func (ps *PlatformVersionService) List(ids []int, opts ...Option) ([]*PlatformVe
 	var ver []*PlatformVersion
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ps.client.get(ps.end, &ver, opts...)
+	err := ps.client.post(ps.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get PlatformVersions with IDs %v", ids)
 	}
@@ -86,7 +86,7 @@ func (ps *PlatformVersionService) List(ids []int, opts ...Option) ([]*PlatformVe
 func (ps *PlatformVersionService) Index(opts ...Option) ([]*PlatformVersion, error) {
 	var ver []*PlatformVersion
 
-	err := ps.client.get(ps.end, &ver, opts...)
+	err := ps.client.post(ps.end, &ver, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of PlatformVersions")
 	}

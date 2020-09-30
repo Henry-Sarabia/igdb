@@ -30,7 +30,7 @@ func (gs *GameVideoService) Get(id int, opts ...Option) (*GameVideo, error) {
 	var vid []*GameVideo
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &vid, opts...)
+	err := gs.client.post(gs.end, &vid, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVideo with ID %v", id)
 	}
@@ -56,7 +56,7 @@ func (gs *GameVideoService) List(ids []int, opts ...Option) ([]*GameVideo, error
 	var vid []*GameVideo
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &vid, opts...)
+	err := gs.client.post(gs.end, &vid, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get GameVideos with IDs %v", ids)
 	}
@@ -70,7 +70,7 @@ func (gs *GameVideoService) List(ids []int, opts ...Option) ([]*GameVideo, error
 func (gs *GameVideoService) Index(opts ...Option) ([]*GameVideo, error) {
 	var vid []*GameVideo
 
-	err := gs.client.get(gs.end, &vid, opts...)
+	err := gs.client.post(gs.end, &vid, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of GameVideos")
 	}

@@ -58,7 +58,7 @@ func (ws *WebsiteService) Get(id int, opts ...Option) (*Website, error) {
 	var web []*Website
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := ws.client.get(ws.end, &web, opts...)
+	err := ws.client.post(ws.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Website with ID %v", id)
 	}
@@ -84,7 +84,7 @@ func (ws *WebsiteService) List(ids []int, opts ...Option) ([]*Website, error) {
 	var web []*Website
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := ws.client.get(ws.end, &web, opts...)
+	err := ws.client.post(ws.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Websites with IDs %v", ids)
 	}
@@ -98,7 +98,7 @@ func (ws *WebsiteService) List(ids []int, opts ...Option) ([]*Website, error) {
 func (ws *WebsiteService) Index(opts ...Option) ([]*Website, error) {
 	var web []*Website
 
-	err := ws.client.get(ws.end, &web, opts...)
+	err := ws.client.post(ws.end, &web, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Websites")
 	}

@@ -108,7 +108,7 @@ func (gs *GameService) Get(id int, opts ...Option) (*Game, error) {
 	var g []*Game
 
 	opts = append(opts, SetFilter("id", OpEquals, strconv.Itoa(id)))
-	err := gs.client.get(gs.end, &g, opts...)
+	err := gs.client.post(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Game with ID %v", id)
 	}
@@ -134,7 +134,7 @@ func (gs *GameService) List(ids []int, opts ...Option) ([]*Game, error) {
 	var g []*Game
 
 	opts = append(opts, SetFilter("id", OpContainsAtLeast, sliceconv.Itoa(ids)...))
-	err := gs.client.get(gs.end, &g, opts...)
+	err := gs.client.post(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Games with IDs %v", ids)
 	}
@@ -148,7 +148,7 @@ func (gs *GameService) List(ids []int, opts ...Option) ([]*Game, error) {
 func (gs *GameService) Index(opts ...Option) ([]*Game, error) {
 	var g []*Game
 
-	err := gs.client.get(gs.end, &g, opts...)
+	err := gs.client.post(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot get index of Games")
 	}
@@ -163,7 +163,7 @@ func (gs *GameService) Search(qry string, opts ...Option) ([]*Game, error) {
 	var g []*Game
 
 	opts = append(opts, setSearch(qry))
-	err := gs.client.get(gs.end, &g, opts...)
+	err := gs.client.post(gs.end, &g, opts...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get Game with query %s", qry)
 	}
