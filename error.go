@@ -69,7 +69,7 @@ func (e ServerError) Error() string {
 }
 
 // Temporary returns true if the error is temporary.
-func (e *ServerError) Temporary() bool {
+func (e ServerError) Temporary() bool {
 	return e.Temp
 }
 
