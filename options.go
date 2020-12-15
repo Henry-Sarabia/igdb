@@ -94,7 +94,7 @@ func SetOrder(field string, order order) Option {
 // For more information, visit: https://api-docs.igdb.com/#pagination
 func SetLimit(lim int) Option {
 	return func() (apicalypse.Option, error) {
-		if lim <= 0 || lim > 5000 {
+		if lim <= 0 || lim > 500 {
 			return nil, ErrOutOfRange
 		}
 
