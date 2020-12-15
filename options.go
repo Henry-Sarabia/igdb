@@ -94,7 +94,7 @@ func SetOrder(field string, order order) Option {
 // For more information, visit: https://api-docs.igdb.com/#pagination
 func SetLimit(lim int) Option {
 	return func() (apicalypse.Option, error) {
-		if lim <= 0 || lim > 5000 {
+		if lim <= 0 || lim > 500 {
 			return nil, ErrOutOfRange
 		}
 
@@ -103,12 +103,12 @@ func SetLimit(lim int) Option {
 }
 
 // SetOffset is a functional option used to offset the results from an API
-// call. The default offset is 0. The maximum offest is 5000.
+// call. The default offset is 0.
 //
 // For more information, visit: https://api-docs.igdb.com/#pagination
 func SetOffset(off int) Option {
 	return func() (apicalypse.Option, error) {
-		if off < 0 || off > 5000 {
+		if off < 0 {
 			return nil, ErrOutOfRange
 		}
 

@@ -2,11 +2,12 @@ package igdb
 
 import (
 	"fmt"
-	"github.com/Henry-Sarabia/apicalypse"
-	"github.com/pkg/errors"
 	"log"
 	"strings"
 	"testing"
+
+	"github.com/Henry-Sarabia/apicalypse"
+	"github.com/pkg/errors"
 )
 
 func TestComposeOptions(t *testing.T) {
@@ -159,7 +160,7 @@ func TestSetLimit(t *testing.T) {
 		{"Limit within range", 5, "5", nil},
 		{"Zero limit", 0, "", ErrOutOfRange},
 		{"Limit below range", -10, "", ErrOutOfRange},
-		{"Limit above range", 5001, "", ErrOutOfRange},
+		{"Limit above range", 501, "", ErrOutOfRange},
 	}
 
 	for _, test := range tests {
