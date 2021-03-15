@@ -77,6 +77,11 @@ const (
 	Mod
 	Episode
 	Season
+	Remake
+	Remaster
+	ExpandedGame
+	Port
+	Fork
 )
 
 // GameStatus specifies the release status of a specific game.
