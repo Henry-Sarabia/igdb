@@ -132,7 +132,14 @@ func TestGameCategory(t *testing.T) {
 		{"Standalone expansion", GameCategory(4), "Standalone Expansion"},
 		{"Mod", GameCategory(5), "Mod"},
 		{"Episode", GameCategory(6), "Episode"},
-		{"Season", GameCategory(7), "Episode"},
+		{"Season", GameCategory(7), "Season"},
+		{"Remake", GameCategory(8), "Remake"},
+		{"Remaster", GameCategory(9), "Remaster"},
+		{"ExpandedGame", GameCategory(10), "ExpandedGame"},
+		{"Port", GameCategory(11), "Port"},
+		{"Fork", GameCategory(12), "Fork"},
+		{"Pack", GameCategory(13), "Pack"},
+		{"Update", GameCategory(14), "Update"},
 		{"Undefined default", GameCategory(100), "Undefined"},
 	}
 	for _, tt := range gameTests {

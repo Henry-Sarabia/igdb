@@ -1,9 +1,10 @@
 package igdb
 
 import (
+	"strconv"
+
 	"github.com/Henry-Sarabia/sliceconv"
 	"github.com/pkg/errors"
-	"strconv"
 )
 
 //go:generate gomodifytags -file $GOFILE -struct Game -add-tags json -w
@@ -77,6 +78,13 @@ const (
 	Mod
 	Episode
 	Season
+	Remake
+	Remaster
+	ExpandedGame
+	Port
+	Fork
+	Pack
+	Update
 )
 
 // GameStatus specifies the release status of a specific game.

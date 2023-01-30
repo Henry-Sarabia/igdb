@@ -16,11 +16,18 @@ func _() {
 	_ = x[Mod-5]
 	_ = x[Episode-6]
 	_ = x[Season-7]
+	_ = x[Remake-8]
+	_ = x[Remaster-9]
+	_ = x[ExpandedGame-10]
+	_ = x[Port-11]
+	_ = x[Fork-12]
+	_ = x[Pack-13]
+	_ = x[Update-14]
 }
 
-const _GameCategory_name = "MainGameDLCAddonExpansionBundleStandaloneExpansionModEpisodeSeason"
+const _GameCategory_name = "MainGameDLCAddonExpansionBundleStandaloneExpansionModEpisodeSeasonRemakeRemasterExpandedGamePortForkPackUpdate"
 
-var _GameCategory_index = [...]uint8{0, 8, 16, 25, 31, 50, 53, 60, 66}
+var _GameCategory_index = [...]uint8{0, 8, 16, 25, 31, 50, 53, 60, 66, 72, 80, 92, 96, 100, 104, 110}
 
 func (i GameCategory) String() string {
 	if i < 0 || i >= GameCategory(len(_GameCategory_index)-1) {
