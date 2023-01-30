@@ -138,6 +138,8 @@ func TestGameCategory(t *testing.T) {
 		{"ExpandedGame", GameCategory(10), "ExpandedGame"},
 		{"Port", GameCategory(11), "Port"},
 		{"Fork", GameCategory(12), "Fork"},
+		{"Pack", GameCategory(13), "Pack"},
+		{"Update", GameCategory(14), "Update"},
 		{"Undefined default", GameCategory(100), "Undefined"},
 	}
 	for _, tt := range gameTests {
